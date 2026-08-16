@@ -222,6 +222,29 @@ class BuiltSiteTest(unittest.TestCase):
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
+    def test_admin_config_satisfies_decap_required_properties(self):
+        """Un YAML valide peut rester refusé par Decap et bloquer toute
+        l’administration : ces clés obligatoires ne s’en déduisent pas."""
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        for section in ("backend", "media_library"):
+            if section in config:
+                self.assertIn("name", config[section], section)
+        self.assertIn("media_folder", config)
+        for collection in config["collections"]:
+            self.assertIn("name", collection)
+            self.assertIn("label", collection)
+            # Une rubrique est soit un dossier, soit une liste de fichiers.
+            self.assertNotEqual(
+                "folder" in collection,
+                "files" in collection,
+                collection["name"],
+            )
+            entries = collection.get("files") or [collection]
+            for entry in entries:
+                for field in entry["fields"]:
+                    self.assertIn("name", field, f"{collection['name']}/{entry.get('name')}")
+                    self.assertIn("widget", field, f"{collection['name']}/{field.get('name')}")
+
     def test_admin_exposes_every_editable_json_field(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
         collections = {item["name"]: item for item in config["collections"]}

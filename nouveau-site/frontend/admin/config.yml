@@ -17,10 +17,6 @@ local_backend:
   url: http://127.0.0.1:8082/api/v1
 media_folder: nouveau-site/content/media/uploads
 public_folder: content/media/uploads
-media_library:
-  config:
-    max_file_size: 20971520
-
 slug:
   encoding: ascii
   clean_accents: true
@@ -257,7 +253,7 @@ collections:
         required: false
         pattern: ['^(?:[0-9]{10}|[0-9]{13})$', "Saisir un ISBN à 10 ou 13 chiffres"]
       - {label: "ISSN de la collection", name: issnCollection, widget: string, required: false}
-      - {label: "Couverture", name: couverture, widget: image, allow_multiple: false}
+      - {label: "Couverture", name: couverture, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
       - {label: "Texte alternatif de la couverture", name: couvertureAlt, widget: string, required: false}
       - label: Illustrations
         name: illustrations
@@ -265,13 +261,13 @@ collections:
         required: false
         summary: "{{fields.alt}}"
         fields:
-          - {label: "Image", name: image, widget: image, allow_multiple: false}
+          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - {label: "Texte alternatif", name: alt, widget: string, required: false}
       - label: Extraits PDF
         name: extraits
         widget: list
         required: false
-        field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
       - {label: "Mis en avant sur l’accueil", name: miseEnAvantAccueil, widget: boolean, default: false}
       - {label: "Ordre sur l’accueil", name: ordreAccueil, widget: number, value_type: int, min: 0, default: 999}
       - label: À découvrir aussi
@@ -299,7 +295,7 @@ collections:
         fields:
           - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
           - {label: "Description SEO", name: description, widget: text, required: false, pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"], hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."}
-          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false}
+          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
 
   - name: personnes
     label: Auteurs et illustrateurs
@@ -329,7 +325,7 @@ collections:
           - {label: "Illustrateur", value: illustrateur}
           - {label: "Préfacier", value: prefacier}
       - {label: "Biographie", name: biographie, widget: text, required: false}
-      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false}
+      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
       - {label: "Texte alternatif du portrait", name: imagePrincipaleAlt, widget: string, required: false}
       - label: Autres images
         name: images
@@ -337,7 +333,7 @@ collections:
         required: false
         summary: "{{fields.alt}}"
         fields:
-          - {label: "Image", name: image, widget: image, allow_multiple: false}
+          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - {label: "Texte alternatif", name: alt, widget: string, required: false}
       - label: Liens externes
         name: liensExternes
@@ -397,10 +393,10 @@ collections:
           - {label: "Vie de la maison", value: maison}
       - {label: "Résumé", name: resume, widget: text}
       - {label: "Contenu", name: contenu, widget: text}
-      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false}
+      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
       - {label: "Texte alternatif de l’image", name: imageAlt, widget: string, required: false}
       - {label: "Lien externe", name: lienExterne, widget: string, required: false, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
-      - {label: "Document PDF", name: document, widget: file, allow_multiple: false, required: false}
+      - {label: "Document PDF", name: document, widget: file, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
       - *old_slugs
       - *seo
 
@@ -494,14 +490,14 @@ collections:
             required: false
             summary: "{{fields.alt}}"
             fields:
-              - {label: "Image", name: image, widget: image, allow_multiple: false}
+              - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
               - {label: "Texte alternatif", name: alt, widget: string, required: false}
           - &page_documents
             label: Documents
             name: documents
             widget: list
             required: false
-            field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+            field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - *old_slugs
           - *seo
 
