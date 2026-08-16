@@ -1,6 +1,6 @@
 {
   "slug": "commandes",
-  "statut": "brouillon",
+  "statut": "publie",
   "titre": "Commandes",
   "type": "commande",
   "sections": [
@@ -10,7 +10,7 @@
     },
     {
       "titre": "Pour les particuliers",
-      "contenu": "Nos livres sont disponibles dans toutes les librairies sur commande puisque nous sommes recensés dans les grandes bases de données. Les librairies-partenaires ont un stock de nos ouvrages directement sur place. Vous pouvez également commander sur notre site: Il vous suffit de cliquer sur le bouton \"Acheter maintenant\" sur la page du livre désiré. Vous pouvez ainsi enregistrer plusieurs livres et cliquer sur \"afficher le panier\" lorsque votre commande est complète. Les frais de port sont offerts pour toute commande en France. Pour régler en ligne vous rejoignez alors le serveur sécurisé \"paypal\" qui offre la possibilité de payer par carte bleue sans avoir besoin de s'enregistrer. Si vous ne souhaitez pas passer par internet, il vous est possible d'imprimer un bon de commande papier et de nous l'envoyer, accompagné de votre chèque, à Chant d'orties, 9 chemin Serre de Cassagnes, 34600 Bédarieux."
+      "contenu": "Nos livres sont disponibles dans toutes les librairies sur commande puisque nous sommes recensés dans les grandes bases de données. Les librairies-partenaires ont un stock de nos ouvrages directement sur place. Vous pouvez également commander directement par courriel à chantdorties@free.fr en précisant les livres souhaités ainsi que vos coordonnées postales, votre adresse électronique et votre numéro de téléphone. Les frais de port sont offerts pour toute commande en France. Il vous est également possible d'imprimer un bon de commande papier et de nous l'envoyer, accompagné de votre chèque, à Chant d'orties, 9 chemin Serre de Cassagnes, 34600 Bédarieux."
     }
   ],
   "liens": [

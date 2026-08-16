@@ -159,6 +159,22 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertNotIn("paypal", content, path)
             self.assertNotIn("prévisualisation :", content, path)
 
+    def test_validated_commercial_content_is_published(self):
+        for slug in ("commandes", "offres-speciales", "soutien", "mentions-legales"):
+            path = DIST / slug / "index.html"
+            self.assertTrue(path.is_file(), slug)
+            soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+            self.assertIsNone(soup.select_one('meta[name="robots"]'), slug)
+
+        home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
+        commercial = home.select_one(".home-commercial")
+        self.assertIsNotNone(commercial)
+        commercial_text = commercial.get_text(" ", strip=True)
+        self.assertIn("40 % de remise", commercial_text)
+        self.assertIn("Mondial Relay", commercial_text)
+        self.assertIsNotNone(commercial.select_one('a[href="mailto:chantdorties@free.fr"]'))
+        self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
+
     def test_redirects_cover_every_old_book_page(self):
         redirects = (DIST / ".htaccess").read_text(encoding="utf-8")
         legacy = load_json(ROOT / "config" / "legacy-redirects.json")["livres"]

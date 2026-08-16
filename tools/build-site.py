@@ -154,6 +154,10 @@ class SiteBuilder:
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
+        asset_digest = hashlib.sha256()
+        for asset in ("assets/css/site.css", "assets/js/site.js"):
+            asset_digest.update((self.frontend_dir / asset).read_bytes())
+        self.asset_version = asset_digest.hexdigest()[:12]
 
         content = load_content(self.root, include_drafts=include_drafts)
         self.books = content["books"]
@@ -553,6 +557,7 @@ class SiteBuilder:
             "{{og_image}}": og_image_tag,
             "{{structured_data}}": structured,
             "{{body_class}}": e(body_class),
+            "{{asset_version}}": self.asset_version,
             "{{header}}": self.render_header(active),
             "{{content}}": draft_notice + content,
             "{{footer}}": self.render_footer(),
@@ -654,7 +659,10 @@ class SiteBuilder:
         return featured
 
     def build_home(self) -> None:
-        intro = self.pages_by_slug["accueil"]["sections"][0]["contenu"]
+        home_sections = self.pages_by_slug["accueil"]["sections"]
+        intro = home_sections[0]["contenu"]
+        house_update = home_sections[1]
+        commercial_info = home_sections[2]
         featured = self.featured_books()
         covers = "".join(
             f"""
@@ -679,6 +687,23 @@ class SiteBuilder:
       </div>
     </div>
     <div class="cover-ribbon">{covers}</div>
+  </div>
+</section>
+<section class="section home-commercial">
+  <div class="container home-commercial__layout">
+    <div>
+      <p class="eyebrow">{e(house_update['titre'])}</p>
+      <h2>La maison poursuit son activité</h2>
+      <p class="lead">{e(house_update['contenu'])}</p>
+    </div>
+    <div class="home-commercial__details">
+      <h3>{e(commercial_info['titre'])}</h3>
+      <p>{self.linkify_text(commercial_info['contenu'])}</p>
+      <div class="hero-actions">
+        <a class="button" href="mailto:{CONTACT_EMAIL}">{icon('mail')} Commander par courriel</a>
+        <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
+      </div>
+    </div>
   </div>
 </section>
 <section class="section">
