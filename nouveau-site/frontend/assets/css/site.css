@@ -553,23 +553,9 @@ h3 {
   transform: translateY(-3px);
 }
 
-.house-card__icon {
-  display: inline-grid;
-  width: 36px;
-  height: 36px;
-  margin-bottom: 20px;
-  color: var(--house-accent);
-  place-items: center;
-}
-
-.house-card__icon .icon {
-  width: 28px;
-  height: 28px;
-}
-
 .house-card__eyebrow {
-  margin-bottom: 7px;
-  color: var(--muted);
+  margin-bottom: 12px;
+  color: var(--house-accent);
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;

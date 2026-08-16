@@ -163,7 +163,6 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual(9, len(cards))
         self.assertEqual([], soup.select(".collection-tile"))
         for card in cards:
-            self.assertIsNotNone(card.select_one(".house-card__icon .icon"))
             self.assertIsNotNone(card.select_one(".house-card__action"))
             self.assertIsNotNone(card.select_one("h2"))
 
