@@ -139,13 +139,33 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual(self.report["actualites"], len(soup.select(".news-card")))
 
     def test_collection_index_has_visual_previews(self):
-        soup = BeautifulSoup((DIST / "collections" / "index.html").read_text(encoding="utf-8"), "html.parser")
-        tiles = soup.select(".collection-showcase__item")
-        self.assertEqual(len(self.collections), len(tiles))
-        for tile in tiles:
-            self.assertIsNotNone(tile.select_one(".collection-showcase__link"))
-            self.assertGreaterEqual(len(tile.select(".collection-showcase__covers img")), 1)
-            self.assertLessEqual(len(tile.select(".collection-showcase__covers img")), 3)
+        pages = {
+            "home": BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser"),
+            "collections": BeautifulSoup(
+                (DIST / "collections" / "index.html").read_text(encoding="utf-8"),
+                "html.parser",
+            ),
+        }
+        for page_name, soup in pages.items():
+            tiles = soup.select(".collection-showcase__item")
+            self.assertEqual(len(self.collections), len(tiles), page_name)
+            for tile in tiles:
+                self.assertIsNotNone(tile.select_one(".collection-showcase__link"), page_name)
+                self.assertGreaterEqual(len(tile.select(".collection-showcase__covers img")), 1, page_name)
+                self.assertLessEqual(len(tile.select(".collection-showcase__covers img")), 3, page_name)
+
+        self.assertTrue(all(tile.select_one("h3") for tile in pages["home"].select(".collection-showcase__item")))
+        self.assertTrue(all(tile.select_one("h2") for tile in pages["collections"].select(".collection-showcase__item")))
+
+    def test_house_page_uses_editorial_cards(self):
+        soup = BeautifulSoup((DIST / "la-maison" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        cards = soup.select(".house-card")
+        self.assertEqual(9, len(cards))
+        self.assertEqual([], soup.select(".collection-tile"))
+        for card in cards:
+            self.assertIsNotNone(card.select_one(".house-card__icon .icon"))
+            self.assertIsNotNone(card.select_one(".house-card__action"))
+            self.assertIsNotNone(card.select_one("h2"))
 
     def test_admin_is_present_but_not_indexed(self):
         index = DIST / "admin" / "index.html"
@@ -206,7 +226,7 @@ class BuiltSiteTest(unittest.TestCase):
             donation_form.select_one('input[name="hosted_button_id"]')["value"],
         )
         self.assertEqual(
-            "Faire un don avec PayPal",
+            "Faire un don",
             donation_form.select_one("button").get_text(" ", strip=True),
         )
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))

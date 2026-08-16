@@ -15,7 +15,7 @@ backend:
 publish_mode: editorial_workflow
 local_backend:
   url: http://127.0.0.1:8082/api/v1
-media_folder: content/media/uploads
+media_folder: nouveau-site/content/media/uploads
 public_folder: content/media/uploads
 
 slug:
@@ -27,7 +27,7 @@ collections:
   - name: livres
     label: Livres
     label_singular: Livre
-    folder: content/livres
+    folder: nouveau-site/content/livres
     extension: json
     format: json
     create: true
@@ -139,7 +139,7 @@ collections:
   - name: personnes
     label: Auteurs et illustrateurs
     label_singular: Personne
-    folder: content/personnes
+    folder: nouveau-site/content/personnes
     extension: json
     format: json
     create: true
@@ -185,7 +185,7 @@ collections:
   - name: collections
     label: Collections
     label_singular: Collection
-    folder: content/collections
+    folder: nouveau-site/content/collections
     extension: json
     format: json
     create: true
@@ -210,7 +210,7 @@ collections:
   - name: actualites
     label: Actualités
     label_singular: Actualité
-    folder: content/actualites
+    folder: nouveau-site/content/actualites
     extension: json
     format: json
     create: true
@@ -250,7 +250,7 @@ collections:
   - name: pages
     label: Pages
     label_singular: Page
-    folder: content/pages
+    folder: nouveau-site/content/pages
     extension: json
     format: json
     create: false

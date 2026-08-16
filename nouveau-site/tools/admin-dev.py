@@ -37,13 +37,21 @@ def main() -> None:
     if not shutil.which("npx"):
         raise SystemExit("npx est nécessaire pour démarrer l’administration locale")
 
+    repository_root = Path(
+        subprocess.check_output(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=root,
+            text=True,
+        ).strip()
+    )
+
     commands = [
         (["npx", "--yes", "decap-server@3.10.0"], {
             **os.environ,
             "PORT": str(args.proxy_port),
             "BIND_HOST": "127.0.0.1",
             "ORIGIN": f"http://127.0.0.1:{args.port}",
-        }),
+        }, repository_root),
         ([
             sys.executable,
             str(root / "tools" / "dev-server.py"),
@@ -51,11 +59,11 @@ def main() -> None:
             str(root),
             "--port",
             str(args.port),
-        ], None),
+        ], None, root),
     ]
     processes = [
-        subprocess.Popen(command, cwd=root, env=environment, start_new_session=True)
-        for command, environment in commands
+        subprocess.Popen(command, cwd=cwd, env=environment, start_new_session=True)
+        for command, environment, cwd in commands
     ]
     print(f"[admin] Administration : http://127.0.0.1:{args.port}/admin/", flush=True)
     try:

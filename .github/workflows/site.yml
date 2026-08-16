@@ -16,12 +16,16 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nouveau-site
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: nouveau-site/requirements.txt
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install --yes ghostscript poppler-utils
       - name: Install Python dependencies
@@ -31,7 +35,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: site-${{ github.sha }}
-          path: dist/
+          path: nouveau-site/dist/
           include-hidden-files: true
           retention-days: 30
 
@@ -52,4 +56,4 @@ jobs:
           FREE_FTP_USER: ${{ secrets.FREE_FTP_USER }}
           FREE_FTP_PASSWORD: ${{ secrets.FREE_FTP_PASSWORD }}
           FREE_FTP_PATH: ${{ secrets.FREE_FTP_PATH }}
-        run: python3 tools/deploy-free.py
+        run: python3 nouveau-site/tools/deploy-free.py --dist dist

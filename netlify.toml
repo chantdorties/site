@@ -1,4 +1,5 @@
 [build]
+  base = "nouveau-site"
   publish = "frontend"
   command = "printf 'Administration statique : aucun build requis.\\n'"
 

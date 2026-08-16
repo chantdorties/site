@@ -55,6 +55,18 @@ NEWS_TYPE_LABELS = {
     "maison": "Vie de la maison",
 }
 
+HOUSE_PAGE_META = {
+    "amis": ("users", "Réseau", "Découvrir nos amis"),
+    "atelier-ecriture": ("pencil", "Transmission", "Découvrir l’atelier"),
+    "commandes": ("shopping-cart", "Commander", "Commander un livre"),
+    "librairies-partenaires": ("map-pin", "Près de chez vous", "Trouver une librairie"),
+    "manuscrits": ("file-pen", "Proposer un texte", "Consulter les modalités"),
+    "mentions-legales": ("scale", "Informations", "Lire les mentions"),
+    "offres-speciales": ("badge-percent", "Sélection", "Voir les offres"),
+    "projets": ("lightbulb", "À venir", "Découvrir les projets"),
+    "soutien": ("heart", "Association", "Soutenir la maison"),
+}
+
 NAV_ITEMS = [
     ("home", "/", "Accueil"),
     ("catalogue", "/catalogue/", "Catalogue"),
@@ -67,13 +79,20 @@ NAV_ITEMS = [
 ICONS = {
     "arrow-right": '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
     "arrow-up": '<path d="m18 15-6-6-6 6"/>',
+    "badge-percent": '<path d="m15 9-6 6"/><path d="M9 9h.01"/><path d="M15 15h.01"/><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/>',
     "external": '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
     "file": '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/>',
+    "file-pen": '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
     "heart": '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+    "lightbulb": '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.67.66-1.14 1.17-1.66A6 6 0 1 0 7.74 12.34c.48.48.97 1 1.17 1.66Z"/>',
+    "map-pin": '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
     "mail": '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
     "menu": '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
+    "pencil": '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    "scale": '<path d="m16 16 3-8 3 8a5 5 0 0 1-6 0"/><path d="m2 16 3-8 3 8a5 5 0 0 1-6 0"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h18"/>',
     "search": '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
     "shopping-cart": '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h7.78a2 2 0 0 0 1.95-1.57L20.05 7H5.12"/>',
+    "users": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
     "x": '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
 }
 
@@ -626,18 +645,9 @@ class SiteBuilder:
   <p class="book-card__meta">{e(' · '.join(details))}</p>
 </article>""".strip()
 
-    def render_collection_tiles(self) -> str:
-        return '<div class="collection-grid">' + "".join(
-            f"""
-<a class="collection-tile" href="/collections/{e(item['slug'])}/">
-  <h3>{e(item['titre'])}</h3>
-  <p>{e(item['description'])}</p>
-  <span class="collection-count">{item['nombreLivres']} {'livres' if item['nombreLivres'] > 1 else 'livre'}</span>
-</a>""".strip()
-            for item in self.collections
-        ) + "</div>"
-
-    def render_collection_showcase(self) -> str:
+    def render_collection_showcase(self, *, heading_level: int = 2) -> str:
+        if heading_level not in {2, 3}:
+            raise ValueError("Le niveau de titre des collections doit être 2 ou 3")
         tiles = []
         for index, item in enumerate(self.collections, start=1):
             book_slugs = [slug for slug in item["livres"] if slug in self.cover_media]
@@ -653,7 +663,7 @@ class SiteBuilder:
 <a class="collection-showcase__item" href="/collections/{e(item['slug'])}/">
   <span class="collection-showcase__copy">
     <span class="collection-showcase__number">Collection {index:02d}</span>
-    <h2>{e(item['titre'])}</h2>
+    <h{heading_level}>{e(item['titre'])}</h{heading_level}>
     <span class="collection-showcase__description">{e(item['description'])}</span>
     <span class="collection-showcase__link">Découvrir {e(count)} {icon('arrow-right')}</span>
   </span>
@@ -733,7 +743,7 @@ class SiteBuilder:
       <div class="hero-actions">
         <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
           <input type="hidden" name="hosted_button_id" value="{e(self.paypal_config['donationHostedButtonId'])}">
-          <button class="button" type="submit">{icon('heart')} Faire un don avec PayPal</button>
+          <button class="button" type="submit">{icon('heart')} Faire un don</button>
         </form>
         <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
       </div>
@@ -746,7 +756,7 @@ class SiteBuilder:
       <div><p class="eyebrow">Notre ligne éditoriale</p><h2>Six collections, autant de chemins de traverse</h2></div>
       <p>{e(intro)}</p>
     </div>
-    {self.render_collection_tiles()}
+    {self.render_collection_showcase(heading_level=3)}
   </div>
 </section>
 <section class="section section--ink">
@@ -1228,20 +1238,26 @@ class SiteBuilder:
         ]
 
     def build_house_page(self) -> None:
-        tiles = "".join(
-            f"""
-<a class="collection-tile" href="/{e(page['slug'])}/">
-  <h3>{e(page['titre'])}</h3><p>{e(truncate(page['sections'][0]['contenu'], 145))}</p>
+        cards = []
+        for page in self.published_editorial_pages():
+            icon_name, eyebrow, action = HOUSE_PAGE_META[page["slug"]]
+            cards.append(
+                f"""
+<a class="house-card house-card--{e(page['slug'])}" href="/{e(page['slug'])}/">
+  <span class="house-card__icon">{icon(icon_name)}</span>
+  <span class="house-card__eyebrow">{e(eyebrow)}</span>
+  <h2>{e(page['titre'])}</h2>
+  <span class="house-card__summary">{e(truncate(page['sections'][0]['contenu'], 120))}</span>
+  <span class="house-card__action">{e(action)} {icon('arrow-right')}</span>
 </a>""".strip()
-            for page in self.published_editorial_pages()
-        )
+            )
         content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('La maison', None)])}
   <p class="eyebrow">Édition associative</p><h1>La maison</h1>
   <p class="lead">Découvrir notre fonctionnement, nos projets et les différentes manières de travailler avec Chant d’orties.</p>
 </div></header>
-<section class="section"><div class="container"><div class="collection-grid">{tiles}</div></div></section>"""
+<section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>"""
         page = self.render_page(
             title="La maison",
             description="Découvrez la maison d’édition associative Chant d’orties, ses projets et ses partenaires.",

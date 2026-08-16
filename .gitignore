@@ -1,30 +1,17 @@
-# This repository contains only the rebuilt site. The legacy site remains local.
+# L'ancien site reste local à la racine. La nouvelle version est isolée ici.
 /*
 !/.gitignore
-!/README.md
-!/Makefile
-!/requirements.txt
 !/.github/
-!/config/
-!/content/
-!/docs/
-!/frontend/
+!/README.md
 !/netlify.toml
-!/tools/
-
-/tools/*
-!/tools/build-site.py
-!/tools/content_data.py
-!/tools/admin-dev.py
-!/tools/deploy-free.py
-!/tools/dev-server.py
-!/tools/test_built_site.py
-!/tools/test_content_data.py
-!/tools/test_deploy.py
+!/nouveau-site/
 
 **/__pycache__/
 *.py[cod]
 Thumbs.db
-/dist/
-/dist-preview/
-/reports/
+/nouveau-site/.netlify/
+/nouveau-site/.dist-build/
+/nouveau-site/.dist-preview-build/
+/nouveau-site/dist/
+/nouveau-site/dist-preview/
+/nouveau-site/reports/
