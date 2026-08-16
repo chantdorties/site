@@ -17,6 +17,7 @@ NEWS_TYPES = {"salon", "parution", "rencontre", "maison"}
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 URL_PATTERN = re.compile(r"^https?://", re.I)
+PAYPAL_BUTTON_PATTERN = re.compile(r"^[A-Z0-9]{13}$")
 MEDIA_SUFFIXES = {".bmp", ".gif", ".jpeg", ".jpg", ".pdf", ".png", ".tif", ".tiff", ".webp"}
 MAX_MEDIA_BYTES = 20 * 1024 * 1024
 
@@ -152,6 +153,14 @@ def validate_content(root: Path, raw: dict[str, list[dict[str, Any]]]) -> None:
             raise ContentError(f"Livre {book['slug']}: prix invalide")
         if not valid_isbn(book.get("isbn")):
             raise ContentError(f"Livre {book['slug']}: ISBN invalide")
+        paypal_button_id = book.get("paypalHostedButtonId")
+        if paypal_button_id is not None and (
+            not isinstance(paypal_button_id, str)
+            or not PAYPAL_BUTTON_PATTERN.fullmatch(paypal_button_id)
+        ):
+            raise ContentError(f"Livre {book['slug']}: identifiant bouton PayPal invalide")
+        if book.get("disponible") and not paypal_button_id:
+            raise ContentError(f"Livre {book['slug']}: bouton PayPal obligatoire si disponible")
         validate_media(root, book.get("couverture"), f"Livre {book['slug']}")
         if not book.get("couverture"):
             raise ContentError(f"Livre {book['slug']}: couverture obligatoire")

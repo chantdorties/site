@@ -109,6 +109,12 @@ collections:
       - {label: "Présentation", name: description, widget: text, required: false}
       - {label: "Prix en euros", name: prixEuros, widget: number, value_type: float, min: 0, step: 0.01, required: false}
       - {label: "Disponible", name: disponible, widget: boolean, default: true}
+      - label: Identifiant du bouton PayPal
+        name: paypalHostedButtonId
+        widget: string
+        required: false
+        hint: Identifiant à 13 caractères fourni par PayPal. Obligatoire pour un livre disponible.
+        pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
       - {label: "Nombre de pages", name: nombrePages, widget: number, value_type: int, min: 1, required: false}
       - {label: "Format", name: format, widget: string, required: false}
       - {label: "Reliure", name: reliure, widget: string, required: false}

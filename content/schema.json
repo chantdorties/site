@@ -1,7 +1,16 @@
 {
-  "version": 1,
+  "version": 2,
   "statuts": [
     "brouillon",
     "publie"
-  ]
+  ],
+  "champs": {
+    "livre": {
+      "paypalHostedButtonId": {
+        "type": "string",
+        "obligatoireSiDisponible": true,
+        "pattern": "^[A-Z0-9]{13}$"
+      }
+    }
+  }
 }

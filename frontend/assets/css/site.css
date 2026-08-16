@@ -888,6 +888,14 @@ h3 {
   border-top: 3px solid var(--ink);
 }
 
+.paypal-form {
+  margin: 0;
+}
+
+.paypal-form .button {
+  font: inherit;
+}
+
 .price {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.8rem;

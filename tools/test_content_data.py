@@ -43,7 +43,7 @@ class ContentDataTest(unittest.TestCase):
 
     def test_content_schema_and_required_records(self):
         schema = json.loads((CONTENT / "schema.json").read_text(encoding="utf-8"))
-        self.assertEqual(1, schema["version"])
+        self.assertEqual(2, schema["version"])
         self.assertGreater(len(self.books), 0)
         self.assertGreater(len(self.people), 0)
         self.assertGreater(len(self.collections), 0)
@@ -92,6 +92,12 @@ class ContentDataTest(unittest.TestCase):
     def test_isbn_values_are_valid(self):
         for book in self.books:
             self.assertTrue(valid_isbn(book.get("isbn")), book["slug"])
+
+    def test_every_available_book_has_a_paypal_button(self):
+        for book in self.books:
+            button_id = book.get("paypalHostedButtonId")
+            if book["disponible"]:
+                self.assertRegex(button_id or "", r"^[A-Z0-9]{13}$", book["slug"])
 
     def test_all_and_only_referenced_media_are_kept(self):
         referenced = referenced_media(self.raw)

@@ -72,6 +72,7 @@ ICONS = {
     "mail": '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
     "menu": '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
     "search": '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+    "shopping-cart": '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h7.78a2 2 0 0 0 1.95-1.57L20.05 7H5.12"/>',
     "x": '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
 }
 
@@ -700,7 +701,7 @@ class SiteBuilder:
       <h3>{e(commercial_info['titre'])}</h3>
       <p>{self.linkify_text(commercial_info['contenu'])}</p>
       <div class="hero-actions">
-        <a class="button" href="mailto:{CONTACT_EMAIL}">{icon('mail')} Commander par courriel</a>
+        <a class="button" href="/catalogue/">{icon('shopping-cart')} Choisir un livre</a>
         <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
       </div>
     </div>
@@ -873,12 +874,20 @@ class SiteBuilder:
             price_html = f'<span class="price">{e(price)}</span>' if price else ""
             availability_class = "" if book["disponible"] else " availability--unavailable"
             availability_label = "Disponible" if book["disponible"] else "Actuellement indisponible"
-            subject = quote(f"Commande — {book['titre']}")
-            contact_label = "Commander par e-mail" if book["disponible"] else "Nous contacter"
+            subject = quote(f"Question — {book['titre']}")
+            if book["disponible"]:
+                purchase_action = f"""
+<form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+  <input type="hidden" name="cmd" value="_s-xclick">
+  <input type="hidden" name="hosted_button_id" value="{e(book['paypalHostedButtonId'])}">
+  <button class="button" type="submit">{icon('shopping-cart')} Ajouter au panier avec PayPal</button>
+</form>"""
+            else:
+                purchase_action = f'<a class="button" href="mailto:{CONTACT_EMAIL}?subject={subject}">{icon("mail")} Nous contacter</a>'
             purchase = f"""
 <div class="purchase-line">
   {price_html}<span class="availability{availability_class}">{availability_label}</span>
-  <a class="button" href="mailto:{CONTACT_EMAIL}?subject={subject}">{icon('mail')} {contact_label}</a>
+  {purchase_action}
 </div>"""
 
             excerpts = ""

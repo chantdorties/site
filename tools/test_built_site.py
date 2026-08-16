@@ -153,11 +153,26 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("http://127.0.0.1:8082/api/v1", config["local_backend"]["url"])
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
-    def test_no_paypal_or_draft_warning_in_production(self):
+    def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
             content = path.read_text(encoding="utf-8").lower()
-            self.assertNotIn("paypal", content, path)
             self.assertNotIn("prévisualisation :", content, path)
+
+    def test_available_books_use_the_original_paypal_buttons(self):
+        source_books = [load_json(path) for path in (ROOT / "content" / "livres").glob("*.json")]
+        for book in source_books:
+            path = DIST / "livres" / book["slug"] / "index.html"
+            soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+            form = soup.select_one('form.paypal-form[action="https://www.paypal.com/cgi-bin/webscr"]')
+            if book["disponible"]:
+                self.assertIsNotNone(form, book["slug"])
+                self.assertEqual("_s-xclick", form.select_one('input[name="cmd"]')["value"])
+                self.assertEqual(
+                    book["paypalHostedButtonId"],
+                    form.select_one('input[name="hosted_button_id"]')["value"],
+                )
+            else:
+                self.assertIsNone(form, book["slug"])
 
     def test_validated_commercial_content_is_published(self):
         for slug in ("commandes", "offres-speciales", "soutien", "mentions-legales"):
@@ -172,7 +187,7 @@ class BuiltSiteTest(unittest.TestCase):
         commercial_text = commercial.get_text(" ", strip=True)
         self.assertIn("40 % de remise", commercial_text)
         self.assertIn("Mondial Relay", commercial_text)
-        self.assertIsNotNone(commercial.select_one('a[href="mailto:chantdorties@free.fr"]'))
+        self.assertIsNotNone(commercial.select_one('a[href="/catalogue/"]'))
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
 
     def test_redirects_cover_every_old_book_page(self):
