@@ -208,6 +208,10 @@ class SiteBuilder:
             self.temp_output / "assets" / "js",
         )
         shutil.copytree(
+            self.frontend_dir / "assets" / "images",
+            self.temp_output / "assets" / "images",
+        )
+        shutil.copytree(
             self.frontend_dir / "admin",
             self.temp_output / "admin",
         )
@@ -453,7 +457,10 @@ class SiteBuilder:
         return f"""
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="/" aria-label="{e(SITE_NAME)}, accueil">Chant <span>d’orties</span></a>
+    <a class="wordmark" href="/" aria-label="{e(SITE_NAME)}, accueil">
+      <img class="site-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241">
+      <span class="wordmark__text">Chant <span class="wordmark__accent">d’orties</span></span>
+    </a>
     <nav class="primary-nav" aria-label="Navigation principale">
       {self.render_nav(active)}
     </nav>
@@ -476,9 +483,12 @@ class SiteBuilder:
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <p class="footer-brand">{e(SITE_NAME)}</p>
-        <p class="footer-intro">Une maison d’édition associative de littérature jeunesse, pour les jeunes lecteurs et ceux qui ont gardé leur âme d’enfant.</p>
+      <div class="footer-identity">
+        <img class="footer-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241" loading="lazy">
+        <div>
+          <p class="footer-brand">{e(SITE_NAME)}</p>
+          <p class="footer-intro">Une maison d’édition associative de littérature jeunesse, pour les jeunes lecteurs et ceux qui ont gardé leur âme d’enfant.</p>
+        </div>
       </div>
       <div>
         <h2 class="footer-title">Découvrir</h2>

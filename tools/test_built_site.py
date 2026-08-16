@@ -74,6 +74,11 @@ class BuiltSiteTest(unittest.TestCase):
             soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
             self.assertIsNotNone(soup.select_one("header.site-header"), path)
             self.assertIsNotNone(soup.select_one("footer.site-footer"), path)
+            self.assertEqual(
+                "/assets/images/chantdorties-logo.webp",
+                soup.select_one("header.site-header .site-logo")["src"],
+                path,
+            )
             self.assertIsNotNone(soup.select_one("a.skip-link"), path)
             self.assertEqual(1, len(soup.select("main#contenu")), path)
 

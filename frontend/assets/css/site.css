@@ -151,7 +151,10 @@ h3 {
 }
 
 .wordmark {
+  display: inline-flex;
   flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.15rem;
@@ -160,7 +163,17 @@ h3 {
   text-decoration: none;
 }
 
-.wordmark span {
+.site-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.wordmark__text {
+  white-space: nowrap;
+}
+
+.wordmark .wordmark__accent {
   color: var(--red);
 }
 
@@ -1161,6 +1174,19 @@ h3 {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.45rem;
   font-weight: 700;
+}
+
+.footer-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.footer-logo {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  object-fit: cover;
 }
 
 .footer-intro {
