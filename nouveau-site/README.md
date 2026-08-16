@@ -12,7 +12,7 @@ cd nouveau-site
 
 ## Organisation
 
-- `content/` : livres, personnes, collections, pages, actualités et médias modifiables ;
+- `content/` : livres, personnes, collections, pages, actualités, réglages et médias modifiables ;
 - `frontend/` : modèle HTML, styles, scripts et interface d’administration ;
 - `tools/` : validation, génération, serveur local et déploiement ;
 - `config/` : redirections des anciennes adresses ;
@@ -20,6 +20,12 @@ cd nouveau-site
 - `.github/workflows/` : validation, publication et restauration automatiques.
 
 Ne pas modifier `dist/` directement : il est recréé à chaque génération.
+
+Les pages principales sont dans `content/pages-fixes/`. Les autres pages de la
+maison sont dans `content/pages/` et peuvent être créées depuis l’administration.
+L’ordre, les mises en avant, le SEO et les textes alternatifs sont enregistrés
+avec chaque contenu. L’identité, le menu, le pied de page et les textes généraux
+sont regroupés dans `content/reglages/`.
 
 ## Installation
 
@@ -37,6 +43,10 @@ make dev
 
 Le site est disponible sur <http://127.0.0.1:8766/> et se recharge après une
 modification dans `content/`, `frontend/` ou `config/`.
+
+Cette commande régénère le site en continu. Lancer `make build` en parallèle est
+refusé avec un message clair : arrêter `make dev` ou `make admin` avant de
+générer à la main.
 
 Pour modifier les contenus avec l’interface locale :
 

@@ -11,7 +11,9 @@
 Thumbs.db
 /nouveau-site/.netlify/
 /nouveau-site/.dist-build/
+/nouveau-site/.dist-build.lock
 /nouveau-site/.dist-preview-build/
+/nouveau-site/.dist-preview-build.lock
 /nouveau-site/dist/
 /nouveau-site/dist-preview/
 /nouveau-site/reports/
