@@ -307,24 +307,37 @@ class SiteBuilder:
         chosen_source = source
 
         if source.stat().st_size > 8 * 1024 * 1024:
-            if not GHOSTSCRIPT_BINARY:
-                raise RuntimeError("Ghostscript est nécessaire pour compresser les PDF lourds")
-            command = [
-                GHOSTSCRIPT_BINARY,
-                "-sDEVICE=pdfwrite",
-                "-dCompatibilityLevel=1.4",
-                "-dPDFSETTINGS=/ebook",
-                "-dDetectDuplicateImages=true",
-                "-dCompressFonts=true",
-                "-dNOPAUSE",
-                "-dQUIET",
-                "-dBATCH",
-                f"-sOutputFile={candidate}",
-                str(source),
-            ]
-            result = subprocess.run(command, check=False, timeout=180)
-            if result.returncode == 0 and candidate.is_file() and candidate.stat().st_size < source.stat().st_size:
-                chosen_source = candidate
+            previous = self.output / destination.relative_to(self.temp_output)
+            if previous.is_file() and previous.stat().st_size < source.stat().st_size:
+                previous_validation = subprocess.run(
+                    [PDFINFO_BINARY, str(previous)],
+                    check=False,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=30,
+                )
+                if previous_validation.returncode == 0:
+                    chosen_source = previous
+            if chosen_source == source:
+                if not GHOSTSCRIPT_BINARY:
+                    raise RuntimeError("Ghostscript est nécessaire pour compresser les PDF lourds")
+                command = [
+                    GHOSTSCRIPT_BINARY,
+                    "-sDEVICE=pdfwrite",
+                    "-dCompatibilityLevel=1.4",
+                    "-dPDFSETTINGS=/ebook",
+                    "-dDetectDuplicateImages=true",
+                    "-dCompressFonts=true",
+                    "-dNOPAUSE",
+                    "-dQUIET",
+                    "-dBATCH",
+                    f"-sOutputFile={candidate}",
+                    str(source),
+                ]
+                result = subprocess.run(command, check=False, timeout=180)
+                if result.returncode == 0 and candidate.is_file() and candidate.stat().st_size < source.stat().st_size:
+                    chosen_source = candidate
+            if chosen_source != source:
                 self.media_stats["compressedDocuments"] += 1
 
         shutil.copy2(chosen_source, destination)
