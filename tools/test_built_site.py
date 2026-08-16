@@ -196,9 +196,19 @@ class BuiltSiteTest(unittest.TestCase):
             ["Libraires", "Particuliers"],
             [heading.get_text(strip=True) for heading in commercial.select(".commercial-audience h4")],
         )
-        support_links = commercial.select('a[href="/soutien/"]')
-        self.assertEqual(2, len(support_links))
-        self.assertEqual("Faire un don", support_links[-1].get_text(" ", strip=True))
+        self.assertEqual(1, len(commercial.select('a[href="/soutien/"]')))
+        donation_form = commercial.select_one(
+            'form.donation-form[action="https://www.paypal.com/donate"]'
+        )
+        self.assertIsNotNone(donation_form)
+        self.assertEqual(
+            "G4GQ22SF6LMW6",
+            donation_form.select_one('input[name="hosted_button_id"]')["value"],
+        )
+        self.assertEqual(
+            "Faire un don avec PayPal",
+            donation_form.select_one("button").get_text(" ", strip=True),
+        )
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
 
     def test_redirects_cover_every_old_book_page(self):

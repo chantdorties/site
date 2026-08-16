@@ -156,6 +156,10 @@ class SiteBuilder:
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
+        self.paypal_config = read_json(self.root / "config" / "paypal.json")
+        donation_button_id = self.paypal_config.get("donationHostedButtonId", "")
+        if not re.fullmatch(r"[A-Z0-9]{13}", donation_button_id):
+            raise ValueError("Identifiant du bouton de don PayPal invalide")
         asset_digest = hashlib.sha256()
         for asset in ("assets/css/site.css", "assets/js/site.js"):
             asset_digest.update((self.frontend_dir / asset).read_bytes())
@@ -727,7 +731,10 @@ class SiteBuilder:
       </div>
       <p class="commercial-support">{self.linkify_text(support_info['contenu'], internal_links={'page de soutien': '/soutien/'})}</p>
       <div class="hero-actions">
-        <a class="button" href="/soutien/">{icon('heart')} Faire un don</a>
+        <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
+          <input type="hidden" name="hosted_button_id" value="{e(self.paypal_config['donationHostedButtonId'])}">
+          <button class="button" type="submit">{icon('heart')} Faire un don avec PayPal</button>
+        </form>
         <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
       </div>
     </div>
