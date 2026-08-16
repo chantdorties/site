@@ -1,0 +1,50 @@
+{
+  "liens": [
+    {
+      "id": "home",
+      "libelle": "Accueil",
+      "url": "/",
+      "visible": true,
+      "ordre": 10
+    },
+    {
+      "id": "catalogue",
+      "libelle": "Catalogue",
+      "url": "/catalogue/",
+      "visible": true,
+      "ordre": 20
+    },
+    {
+      "id": "collections",
+      "libelle": "Collections",
+      "url": "/collections/",
+      "visible": true,
+      "ordre": 30
+    },
+    {
+      "id": "people",
+      "libelle": "Auteurs & illustrateurs",
+      "url": "/personnes/",
+      "visible": true,
+      "ordre": 40
+    },
+    {
+      "id": "actualites",
+      "libelle": "Actualités",
+      "url": "/actualites/",
+      "visible": true,
+      "ordre": 50
+    },
+    {
+      "id": "maison",
+      "libelle": "La maison",
+      "url": "/la-maison/",
+      "visible": true,
+      "ordre": 60
+    }
+  ],
+  "recherche": {
+    "libelle": "Rechercher un livre",
+    "url": "/catalogue/#recherche"
+  }
+}

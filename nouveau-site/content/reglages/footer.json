@@ -1,0 +1,31 @@
+{
+  "presentation": "Une maison d’édition associative de littérature jeunesse, pour les jeunes lecteurs et ceux qui ont gardé leur âme d’enfant.",
+  "titreNavigation": "Découvrir",
+  "liensNavigation": [
+    {
+      "libelle": "Catalogue",
+      "url": "/catalogue/",
+      "ordre": 10
+    },
+    {
+      "libelle": "Collections",
+      "url": "/collections/",
+      "ordre": 20
+    },
+    {
+      "libelle": "Auteurs & illustrateurs",
+      "url": "/personnes/",
+      "ordre": 30
+    },
+    {
+      "libelle": "Actualités",
+      "url": "/actualites/",
+      "ordre": 40
+    }
+  ],
+  "titreInformations": "Informations",
+  "libelleFacebook": "Facebook",
+  "libelleManuscrits": "Manuscrits",
+  "libellePlan": "Plan du site",
+  "libelleMentions": "Mentions légales"
+}

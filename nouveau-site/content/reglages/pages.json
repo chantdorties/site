@@ -1,0 +1,36 @@
+{
+  "catalogue": {
+    "rubrique": "64 ouvrages",
+    "titre": "Le catalogue",
+    "introduction": "Romans, albums et nouvelles illustrées à parcourir par collection, âge ou disponibilité.",
+    "descriptionSeo": "Découvrez les 64 livres publiés par les Éditions Chant d’orties."
+  },
+  "personnes": {
+    "rubrique": "81 personnes",
+    "titre": "Auteurs & illustrateurs",
+    "introduction": "Les écrivains, artistes et préfaciers qui donnent voix et images aux livres de la maison.",
+    "descriptionSeo": "Découvrez les auteurs, illustrateurs et préfaciers des Éditions Chant d’orties."
+  },
+  "collections": {
+    "rubrique": "Notre catalogue",
+    "titre": "Les six collections",
+    "introduction": "Des premiers albums aux romans pour adolescents, chaque collection porte une voix et un âge de lecture.",
+    "descriptionSeo": "Les six collections de littérature jeunesse des Éditions Chant d’orties."
+  },
+  "actualites": {
+    "rubrique": "Éditions Chant d’orties",
+    "titre": "Actualités",
+    "introduction": "Retrouvez toutes nos actualités, rencontres et nouvelles parutions.",
+    "descriptionSeo": "Les actualités, rencontres et nouvelles parutions des Éditions Chant d’orties.",
+    "appelRubrique": "Suivre la maison",
+    "appelTitre": "Nos prochaines rencontres et nouvelles parutions",
+    "appelTexte": "Retrouvez toute l’actualité de Chant d’orties sur Facebook. La page est accessible même sans compte.",
+    "boutonFacebook": "Voir la page Facebook"
+  },
+  "maison": {
+    "rubrique": "Édition associative",
+    "titre": "La maison",
+    "introduction": "Découvrir notre fonctionnement, nos projets et les différentes manières de travailler avec Chant d’orties.",
+    "descriptionSeo": "Découvrez la maison d’édition associative Chant d’orties, ses projets et ses partenaires."
+  }
+}
