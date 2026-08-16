@@ -192,7 +192,13 @@ class BuiltSiteTest(unittest.TestCase):
         commercial_text = commercial.get_text(" ", strip=True)
         self.assertIn("40 % de remise", commercial_text)
         self.assertIn("Mondial Relay", commercial_text)
-        self.assertIsNotNone(commercial.select_one('a[href="/catalogue/"]'))
+        self.assertEqual(
+            ["Libraires", "Particuliers"],
+            [heading.get_text(strip=True) for heading in commercial.select(".commercial-audience h4")],
+        )
+        support_links = commercial.select('a[href="/soutien/"]')
+        self.assertEqual(2, len(support_links))
+        self.assertEqual("Faire un don", support_links[-1].get_text(" ", strip=True))
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
 
     def test_redirects_cover_every_old_book_page(self):

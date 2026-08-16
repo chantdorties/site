@@ -69,6 +69,7 @@ ICONS = {
     "arrow-up": '<path d="m18 15-6-6-6 6"/>',
     "external": '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
     "file": '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/>',
+    "heart": '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
     "mail": '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
     "menu": '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>',
     "search": '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
@@ -671,9 +672,13 @@ class SiteBuilder:
 
     def build_home(self) -> None:
         home_sections = self.pages_by_slug["accueil"]["sections"]
-        intro = home_sections[0]["contenu"]
-        house_update = home_sections[1]
-        commercial_info = home_sections[2]
+        sections_by_title = {section["titre"]: section for section in home_sections}
+        intro = sections_by_title["Présentation"]["contenu"]
+        house_update = sections_by_title["Information"]
+        commercial_info = sections_by_title["Soutien et commandes"]
+        booksellers_info = sections_by_title["Libraires"]
+        individuals_info = sections_by_title["Particuliers"]
+        support_info = sections_by_title["Soutien"]
         featured = self.featured_books()
         covers = "".join(
             f"""
@@ -710,8 +715,19 @@ class SiteBuilder:
     <div class="home-commercial__details">
       <h3>{e(commercial_info['titre'])}</h3>
       <p>{self.linkify_text(commercial_info['contenu'])}</p>
+      <div class="commercial-audiences">
+        <section class="commercial-audience">
+          <h4>{e(booksellers_info['titre'])}</h4>
+          <p>{self.linkify_text(booksellers_info['contenu'])}</p>
+        </section>
+        <section class="commercial-audience">
+          <h4>{e(individuals_info['titre'])}</h4>
+          <p>{self.linkify_text(individuals_info['contenu'])}</p>
+        </section>
+      </div>
+      <p class="commercial-support">{self.linkify_text(support_info['contenu'], internal_links={'page de soutien': '/soutien/'})}</p>
       <div class="hero-actions">
-        <a class="button" href="/catalogue/">{icon('shopping-cart')} Choisir un livre</a>
+        <a class="button" href="/soutien/">{icon('heart')} Faire un don</a>
         <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
       </div>
     </div>
@@ -1040,7 +1056,7 @@ class SiteBuilder:
             )
             self.write_route(f"/personnes/{person['slug']}/", page)
 
-    def linkify_text(self, value: str) -> str:
+    def linkify_text(self, value: str, *, internal_links: dict[str, str] | None = None) -> str:
         escaped = e(value)
         escaped = re.sub(
             r"(?<![\w@])(https?://[^\s&lt;]+)",
@@ -1052,6 +1068,8 @@ class SiteBuilder:
             lambda match: f'<a href="mailto:{match.group(1)}">{match.group(1)}</a>',
             escaped,
         )
+        for label, href in (internal_links or {}).items():
+            escaped = escaped.replace(e(label), f'<a href="{e(href)}">{e(label)}</a>')
         return escaped
 
     def editorial_link(self, link: dict[str, Any]) -> str | None:

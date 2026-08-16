@@ -459,6 +459,38 @@ h3 {
   max-width: 68ch;
 }
 
+.commercial-audiences {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 24px 0 18px;
+}
+
+.commercial-audience {
+  padding-top: 14px;
+  border-top: 3px solid var(--ink);
+}
+
+.commercial-audience:last-child {
+  border-top-color: var(--green);
+}
+
+.commercial-audience h4 {
+  margin: 0 0 7px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.commercial-audience p,
+.home-commercial__details .commercial-support {
+  margin: 0;
+}
+
+.commercial-support {
+  font-weight: 650;
+}
+
 .section-heading {
   display: flex;
   align-items: end;
@@ -1504,6 +1536,11 @@ h3 {
     border-left: 0;
     padding-top: 1.5rem;
     padding-left: 0;
+  }
+
+  .commercial-audiences {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 }
 
