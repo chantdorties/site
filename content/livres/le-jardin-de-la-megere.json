@@ -1,0 +1,30 @@
+{
+  "slug": "le-jardin-de-la-megere",
+  "statut": "publie",
+  "titre": "Le jardin de la mégère",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 6,
+  "auteurs": [
+    "chrystel-gaubert"
+  ],
+  "illustrateurs": [
+    "sebastien-boscus"
+  ],
+  "prefaciers": [],
+  "description": "Un Jardin, prisonnier de la vieille qui le cultive depuis toujours, il rêve d’échapper à celle qui entend ne jamais rien en partager avec le monde qui les entoure. Il prépare alors sa fuite. Petit clin d’œil, la mégère n’est pas celle que l’on croit, et il faut bien se garder des apparences et des préjugés. Les illustrations colorées apportent douceur et contraste à cette transformation. à partir de 6 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746379",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-le-jardin-de-la-megere.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-jardin-de-la-megere-01-images-jm-jm-5.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-jardin-de-la-megere-01-documents-le-jardin-de-la-megere-extrait.pdf"
+  ]
+}

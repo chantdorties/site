@@ -1,0 +1,17 @@
+{
+  "slug": "matt-mahlen",
+  "statut": "publie",
+  "nom": "Matt Mahlen",
+  "roles": [
+    "illustrateur"
+  ],
+  "biographie": "bricoleur d'images et de mots, il est aussi l'auteur de La ligne des Horizons publié aux éditions Gros Textes, recueil de 122 dessins, extraits d'un travail de dessins pour une année. Il a illustré trois livres de Chant d'orties.",
+  "imagePrincipale": "content/media/uploads/personnes-illustrateurs-matt-chantdorties.jpg",
+  "images": [
+    "content/media/uploads/personnes-illustrateurs-matt-chantdorties.jpg",
+    "content/media/uploads/personnes-illustrateurs-mattdos-chantdorties.jpg"
+  ],
+  "liensExternes": [
+    "http://mahlen.free.fr/"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "slug": "tout-au-bout-de-mon-jardin",
+  "statut": "publie",
+  "titre": "Tout au bout de mon jardin",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 4,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "anais-ruch"
+  ],
+  "prefaciers": [],
+  "description": "Elle passerait là. Tout au bout du jardin. Là. L'homme a montré du doigt. Là. Pan sur les groseilliers, pan sur les framboisiers, pan sur les fleurs ! Une petite fille s'inquiète. Que vont devenir les hérissons au fond du jardin si une autoroute vient à les chasser ?",
+  "prixEuros": 10.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "27,7 x 19",
+  "reliure": "souple",
+  "isbn": "9782918746003",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-tout-au-bout-de-mon-jardin.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-tout-au-bout-de-mon-jardin-01-images-tbj-illu5-tbj-chantdorties.jpg",
+    "content/media/uploads/illustrations-tout-au-bout-de-mon-jardin-02-images-tbj-fleurs-tbj-chantdorties.gif",
+    "content/media/uploads/illustrations-tout-au-bout-de-mon-jardin-03-images-tbj-illu3-tbj-chantdorties.jpg",
+    "content/media/uploads/illustrations-tout-au-bout-de-mon-jardin-04-images-tbj-illu6-tbj-chantdorties.jpg",
+    "content/media/uploads/illustrations-tout-au-bout-de-mon-jardin-05-images-tbj-herisson-tbj-chantdorties.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-tout-au-bout-de-mon-jardin-01-documents-toutauboutdemonjardin-extrait.pdf"
+  ]
+}

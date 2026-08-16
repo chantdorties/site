@@ -1,0 +1,29 @@
+{
+  "slug": "la-dame-a-sa-fenetre",
+  "statut": "publie",
+  "titre": "La dame à sa fenêtre",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 13,
+  "auteurs": [
+    "colere-noire"
+  ],
+  "illustrateurs": [
+    "chrysalis"
+  ],
+  "prefaciers": [],
+  "description": "Comment dire les choses quand on est mal loti ? Des personnes de bonne volonté parlent de quartiers et de populations défavorisées, de logements à rénover, d’habitat à peine décent. C’est très bien, tout ça, mais ça sonne quand même bizarrement, on dirait que l’idée de nous faire de la peine les effraie. En fait, ce qui nous met dans une Colère Noire ce ne sont pas tellement les mots taudis ou habitat insalubre et dangereux , ce sont les maisons o nous sommes contraints d’habiter, très loin des exigences minimales de confort et de protection que doit procurer tout logement à ses occupants. Et si nous ne voulons pas quitter votre quartier ? Pourquoi voudrait-on nous y obliger ? Colère Noire sont des habitants de Lourches qui ont écrit, avec Jean-François Pocentek, ce texte plein d'humanité. Ils ont eu l’appui de la municipalité de Lourches et de la CAF de Valenciennes.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505159",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-la-dame-a-sa-fenetre.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-la-dame-a-sa-fenetre-01-images-collection-eglantine-images-df-dame1.jpg",
+    "content/media/uploads/illustrations-la-dame-a-sa-fenetre-02-images-collection-eglantine-images-df-dame2.jpg"
+  ],
+  "extraits": []
+}

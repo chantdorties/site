@@ -1,0 +1,31 @@
+{
+  "slug": "le-sourire-de-nemesis",
+  "statut": "publie",
+  "titre": "Le sourire de Némésis",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 13,
+  "auteurs": [
+    "cathy-ytak"
+  ],
+  "illustrateurs": [
+    "manu-rich"
+  ],
+  "prefaciers": [],
+  "description": "Le journal n’est pas tendre avec Némésis, une toute jeune fille. À croire que tous les crimes de la terre lui reviennent. En prison ! Il faut la neutraliser ! se dit le P-DG inquiet. Qui est-elle ? La colère contre l’injustice. Et vrai, elle n’y va pas de main-morte ! Fauteurs de misère et d’humiliation ne trouvent pas grâce à ses yeux ; elle sait les mettre face à leurs responsabilités. Oui, la colère relève la tête des exploités. Dans un langage cru et fort Némésis, incarnation de la colère mais aussi de la justice, vient régler ses comptes avec les puissants. Un conte jubilatoire et dérangeant.",
+  "prixEuros": 2.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505019",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-le-sourire-de-nemesis.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-sourire-de-nemesis-01-images-collection-eglantine-images-sn-nemesis1.jpg",
+    "content/media/uploads/illustrations-le-sourire-de-nemesis-02-images-collection-eglantine-images-sn-nemesis2.jpg",
+    "content/media/uploads/illustrations-le-sourire-de-nemesis-03-images-collection-eglantine-images-sn-nemesis3.jpg",
+    "content/media/uploads/illustrations-le-sourire-de-nemesis-04-images-collection-eglantine-images-sn-nemesis4.jpg"
+  ],
+  "extraits": []
+}

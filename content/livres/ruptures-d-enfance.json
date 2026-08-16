@@ -1,0 +1,33 @@
+{
+  "slug": "ruptures-d-enfance",
+  "statut": "publie",
+  "titre": "Ruptures d'enfance",
+  "collection": "chardons-ardents",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": null,
+  "auteurs": [
+    "michel-gutel"
+  ],
+  "illustrateurs": [
+    "gaetan-doremus"
+  ],
+  "prefaciers": [],
+  "description": "La misère sociale, et souvent la misère affective, enferment dans la solitude les enfants mis en scène dans ces récits. Ils vivent en cité avec leurs parents ou sont confiés à l’Aide Sociale à l’Enfance. Il suffit parfois d’une rencontre pour qu’ils expriment leurs peurs, leurs interrogations sur l’existence, leur refus de grandir, et partagent leurs rêves. Leur parole se dénoue, elle se révèle unique, tout simplement humaine, après s’être crue insignifiante. Ces récits, entre témoignages et fiction littéraire, ont pour ambition d’être l’écho de cette parole. Michel Gutel a travaillé toute sa vie comme psychologu e à l'Aide Sociale à l'Enfance.",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 152,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782918746027",
+  "issnCollection": "2109-7674",
+  "couverture": "content/media/uploads/couvertures-ruptures-d-enfance.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-ruptures-d-enfance-01-images-re-int-a.jpg",
+    "content/media/uploads/illustrations-ruptures-d-enfance-02-images-re-int-e.jpg",
+    "content/media/uploads/illustrations-ruptures-d-enfance-03-images-re-int-g.jpg",
+    "content/media/uploads/illustrations-ruptures-d-enfance-04-images-re-int-k.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-ruptures-d-enfance-01-documents-nouvelle-rupturesdenfances.pdf"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "slug": "les-freres-de-la-cote",
+  "statut": "publie",
+  "titre": "Les frères de la côte",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 11,
+  "auteurs": [
+    "sebastien-doubinsky"
+  ],
+  "illustrateurs": [
+    "manu-rich"
+  ],
+  "prefaciers": [],
+  "description": "On se souvient tous du temps extraordinaire de la marine à voiles, des pirates, de l’île de la Tortue, des légendes terribles de Barbe-Noire, de François l’Olonnais et du redoutable pavillon noir. En voici d'autres : La Lurette, Rouge-Gorge, L’Artiste, Le Rasé, Gargantua. Voilà que ces gens-là ont une vie, pensent, ont un passé ; ils ne sont pas les individus assoiffés de richesses des clichés en vogue. Une histoir e de pirates et d'aventure comme on en voit peu, où la réalité des conditions de vie des marins ouvre la voie à la piraterie, la vraie liberté, à condition de toujours poursuivre ses idéaux.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505124",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-les-freres-de-la-cote.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-freres-de-la-cote-01-images-collection-eglantine-images-fc-freres1.jpg",
+    "content/media/uploads/illustrations-les-freres-de-la-cote-02-images-collection-eglantine-images-fc-freres2.jpg",
+    "content/media/uploads/illustrations-les-freres-de-la-cote-03-images-collection-eglantine-images-fc-freres3.jpg"
+  ],
+  "extraits": []
+}

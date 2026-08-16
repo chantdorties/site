@@ -1,0 +1,28 @@
+{
+  "slug": "les-affiches",
+  "statut": "publie",
+  "titre": "Les affiches",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 7,
+  "auteurs": [
+    "alexia-olagnon"
+  ],
+  "illustrateurs": [
+    "david-rebaud"
+  ],
+  "prefaciers": [],
+  "description": "A 10 ans, Cheyenne aime parcourir sa cité. Mais voilà que de mystérieuses affiches apparaissent sur les murs. qui peut bien les poser ? Et pourquoi ? à partir de 7 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746324",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-les-affiches.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-affiches-01-images-la-la-image-4.jpg"
+  ],
+  "extraits": []
+}

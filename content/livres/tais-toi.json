@@ -1,0 +1,32 @@
+{
+  "slug": "tais-toi",
+  "statut": "publie",
+  "titre": "Tais-toi !",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 4,
+  "auteurs": [
+    "amelie-billon-le-gennec"
+  ],
+  "illustrateurs": [
+    "gaelle-boulanger"
+  ],
+  "prefaciers": [],
+  "description": "Une petite fille voudrait faire exploser sa joie de vivre. Mais voilà ses parents ne s’intéressent jamais à elle, pris entre le téléphone, l’ordinateur et la télé. Même son silence ne les émeut pas. Elle finira par éclater en un grand cri libérateur.",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "27,7 x 19",
+  "reliure": null,
+  "isbn": "9782918746133",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-tais-toi.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-tais-toi-01-images-tt-tais-toi-1.jpg",
+    "content/media/uploads/illustrations-tais-toi-02-images-tt-tais-toi-2.jpg",
+    "content/media/uploads/illustrations-tais-toi-03-images-tt-tais-toi-3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-tais-toi-01-documents-tais-toi-extrait-chantdorties.pdf"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "slug": "le-journal-de-barbara-eicher",
+  "statut": "publie",
+  "titre": "Le journal de Barbara Eicher",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "regis-pasquet"
+  ],
+  "illustrateurs": [
+    "fred-morisse"
+  ],
+  "prefaciers": [],
+  "description": "Dans la classe de CM2 de M. Lampant, la vie des élèves est insupportable car il est méchant, violent et manipulateur. Barbara, dont le père est un guitariste Yéniche et la mère au repos dans une clinique, vit chez ses grands-parents. Arrivée peu après la rentrée, elle est consternée par la passivité de ses camarades qui acceptent sans se révolter les humiliations et les souffrances que leur inflige l'instituteur. Elle se lie d'amitié avec François, un garçon un peu gros, le souffre-douleur du maître. Avec son concours, elle encourage ses camarades à refuser cette servitude volontaire et à se dresser contre le tyran. Ensemble, ils organiseront la riposte et obtiendront le départ de M. Lampant. Toutefois, dans un coin de son cœur une question la taraude : \" Comment peut-on aimer un tel homme ? \" Elle va enquêter sur la vie de l'instituteur et ses découvertes changeront radicalement son point de vue.",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 136,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746188",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-le-journal-de-barbara-eicher.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-journal-de-barbara-eicher-01-images-jbe-barbara-eicher-illustrations.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-journal-de-barbara-eicher-01-documents-barbara-eicher-extrait.pdf"
+  ]
+}

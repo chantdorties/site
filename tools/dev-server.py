@@ -8,6 +8,7 @@ import errno
 import os
 import shutil
 import subprocess
+import sys
 import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -29,11 +30,14 @@ RELOAD_SCRIPT = """
 
 def source_files(root: Path) -> list[Path]:
     watched_roots = [
+        root / "config",
+        root / "content",
         root / "frontend",
-        root / "migration" / "front-data",
-        root / "migration" / "front-assets",
     ]
-    files = [root / "tools" / "build-site.py"]
+    files = [
+        root / "tools" / "build-site.py",
+        root / "tools" / "content_data.py",
+    ]
     for watched_root in watched_roots:
         files.extend(
             path
@@ -57,7 +61,7 @@ def snapshot(root: Path) -> dict[Path, tuple[int, int]]:
 def run_build(root: Path) -> bool:
     print("\n[dev] Régénération du site…", flush=True)
     result = subprocess.run(
-        ["python3", str(root / "tools" / "build-site.py"), "--root", str(root)],
+        [sys.executable, str(root / "tools" / "build-site.py"), "--root", str(root)],
         cwd=root,
         check=False,
     )
@@ -112,6 +116,11 @@ class DevHandler(SimpleHTTPRequestHandler):
     def end_headers(self) -> None:
         self.send_header("Cache-Control", "no-store")
         super().end_headers()
+
+    def guess_type(self, path: str) -> str:
+        if path.endswith((".yml", ".yaml")):
+            return "text/yaml"
+        return super().guess_type(path)
 
     def do_GET(self) -> None:
         if urlsplit(self.path).path == "/_dev/events":

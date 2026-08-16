@@ -1,0 +1,34 @@
+{
+  "slug": "aldo-revait",
+  "statut": "publie",
+  "titre": "Aldo rêvait",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 3,
+  "auteurs": [
+    "lena-ellka"
+  ],
+  "illustrateurs": [
+    "marion-claeys"
+  ],
+  "prefaciers": [],
+  "description": "Comme beaucoup d’enfants, Aldo veut des voitures, un garage, un circuit et même une ville. Poursuivi par ses obsessions, il se fait offrir tout ce qu’il désire. Peu à peu, sa chambre se remplit, mais Aldo reste toujours insatisfait. Cet album, basé sur la répétition, entend dénoncer la société de consommation.",
+  "prixEuros": 10.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "27,7 x 19",
+  "reliure": "souple",
+  "isbn": "9782918746041",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-aldo-revait.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-aldo-revait-01-images-ar-pages4-5.jpg",
+    "content/media/uploads/illustrations-aldo-revait-02-images-ar-pages10-11.jpg",
+    "content/media/uploads/illustrations-aldo-revait-03-images-ar-pages20-21.jpg",
+    "content/media/uploads/illustrations-aldo-revait-04-images-ar-page2.jpg",
+    "content/media/uploads/illustrations-aldo-revait-05-images-ar-page3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-aldo-revait-01-documents-aldo-revait-extrait.pdf"
+  ]
+}

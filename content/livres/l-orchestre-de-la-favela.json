@@ -1,0 +1,30 @@
+{
+  "slug": "l-orchestre-de-la-favela",
+  "statut": "publie",
+  "titre": "L'orchestre de la favela",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 5,
+  "auteurs": [
+    "france-quatromme"
+  ],
+  "illustrateurs": [
+    "sebastien-boscus"
+  ],
+  "prefaciers": [],
+  "description": "Carlia vit dans une favela à Rio. De temps en temps elle fait un détour par l'école de musique. Elle écoute le violon du professeur et parfois il l'invite à jouer. Il dit qu'elle a du talent mais Grand-père n'a pas d'argent pour un violon. Pourtant un jour sur la montagne de déchets, Grand-père trouve un violon démantibulé... à partir de 5 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746287",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-l-orchestre-de-la-favela.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-l-orchestre-de-la-favela-01-images-of-orchestre-favela-image-1.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-l-orchestre-de-la-favela-01-documents-orchestre-favela-extrait.pdf"
+  ]
+}

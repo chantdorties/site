@@ -1,0 +1,33 @@
+{
+  "slug": "les-disparus-de-la-cite-fleurie",
+  "statut": "publie",
+  "titre": "Les disparus de la Cité Fleurie",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "fred-morisse"
+  ],
+  "illustrateurs": [
+    "fred-morisse"
+  ],
+  "prefaciers": [],
+  "description": "C’est d’abord l’absence prolongée de la belle Ludmila, sa camarade de classe, qui a interpellé Théo. Quant à leurs tours plusieurs copains ont cessé de venir en cours, il eut le pressentiment qu’il s’agissait non pas de simples absences, mais bien de disparitions. Fort de ses récentes lectures d’Agatha Christie et de Conan Doyle, il va s’inspirer de ces romans pour mener son enquête. Il sera aidé en cela par Sakho, jeune garçon plein de bon sens et de courage, et jamais à court d’idées. Bravant le danger, les intempéries et les ténèbres des sous-sols de la cité, ils feront preuve d’audace et de persévérance pour mener à bien leurs recherches. Les deux jeunes détectives iront de surprises en découvertes étranges.",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746164",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-les-disparus-de-la-cite-fleurie.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-01-images-dcf-dcf1.jpg",
+    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-02-images-dcf-dcf2.jpg",
+    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-03-images-dcf-dcf3.jpg",
+    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-04-images-dcf-dcf4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-les-disparus-de-la-cite-fleurie-01-documents-disparus-cite-fleurie-extrait.pdf"
+  ]
+}

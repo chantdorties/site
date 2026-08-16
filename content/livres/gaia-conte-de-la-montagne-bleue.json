@@ -1,0 +1,32 @@
+{
+  "slug": "gaia-conte-de-la-montagne-bleue",
+  "statut": "publie",
+  "titre": "Gaïa - Conte de la Montagne Bleue",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "amanda-belassami-sideris"
+  ],
+  "illustrateurs": [
+    "pavlos-habidis"
+  ],
+  "prefaciers": [],
+  "description": "Comme une Alice égarée dans les îles grecques, Gaïa décide de s’enfuir de sa prison de pierre. Accompagnée d’un pélican irascible mais bienveillant, elle affrontera la colère des Kokkinopoliens pour rejoindre la Montagne Bleue et y trouver « les rêves de ceux qui y croient encore », non sans passer par de nombreuses épreuves et rencontrer sur sa route des personnages étonnants.",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 176,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746263",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-gaia-conte-de-la-montagne-bleue.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-01-images-gcmb-gaia-1.jpg",
+    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-02-images-gcmb-gaia-2.jpg",
+    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-03-images-gcmb-gaia-3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-gaia-conte-de-la-montagne-bleue-01-documents-gaia-extrait.pdf"
+  ]
+}

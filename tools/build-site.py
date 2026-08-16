@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the public Chant d'orties website from the refined JSON data."""
+"""Generate the public Chant d'orties website from the editable JSON content."""
 
 from __future__ import annotations
 
@@ -17,6 +17,8 @@ from urllib.parse import quote
 
 from PIL import Image, ImageFile, ImageOps
 
+from content_data import load_content
+
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -25,7 +27,6 @@ SITE_NAME = "Éditions Chant d’orties"
 CONTACT_EMAIL = "chantdorties@free.fr"
 FACEBOOK_URL = "https://www.facebook.com/pages/%C3%89ditions-Chant-dorties/377765272338134"
 DEFAULT_BASE_URL = "http://chantdorties.free.fr"
-DRAFT_PAGE_SLUGS = {"commandes", "mentions-legales", "soutien", "offres-speciales"}
 PDFINFO_BINARY = "/usr/bin/pdfinfo" if Path("/usr/bin/pdfinfo").is_file() else shutil.which("pdfinfo")
 GHOSTSCRIPT_BINARY = "/usr/bin/gs" if Path("/usr/bin/gs").is_file() else shutil.which("gs")
 
@@ -45,6 +46,13 @@ TYPE_LABELS = {
     "roman": "Roman",
     "roman-jeunesse": "Roman jeunesse",
     "texte-illustre": "Texte illustré",
+}
+
+NEWS_TYPE_LABELS = {
+    "salon": "Salon",
+    "parution": "Parution",
+    "rencontre": "Rencontre",
+    "maison": "Vie de la maison",
 }
 
 NAV_ITEMS = [
@@ -141,17 +149,18 @@ class SiteBuilder:
         self.temp_output = self.output.with_name(f".{self.output.name}-build")
         self.include_drafts = include_drafts
         self.base_url = base_url.rstrip("/")
-        self.data_dir = self.root / "migration" / "front-data"
-        self.media_dir = self.root / "migration" / "front-assets"
+        self.content_dir = self.root / "content"
         self.frontend_dir = self.root / "frontend"
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
-        self.report_path = self.root / "migration" / "rapports" / report_name
+        self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
 
-        self.books = read_json(self.data_dir / "livres.json")
-        self.people = read_json(self.data_dir / "personnes.json")
-        self.collections = read_json(self.data_dir / "collections.json")
-        self.pages = read_json(self.data_dir / "pages.json")
+        content = load_content(self.root, include_drafts=include_drafts)
+        self.books = content["books"]
+        self.people = content["people"]
+        self.collections = content["collections"]
+        self.pages = content["pages"]
+        self.news = content["news"]
         self.books_by_slug = {book["slug"]: book for book in self.books}
         self.people_by_slug = {person["slug"]: person for person in self.people}
         self.collections_by_slug = {item["slug"]: item for item in self.collections}
@@ -161,6 +170,7 @@ class SiteBuilder:
         self.person_media: dict[str, dict[str, str]] = {}
         self.illustration_media: dict[str, str] = {}
         self.page_image_media: dict[str, str] = {}
+        self.news_image_media: dict[str, str] = {}
         self.document_media: dict[str, str] = {}
         self.pdf_hashes: dict[str, str] = {}
         self.skipped_documents: list[str] = []
@@ -173,18 +183,10 @@ class SiteBuilder:
         }
 
     def validate_source(self) -> None:
-        if len(self.books) != 64 or len(self.people) != 81 or len(self.collections) != 6:
-            raise ValueError("Unexpected refined-data record count")
-        if len(self.books_by_slug) != len(self.books):
-            raise ValueError("Duplicate book slug")
-        if len(self.people_by_slug) != len(self.people):
-            raise ValueError("Duplicate person slug")
+        for required_page in ("accueil", "actualites", "mentions-legales"):
+            if required_page not in self.pages_by_slug:
+                raise ValueError(f"Page obligatoire absente : {required_page}")
         for book in self.books:
-            if book["collection"] not in self.collections_by_slug:
-                raise ValueError(f"Unknown collection for {book['slug']}")
-            for person_slug in book["auteurs"] + book["illustrateurs"] + book["prefaciers"]:
-                if person_slug not in self.people_by_slug:
-                    raise ValueError(f"Unknown person {person_slug} for {book['slug']}")
             if not (self.root / book["couverture"]).is_file():
                 raise FileNotFoundError(book["couverture"])
 
@@ -199,6 +201,10 @@ class SiteBuilder:
         shutil.copytree(
             self.frontend_dir / "assets" / "js",
             self.temp_output / "assets" / "js",
+        )
+        shutil.copytree(
+            self.frontend_dir / "admin",
+            self.temp_output / "admin",
         )
 
     def finish_output(self) -> None:
@@ -275,6 +281,15 @@ class SiteBuilder:
                 )
                 self.save_webp(source, destination, (1400, 1400))
                 self.page_image_media[path] = f"/assets/media/pages/{page['slug']}/{destination.name}"
+
+        for item in self.news:
+            image_path = item.get("image")
+            if not image_path:
+                continue
+            source = self.root / image_path
+            destination = self.temp_output / "assets" / "media" / "news" / f"{item['slug']}.webp"
+            self.save_webp(source, destination, (1200, 900))
+            self.news_image_media[item["slug"]] = f"/assets/media/news/{destination.name}"
 
     def copy_pdf(self, relative_path: str) -> str | None:
         if relative_path in self.document_media:
@@ -357,6 +372,9 @@ class SiteBuilder:
                 continue
             for path in page["documents"]:
                 self.copy_pdf(path)
+        for item in self.news:
+            if item.get("document"):
+                self.copy_pdf(item["document"])
 
     def person_names(self, slugs: list[str]) -> list[str]:
         return [self.people_by_slug[slug]["nom"] for slug in slugs]
@@ -1063,11 +1081,57 @@ class SiteBuilder:
             self.write_route(f"/{page_data['slug']}/", page)
 
     def build_news_page(self, page_data: dict[str, Any]) -> None:
+        news_items = []
+        for item in self.news:
+            image_html = ""
+            if item["slug"] in self.news_image_media:
+                image_html = (
+                    f'<img src="{self.news_image_media[item["slug"]]}" '
+                    f'alt="{e(item.get("imageAlt") or item["titre"])}" loading="lazy" width="1200" height="900">'
+                )
+            date = datetime.strptime(item["datePublication"], "%Y-%m-%d")
+            body = "".join(
+                f"<p>{self.linkify_text(paragraph)}</p>"
+                for paragraph in re.split(r"\n\s*\n", item["contenu"].strip())
+                if paragraph.strip()
+            )
+            actions = []
+            if item.get("lienExterne"):
+                actions.append(
+                    f'<a href="{e(item["lienExterne"])}" target="_blank" rel="noopener noreferrer">'
+                    f'En savoir plus {icon("external")}</a>'
+                )
+            if item.get("document") and item["document"] in self.document_media:
+                actions.append(
+                    f'<a href="{self.document_media[item["document"]]}" target="_blank">'
+                    f'{icon("file")} Télécharger le document</a>'
+                )
+            actions_html = f'<div class="news-card__actions">{"".join(actions)}</div>' if actions else ""
+            news_items.append(
+                f"""
+<article class="news-card">
+  {image_html}
+  <div class="news-card__content">
+    <p class="news-card__meta"><span>{e(NEWS_TYPE_LABELS[item['type']])}</span><time datetime="{item['datePublication']}">{date.strftime('%d/%m/%Y')}</time></p>
+    <h2>{e(item['titre'])}</h2>
+    <p class="news-card__summary">{e(item['resume'])}</p>
+    <div class="news-card__body">{body}</div>
+    {actions_html}
+  </div>
+</article>""".strip()
+            )
+        news_listing = ""
+        if news_items:
+            news_listing = (
+                '<section class="section"><div class="container">'
+                '<div class="news-grid">' + "".join(news_items) + "</div></div></section>"
+            )
         content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Actualités', None)])}
   <p class="eyebrow">{e(SITE_NAME)}</p><h1>Actualités</h1>
 </div></header>
+{news_listing}
 <section class="section news-section"><div class="container">
   <div class="news-callout">
     <p class="eyebrow">Suivre la maison</p>
@@ -1203,6 +1267,7 @@ class SiteBuilder:
             "livres": len(self.books),
             "personnes": len(self.people),
             "collections": len(self.collections),
+            "actualites": len(self.news),
             "medias": self.media_stats,
             "documentsIgnores": self.skipped_documents,
         }

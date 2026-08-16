@@ -1,0 +1,33 @@
+{
+  "slug": "un-air-de-liberte",
+  "statut": "publie",
+  "titre": "Un air de liberté",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 10,
+  "auteurs": [
+    "hellena-cavendi"
+  ],
+  "illustrateurs": [
+    "julie-grugeaux"
+  ],
+  "prefaciers": [],
+  "description": "En 2368, tous sont libres et égaux grâce à une révolution menée trois siècles plus tôt en faveur d'une société libertaire. Mais certains nostalgiques du capitalisme projettent de remonter le temps grâce à une machine et d'empêcher la révolution populaire. Phil, Lluvia, Amélie et Pierrot, quatre adolescents aidés d'un ami inventeur, les poursuivent pour déjouer l'assassinat de John Lesmoines, auteur de la chanson « Liberty » qui déclencha la prise de conscience. Suite à leur échec, la machine à remonter le temps propulse les quatre aventuriers dans le XXIe siècle pour retrouver Sean Desmoines, le seul qui pourrait reprendre la chanson de son père. Soumis à des imprévus, ils se perdent à travers le temps et se heurtent à un monde capitaliste néfaste. Aidés de deux anarchistes convaincus ils réussissent à déclencher la révolution et retrouver l'air pur et libre de leur XXIVe siècle.",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 184,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746102",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-un-air-de-liberte.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-un-air-de-liberte-01-images-ual-ual-image1.jpg",
+    "content/media/uploads/illustrations-un-air-de-liberte-02-images-ual-ual-image2.jpg",
+    "content/media/uploads/illustrations-un-air-de-liberte-03-images-ual-ual-image3.jpg",
+    "content/media/uploads/illustrations-un-air-de-liberte-04-images-ual-ual-image4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-un-air-de-liberte-01-documents-un-air-de-liberte-extrait.pdf"
+  ]
+}

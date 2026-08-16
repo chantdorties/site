@@ -1,0 +1,23 @@
+{
+  "slug": "accueil",
+  "statut": "publie",
+  "titre": "Accueil",
+  "type": "accueil",
+  "sections": [
+    {
+      "titre": "Présentation",
+      "contenu": "Au travers de ses six collections de littérature jeunesse, Chant d'orties met en scène des dissidents de tous poils qui grattent, dérangent et sèment à tout vent les germes de la rébellion et d'utopies futures. Au plaisir de la lecture s'ajoute le plaisir des images ; le regard d'un jeune artiste vient renforcer les mots de l'auteur. Si vous souhaitez nous proposer un texte, merci de consulter la rubrique \"manuscrits\"."
+    },
+    {
+      "titre": "Information",
+      "contenu": "Chant d'orties traverse une passe difficile avec la perte de son distributeur et de son diffuseur."
+    },
+    {
+      "titre": "Soutien et commandes",
+      "contenu": "En attendant des jours meilleurs et pour poursuivre les activités de la maison d'édition, nous mettons en place des offres spécifiques le temps de retrouver un diffuseur. Libraires: passez commande par mail à chantdorties@free.fr avec 40% de remise et les frais de port offerts via Mondial Relay. Particuliers : les frais de port via Mondial Relay sont offerts quelle que soit votre commande. N'oubliez pas de renseigner votre adresse postale, mail et n° de téléphone lors de la commande. Vous voulez nous soutenir plus ? Vous pouvez nous faire un don en cliquant ci-dessous."
+    }
+  ],
+  "liens": [],
+  "images": [],
+  "documents": []
+}

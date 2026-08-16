@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: http://chantdorties.free.fr/sitemap.xml

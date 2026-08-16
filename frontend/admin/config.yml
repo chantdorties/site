@@ -1,0 +1,293 @@
+locale: fr
+site_url: http://chantdorties.free.fr
+display_url: http://chantdorties.free.fr
+
+backend:
+  name: github
+  repo: chantdorties/site
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  site_domain: chantdorties-admin.netlify.app
+  squash_merges: true
+  use_graphql: true
+
+publish_mode: editorial_workflow
+local_backend:
+  url: http://127.0.0.1:8082/api/v1
+media_folder: content/media/uploads
+public_folder: content/media/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: livres
+    label: Livres
+    label_singular: Livre
+    folder: content/livres
+    extension: json
+    format: json
+    create: true
+    identifier_field: titre
+    slug: "{{fields.slug}}"
+    summary: "{{titre}} — {{statut}}"
+    sortable_fields: [titre, collection, statut]
+    view_filters:
+      - {label: "Publiés", field: statut, pattern: "publie"}
+      - {label: "Brouillons", field: statut, pattern: "brouillon"}
+    fields:
+      - {label: "Titre", name: titre, widget: string}
+      - label: Adresse
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+      - label: Publication
+        name: statut
+        widget: select
+        default: publie
+        options:
+          - {label: "Publié", value: publie}
+          - {label: "Brouillon", value: brouillon}
+      - label: Collection
+        name: collection
+        widget: relation
+        collection: collections
+        search_fields: [titre]
+        display_fields: [titre]
+        value_field: slug
+      - label: Type d’ouvrage
+        name: typeOuvrage
+        widget: select
+        required: false
+        options:
+          - {label: "Album", value: album}
+          - {label: "Album jeunesse", value: album-jeunesse}
+          - {label: "Mini roman", value: mini-roman}
+          - {label: "Mini roman jeunesse", value: mini-roman-jeunesse}
+          - {label: "Nouvelles", value: nouvelles}
+          - {label: "Recueil de nouvelles", value: recueil-de-nouvelles}
+          - {label: "Roman", value: roman}
+          - {label: "Roman jeunesse", value: roman-jeunesse}
+          - {label: "Texte illustré", value: texte-illustre}
+      - {label: "Âge minimum", name: ageMinimum, widget: number, value_type: int, min: 0, required: false}
+      - label: Auteurs
+        name: auteurs
+        widget: relation
+        collection: personnes
+        multiple: true
+        min: 1
+        search_fields: [nom]
+        display_fields: [nom]
+        value_field: slug
+        filters:
+          - {field: roles, values: [auteur]}
+      - label: Illustrateurs
+        name: illustrateurs
+        widget: relation
+        collection: personnes
+        multiple: true
+        required: false
+        search_fields: [nom]
+        display_fields: [nom]
+        value_field: slug
+        filters:
+          - {field: roles, values: [illustrateur]}
+      - label: Préfaciers
+        name: prefaciers
+        widget: relation
+        collection: personnes
+        multiple: true
+        required: false
+        search_fields: [nom]
+        display_fields: [nom]
+        value_field: slug
+        filters:
+          - {field: roles, values: [prefacier]}
+      - {label: "Présentation", name: description, widget: text, required: false}
+      - {label: "Prix en euros", name: prixEuros, widget: number, value_type: float, min: 0, step: 0.01, required: false}
+      - {label: "Disponible", name: disponible, widget: boolean, default: true}
+      - {label: "Nombre de pages", name: nombrePages, widget: number, value_type: int, min: 1, required: false}
+      - {label: "Format", name: format, widget: string, required: false}
+      - {label: "Reliure", name: reliure, widget: string, required: false}
+      - label: ISBN
+        name: isbn
+        widget: string
+        required: false
+        pattern: ['^(?:[0-9]{10}|[0-9]{13})$', "Saisir un ISBN à 10 ou 13 chiffres"]
+      - {label: "ISSN de la collection", name: issnCollection, widget: string, required: false}
+      - {label: "Couverture", name: couverture, widget: image, allow_multiple: false}
+      - label: Illustrations
+        name: illustrations
+        widget: list
+        required: false
+        field: {label: "Image", name: image, widget: image, allow_multiple: false}
+      - label: Extraits PDF
+        name: extraits
+        widget: list
+        required: false
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+
+  - name: personnes
+    label: Auteurs et illustrateurs
+    label_singular: Personne
+    folder: content/personnes
+    extension: json
+    format: json
+    create: true
+    identifier_field: nom
+    slug: "{{fields.slug}}"
+    summary: "{{nom}} — {{statut}}"
+    sortable_fields: [nom, statut]
+    fields:
+      - {label: "Nom", name: nom, widget: string}
+      - label: Adresse
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+      - label: Publication
+        name: statut
+        widget: select
+        default: publie
+        options:
+          - {label: "Publié", value: publie}
+          - {label: "Brouillon", value: brouillon}
+      - label: Rôles
+        name: roles
+        widget: select
+        multiple: true
+        min: 1
+        options:
+          - {label: "Auteur", value: auteur}
+          - {label: "Illustrateur", value: illustrateur}
+          - {label: "Préfacier", value: prefacier}
+      - {label: "Biographie", name: biographie, widget: text, required: false}
+      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false}
+      - label: Autres images
+        name: images
+        widget: list
+        required: false
+        field: {label: "Image", name: image, widget: image, allow_multiple: false}
+      - label: Liens externes
+        name: liensExternes
+        widget: list
+        required: false
+        field: {label: "Adresse web", name: url, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+
+  - name: collections
+    label: Collections
+    label_singular: Collection
+    folder: content/collections
+    extension: json
+    format: json
+    create: true
+    identifier_field: titre
+    slug: "{{fields.slug}}"
+    summary: "{{titre}} — {{statut}}"
+    fields:
+      - {label: "Nom", name: titre, widget: string}
+      - label: Adresse
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+      - label: Publication
+        name: statut
+        widget: select
+        default: publie
+        options:
+          - {label: "Publié", value: publie}
+          - {label: "Brouillon", value: brouillon}
+      - {label: "Présentation", name: description, widget: text}
+
+  - name: actualites
+    label: Actualités
+    label_singular: Actualité
+    folder: content/actualites
+    extension: json
+    format: json
+    create: true
+    identifier_field: titre
+    slug: "{{fields.slug}}"
+    summary: "{{datePublication}} — {{titre}} — {{statut}}"
+    sortable_fields: [datePublication, titre, statut]
+    fields:
+      - {label: "Titre", name: titre, widget: string}
+      - label: Adresse
+        name: slug
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+      - label: Publication
+        name: statut
+        widget: select
+        default: publie
+        options:
+          - {label: "Publié", value: publie}
+          - {label: "Brouillon", value: brouillon}
+      - {label: "Date", name: datePublication, widget: datetime, date_format: "DD/MM/YYYY", time_format: false, format: "YYYY-MM-DD"}
+      - label: Catégorie
+        name: type
+        widget: select
+        options:
+          - {label: "Salon", value: salon}
+          - {label: "Parution", value: parution}
+          - {label: "Rencontre", value: rencontre}
+          - {label: "Vie de la maison", value: maison}
+      - {label: "Résumé", name: resume, widget: text}
+      - {label: "Contenu", name: contenu, widget: text}
+      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false}
+      - {label: "Texte alternatif de l’image", name: imageAlt, widget: string, required: false}
+      - {label: "Lien externe", name: lienExterne, widget: string, required: false, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+      - {label: "Document PDF", name: document, widget: file, allow_multiple: false, required: false}
+
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: content/pages
+    extension: json
+    format: json
+    create: false
+    delete: false
+    identifier_field: titre
+    summary: "{{titre}} — {{statut}}"
+    fields:
+      - {label: "Titre", name: titre, widget: string}
+      - {label: "Adresse", name: slug, widget: hidden}
+      - label: Publication
+        name: statut
+        widget: select
+        options:
+          - {label: "Publié", value: publie}
+          - {label: "Brouillon", value: brouillon}
+      - {label: "Type", name: type, widget: hidden, required: false}
+      - label: Sections
+        name: sections
+        widget: list
+        min: 1
+        summary: "{{fields.titre}}"
+        fields:
+          - {label: "Intertitre", name: titre, widget: string, required: false}
+          - {label: "Texte", name: contenu, widget: text}
+      - label: Liens
+        name: liens
+        widget: list
+        required: false
+        fields:
+          - label: Type
+            name: type
+            widget: select
+            options: [externe, email, document, livre, page]
+          - {label: "Libellé", name: texte, widget: string, required: false}
+          - {label: "Adresse ou document", name: href, widget: string, required: false}
+          - {label: "Livre ou page liée", name: slug, widget: string, required: false}
+      - label: Images
+        name: images
+        widget: list
+        required: false
+        field: {label: "Image", name: image, widget: image, allow_multiple: false}
+      - label: Documents
+        name: documents
+        widget: list
+        required: false
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false}

@@ -1,0 +1,36 @@
+{
+  "slug": "dent-de-lion",
+  "statut": "publie",
+  "titre": "Dent de lion",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "texte-illustre",
+  "ageMinimum": 6,
+  "auteurs": [
+    "beatrice-guillemard"
+  ],
+  "illustrateurs": [
+    "christine-decle"
+  ],
+  "prefaciers": [],
+  "description": "Dans un jardin un peu à l'abandon, fleurs et mauvaises herbes vivent tant bien que mal ensemble jusqu'à l'arrivée de Pissenlit, un envahisseur de trop. A la fin de l'album figure un glossaire des herbes folles expliquant leurs qualités culinaires, médicinales et horticoles.",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 48,
+  "format": "27,7 x 19",
+  "reliure": "souple",
+  "isbn": "9782953020366",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-dent-de-lion.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-dent-de-lion-01-images-ddl-illu3-ddl-chantdorties.jpg",
+    "content/media/uploads/illustrations-dent-de-lion-02-images-ddl-illu2-ddl-chantdorties.jpg",
+    "content/media/uploads/illustrations-dent-de-lion-03-images-ddl-illu6-ddl-chantdorties.jpg",
+    "content/media/uploads/illustrations-dent-de-lion-04-images-ddl-glossaire-ail-ddl-chantdorties.jpg",
+    "content/media/uploads/illustrations-dent-de-lion-05-images-ddl-illu8-ddl-chantdorties.jpg",
+    "content/media/uploads/illustrations-dent-de-lion-06-images-ddl-lamiers-croquis-ddl-chantdorties.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-dent-de-lion-01-documents-dentdelion-extrait1.pdf",
+    "content/media/uploads/extraits-dent-de-lion-02-documents-dentdelion-extrait2.pdf"
+  ]
+}

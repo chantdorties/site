@@ -1,0 +1,29 @@
+{
+  "slug": "le-quartier",
+  "statut": "publie",
+  "titre": "Le quartier",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 13,
+  "auteurs": [
+    "serge-livrozet"
+  ],
+  "illustrateurs": [
+    "simon-andre"
+  ],
+  "prefaciers": [],
+  "description": "Quand on revient sur les lieux de son enfance, il faut s’attendre à y rencontrer des gens connus. C’est ce qui arrive à Philippe ! Un soir Mireille surgit d’une rue obscure, ils renouent la conversation… Vingt-trois jours plus tard, Philippe Granet reprend le train, il a deux billets pour Vintimille frontière italienne. Une très belle histoire de vie passée, bonheurs ratés mais qui peuvent toujours se réveiller au moment où l'on s'y attend le moins. , comme un amour d'adolescence retrouvé.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505086",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-le-quartier.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-quartier-01-images-collection-eglantine-images-q-quartier1.jpg",
+    "content/media/uploads/illustrations-le-quartier-02-images-collection-eglantine-images-q-quartier2.jpg"
+  ],
+  "extraits": []
+}

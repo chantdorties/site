@@ -1,0 +1,32 @@
+{
+  "slug": "le-fabuliste",
+  "statut": "publie",
+  "titre": "Le fabuliste",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 8,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "fabian"
+  ],
+  "prefaciers": [],
+  "description": "Un enfant, son papa et les autres personnes de sa vie, dans un monde moins innocent qu’il n’en a l’air. L’enfant s’invente un confident, un farfadet à qui il dit ses rêves : exercer le fabuleux métier de fabuliste et conduire un orchestre de cuivres, de cordes et de billes en verre. Hélas, le chemin des rêves est plein d’embûches, surtout quand l’état-ogre dévore enfants et adultes. Voici un superbe conte triste pour enfants petits et grands, dans la lignée de Matin brun pour les lecteurs de 8 à 108 ans.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505183",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-le-fabuliste.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-fabuliste-01-images-collection-eglantine-images-f-fabuliste1.jpg",
+    "content/media/uploads/illustrations-le-fabuliste-02-images-collection-eglantine-images-f-fabuliste22.jpg",
+    "content/media/uploads/illustrations-le-fabuliste-03-images-collection-eglantine-images-f-fabuliste4.jpg",
+    "content/media/uploads/illustrations-le-fabuliste-04-images-collection-eglantine-images-f-fabuliste3.jpg",
+    "content/media/uploads/illustrations-le-fabuliste-05-images-collection-eglantine-images-f-fabuliste2.jpg"
+  ],
+  "extraits": []
+}

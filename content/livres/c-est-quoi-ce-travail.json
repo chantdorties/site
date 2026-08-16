@@ -1,0 +1,33 @@
+{
+  "slug": "c-est-quoi-ce-travail",
+  "statut": "publie",
+  "titre": "C'est quoi ce travail ?",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 7,
+  "auteurs": [
+    "jean-pierre-levaray"
+  ],
+  "illustrateurs": [
+    "david-rebaud"
+  ],
+  "prefaciers": [],
+  "description": "Comment une fillette de 10 ans ressent-elle l’usine où son père se rend tous les jours et à côté de laquelle elle habite ? Une usine particulière puisqu'il s'agit d'un site sensible classé seveso.",
+  "prixEuros": 7.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746089",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-c-est-quoi-ce-travail.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-c-est-quoi-ce-travail-01-images-cqt-barbelles.jpg",
+    "content/media/uploads/illustrations-c-est-quoi-ce-travail-02-images-cqt-pere.jpg",
+    "content/media/uploads/illustrations-c-est-quoi-ce-travail-03-images-cqt-tonneau.jpg",
+    "content/media/uploads/illustrations-c-est-quoi-ce-travail-04-images-cqt-voiture.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-c-est-quoi-ce-travail-01-documents-extrait-cestquoicetravail.pdf"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "ainsi-danse-jean-petit",
+  "statut": "publie",
+  "titre": "Ainsi danse Jean Petit",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 11,
+  "auteurs": [
+    "josef-ulla"
+  ],
+  "illustrateurs": [
+    "david-rebaud"
+  ],
+  "prefaciers": [],
+  "description": "Été 1643, Le Pierrot, neuf ans, le Puéchou, sept ans, et le Jeannot, quinze ans, trois bergers du Ségala rencontrent Renaud des Bois, le vielleux, et plongent dans la révolte des croquants du Rouergue. Ils croiseront Bernard Lafourque, robin des bois du XVIIe siècle, Lapaille, le cabaretier, et Antoinette, neuf ans, la fille de Jean Petit, celui de la chanson. Roman d’aventure passionnant, Ainsi dans Jean Petit traite d’un moment oublié de l’histoire de France, la fameuse révolte des paysans du Rouergue, partie pauvre de l’Aveyron. A travers le regard des jeunes héros, leurs peurs et leur découverte du monde, apparaissent les luttes difficiles contre les nobles et l’envoyé de Louis XIV ainsi que le personnage de Jean Petit, meneur de la rébellion, qui a inspiré la fameuse comptine .",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746140",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-ainsi-danse-jean-petit.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-ainsi-danse-jean-petit-01-images-jp-p-43.jpg",
+    "content/media/uploads/illustrations-ainsi-danse-jean-petit-02-images-jp-p-60.jpg",
+    "content/media/uploads/illustrations-ainsi-danse-jean-petit-03-images-jp-p-130.jpg",
+    "content/media/uploads/illustrations-ainsi-danse-jean-petit-04-images-jp-p-138.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-ainsi-danse-jean-petit-01-documents-jean-petit-extrait.pdf"
+  ]
+}

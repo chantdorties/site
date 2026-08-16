@@ -1,0 +1,33 @@
+{
+  "slug": "sauvons-les-animaux-du-zoo",
+  "statut": "publie",
+  "titre": "Sauvons les animaux du zoo !",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "fred-morisse"
+  ],
+  "illustrateurs": [
+    "david-rebaud"
+  ],
+  "prefaciers": [],
+  "description": "Hiver 1870, Paris est assiégé par les armées allemandes. Le froid est glacial et la nourriture manque. Les plus pauvres se contentent de maigres repas dans les cantines municipales, les bourgeois font bombance en se gavant de la chair des animaux exotiques du Jardin des plantes. Zélina, 10 ans, est révoltée par le sort des bêtes sauvages. Aidée de ses amis, elle entreprend de sauver ceux qui n’ont pas encore fini en beefsteaks.",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746348",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-sauvons-les-animaux-du-zoo.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-01-images-saz-saz-1.jpeg",
+    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-02-images-saz-saz-2.jpg",
+    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-03-images-saz-saz-3.jpg",
+    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-04-images-saz-saz-4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-sauvons-les-animaux-du-zoo-01-documents-sauvons-les-animaux-extrait.pdf"
+  ]
+}

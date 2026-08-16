@@ -1,0 +1,31 @@
+{
+  "slug": "robin-des-bois-blancs",
+  "statut": "publie",
+  "titre": "Robin des Bois-Blancs",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 11,
+  "auteurs": [
+    "vincent-valdelievre"
+  ],
+  "illustrateurs": [
+    "maud-lenglet"
+  ],
+  "prefaciers": [],
+  "description": "Robert est né à Lille en 1933, il a vécu et grandi dans le quartier sur l’eau des Bois-Blancs. En 1953 il est appelé, il quitte son quartier et sa ville, il va où on l’envoie. Quarante-huit années plus tard, longtemps après sa libération, il n’est toujours pas revenu chez lui. Qu’est-ce que c’est que cette histoire ? Les enfants de l’époque sont devenus vieux, qu’en disent-ils ? Les autres habitants du quartier, que peuvent-ils ajouter ? Vincent Valdelièvre nous raconte une Histoire populaire qui commence dans un quartier ouvrier et s’étend jusqu’à devenir celle de toute une génération qui veut faire comprendre aux jeunes de maintenant ce qu’elle a vécu il y a plus d’un demi siècle.",
+  "prixEuros": 7.0,
+  "disponible": true,
+  "nombrePages": 96,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505159",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-robin-des-bois-blancs.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-robin-des-bois-blancs-01-images-collection-eglantine-images-rbb-robin1.jpg",
+    "content/media/uploads/illustrations-robin-des-bois-blancs-02-images-collection-eglantine-images-rbb-robin2.jpg",
+    "content/media/uploads/illustrations-robin-des-bois-blancs-03-images-collection-eglantine-images-rbb-robin3.jpg",
+    "content/media/uploads/illustrations-robin-des-bois-blancs-04-images-collection-eglantine-images-rbb-robin4.jpg"
+  ],
+  "extraits": []
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
+  "statut": "publie",
+  "titre": "Gaïa - Sur le chemin de la Montagne Bleue",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "amanda-belassami-sideris"
+  ],
+  "illustrateurs": [
+    "pavlos-habidis"
+  ],
+  "prefaciers": [],
+  "description": "Dans ce 2e tome, après s’être enfuie de sa prison de pierre, Gaïa se lance sur le chemin de la Montagne Bleue. La fillette a grandi. De minuscule parapoussière, la voici devenue adolescente. Et c'est en compagnie de nouveaux personnages, \"dont la ressemblance avec des individus imaginaires serait fortuite\", qu'avide d'aventures extraordinaires, elle continue sa route vers son rêve.",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 192,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746331",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-gaia-sur-le-chemin-de-la-montagne-bleue.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-01-images-gsc-gaia2-1.png",
+    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-02-images-gsc-gaia2-2.png",
+    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-03-images-gsc-gaia2-3.png",
+    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-04-images-gsc-gaia2-4.png"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-gaia-sur-le-chemin-de-la-montagne-bleue-01-documents-gaia2-extrait.pdf"
+  ]
+}

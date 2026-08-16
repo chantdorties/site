@@ -1,55 +1,45 @@
 # Frontend du nouveau site
 
-Ce dossier contient les sources communes du site HTML/CSS/JavaScript :
+Ce dossier contient les sources communes du site :
 
-- `templates/base.html` : structure commune de toutes les pages ;
+- `templates/base.html` : structure commune des pages publiques ;
 - `assets/css/site.css` : mise en page et composants visuels ;
 - `assets/js/site.js` : menu mobile, retour en haut et galeries ;
 - `assets/js/catalogue.js` : recherche et filtres du catalogue ;
-- `assets/js/people.js` : recherche et filtres de l'annuaire.
+- `assets/js/people.js` : recherche et filtres de l’annuaire ;
+- `admin/` : interface Decap CMS et formulaires de gestion des contenus.
 
 Les pages finales ne doivent pas être modifiées directement dans `dist/`.
 
-## Développement avec actualisation automatique
+## Développement
 
 ```bash
 make dev
 ```
 
-Ouvrir `http://localhost:8766/`. Les modifications de CSS et JavaScript sont
-recopiées immédiatement. Les modèles HTML, JSON et médias déclenchent une
-nouvelle génération, puis le navigateur est actualisé automatiquement.
+Ouvrir <http://127.0.0.1:8766/>. Les modifications des sources et des contenus
+déclenchent une nouvelle génération et l’actualisation du navigateur.
 
-Si le port 8766 est déjà utilisé :
+Pour changer le port :
 
 ```bash
 make dev DEV_PORT=8767
 ```
 
-## Génération de production
+## Administration locale
 
 ```bash
-python3 tools/build-site.py --root .
+make admin
 ```
 
-Les pages marquées `aVerifier` sont exclues de cette version.
+Ouvrir <http://127.0.0.1:8766/admin/>. Les changements sont écrits directement
+dans `content/` sans passer par GitHub.
 
-## Prévisualisation avec les brouillons
+## Brouillons
 
 ```bash
-python3 tools/build-site.py --root . --output dist-preview --include-drafts
+make preview
 ```
 
-## Prévisualisation locale
-
-```bash
-python3 -m http.server 8000 --directory dist
-```
-
-Ouvrir ensuite `http://localhost:8000/`.
-
-## Tests
-
-```bash
-python3 -m unittest tools/test_refined_data.py tools/test_built_site.py -v
-```
+La prévisualisation contient aussi les enregistrements dont le champ `statut` vaut
+`brouillon`. La génération normale ne les publie pas.

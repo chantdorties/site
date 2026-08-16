@@ -1,0 +1,32 @@
+{
+  "slug": "la-malediction-du-beton",
+  "statut": "publie",
+  "titre": "La malédiction du béton",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "recueil-de-recits",
+  "ageMinimum": 15,
+  "auteurs": [
+    "fred-morisse"
+  ],
+  "illustrateurs": [
+    "jean-pierre-bourdeleau"
+  ],
+  "prefaciers": [],
+  "description": "La famille Zépadbol et son quartier sont victimes d’une tragédie : la destruction des tours les unes après les autres au profit d’une rénovation urbaine qui exclut les plus pauvres. Quand il apprend que la Ville a un projet de grande ampleur pour son quartier, le père se réjouit. Mais très vite, c’est la désillusion. La mère, au moment de quitter l’immeuble, ressent un épouvantable déchirement car, comme pour toutes les mères au foyer, c’est son univers qui s’effondre. Nassim, le fils, aspire à autre chose, mais sait bien que le quartier, les potes et les habitudes sont ancrées dans sa vie. Alliant poésie, nostalgie, punch et humour, Fred Morisse nous rappelle que des liens se tissent malgré tout dans ces univers de béton.",
+  "prixEuros": 13.0,
+  "disponible": true,
+  "nombrePages": 216,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020397",
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-la-malediction-du-beton.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-la-malediction-du-beton-01-images-mb-au-fil-de-l-eau.jpg",
+    "content/media/uploads/illustrations-la-malediction-du-beton-02-images-mb-chauffeur-si-t-es.jpg",
+    "content/media/uploads/illustrations-la-malediction-du-beton-03-images-mb-rodney-king.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-la-malediction-du-beton-01-documents-malediction-du-beton-texte1.pdf"
+  ]
+}

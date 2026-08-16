@@ -1,0 +1,29 @@
+{
+  "slug": "pas-une",
+  "statut": "publie",
+  "titre": "Pas une",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 6,
+  "auteurs": [
+    "georges-printemps"
+  ],
+  "illustrateurs": [
+    "fabio-peissl"
+  ],
+  "prefaciers": [],
+  "description": "C´est un enfant qui ne sait pas pleurer, un enfant qui ne veut pas. Et pour ses parents angoissés, ce problème est de taille. Dans l´incompréhension, ils aggravent le problème, le mènent d´hôpitaux en spécialistes, de médecins en psychologues, et l´enfant, dans son monde, se persuade seul qu´il est en train de se remplir d´eau. à partir de 6 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": null,
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-pas-une.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-pas-une-01-images-pu-pas-une-image1.jpg",
+    "content/media/uploads/illustrations-pas-une-02-images-pu-pas-une-image2.jpg"
+  ],
+  "extraits": []
+}

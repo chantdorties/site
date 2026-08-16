@@ -1,0 +1,30 @@
+{
+  "slug": "travaille-ton-super-vouloir",
+  "statut": "publie",
+  "titre": "Travaille ton Super-Vouloir",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "texte-illustre",
+  "ageMinimum": 5,
+  "auteurs": [
+    "neil-jobard"
+  ],
+  "illustrateurs": [
+    "julien-melique"
+  ],
+  "prefaciers": [],
+  "description": "Dans une langue proche de l'oralité, un père et son fils échangent sur l'idée d'entraide et comment chacun, dès le plus jeune âge et à son niveau, peut faire avancer la société. Illustration extraite de l'album:",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "28 x 19",
+  "reliure": null,
+  "isbn": "9782918746355",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-travaille-ton-super-vouloir.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-travaille-ton-super-vouloir-01-images-tsv-tsv-image.png"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-travaille-ton-super-vouloir-01-documents-super-vouloir-extrait.pdf"
+  ]
+}

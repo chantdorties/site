@@ -1,0 +1,29 @@
+{
+  "slug": "ville-rouge",
+  "statut": "publie",
+  "titre": "Ville rouge",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 15,
+  "auteurs": [
+    "ricardo-montserra"
+  ],
+  "illustrateurs": [
+    "benedicte-waryn"
+  ],
+  "prefaciers": [],
+  "description": "Lorient-ville, Lorient-port, Lorient du passé et du présent, Lorient des hommes et des femmes qui l’habitent et l’ont habitée, Lorient-des-marins. Lorient-la-poche, Lorient-la-rouge, Lorient-les-pardons, Lorient porte de l’Orient : Lorient est une orange / Posée la nuit de Noël / Aux pieds des enfants bretons / Un ogre l’a dévorée Un grand, beau et long poème, cri cri de colère et d’amour à une ville sang et chair, ville tendresse et malheur, histoire et souffrance, calme et orgueil ; ville et port.",
+  "prixEuros": 7.0,
+  "disponible": true,
+  "nombrePages": 96,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505078",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-ville-rouge.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-ville-rouge-01-images-collection-eglantine-images-vr-villerouge1.jpg",
+    "content/media/uploads/illustrations-ville-rouge-02-images-collection-eglantine-images-vr-villerouge2.jpg"
+  ],
+  "extraits": []
+}

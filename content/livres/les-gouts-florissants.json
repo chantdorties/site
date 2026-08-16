@@ -1,0 +1,30 @@
+{
+  "slug": "les-gouts-florissants",
+  "statut": "publie",
+  "titre": "Les goûts florissants",
+  "collection": "eglantine",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": 14,
+  "auteurs": [
+    "daniel-zimmermann"
+  ],
+  "illustrateurs": [
+    "maud-lenglet"
+  ],
+  "prefaciers": [],
+  "description": "Cette nouvelle simple et élégante est la biographie d’un certain David Kupfermann, enfant de Sarcelles, sans cesse préoccupé de son ascension sociale. Paul et Constant , autre nouvelle, montre deux jeunes hommes, soldats ensemble en Algérie, qui ne se quitteront plus par la suite, assortissant leurs choix dans la vie de façon à ne jamais se quitter ni se séparer. Jusqu’où iront-ils ? En quelques phrases ciselées pour la première nouvelle et pleines d'humour pour la deuxième, l'auteur nous retrace la vie d'hommes partant de leurs plus fols espoirs pour se confronter à la réalité et s'y adapter, chacun à leur manière.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505043",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-les-gouts-florissants.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-gouts-florissants-01-images-collection-eglantine-images-gf-gouts1.jpg",
+    "content/media/uploads/illustrations-les-gouts-florissants-02-images-collection-eglantine-images-gf-gouts2.jpg",
+    "content/media/uploads/illustrations-les-gouts-florissants-03-images-collection-eglantine-images-gf-gouts3.jpg"
+  ],
+  "extraits": []
+}

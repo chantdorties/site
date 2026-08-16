@@ -1,0 +1,55 @@
+name: Validate and publish
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chantdorties-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install --yes ghostscript poppler-utils
+      - name: Install Python dependencies
+        run: python -m pip install --requirement requirements.txt
+      - name: Build and test
+        run: make validate
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.sha }}
+          path: dist/
+          include-hidden-files: true
+          retention-days: 30
+
+  publish:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.FREE_DEPLOY_ENABLED == 'true'
+    needs: validate
+    runs-on: [self-hosted, linux, free-deploy]
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-${{ github.sha }}
+          path: dist/
+      - name: Deploy the public site to Free
+        env:
+          FREE_FTP_HOST: ${{ secrets.FREE_FTP_HOST }}
+          FREE_FTP_USER: ${{ secrets.FREE_FTP_USER }}
+          FREE_FTP_PASSWORD: ${{ secrets.FREE_FTP_PASSWORD }}
+          FREE_FTP_PATH: ${{ secrets.FREE_FTP_PATH }}
+        run: python3 tools/deploy-free.py

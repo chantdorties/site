@@ -1,0 +1,17 @@
+{
+  "slug": "beatrice-guillemard",
+  "statut": "publie",
+  "nom": "Béatrice Guillemard",
+  "roles": [
+    "auteur",
+    "illustrateur"
+  ],
+  "biographie": "Parallèlement à l'écriture de romans et d'albums jeunesse, elle met en scène son monde intérieur dans des sculptures en recyclage ainsi qu'à travers la photographie.",
+  "imagePrincipale": "content/media/uploads/personnes-illustrateurs-guillemard-chantdorties.jpg",
+  "images": [
+    "content/media/uploads/personnes-illustrateurs-guillemard-chantdorties.jpg"
+  ],
+  "liensExternes": [
+    "http://unjardinextra.free.fr/"
+  ]
+}

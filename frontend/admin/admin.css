@@ -1,0 +1,17 @@
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #f7f7f4;
+  color: #171a18;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+noscript {
+  display: block;
+  max-width: 680px;
+  margin: 80px auto;
+  padding: 24px;
+  border-left: 4px solid #c63f32;
+  background: #fff;
+}

@@ -1,0 +1,30 @@
+{
+  "slug": "rompez",
+  "statut": "publie",
+  "titre": "Rompez !",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 7,
+  "auteurs": [
+    "anne-sophie-plat"
+  ],
+  "illustrateurs": [
+    "laetitia-serano"
+  ],
+  "prefaciers": [],
+  "description": "De l'absurdité de l'armée ! Erwan a été élevé chasse, pêche et tradition. S’enrôler dans l’armée lui paraît la suite logique et quand la guerre éclate il est prêt à devenir le soldat parfait envoyé sur une mission spéciale ! Ce n’est que quand il en découvrira l’absurdité, et le peu de cas que l’armée a fait de lui, qu’il pourra enfin vraiment devenir lui-même. à partir de 7 ans",
+  "prixEuros": 17.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746409",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-rompez.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-rompez-01-images-r-rompez-page-2.jpg",
+    "content/media/uploads/illustrations-rompez-02-images-r-rompez-page-11.jpg",
+    "content/media/uploads/illustrations-rompez-03-images-r-rompez-page-16.jpg"
+  ],
+  "extraits": []
+}

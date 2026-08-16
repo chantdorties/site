@@ -1,0 +1,32 @@
+{
+  "slug": "blizzard-d-etoiles",
+  "statut": "publie",
+  "titre": "Blizzard d'étoiles",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "sylvie-huguet"
+  ],
+  "illustrateurs": [
+    "florene-vaxlaire"
+  ],
+  "prefaciers": [],
+  "description": "Un soir de tempête de neige, Thomas, fils d'ouvrier, traverse les frontières invisibles et passe dans le Moyen-Royaume. Est-il vraiment l'élu annoncé ? Fort de son nouveau statut de chevalier, parviendra-t-il à sauver le puissant Blizzard d'Etoiles, roi des Barzoïs, ces chiens mythiques, symboles de la noblesse russe d'avant la Révolution de 1917 ? A la suite d'étranges rencontres, amitiés et aventures, Thomas découvrira un royaume plus équivoque qu'il n'y paraît, à la croisée de la légende et l'Histoire. Notre premier roman d'heroic fantasy !",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746362",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-blizzard-d-etoiles.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-blizzard-d-etoiles-01-images-be-1chap1-p7.jpg",
+    "content/media/uploads/illustrations-blizzard-d-etoiles-02-images-be-2chap1p15.jpg",
+    "content/media/uploads/illustrations-blizzard-d-etoiles-03-images-be-3chap2p21.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-blizzard-d-etoiles-01-documents-blizzard-d-etoiles-extrait.pdf"
+  ]
+}

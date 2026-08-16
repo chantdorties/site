@@ -1,0 +1,33 @@
+{
+  "slug": "avec-ou-sans-papiers",
+  "statut": "publie",
+  "titre": "Avec ou sans papiers",
+  "collection": "chardons-ardents",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": null,
+  "auteurs": [
+    "marie-florence-ehret"
+  ],
+  "illustrateurs": [
+    "marion-claeys"
+  ],
+  "prefaciers": [],
+  "description": "Les personnages de ce livre tentent, pour le meilleur et pour le pire, de partager ce petit bout de planète qu'on appelle la terre. Ils n'ont pas toujours de papiers, et pourtant ils existent, et se croisent. Car n'est-ce pas toute la question : se croiser ? Croiser les cultures, les peaux, les peurs. Se reconnaître, comme de même origine, humaine. Chaque nouvelle est un instant de rencontre dans un monde quotidien qui est le nôtre. Rencontres fugitives, parfois fatales, parfois fécondes, où le vivant se révèle, fort de sa fragilité, de son ignorance, de sa sincérité. Marie-Florence Ehret aime sillonner le monde, aussi bien la France que les autres continents. Elle a notamment posé son sac dans plusieurs pays d’Afrique. Dans Avec ou sans papiers se côtoient réalisme, insolite, poésie et imaginaire.",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 128,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782918746010",
+  "issnCollection": "2109-7674",
+  "couverture": "content/media/uploads/couvertures-avec-ou-sans-papiers.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-avec-ou-sans-papiers-01-images-avsp-hommes.jpg",
+    "content/media/uploads/illustrations-avec-ou-sans-papiers-02-images-avsp-la-goutte-d-or.jpg",
+    "content/media/uploads/illustrations-avec-ou-sans-papiers-03-images-avsp-seule.jpg",
+    "content/media/uploads/illustrations-avec-ou-sans-papiers-04-images-avsp-visages.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-avec-ou-sans-papiers-01-documents-extrait-avecousanspapiers.pdf"
+  ]
+}

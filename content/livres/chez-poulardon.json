@@ -1,0 +1,33 @@
+{
+  "slug": "chez-poulardon",
+  "statut": "publie",
+  "titre": "Chez Poulardon",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "michel-bonnefoi"
+  ],
+  "illustrateurs": [
+    "nicolas-le-fessant"
+  ],
+  "prefaciers": [],
+  "description": "Kim est le fils adoptif d'Etienne Poulardon, riche propriétaire d'un élevage de poules pondeuses en batterie. Il veut croire que son père élève correctement les poules mais ses deux amis, Justin et Nina, sont très méfiants. L'énquête des enfants va-t-elle donner quelque chose ?",
+  "prixEuros": 11.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746249",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-chez-poulardon.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-chez-poulardon-01-images-cp-chez-poulardon-image1.gif",
+    "content/media/uploads/illustrations-chez-poulardon-02-images-cp-chez-poulardon-image4.gif",
+    "content/media/uploads/illustrations-chez-poulardon-03-images-cp-chez-poulardon-image2.gif",
+    "content/media/uploads/illustrations-chez-poulardon-04-images-cp-chez-poulardon-image3.gif"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-chez-poulardon-01-documents-chez-poulardon-extrait.pdf"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "l-ombre-de-la-lune",
+  "statut": "publie",
+  "titre": "L'ombre de la lune",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 12,
+  "auteurs": [
+    "hellena-cavendi"
+  ],
+  "illustrateurs": [
+    "hellena-cavendi"
+  ],
+  "prefaciers": [],
+  "description": "La suite (mais chronologiquement antérieure) d' Un air de liberté . Roman d’anticipation. Un espion, dont le but initial est de démonter le petit groupe d'anarchistes qui mèneront la révolution amenant à une société égalitaire, qui, en apprenant à les connaître, est amené à une remise en question de tout ce qu'on lui a toujours appris, et de lui-même.",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 432,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746317",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-l-ombre-de-la-lune.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-l-ombre-de-la-lune-01-images-ol-imageol1.png",
+    "content/media/uploads/illustrations-l-ombre-de-la-lune-02-images-ol-imageol2.png",
+    "content/media/uploads/illustrations-l-ombre-de-la-lune-03-images-ol-imageol3.png",
+    "content/media/uploads/illustrations-l-ombre-de-la-lune-04-images-ol-imageol4.png"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-l-ombre-de-la-lune-01-documents-lombre-de-la-lune-extrait.pdf"
+  ]
+}

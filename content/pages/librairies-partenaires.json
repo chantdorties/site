@@ -1,0 +1,36 @@
+{
+  "slug": "librairies-partenaires",
+  "statut": "publie",
+  "titre": "Librairies partenaires",
+  "type": "page",
+  "sections": [
+    {
+      "titre": null,
+      "contenu": "Voici des lieux avec lesquels nous avons des relations privilégiées. Dans ces librairies vous pouvez trouver nos livres sans avoir besoin de les commander. Si vous êtes libraire et que vous souhaitez nous commander des livres ou devenir librairie-partenaire, rendez-vous à la page commande. 75 Publico 145 rue Amelot 75011 Paris Tél : 01 48 05 34 08 http://www.librairie-publico.com/ Quilombo 23 rue Voltaire 75011 Paris Tél : 01 43 71 21 07 http://www.librairie-quilombo.org/ 34 Joie de Connaître 17 Rue de la République 34600 Bédarieux Tèl: 04 67 95 05 65 https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/"
+    }
+  ],
+  "liens": [
+    {
+      "type": "externe",
+      "href": "http://lautodidacte.lautre.net/",
+      "texte": null
+    },
+    {
+      "type": "externe",
+      "href": "http://www.librairie-publico.com/",
+      "texte": "http://www.librairie-publico.com/"
+    },
+    {
+      "type": "externe",
+      "href": "http://www.librairie-quilombo.org/",
+      "texte": "http://www.librairie-quilombo.org/"
+    },
+    {
+      "type": "externe",
+      "href": "https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/",
+      "texte": "https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/"
+    }
+  ],
+  "images": [],
+  "documents": []
+}

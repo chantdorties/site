@@ -1,0 +1,33 @@
+{
+  "slug": "les-demons-du-museum",
+  "statut": "publie",
+  "titre": "Les démons du muséum",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 10,
+  "auteurs": [
+    "michel-perrin"
+  ],
+  "illustrateurs": [
+    "alexandre-widendaele"
+  ],
+  "prefaciers": [],
+  "description": "La nuit, au muséum d’histoire naturelle, les ombres deviennent menaçantes. Thomas, le fils du gardien, aidé de son amie Chloé et de son père, un commissaire pas comme les autres, tente de découvrir qui en veut au squelette de Lucy, notre ancêtre australopithèque. Entre un groupuscule créationniste, un taxidermiste noctambule et les fantômes de Buffon et Darwin, les deux jeunes iront jusqu’à risquer leur vie pour que le musée retrouve la paix. Mais y parviendront-ils ? Michel perrin est l'auteur de nombreux livres inclassables, de petites merveilles iconoclastes à mettre entre toutes les mains.",
+  "prixEuros": 13.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746058",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-les-demons-du-museum.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-demons-du-museum-01-images-dm-illu1.jpg",
+    "content/media/uploads/illustrations-les-demons-du-museum-02-images-dm-illu3.jpg",
+    "content/media/uploads/illustrations-les-demons-du-museum-03-images-dm-illu4.jpg",
+    "content/media/uploads/illustrations-les-demons-du-museum-04-images-dm-illu5.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-les-demons-du-museum-01-documents-demons-chapitre1.pdf"
+  ]
+}

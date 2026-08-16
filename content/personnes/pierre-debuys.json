@@ -1,0 +1,15 @@
+{
+  "slug": "pierre-debuys",
+  "statut": "publie",
+  "nom": "Pierre Debuys",
+  "roles": [
+    "auteur"
+  ],
+  "biographie": null,
+  "imagePrincipale": "content/media/uploads/personnes-auteurs-debuys-chantdorties.jpg",
+  "images": [
+    "content/media/uploads/personnes-auteurs-debuys-chantdorties.jpg",
+    "content/media/uploads/personnes-auteurs-photo-pierre-debuys.jpg"
+  ],
+  "liensExternes": []
+}

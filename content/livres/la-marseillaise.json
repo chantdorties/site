@@ -1,0 +1,32 @@
+{
+  "slug": "la-marseillaise",
+  "statut": "publie",
+  "titre": "La marseillaise",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 11,
+  "auteurs": [
+    "herve-mestron"
+  ],
+  "illustrateurs": [
+    "christine-decle"
+  ],
+  "prefaciers": [],
+  "description": "Après avoir sifflé la Marseillaise devant des caméras lors d’un match de foot, Mohamed, dit Momo, est arrêté. La cité qu’ils habitent est alors assaillie par la police, les médias et les groupes politiques de tous ordres qui souhaitent utiliser cet évènement à leur avantage. Sa sœur, Yasmina, et sa mère n’acceptent pas le geste de Momo. Yasmina cherche à comprendre, la mère se sent bafouée et Mohamed, relâché dans l’attente de son procès, ressasse sa colère. Le garçon disparaît et face au questionnement de sa fille, la mère révèle l’histoire de la famille, faite de racisme et de rejet, bien qu’en France depuis trois générations. Dépassé par les passions qu’il a déchaîné, Mohamed se sent finalement contraint de quitter la France. Hervé Mestron s’attaque à un tabou : la Marseillaise. En donnant la parole à Yasmina comme narratrice, l’auteur offre un texte tout en finesse et humour pour remettre en cause les paroles de ce chant en tant que symbole fédérateur des citoyens de la République.",
+  "prixEuros": 8.0,
+  "disponible": true,
+  "nombrePages": 56,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746065",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-la-marseillaise.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-la-marseillaise-01-images-lm-marseillaise-1.jpg",
+    "content/media/uploads/illustrations-la-marseillaise-02-images-lm-marseillaise-2.jpg",
+    "content/media/uploads/illustrations-la-marseillaise-03-images-lm-marseillaise-3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-la-marseillaise-01-documents-extrait-marseillaise.pdf"
+  ]
+}

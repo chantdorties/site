@@ -1,0 +1,31 @@
+{
+  "slug": "l-impasse",
+  "statut": "publie",
+  "titre": "L'impasse",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 10,
+  "auteurs": [
+    "pierre-debuys"
+  ],
+  "illustrateurs": [
+    "jacques-tardi"
+  ],
+  "prefaciers": [],
+  "description": "Il était une fois, là-bas au bord de la ville, un lieu sinistre : une impasse coincée entre deux hauts murs de briques. Tapie dans le fond, on devinait une masse ramassée sur elle-même (une maison ?) Dedans, un vieil homme ; autour, un quartier pauvre et vétuste, des gens, des familles. Que croyez-vous qu’il arriva quand la décision fut prise en haut lieu de rénover le quartier ? Les habitants descendirent jusqu’aux lieux du pouvoir pour dire à peu près : Vous voulez rénover, tant mieux, nous sommes d’accord du moment que c’est avec nous, avec nos idées, nos envies, nos désirs ! Rénovation, oui ; expulsions, non ! Comment un ermite, reclus et rejeté par tous, monstrueux en somme, va finalement fédérer les bonnes volontés du quartier pour lutter contre les expulsions et expropriations d'une mairie bien sous tous rapport. Un conte aux accents d'histoire d'ogre plus humain que bien d'entre nous, merveilleusement mis en image par TARDI.",
+  "prixEuros": 7.0,
+  "disponible": true,
+  "nombrePages": 96,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505132",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-l-impasse.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-l-impasse-01-images-collection-eglantine-images-i-impasse1.jpg",
+    "content/media/uploads/illustrations-l-impasse-02-images-collection-eglantine-images-i-impasse2.jpg",
+    "content/media/uploads/illustrations-l-impasse-03-images-collection-eglantine-images-i-impasse3.jpg",
+    "content/media/uploads/illustrations-l-impasse-04-images-collection-eglantine-images-i-impasse4.jpg"
+  ],
+  "extraits": []
+}

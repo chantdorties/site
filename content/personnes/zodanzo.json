@@ -1,0 +1,16 @@
+{
+  "slug": "zodanzo",
+  "statut": "publie",
+  "nom": "Zodanzo",
+  "roles": [
+    "illustrateur"
+  ],
+  "biographie": "Illustrateur satirique et de critique sociale, ZODANZO possède un chat artiste qui renverse les flacons d’encre-de-chine sur ses images. ZODANZO doit alors tout refaire, et depuis il travaille au tippex sur papier noir.",
+  "imagePrincipale": "content/media/uploads/personnes-illustrateurs-zodanzo-chantdorties.jpg",
+  "images": [
+    "content/media/uploads/personnes-illustrateurs-zodanzo-chantdorties.jpg"
+  ],
+  "liensExternes": [
+    "http://zodanzo.ultra-book.com/portfolio"
+  ]
+}

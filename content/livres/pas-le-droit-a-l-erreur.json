@@ -1,0 +1,29 @@
+{
+  "slug": "pas-le-droit-a-l-erreur",
+  "statut": "publie",
+  "titre": "Pas le droit à l'erreur",
+  "collection": "eglantine",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": 14,
+  "auteurs": [
+    "angel-reinhart"
+  ],
+  "illustrateurs": [
+    "chrysalis"
+  ],
+  "prefaciers": [],
+  "description": "Un voyou plein pot nous embarque dans son périple. Il a dû franchir la frontière belge de nuit et nous ramène à Lille où il nous plonge dans le glauque quotidien du traficant élémentaire. Ce n’est pas joli et ça va mal finir. Il ressurgit – lui ou un autre personnage – dans un café de village, là-bas au far-West, après une longue nuit de route. Les habitués, le journal, le juke-box, les nouvelles et lui. Tout ça va finir mal, très mal. Philippe Crognier et Roger Wallet sont Angel Reinhart . Ils nous proposent deux nouvelles noires et violentes qui finissent mal, forcément, puisue personne n'a le droit à l'erreur.",
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505116",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-pas-le-droit-a-l-erreur.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-01-images-collection-eglantine-images-pde-pasledroit1.jpg",
+    "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-02-images-collection-eglantine-images-pde-pasledroit2.jpg"
+  ],
+  "extraits": []
+}

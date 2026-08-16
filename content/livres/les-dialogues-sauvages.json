@@ -1,0 +1,31 @@
+{
+  "slug": "les-dialogues-sauvages",
+  "statut": "publie",
+  "titre": "Les dialogues sauvages",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 5,
+  "auteurs": [
+    "georges-printemps"
+  ],
+  "illustrateurs": [
+    "julie-maurice"
+  ],
+  "prefaciers": [],
+  "description": "Attirés par la joie du cirque voisin, trois amis des bois empruntent son chemin. Et quel évênement ! Ils y rencontrent un éléphant ! Un animal étrange, content de vivre en cage... à partir de 5 ans",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "27 x 24",
+  "reliure": "souple",
+  "isbn": "9782918746171",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-les-dialogues-sauvages.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-dialogues-sauvages-01-images-ds-ds-image1.jpg",
+    "content/media/uploads/illustrations-les-dialogues-sauvages-02-images-ds-ds-image2.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-les-dialogues-sauvages-01-documents-dialogues-sauvages-extrait.pdf"
+  ]
+}

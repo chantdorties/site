@@ -1,0 +1,33 @@
+{
+  "slug": "mon-hlm",
+  "statut": "publie",
+  "titre": "Mon HLM",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 7,
+  "auteurs": [
+    "beatrice-guillemard"
+  ],
+  "illustrateurs": [
+    "zodanzo"
+  ],
+  "prefaciers": [],
+  "description": "Arrivé d’Afrique avec sa mère pour rejoindre son père, Demba découvre son nouveau lieu de vie, un HLM qui lui paraît bien étrange. Les sept étages le séparant de son futur appartement suscitent des rencontres avec, entre autres, de drôles de gardiens, Fatou et Soraya, une femme acariâtre, Kevin, Abou et leur ballon. Le HLM et ces personnages plus ou moins attachants contribuent à son apprentissage de la vie. Pour son premier roman, Béatrice Guillemard bat en brèche les idées reçues sur les Grands Ensembles de nos villes : violences, voitures brûlées, jeunes désœuvrés, trafics illégaux, zones de non droit. Ces tours qu’on supprime les unes après les autres sont aussi des lieux de vie, avec leurs joies et leurs peines. Ceux et celles qui montent et descendent les escaliers s’y créent une identité.",
+  "prixEuros": 8.0,
+  "disponible": true,
+  "nombrePages": 64,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782953020311",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-mon-hlm.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-mon-hlm-01-images-hlm-01-demba-profil.jpg",
+    "content/media/uploads/illustrations-mon-hlm-02-images-hlm-04-fillettes.jpg",
+    "content/media/uploads/illustrations-mon-hlm-03-images-hlm-06-cafard.jpg",
+    "content/media/uploads/illustrations-mon-hlm-04-images-hlm-10-appart.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-mon-hlm-01-documents-extraitmonhlm.pdf"
+  ]
+}

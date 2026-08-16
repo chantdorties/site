@@ -1,0 +1,26 @@
+{
+  "slug": "ma-traversee",
+  "statut": "publie",
+  "titre": "Ma traversée",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "zoumana-kone"
+  ],
+  "illustrateurs": [
+    "nald-kib"
+  ],
+  "prefaciers": [],
+  "description": "D'une plume sobre et sans fioritures, ce récit nous plonge dans l'itinéraire chaotique de Zoumana, un adolescent ivoirien, pris dans la spirale infernale de l'exil. L'illusion d'un avenir meilleur se heurte aux réalités brutales des prisons à ciel ouvert, aux passeurs sans scrupules, aux violences insoutenables. Mais au fil des épreuves, entre désespoir et résilience, surgissent des éclats d'humanité, des rencontres lumineuses, voire miraculeuses. De la Côte d'Ivoire à la France, en passant par la Tunisie, la Libye, la Méditerranée et l'Italie, c'est un témoignage poignant, d'une intensité rare, qui donne corps et âme à ces trajectoires que l'on cantonne trop souvent à des clichés.",
+  "prixEuros": 14.0,
+  "disponible": true,
+  "nombrePages": 92,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746423",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-ma-traversee.jpg",
+  "illustrations": [],
+  "extraits": []
+}

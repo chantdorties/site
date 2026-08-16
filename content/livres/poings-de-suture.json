@@ -1,0 +1,33 @@
+{
+  "slug": "poings-de-suture",
+  "statut": "publie",
+  "titre": "Poings de suture",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "michel-lecorre"
+  ],
+  "illustrateurs": [
+    "alexandre-widendaele"
+  ],
+  "prefaciers": [],
+  "description": "Thomas entretient une amitié sincère avec Aïcha, son ancienne professeure de lettres, mais il est loin de se douter que cette relation a blessé, année après année, Bilal, son fils unique. Alors, entre les deux jeunes gens de dix-sept ans, un lent processus destructeur se met sournoisement en marche. L’arrivée soudaine d’un expatrié de Thaïlande, Torsten, bouleverse leur vie. Poings de suture est un roman pudique, dur, touchant, où les personnages se défient, puis se rapprochent à travers la boxe, la maladie et la mort.",
+  "prixEuros": 13.0,
+  "disponible": true,
+  "nombrePages": 208,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": null,
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-poings-de-suture.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-poings-de-suture-01-images-ps-poingdesuture-illu6.jpg",
+    "content/media/uploads/illustrations-poings-de-suture-02-images-ps-poingdesuture-illu4.jpg",
+    "content/media/uploads/illustrations-poings-de-suture-03-images-ps-poingdesuture-illu7.jpg",
+    "content/media/uploads/illustrations-poings-de-suture-04-images-ps-poingdesuture-illu10.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-poings-de-suture-01-documents-extrait-poingsdesutur.pdf"
+  ]
+}

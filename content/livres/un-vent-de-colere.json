@@ -1,0 +1,32 @@
+{
+  "slug": "un-vent-de-colere",
+  "statut": "publie",
+  "titre": "Un vent de colère",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 8,
+  "auteurs": [
+    "grace-belder"
+  ],
+  "illustrateurs": [
+    "soazic-deleplanque"
+  ],
+  "prefaciers": [],
+  "description": "Dans un futur proche, une partie de l’humanité a quitté la Terre devenue trop polluée, pour s’installer sur la planète X-YOLE. Ces nouveaux occupants y ont organisé une vie préservée. Pourtant, depuis peu, d’inquiétantes perturbations climatiques se manifestent. Orages et tempêtes se déchaînent et obscurcissent le ciel. Quel est ce vent de mauvais augure ? Le jeune Vincent et son amie Valora croient deviner d'où provient ce phénomène, qui leur rappelle ce qu'a subi la Terre. Ils tentent d’alerter la population qu’une nouvelle forme de pollution menace l'existence même de leur planète..",
+  "prixEuros": null,
+  "disponible": false,
+  "nombrePages": 72,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "9782918746294",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-un-vent-de-colere.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-un-vent-de-colere-01-images-vc-vc-1.jpg",
+    "content/media/uploads/illustrations-un-vent-de-colere-02-images-vc-vc-2.jpg",
+    "content/media/uploads/illustrations-un-vent-de-colere-03-images-vc-vc-3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-un-vent-de-colere-01-documents-un-vent-de-colere-extrait.pdf"
+  ]
+}

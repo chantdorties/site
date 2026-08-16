@@ -1,0 +1,31 @@
+{
+  "slug": "qui-sont-les-pirates",
+  "statut": "publie",
+  "titre": "Qui sont les pirates ?",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "texte-illustre",
+  "ageMinimum": 6,
+  "auteurs": [
+    "neil-jobard"
+  ],
+  "illustrateurs": [
+    "julien-melique"
+  ],
+  "prefaciers": [],
+  "description": "Une mère et sa fille. et le quotidien qui écrase tout: le boulot, la vie toutes seules, le temps qui manque, l'argent omniprésent, la \"réussite\". Mais une autre vie se fait jour: pourquoi ne pas prendre exemple sur les pirates...",
+  "prixEuros": 15.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "28 x 19",
+  "reliure": null,
+  "isbn": "9782918746218",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-qui-sont-les-pirates.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-qui-sont-les-pirates-01-images-qsp-qsp-image1.jpg",
+    "content/media/uploads/illustrations-qui-sont-les-pirates-02-images-qsp-qsp-image3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-qui-sont-les-pirates-01-documents-extrait-qui-sont-les-pirates.pdf"
+  ]
+}

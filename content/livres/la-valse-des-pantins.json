@@ -1,0 +1,33 @@
+{
+  "slug": "la-valse-des-pantins",
+  "statut": "publie",
+  "titre": "La valse des pantins",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 8,
+  "auteurs": [
+    "michel-perrin"
+  ],
+  "illustrateurs": [
+    "matt-mahlen"
+  ],
+  "prefaciers": [],
+  "description": "Les habitants, Bargevillois ou Bargeois, surnommés aussi Barges, vont et viennent préoccupés par leurs petites affaires à faire, leurs habitudes, et suivent le désordre des choses du monde qu'on dit ordinaire. Ils opinent aux discours de M. Passavant le maire. Ils admirent Cavagnol, le gros propriétaire. Ils obéissent à Lansquenet, le sergent de ville qui de sa matraque mouline l'air. Ils courbent l'échine quand dans l'église tonne et résonne la voix du curé Barbacolle. Bref, à Bargeville, jour et nuit, tout le monde veut dormir tranquille. Tout le monde sauf une poignée d'esprits follets rebelles à la grisaille quotidienne, une ribambelle de farfadets farceurs, rieurs et moqueurs: Grangil, Kaspar, Jacquet, Mirouette et moi. Notre nom: Les idiots du village dans un village d'idiots...",
+  "prixEuros": 10.0,
+  "disponible": true,
+  "nombrePages": 72,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782953020380",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-la-valse-des-pantins.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-la-valse-des-pantins-01-images-vp-bete01ok.jpg",
+    "content/media/uploads/illustrations-la-valse-des-pantins-02-images-vp-enfance01ok.jpg",
+    "content/media/uploads/illustrations-la-valse-des-pantins-03-images-vp-valse01ok.jpg",
+    "content/media/uploads/illustrations-la-valse-des-pantins-04-images-vp-voyage01ok.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-la-valse-des-pantins-01-documents-extrait-valse.pdf"
+  ]
+}

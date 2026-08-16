@@ -1,0 +1,32 @@
+{
+  "slug": "le-chien-anarchiste",
+  "statut": "publie",
+  "titre": "Le chien anarchiste",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 7,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "loic-mailly"
+  ],
+  "prefaciers": [],
+  "description": null,
+  "prixEuros": 6.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "9782918746157",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-le-chien-anarchiste.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-chien-anarchiste-01-images-ca-chien-chats.jpg",
+    "content/media/uploads/illustrations-le-chien-anarchiste-02-images-ca-les-chasseurs.jpg",
+    "content/media/uploads/illustrations-le-chien-anarchiste-03-images-ca-voiture-chien.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-chien-anarchiste-01-documents-chien-anarchiste-extrait.pdf"
+  ]
+}

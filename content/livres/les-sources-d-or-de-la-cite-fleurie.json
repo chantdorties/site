@@ -1,0 +1,33 @@
+{
+  "slug": "les-sources-d-or-de-la-cite-fleurie",
+  "statut": "publie",
+  "titre": "Les sources d'or de la Cité Fleurie",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 9,
+  "auteurs": [
+    "fred-morisse"
+  ],
+  "illustrateurs": [
+    "fred-morisse"
+  ],
+  "prefaciers": [],
+  "description": "Depuis quelques temps, dans la Cité Fleurie, certains jeunes habitants montrent des signes extérieurs de richesse étonnants. Cela intrigue le jeune Théo, qui se demande si cela peut avoir un rapport avec des cambriolages récemment commis. Avec ses amis, il décide d'enquêter sur ces mystérieuses \" sources d'or \".",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 160,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746270",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-les-sources-d-or-de-la-cite-fleurie.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-01-images-socf-socf-1.jpg",
+    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-02-images-socf-socf-2.jpg",
+    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-03-images-socf-socf-3.jpg",
+    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-04-images-socf-socf-4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-les-sources-d-or-de-la-cite-fleurie-01-documents-sources-d-or-cite-fleurie-extrait.pdf"
+  ]
+}

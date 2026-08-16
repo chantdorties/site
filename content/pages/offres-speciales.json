@@ -1,0 +1,61 @@
+{
+  "slug": "offres-speciales",
+  "statut": "brouillon",
+  "titre": "Offres spéciales",
+  "type": "page",
+  "sections": [
+    {
+      "titre": "Les deux tomes de Gaïa",
+      "contenu": "conte rebelle pour toute la famille Tome 1 - Conte de la Montagne Bleue Tome 2 - Sur le chemin de la Montagne Bleue Romans jeunesse d'Amanda Belassami-Sideris illustrés par Pavlos Habidis 16€ pièce / offre spéciale 25€ les deux."
+    },
+    {
+      "titre": "Les enquêtes de Théo",
+      "contenu": "pour les 10-14 ans Tome 1 - Les disparus de la Cité Fleurie Tome 2 - Les sources d'or de la Cité Fleurie Romans jeunesse de Fred Morisse illustrés par l'auteur 16€ pièce / offre spéciale 25€ les deux."
+    },
+    {
+      "titre": "D'un voyage à travers le temps",
+      "contenu": "aux sources d'une société plus égalitaire, deux romans haletants pour un même idéal Tome 1 - Un air de liberté Tome 2 - L'ombre de la lune Romans jeunesse d'Hellena Cavendi illustrés par Julie Grugeaux T.1 et l'autrice T.2 15€ T.1 et 18€ T.2 séparément Offre spéciale 25€ les deux tomes."
+    }
+  ],
+  "liens": [
+    {
+      "type": "livre",
+      "slug": "gaia-conte-de-la-montagne-bleue",
+      "texte": "Tome 1"
+    },
+    {
+      "type": "livre",
+      "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
+      "texte": "Tome 2"
+    },
+    {
+      "type": "livre",
+      "slug": "les-disparus-de-la-cite-fleurie",
+      "texte": "Tome 1"
+    },
+    {
+      "type": "livre",
+      "slug": "les-sources-d-or-de-la-cite-fleurie",
+      "texte": "Tome 2"
+    },
+    {
+      "type": "livre",
+      "slug": "un-air-de-liberte",
+      "texte": "Tome 1"
+    },
+    {
+      "type": "livre",
+      "slug": "l-ombre-de-la-lune",
+      "texte": "Tome 2"
+    }
+  ],
+  "images": [
+    "content/media/uploads/pages-offres-speciales-images-01-livres-couv-gaia.jpg",
+    "content/media/uploads/pages-offres-speciales-images-02-livres-couv-gaia2.jpg",
+    "content/media/uploads/pages-offres-speciales-images-03-livres-couvdisparuscitefleurie.jpg",
+    "content/media/uploads/pages-offres-speciales-images-04-livres-couv-sources-d-or-cite-fleurie.jpg",
+    "content/media/uploads/pages-offres-speciales-images-05-livres-couvunairdeliberte.jpg",
+    "content/media/uploads/pages-offres-speciales-images-06-livres-couvombrelune.jpg"
+  ],
+  "documents": []
+}

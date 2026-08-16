@@ -1,0 +1,33 @@
+{
+  "slug": "l-effet-saucisson",
+  "statut": "publie",
+  "titre": "L'effet saucisson",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": 10,
+  "auteurs": [
+    "pierre-debuys"
+  ],
+  "illustrateurs": [
+    "alexandre-widendaele"
+  ],
+  "prefaciers": [],
+  "description": "Pour Arsène, l'âne, pas question de garnir l’assiette d’un quelconque quidam. Et voilà Arsène cheminant sur les routes de campagne en plein hiver se découvrant des amis qui finissent par le suivre dans son désir d’indépendance. Bientôt tous les animaux du pays, domestiques et sauvages, entament une véritable révolution : mettre un terme au joug des maîtres. Mais eux ne l’entendent pas de cette oreille. Une terrible guerre mondiale commence sous les yeux désolés d’Arsène. Jamais il n’aurait pensé que son acte libérateur mènerait le monde si loin. Les bêtes auront-elles le dessus ? Les hommes seront-ils tous contre elles ?",
+  "prixEuros": 11.0,
+  "disponible": true,
+  "nombrePages": 96,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782953020359",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-l-effet-saucisson.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-l-effet-saucisson-01-images-es-alexwidendaele-la-lettre-des-animaux.jpg",
+    "content/media/uploads/illustrations-l-effet-saucisson-02-images-es-alexwidendaele-l-effet-saucisson-affiche.jpg",
+    "content/media/uploads/illustrations-l-effet-saucisson-03-images-es-alexwidendaele-l-effet-saucisson-grange-vide.jpg",
+    "content/media/uploads/illustrations-l-effet-saucisson-04-images-es-alexwidendaele-l-effet-saucisson-les-objets-et-animaux.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-l-effet-saucisson-01-documents-effet-sausisson-chapitre2.pdf"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "slug": "atelier-ecriture",
+  "statut": "publie",
+  "titre": "Atelier d’écriture",
+  "type": "page",
+  "sections": [
+    {
+      "titre": "Présentation",
+      "contenu": "En 2008-2009 et en 2009-2010, notre association a organisé un atelier d'écriture à Saintry-sur-Seine, près de Corbeil-Essonnes (91) en partenariat avec la municipalité. Il était animé par l'un de nos auteurs, Thierry Périssé et se tenait tous les mercredis (en période scolaire) de 20h00 à 22h00 à la bibliothèque de Saintry, 1 rue de l'Enfer (si si !) - 91250 Saintry-sur-Seine"
+    },
+    {
+      "titre": "Historique et publications",
+      "contenu": "Entre 2010 et 2013, l'atelier d'écriture n'est plus fait en partenariat avec la mairie et s'est tenu sous une forme plus libre. En mai 2013 l'atelier a finalement cessé ses activités régulières mais la tenue occasionnelle de réunion est envisageable. Si vous êtes intéressé vous pouvez nous contacter par mail à chantdorties@free.fr ou par téléphone au 01.60.75.61.38. « J’ai toujours écrit, pour moi, seule, et puis un jour, je me suis arrêtée. La source s’était tarie, ou je n’en voulais plus, je tournais en rond. L’atelier d’écriture m’a donné un second souffle. » « Depuis des années, j'ai envie d'écrire, depuis des années je n'y arrive pas, je commence à peine et je m'essouffle, il me manque l'étincelle de départ. Je l'ai trouvée cette année, tous les vendredis soirs, une date devenue très importante dans ma semaine. » « L’atelier, c’est partager nos doutes, nos hésitations, mais aussi nos émotions, tristes ou gaies, dans une ambiance de compréhension et de tolérance. » Mosaïque de vie, d’idées, de destins, mosaïque de nouvelles et de mots, mots qui dérivent, se mêlent et prennent vie sur la page... Mosaïque est un recueil de textes réalisés dans le cadre de l’atelier d’écriture de Saintry-sur-Seine, en partenariat avec la mairie, la bibliothèque et l’association Chant d’orties. Un atelier qui, pour sa première année d’existence, a le plaisir de vous présenter le fruit de son travail. L'année scolaire 2008-2009 s'est achevée par la publication d'un recueil des textes réalisés lors de l'atelier, intitulé Mosaïque. En voici la couverture : Lire un extrait de la nouvelle \"Le canal\" Lire un extrait de la nouvelle \"Un soleil si bleu\" Fin 2009-2010 un nouveau recueil parait, intitulé Puzzles :"
+    }
+  ],
+  "liens": [
+    {
+      "type": "document",
+      "href": "content/media/uploads/pages-atelier-ecriture-documents-01-documents-1erextrait-mosaique.pdf",
+      "texte": "Lire un extrait de la nouvelle"
+    },
+    {
+      "type": "document",
+      "href": "content/media/uploads/pages-atelier-ecriture-documents-02-documents-2eextrait-mosaique.pdf",
+      "texte": "Lire un extrait de la nouvelle"
+    }
+  ],
+  "images": [
+    "content/media/uploads/pages-atelier-ecriture-images-01-livres-couvmosaique.jpg",
+    "content/media/uploads/pages-atelier-ecriture-images-02-livres-couvpuzzles.jpg"
+  ],
+  "documents": [
+    "content/media/uploads/pages-atelier-ecriture-documents-01-documents-1erextrait-mosaique.pdf",
+    "content/media/uploads/pages-atelier-ecriture-documents-02-documents-2eextrait-mosaique.pdf"
+  ]
+}

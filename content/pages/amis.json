@@ -1,0 +1,41 @@
+{
+  "slug": "amis",
+  "statut": "publie",
+  "titre": "Amis",
+  "type": "page",
+  "sections": [
+    {
+      "titre": null,
+      "contenu": "Si vous aimez les découvertes, voici quelques sites de médias ou éditeurs qui nous tiennent particulièrement à coeur. Divergences 2 est un site d'information comme on en voit rarement, pour des articles sans concessions ni \"politiquement correct\". Créé en mai 2008 mais toujours en activité, voici un collectif d'illustrateurs qui mettent gracieusement à dispositions des affiches de mai 68 détournées ou des créations actuelles. Editeur éclectique et prolifique, le Chemin de fer propose des nouvelles illustrées alliant la modernité d'un texte à l'originalité des illustrations. Site de critiques littéraires, Encres Vagabondes propose un panorama exigeant des sorties en jeunesse et adulte en France."
+    }
+  ],
+  "liens": [
+    {
+      "type": "externe",
+      "href": "http://divergences.be/",
+      "texte": null
+    },
+    {
+      "type": "externe",
+      "href": "http://imaginaction.over-blog.org/",
+      "texte": null
+    },
+    {
+      "type": "externe",
+      "href": "http://www.chemindefer.org/",
+      "texte": null
+    },
+    {
+      "type": "externe",
+      "href": "http://www.encres-vagabondes.com/",
+      "texte": null
+    }
+  ],
+  "images": [
+    "content/media/uploads/pages-amis-images-01-amis-divergences2.jpg",
+    "content/media/uploads/pages-amis-images-02-amis-mai68mai2008.png",
+    "content/media/uploads/pages-amis-images-03-amis-les-editions-du-chemin-de-fer.jpg",
+    "content/media/uploads/pages-amis-images-04-amis-logo-encres-vagabondes.jpg"
+  ],
+  "documents": []
+}

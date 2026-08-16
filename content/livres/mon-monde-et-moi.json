@@ -1,0 +1,30 @@
+{
+  "slug": "mon-monde-et-moi",
+  "statut": "publie",
+  "titre": "Mon monde et moi",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 9,
+  "auteurs": [
+    "roxane-tilman"
+  ],
+  "illustrateurs": [
+    "somotho"
+  ],
+  "prefaciers": [],
+  "description": "Un livre poétique et sensible , pour tous les âges, pour résister au pire. Dans son pays, tout est gris. Gris perle, gris souris, gris canon de fusil. Mais elle a choisi de résister . Son monde à elle, ils ne peuvent pas le briser. à partir de 9 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746300",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-mon-monde-et-moi.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-mon-monde-et-moi-01-images-mmm-mmm-image1.jpg",
+    "content/media/uploads/illustrations-mon-monde-et-moi-02-images-mmm-mmm-image2.jpg",
+    "content/media/uploads/illustrations-mon-monde-et-moi-03-images-mmm-mmm-image3.jpg"
+  ],
+  "extraits": []
+}

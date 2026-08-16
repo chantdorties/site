@@ -1,0 +1,33 @@
+{
+  "slug": "ailes-d-arc-en-ciel",
+  "statut": "publie",
+  "titre": "Ailes d'arc-en-ciel",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 5,
+  "auteurs": [
+    "michel-perrin"
+  ],
+  "illustrateurs": [
+    "beatrice-guillemard"
+  ],
+  "prefaciers": [],
+  "description": "A l’école, au coin, se trouve Barnabé, le cancre de la classe, Il ne sait rien et tous ceux qui croient savoir se moquent de lui. Il ne sait rien mais peut-être, il connaît...",
+  "prixEuros": 11.0,
+  "disponible": true,
+  "nombrePages": 24,
+  "format": "27,7 x 19",
+  "reliure": "souple",
+  "isbn": "9782918746096",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-ailes-d-arc-en-ciel.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-ailes-d-arc-en-ciel-01-images-aac-ailes-darc-en-ciel01.jpg",
+    "content/media/uploads/illustrations-ailes-d-arc-en-ciel-02-images-aac-ailes-darc-en-ciel03.jpg",
+    "content/media/uploads/illustrations-ailes-d-arc-en-ciel-03-images-aac-ailes-darc-en-ciel05.jpg",
+    "content/media/uploads/illustrations-ailes-d-arc-en-ciel-04-images-aac-ailes-darc-en-ciel02.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-ailes-d-arc-en-ciel-01-documents-ailes-darc-en-cie-extrait.pdf"
+  ]
+}

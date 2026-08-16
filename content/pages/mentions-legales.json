@@ -1,0 +1,45 @@
+{
+  "slug": "mentions-legales",
+  "statut": "brouillon",
+  "titre": "Mentions légales",
+  "type": "legal",
+  "sections": [
+    {
+      "titre": "Informations éditeur",
+      "contenu": "Le site chantdorties.free.fr est animé par l’association CHANT D'ORTIES, association loi de 1901, numéro de siret 509 516 886 00017 sise au 9 Chemin Serre de Cassagnes, 34600 Bédarieux. La directrice de publication du site est : Mme Guillemard Béatrice, domiciliée à l'adresse susmentionnée. Toute réclamation ou commentaire doit être adressée par mail en suivant le lien contact ou par courrier postal à l'adresse susmentionnée."
+    },
+    {
+      "titre": "Informations hébergeur",
+      "contenu": "L'hébergement de ce site est assuré par la société Free, société FREE SAS, inscrite au RCS de Paris sous le numéro n° B 421 938 861 75371, Paris Cedex 08"
+    },
+    {
+      "titre": "Informatique et libertés",
+      "contenu": "L’association CHANT D’ORTIES garantit la plus stricte confidentialité des informations collectées sur le site. L’association CHANT D’ORTIES ne collecte que les données qui sont strictement nécessaires au traitement des commandes passées par l'internaute. Conformément à la loi \"Informatique et Liberté\" du 6 janvier 1978, l'internaute dispose d'un droit d'opposition, d'accès, de rectification et de suppression sur les données à caractère personnel le concernant. Pour ce faire, il doit écrire un courrier électronique à l'adresse chantdorties@free.fr ou par courrier postal à l'adresse susmentionnée. Les données de l'internaute seront systématiquement détruites trois mois après réception par CHANT D’ORTIES de la commande adressée par l'internaute."
+    },
+    {
+      "titre": "Cookies",
+      "contenu": "L'internaute est informé qu’aucun cookie n’est installé lors de la visite du site."
+    },
+    {
+      "titre": "Prospection par courriel",
+      "contenu": "En passant une commande, l'internaute autorise l’association CHANT D’ORTIES à le recontacter par mail pendant une durée de trois mois consécutifs après envoi de la commande. En laissant son courriel lors d'un salon, l'internaute autorise l’association CHANT D’ORTIES à le recontacter par mail pour une durée illimitée mais l'association s'engage à le rayer immédiatement de sa liste de diffusion en cas de demande."
+    },
+    {
+      "titre": "Annonces publicitaires",
+      "contenu": "Le site chantdorties.free.fr est indépendant. Aucune annonce publicitaire n’y est associée."
+    },
+    {
+      "titre": "Propriété intellectuelle",
+      "contenu": "L'internaute reconnaît que le contenu, y compris de façon non limitative, les textes, programmes informatiques, musiques, sons, photo, graphiques, vidéos, outils présents sur le site sont protégés par le droit d'auteur, le droit des marques ou tous autres droits et lois relatifs à la propriété intellectuelle. L'internaute reconnaît qu'il n'est autorisé à utiliser ces éléments et informations que dans les limites expressément fixées par les présentes. L'internaute est autorisé à faire des copies sur papier des pages du site pour une utilisation strictement privée et non commerciale. L'internaute est autorisé à mettre en place des liens hypertextes à partir d'un autre site internet vers les pages du site accompagnées d'un court descriptif. Toute reproduction est interdite sans l'autorisation de l'Editeur."
+    }
+  ],
+  "liens": [
+    {
+      "type": "email",
+      "href": "mailto:chantdorties@free.fr",
+      "texte": "contact"
+    }
+  ],
+  "images": [],
+  "documents": []
+}

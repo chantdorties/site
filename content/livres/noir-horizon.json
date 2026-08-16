@@ -1,0 +1,34 @@
+{
+  "slug": "noir-horizon",
+  "statut": "publie",
+  "titre": "Noir horizon",
+  "collection": "chardons-ardents",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": null,
+  "auteurs": [
+    "thierry-perisse"
+  ],
+  "illustrateurs": [
+    "matt-mahlen"
+  ],
+  "prefaciers": [],
+  "description": "Ce recueil de 12 nouvelles met en scène des hommes et des femmes écrasés par ce qui les entoure et ce qu’ils ont vécu. Certains ont la force de se rebeller, d’autres s’enfoncent dans la solitude. Exclus par ceux qui décident, tous sont devenus des déracinés ne sachant plus communiquer.",
+  "prixEuros": 12.0,
+  "disponible": false,
+  "nombrePages": 146,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020304",
+  "issnCollection": "2109-7674",
+  "couverture": "content/media/uploads/couvertures-noir-horizon.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-noir-horizon-01-images-nh-vignette1.jpg",
+    "content/media/uploads/illustrations-noir-horizon-02-images-nh-vignette3.jpg",
+    "content/media/uploads/illustrations-noir-horizon-03-images-nh-vignette5.jpg",
+    "content/media/uploads/illustrations-noir-horizon-04-images-nh-vignette8.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-noir-horizon-01-documents-nouvelle-nh-chantdorties.pdf",
+    "content/media/uploads/extraits-noir-horizon-02-documents-nouvelle-regarde-chantdorties.pdf"
+  ]
+}

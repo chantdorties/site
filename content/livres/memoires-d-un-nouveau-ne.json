@@ -1,0 +1,32 @@
+{
+  "slug": "memoires-d-un-nouveau-ne",
+  "statut": "publie",
+  "titre": "Mémoires d'un nouveau-né",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "roman",
+  "ageMinimum": 14,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "marion-claeys",
+    "catherine-senaffe"
+  ],
+  "prefaciers": [],
+  "description": "Il n'est pas encore né que dans son crâne une \"espèce de pâte grise\" rayonne de manière extraordinaire. Son cerveau se développe alors sans tenir compte de l'évolution de son corps. Pourquoi ? Parce que neuf mois plus tôt, il y a eu un petit boum dans la région. Rien d'officiel, rien d'alarmant. Un tout petit boum dans un tout petit tuyau dans une toute petite usine nucléaire d'un tout petit village des environs. Dès sa naissance, il comprend tout, perçoit tout. Il observe ses parents et le monde, en tire des conclusions sans concessions. Et pourtant, alors que la douleur le dévore, il cherche l'amour et l'absolu.",
+  "prixEuros": 10.0,
+  "disponible": true,
+  "nombrePages": 80,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020335",
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-memoires-d-un-nouveau-ne.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-memoires-d-un-nouveau-ne-01-images-mnn-boussole.jpg",
+    "content/media/uploads/illustrations-memoires-d-un-nouveau-ne-02-images-mnn-papillon-usine-n-b.jpg",
+    "content/media/uploads/illustrations-memoires-d-un-nouveau-ne-03-images-mnn-poisson-n-b-travail.jpg",
+    "content/media/uploads/illustrations-memoires-d-un-nouveau-ne-04-images-mnn-usine2.jpg"
+  ],
+  "extraits": []
+}

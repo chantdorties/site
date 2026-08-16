@@ -1,0 +1,33 @@
+{
+  "slug": "deni-de-patrie",
+  "statut": "publie",
+  "titre": "Déni de patrie",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "benoit-drouart"
+  ],
+  "prefaciers": [],
+  "description": "Avec comme élément déclencheur l'accident mortel de son neveu de quinze ans, le narrateur revient sur l'histoire de sa famille. Il trace le portrait de son grand-père, de son père, et de ses frères, tous, comme lui, antimilitaristes. Il cherche à comprendre pourquoi, de père en fils, les hommes de la famille se dressent contre, ou du moins évitent, la conscription, le service militaire, la guerre et le patriotisme. Il raconte l'expérience de ses aïeux, et sa propre expérience d'insoumis qui le jetta en prison.",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 136,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782918746126",
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-deni-de-patrie.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-deni-de-patrie-01-images-dp-deni-patrie1.gif",
+    "content/media/uploads/illustrations-deni-de-patrie-02-images-dp-deni-patrie2.jpg",
+    "content/media/uploads/illustrations-deni-de-patrie-03-images-dp-deni-patrie3.jpg",
+    "content/media/uploads/illustrations-deni-de-patrie-04-images-dp-deni-patrie4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-deni-de-patrie-01-documents-deni-de-patrie-extrait.pdf"
+  ]
+}

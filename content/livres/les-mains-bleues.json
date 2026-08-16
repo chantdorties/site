@@ -1,0 +1,33 @@
+{
+  "slug": "les-mains-bleues",
+  "statut": "publie",
+  "titre": "Les mains bleues",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 12,
+  "auteurs": [
+    "christophe-martin"
+  ],
+  "illustrateurs": [
+    "francois-saint-remy"
+  ],
+  "prefaciers": [
+    "ricardo-montserrat"
+  ],
+  "description": "Quand l’usine Levi’s a fermé ses portes en février 1999, les 541 licenciés ne se sont pas bercés de l’illusion de retrouver un travail stable. Vingt-cinq femmes de ces 541 ont écrit avec Christophe Martin pour le spectacle 501 Blues et pour ce livre. Toutes sortes d’écritures pour les connaître, elles, leur colère, leur espéance. Récits, descriptions, dialogues, formes rythmées, énumérations fortes comme des litanies industrielles, comme pour marteler le mur de mensonges et de propos rassurants constamment dressé et rehaussé dit Ricardo Montserrat dans son émouvante et ardente préface.",
+  "prixEuros": 8.0,
+  "disponible": true,
+  "nombrePages": 128,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505027",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-les-mains-bleues.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-les-mains-bleues-01-images-collection-eglantine-images-mainsb-mains1.jpg",
+    "content/media/uploads/illustrations-les-mains-bleues-02-images-collection-eglantine-images-mainsb-mains2.jpg",
+    "content/media/uploads/illustrations-les-mains-bleues-03-images-collection-eglantine-images-mainsb-mains3.jpg",
+    "content/media/uploads/illustrations-les-mains-bleues-04-images-collection-eglantine-images-mainsb-mains4.jpg"
+  ],
+  "extraits": []
+}

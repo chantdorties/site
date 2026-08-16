@@ -1,0 +1,33 @@
+{
+  "slug": "le-coeur-a-l-ouvrage",
+  "statut": "publie",
+  "titre": "Le coeur à l'ouvrage",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "thierry-perisse"
+  ],
+  "illustrateurs": [
+    "zodanzo"
+  ],
+  "prefaciers": [],
+  "description": "Dans ce roman, Thierry Périssé raconte l'histoire d’Olivia, une femme issue d'un milieu populaire. Vivant avec un homme dont elle a deux enfants et qui ne la comprend pas, elle se débat dans les affres de l'humiliation et fait tout pour s'en sortir. Sa rencontre avec Pierre, dessinateur, lui ouvre des horizons qu’elle n’imaginait pas.",
+  "prixEuros": 13.0,
+  "disponible": true,
+  "nombrePages": 232,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020373",
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-le-coeur-a-l-ouvrage.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-01-images-co-ch-2-bis.jpg",
+    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-02-images-co-ch-12-13.jpg",
+    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-03-images-co-ch-23.jpg",
+    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-04-images-co-ch-27.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-coeur-a-l-ouvrage-01-documents-coeur-a-louvrage-chapitre1.pdf"
+  ]
+}

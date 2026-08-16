@@ -1,0 +1,32 @@
+{
+  "slug": "extraction-3-2-1-partez",
+  "statut": "publie",
+  "titre": "Extraction 3, 2, 1, Partez !",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 9,
+  "auteurs": [
+    "grace-belder"
+  ],
+  "illustrateurs": [
+    "soazic-deleplanque"
+  ],
+  "prefaciers": [],
+  "description": "Dans un futur proche, une partie de l’humanité a quitté la Terre devenue Année 2031. À 11 ans, Jules vit au sein d’une famille militante dont les préoccupations sont à des années lumières de ses centres d’intérêts. Lui et son ami Frank se passionnent plutôt pour les aventures de la BD 3.2.1... Partez ! et son jeu elvecpronique qui les entraînent dans de terrifiants univers parallèles du futur. Mais voilà, alors que ses parents lui donnent le weekend pour réfléchir à comment s’inclure davantage, Jules se retrouve soudain propulsé dans un de ces mondes. Dans ce futur il a 14 ans et la confrontation avec un univers dystopique changera radicalement sa manière d’appréhender sa vie. Il pourra revenir et inciter sa famille à aller plus loin encore dans sa réflexion.",
+  "prixEuros": null,
+  "disponible": false,
+  "nombrePages": 80,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "9782918746386",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-extraction-3-2-1-partez.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-extraction-3-2-1-partez-01-images-e123-e123-1.jpg",
+    "content/media/uploads/illustrations-extraction-3-2-1-partez-02-images-e123-e123-2.jpg",
+    "content/media/uploads/illustrations-extraction-3-2-1-partez-03-images-e123-e123-3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-extraction-3-2-1-partez-01-documents-extraction-extrait.pdf"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "slug": "leur-fausser-compagnie",
+  "statut": "publie",
+  "titre": "Leur fausser compagnie",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "thierry-maricourt"
+  ],
+  "illustrateurs": [
+    "helene-deregnaucourt"
+  ],
+  "prefaciers": [],
+  "description": "A 13 ans on a des copines, des jeux d’école, le quartier… Mais voilà il y a la palissade et ce qui s’est passé derrière un jour fait vieillir, d’un coup. Personne ne comprend pourquoi soudain elle ne veut plus aller à l’école, refuse même de sortir de son lit. Il faut dire qu’elle en peut en parler, pas même à Britta qui à force de joie contagieuse finit par la traîner hors de son lit, de sa chambre et de la maison. Et puis elle lui fait découvrir la bibliothèque, là où des livres peuvent vous faire voyager, sans bouger de votre siège, et, petit à petit, oublier l’impensable.",
+  "prixEuros": 14.0,
+  "disponible": true,
+  "nombrePages": 112,
+  "format": "21 x 15",
+  "reliure": null,
+  "isbn": "9782918746225",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-leur-fausser-compagnie.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-leur-fausser-compagnie-01-images-lfc-leur-fausser-compagnie1.jpg",
+    "content/media/uploads/illustrations-leur-fausser-compagnie-02-images-lfc-leur-fausser-compagnie2.jpg",
+    "content/media/uploads/illustrations-leur-fausser-compagnie-03-images-lfc-leur-fausser-compagnie3.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-leur-fausser-compagnie-01-documents-leur-fausser-compagnie-extrait.pdf"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "le-fils-du-caiman",
+  "statut": "publie",
+  "titre": "Le fils du caïman",
+  "collection": "graines-d-orties",
+  "typeOuvrage": "roman",
+  "ageMinimum": null,
+  "auteurs": [
+    "jane-herve"
+  ],
+  "illustrateurs": [
+    "michel-julliard"
+  ],
+  "prefaciers": [],
+  "description": "Cadjo, fils du chef des indiens Xalaroyo, devient un « homme » après un rite de passage dans la jungle. En ces temps nouveaux, cette tribu du haut Xingu connaît des troubles : des rivalités intestines mais aussi les Peaux Livides (les Blancs) qui envahissent et détruisent la forêt, construisent un barrage qui assèche le fleuve et assoiffent la tribu. La lutte contre eux entraîne Cadjo, devenu chef, à faire des choix terribles. Il lance un hymne à la terre et à la nature. Les descriptions de la vie communautaire alternent avec le vécu du jeune héros qui monte en puissance à travers la lutte. En une sorte d’écho collectif, car chaque membre de la tribu fait intimement partie de l’ensemble.",
+  "prixEuros": 13.0,
+  "disponible": true,
+  "nombrePages": 92,
+  "format": "15 x 21",
+  "reliure": null,
+  "isbn": "9782918746393",
+  "issnCollection": "2101-7425",
+  "couverture": "content/media/uploads/couvertures-le-fils-du-caiman.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-fils-du-caiman-01-images-fc-epson025.jpg",
+    "content/media/uploads/illustrations-le-fils-du-caiman-02-images-fc-epson027.jpg",
+    "content/media/uploads/illustrations-le-fils-du-caiman-03-images-fc-epson029.jpg",
+    "content/media/uploads/illustrations-le-fils-du-caiman-04-images-fc-epson031.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-fils-du-caiman-01-documents-le-fils-du-caiman-extrait.pdf"
+  ]
+}

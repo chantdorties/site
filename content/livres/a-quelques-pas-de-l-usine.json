@@ -1,0 +1,33 @@
+{
+  "slug": "a-quelques-pas-de-l-usine",
+  "statut": "publie",
+  "titre": "A quelques pas de l'usine",
+  "collection": "chardons-ardents",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": null,
+  "auteurs": [
+    "jean-pierre-levaray"
+  ],
+  "illustrateurs": [
+    "matt-mahlen"
+  ],
+  "prefaciers": [],
+  "description": "A quelques pas de l'usine retrace l'existence de celles et de ceux qui vivent au pied du monstre d'acier. Des êtres voués à uen mort annoncée, à l'image du Vieux Bourg. Dans ce recueil de nouvelles, J.P. Levaray, auteur de Putain d'usine sorti chez l'Insomniaque, dresse des portraits sans concession mais pleins d'humanité.",
+  "prixEuros": 11.0,
+  "disponible": true,
+  "nombrePages": 115,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020328",
+  "issnCollection": "2109-7674",
+  "couverture": "content/media/uploads/couvertures-a-quelques-pas-de-l-usine.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-01-images-aqpu-couv12paschantortie.jpg",
+    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-02-images-aqpu-driss.jpg",
+    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-03-images-aqpu-epiciere.jpg",
+    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-04-images-aqpu-ferailleur.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-a-quelques-pas-de-l-usine-01-documents-aquelquespasdelusine-extrait.pdf"
+  ]
+}

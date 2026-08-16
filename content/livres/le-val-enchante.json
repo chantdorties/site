@@ -1,0 +1,33 @@
+{
+  "slug": "le-val-enchante",
+  "statut": "publie",
+  "titre": "Le val enchanté",
+  "collection": "rues-en-friche",
+  "typeOuvrage": "roman",
+  "ageMinimum": 14,
+  "auteurs": [
+    "fred-morisse"
+  ],
+  "illustrateurs": [
+    "fred-morisse"
+  ],
+  "prefaciers": [],
+  "description": "Au début des années 70, la famille Audoux vient d’emménager dans leur nouveau logement : un appartement dans une tour de la cité. Monsieur Audoux est Ouvrier Spécialisé, ce qui fait la fierté de son fils Clément. Madame Audoux, d'abord mère au foyer, décide ensuite de travailler dans le tout nouveau supermarché du quartier. Leurs enfants, Marthe et Clément, ne voient la cité que comme un immense terrain de jeu où ils enchaînent ballade en vélo, match de foot, jeu de marelle et château de sable. Dans le quartier se croisent des Italiens, des Algériens, des Français, des ouvriers, des mères au foyer, des gitans, des racistes, des voisins chaleureux et des mauvais coucheurs.",
+  "prixEuros": 18.0,
+  "disponible": true,
+  "nombrePages": 384,
+  "format": null,
+  "reliure": null,
+  "isbn": "9782918746119",
+  "issnCollection": "2105-9780",
+  "couverture": "content/media/uploads/couvertures-le-val-enchante.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-le-val-enchante-01-images-ve-val-enchante1.jpg",
+    "content/media/uploads/illustrations-le-val-enchante-02-images-ve-val-enchante2.jpg",
+    "content/media/uploads/illustrations-le-val-enchante-03-images-ve-val-enchante3.jpg",
+    "content/media/uploads/illustrations-le-val-enchante-04-images-ve-val-enchante4.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-le-val-enchante-01-documents-valenchante-extrait.pdf"
+  ]
+}

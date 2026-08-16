@@ -1,0 +1,33 @@
+{
+  "slug": "debout-dans-l-aquarium",
+  "statut": "publie",
+  "titre": "Debout dans l'aquarium",
+  "collection": "chardons-ardents",
+  "typeOuvrage": "recueil-de-nouvelles",
+  "ageMinimum": null,
+  "auteurs": [
+    "eric-lemaire"
+  ],
+  "illustrateurs": [
+    "eric-lemaire"
+  ],
+  "prefaciers": [],
+  "description": ". la gauche arrive au pouvoir. Deux ans d'espoir, de fêtes et puis le désenchantement qui s'installe. Quelque part dans un quartier d'une ville de bord de mer, le bar de Maurice. Les habitués viennent y cracher leurs désillusions et se fondre dans l'atmosphère chaleureuse. Tous ont appris à nager, mais voilà que maintenant ils n'arrivent plus à maintenir la tête hors de l'eau. des oubliés de l'Histoire sur lesquels l'auteur porte un regard bienveillant mais lucide.",
+  "prixEuros": 12.0,
+  "disponible": true,
+  "nombrePages": 128,
+  "format": "18,5 x 18,5",
+  "reliure": null,
+  "isbn": "9782953020342",
+  "issnCollection": "2109-7674",
+  "couverture": "content/media/uploads/couvertures-debout-dans-l-aquarium.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-debout-dans-l-aquarium-01-images-dda-chez-maurice.jpg",
+    "content/media/uploads/illustrations-debout-dans-l-aquarium-02-images-dda-pieces-detachees.jpg",
+    "content/media/uploads/illustrations-debout-dans-l-aquarium-03-images-dda-sabine.jpg",
+    "content/media/uploads/illustrations-debout-dans-l-aquarium-04-images-dda-epicerie-fine.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-debout-dans-l-aquarium-01-documents-debout-dans-l-aquarium-nom-de-dieu.pdf"
+  ]
+}

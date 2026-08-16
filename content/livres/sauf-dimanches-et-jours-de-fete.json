@@ -1,0 +1,31 @@
+{
+  "slug": "sauf-dimanches-et-jours-de-fete",
+  "statut": "publie",
+  "titre": "Sauf dimanches et jours de fête",
+  "collection": "eglantine",
+  "typeOuvrage": "mini-roman",
+  "ageMinimum": 13,
+  "auteurs": [
+    "victoire-perdrot"
+  ],
+  "illustrateurs": [
+    "stephen-davies"
+  ],
+  "prefaciers": [
+    "d-daeninckx"
+  ],
+  "description": "Gareth, Marie-Luce, Steve, Daniel, Théo, Dafydd et d’autres : que vient faire leur avenir dans leur présent ? Pensent-ils à la vieillesse ? à la retraite ? Ils sont jeunes, ils ont bien le temps… Ce n’est pas uniquement une question pour les journaux, une question de manœuvres et de négociations entre patronat et salariat, ça nous regarde : c’est de nous qu’il s’agit, de notre vie. Une réflexion mélancolique sur nos retraite futures à travers le regard de'hommes et de femmes lucides. Un petit roman toujours d'une brûlante actualité.",
+  "prixEuros": 7.0,
+  "disponible": true,
+  "nombrePages": 96,
+  "format": "15 x 11,5",
+  "reliure": null,
+  "isbn": "2914505051",
+  "issnCollection": null,
+  "couverture": "content/media/uploads/couvertures-sauf-dimanches-et-jours-de-fete.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-01-images-collection-eglantine-images-sdjf-saufdimaches1.jpg",
+    "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-02-images-collection-eglantine-images-sdjf-saufdimaches2.jpg"
+  ],
+  "extraits": []
+}

@@ -1,0 +1,30 @@
+{
+  "slug": "la-petite-dame-grise",
+  "statut": "publie",
+  "titre": "La petite dame grise",
+  "collection": "coquelicots-sauvages",
+  "typeOuvrage": "album",
+  "ageMinimum": 5,
+  "auteurs": [
+    "chrystel-gaubert"
+  ],
+  "illustrateurs": [
+    "sebastien-boscus"
+  ],
+  "prefaciers": [],
+  "description": "C’est l’histoire d’une bohémienne si discrète que personne n’est sûr qu’elle existe vraiment. Aux pieds du lit des enfants, au cœur des fêtes foraines, et jusqu’au fond de sa cellule, elle se livre à une activité des plus illégales : de la contrebande de sourires. à partir de 5 ans",
+  "prixEuros": 16.0,
+  "disponible": true,
+  "nombrePages": 32,
+  "format": "27 x 24",
+  "reliure": "cartonne",
+  "isbn": "9782918746256",
+  "issnCollection": "2104-7073",
+  "couverture": "content/media/uploads/couvertures-la-petite-dame-grise.jpg",
+  "illustrations": [
+    "content/media/uploads/illustrations-la-petite-dame-grise-01-images-pdg-pdg-image-1.jpg"
+  ],
+  "extraits": [
+    "content/media/uploads/extraits-la-petite-dame-grise-01-documents-la-petite-dame-grise-extrait.pdf"
+  ]
+}

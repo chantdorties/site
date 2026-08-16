@@ -4,31 +4,27 @@
 !/README.md
 !/Makefile
 !/requirements.txt
+!/.github/
+!/config/
+!/content/
+!/docs/
 !/frontend/
+!/netlify.toml
 !/tools/
-!/migration/
-!/dist/
 
 /tools/*
 !/tools/build-site.py
+!/tools/content_data.py
+!/tools/admin-dev.py
+!/tools/deploy-free.py
 !/tools/dev-server.py
 !/tools/test_built_site.py
-!/tools/test_refined_data.py
-
-/migration/*
-!/migration/front-data/
-!/migration/front-assets/
-!/migration/rapports/
-/migration/rapports/*
-!/migration/rapports/site-build.json
-
-# Invalid or incorrectly attributed excerpts, not published by the site.
-/migration/front-assets/extraits/les-affiches/01-documents-extrait-lesaffiches.pdf
-/migration/front-assets/extraits/mon-monde-et-moi/01-documents-mon-monde-et-moi-extrait.pdf
-/migration/front-assets/extraits/mon-monde-et-moi/02-documents-orchestre-favela-extrait.pdf
-/migration/front-assets/extraits/pas-une/01-documents-pas-une-extrait.pdf
+!/tools/test_content_data.py
+!/tools/test_deploy.py
 
 **/__pycache__/
 *.py[cod]
 Thumbs.db
+/dist/
 /dist-preview/
+/reports/
