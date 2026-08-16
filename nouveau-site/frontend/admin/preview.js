@@ -16,7 +16,10 @@
         status(entry),
         h('p', { className: 'content-preview__meta' }, value(entry, 'collection')),
         h('h1', {}, value(entry, 'titre', 'Livre sans titre')),
-        cover ? h('img', { src: cover, alt: '' }) : null,
+        cover ? h('img', {
+          src: cover,
+          alt: value(entry, 'couvertureAlt') || `Couverture de ${value(entry, 'titre', 'ce livre')}`
+        }) : null,
         h('p', { className: 'content-preview__lead' }, value(entry, 'description')),
         h('p', { className: 'content-preview__facts' },
           [value(entry, 'typeOuvrage'), price === null ? '' : `${price} €`].filter(Boolean).join(' · ')
@@ -34,7 +37,10 @@
         status(entry),
         h('p', { className: 'content-preview__meta' }, roles?.join?.(' · ') || ''),
         h('h1', {}, value(entry, 'nom', 'Personne sans nom')),
-        portrait ? h('img', { src: portrait, alt: '' }) : null,
+        portrait ? h('img', {
+          src: portrait,
+          alt: value(entry, 'imagePrincipaleAlt') || `Portrait de ${value(entry, 'nom', 'cette personne')}`
+        }) : null,
         h('p', { className: 'content-preview__lead' }, value(entry, 'biographie'))
       );
     }
@@ -90,4 +96,5 @@
   CMS.registerPreviewTemplate('collections', CollectionPreview);
   CMS.registerPreviewTemplate('actualites', NewsPreview);
   CMS.registerPreviewTemplate('pages', PagePreview);
+  CMS.registerPreviewTemplate('pages_fixes', PagePreview);
 })();

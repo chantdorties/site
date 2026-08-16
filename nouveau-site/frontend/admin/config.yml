@@ -17,6 +17,9 @@ local_backend:
   url: http://127.0.0.1:8082/api/v1
 media_folder: nouveau-site/content/media/uploads
 public_folder: content/media/uploads
+media_library:
+  config:
+    max_file_size: 20971520
 
 slug:
   encoding: ascii
@@ -24,6 +27,130 @@ slug:
   sanitize_replacement: "-"
 
 collections:
+  - name: reglages
+    label: Réglages du site
+    format: json
+    delete: false
+    files:
+      - name: site
+        label: Identité et contact
+        file: nouveau-site/content/reglages/site.json
+        fields:
+          - {label: "Nom complet", name: nom, widget: string}
+          - {label: "Nom court", name: nomCourt, widget: string}
+          - {label: "Adresse courriel", name: courriel, widget: string}
+          - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+          - {label: "Domaine public", name: domaine, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+          - {label: "Description générale", name: description, widget: text}
+      - name: navigation
+        label: Menu principal
+        file: nouveau-site/content/reglages/navigation.json
+        fields:
+          - label: Liens
+            name: liens
+            widget: list
+            min: 1
+            summary: "{{fields.libelle}}"
+            fields:
+              - {label: "Identifiant technique", name: id, widget: string, hint: "Ne pas modifier l’identifiant d’un lien existant."}
+              - {label: "Libellé", name: libelle, widget: string}
+              - {label: "Adresse", name: url, widget: string}
+              - {label: "Visible", name: visible, widget: boolean, default: true}
+              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
+          - label: Recherche
+            name: recherche
+            widget: object
+            fields:
+              - {label: "Libellé", name: libelle, widget: string}
+              - {label: "Adresse", name: url, widget: string}
+      - name: footer
+        label: Pied de page
+        file: nouveau-site/content/reglages/footer.json
+        fields:
+          - {label: "Présentation", name: presentation, widget: text}
+          - {label: "Titre de la navigation", name: titreNavigation, widget: string}
+          - label: Liens de navigation
+            name: liensNavigation
+            widget: list
+            min: 1
+            summary: "{{fields.libelle}}"
+            fields:
+              - {label: "Libellé", name: libelle, widget: string}
+              - {label: "Adresse", name: url, widget: string}
+              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
+          - {label: "Titre des informations", name: titreInformations, widget: string}
+          - {label: "Libellé Facebook", name: libelleFacebook, widget: string}
+          - {label: "Libellé Manuscrits", name: libelleManuscrits, widget: string}
+          - {label: "Libellé Plan du site", name: libellePlan, widget: string}
+          - {label: "Libellé Mentions légales", name: libelleMentions, widget: string}
+      - name: accueil
+        label: Textes de l’accueil
+        file: nouveau-site/content/reglages/accueil.json
+        fields:
+          - {label: "Rubrique du bandeau", name: heroRubrique, widget: string}
+          - {label: "Titre principal", name: heroTitre, widget: string}
+          - {label: "Partie colorée du titre", name: heroAccent, widget: string}
+          - {label: "Accroche", name: heroAccroche, widget: text}
+          - {label: "Bouton Catalogue", name: boutonCatalogue, widget: string}
+          - {label: "Bouton Collections", name: boutonCollections, widget: string}
+          - {label: "Titre du bloc Information", name: titreInformation, widget: string}
+          - {label: "Rubrique Collections", name: collectionsRubrique, widget: string}
+          - {label: "Titre Collections", name: collectionsTitre, widget: string}
+          - {label: "Rubrique Suivre", name: suivreRubrique, widget: string}
+          - {label: "Titre Suivre", name: suivreTitre, widget: string}
+          - {label: "Rubrique Actualités", name: actualitesRubrique, widget: string}
+          - {label: "Titre Actualités", name: actualitesTitre, widget: string}
+          - {label: "Action Actualités", name: actualitesAction, widget: string}
+          - {label: "Rubrique Manuscrits", name: manuscritsRubrique, widget: string}
+          - {label: "Titre Manuscrits", name: manuscritsTitre, widget: string}
+          - {label: "Action Manuscrits", name: manuscritsAction, widget: string}
+      - name: pages
+        label: Introductions des pages
+        file: nouveau-site/content/reglages/pages.json
+        fields:
+          - label: Catalogue
+            name: catalogue
+            widget: object
+            fields: &page_intro_fields
+              - {label: "Rubrique", name: rubrique, widget: string, hint: "Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+              - {label: "Titre", name: titre, widget: string}
+              - {label: "Introduction", name: introduction, widget: text}
+              - {label: "Description SEO", name: descriptionSeo, widget: text, hint: "{nombre} est remplacé par le nombre réel de contenus. 160 caractères maximum."}
+          - label: Auteurs et illustrateurs
+            name: personnes
+            widget: object
+            fields: *page_intro_fields
+          - label: Collections
+            name: collections
+            widget: object
+            fields: *page_intro_fields
+          - label: Actualités
+            name: actualites
+            widget: object
+            fields:
+              - {label: "Rubrique", name: rubrique, widget: string}
+              - {label: "Titre", name: titre, widget: string}
+              - {label: "Introduction", name: introduction, widget: text}
+              - {label: "Description SEO", name: descriptionSeo, widget: text}
+              - {label: "Rubrique du bloc Facebook", name: appelRubrique, widget: string}
+              - {label: "Titre du bloc Facebook", name: appelTitre, widget: string}
+              - {label: "Texte du bloc Facebook", name: appelTexte, widget: text}
+              - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
+          - label: La maison
+            name: maison
+            widget: object
+            fields: *page_intro_fields
+      - name: paiement
+        label: Paiement et dons
+        file: nouveau-site/content/reglages/paiement.json
+        fields:
+          - label: Identifiant du bouton PayPal de don
+            name: donationHostedButtonId
+            widget: string
+            hint: Réglage avancé à 13 caractères fourni par PayPal.
+            pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
+          - {label: "Libellé du bouton de don", name: libelleDon, widget: string}
+
   - name: livres
     label: Livres
     label_singular: Livre
@@ -31,26 +158,32 @@ collections:
     extension: json
     format: json
     create: true
+    delete: false
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
-    sortable_fields: [titre, collection, statut]
-    view_filters:
+    sortable_fields: [titre, collection, ordre, statut]
+    view_filters: &status_filters
       - {label: "Publiés", field: statut, pattern: "publie"}
       - {label: "Brouillons", field: statut, pattern: "brouillon"}
+      - {label: "Archivés", field: statut, pattern: "archive"}
     fields:
       - {label: "Titre", name: titre, widget: string}
       - label: Adresse
         name: slug
         widget: string
+        hint: Ne pas modifier après la première publication. Ajouter l’ancienne adresse plus bas si un changement est indispensable.
         pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
-      - label: Publication
+      - &publication
+        label: Publication
         name: statut
         widget: select
         default: publie
         options:
           - {label: "Publié", value: publie}
           - {label: "Brouillon", value: brouillon}
+          - {label: "Archivé", value: archive}
+      - &order {label: "Ordre d’affichage", name: ordre, widget: number, value_type: int, min: 0, default: 100}
       - label: Collection
         name: collection
         widget: relation
@@ -125,16 +258,48 @@ collections:
         pattern: ['^(?:[0-9]{10}|[0-9]{13})$', "Saisir un ISBN à 10 ou 13 chiffres"]
       - {label: "ISSN de la collection", name: issnCollection, widget: string, required: false}
       - {label: "Couverture", name: couverture, widget: image, allow_multiple: false}
+      - {label: "Texte alternatif de la couverture", name: couvertureAlt, widget: string, required: false}
       - label: Illustrations
         name: illustrations
         widget: list
         required: false
-        field: {label: "Image", name: image, widget: image, allow_multiple: false}
+        summary: "{{fields.alt}}"
+        fields:
+          - {label: "Image", name: image, widget: image, allow_multiple: false}
+          - {label: "Texte alternatif", name: alt, widget: string, required: false}
       - label: Extraits PDF
         name: extraits
         widget: list
         required: false
         field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+      - {label: "Mis en avant sur l’accueil", name: miseEnAvantAccueil, widget: boolean, default: false}
+      - {label: "Ordre sur l’accueil", name: ordreAccueil, widget: number, value_type: int, min: 0, default: 999}
+      - label: À découvrir aussi
+        name: aDecouvrir
+        widget: relation
+        collection: livres
+        multiple: true
+        max: 4
+        required: false
+        search_fields: [titre]
+        display_fields: [titre]
+        value_field: slug
+      - &old_slugs
+        label: Anciennes adresses
+        name: anciensSlugs
+        widget: list
+        required: false
+        field: {label: "Ancienne adresse", name: adresse, widget: string}
+      - &seo
+        label: Référencement SEO
+        name: seo
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
+          - {label: "Description SEO", name: description, widget: text, required: false, pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"], hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."}
+          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false}
 
   - name: personnes
     label: Auteurs et illustrateurs
@@ -143,23 +308,17 @@ collections:
     extension: json
     format: json
     create: true
+    delete: false
     identifier_field: nom
     slug: "{{fields.slug}}"
     summary: "{{nom}} — {{statut}}"
-    sortable_fields: [nom, statut]
+    sortable_fields: [nom, ordre, statut]
+    view_filters: *status_filters
     fields:
       - {label: "Nom", name: nom, widget: string}
-      - label: Adresse
-        name: slug
-        widget: string
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
-      - label: Publication
-        name: statut
-        widget: select
-        default: publie
-        options:
-          - {label: "Publié", value: publie}
-          - {label: "Brouillon", value: brouillon}
+      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - *publication
+      - *order
       - label: Rôles
         name: roles
         widget: select
@@ -171,16 +330,22 @@ collections:
           - {label: "Préfacier", value: prefacier}
       - {label: "Biographie", name: biographie, widget: text, required: false}
       - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false}
+      - {label: "Texte alternatif du portrait", name: imagePrincipaleAlt, widget: string, required: false}
       - label: Autres images
         name: images
         widget: list
         required: false
-        field: {label: "Image", name: image, widget: image, allow_multiple: false}
+        summary: "{{fields.alt}}"
+        fields:
+          - {label: "Image", name: image, widget: image, allow_multiple: false}
+          - {label: "Texte alternatif", name: alt, widget: string, required: false}
       - label: Liens externes
         name: liensExternes
         widget: list
         required: false
         field: {label: "Adresse web", name: url, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+      - *old_slugs
+      - *seo
 
   - name: collections
     label: Collections
@@ -189,23 +354,20 @@ collections:
     extension: json
     format: json
     create: true
+    delete: false
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
+    sortable_fields: [ordre, titre, statut]
+    view_filters: *status_filters
     fields:
       - {label: "Nom", name: titre, widget: string}
-      - label: Adresse
-        name: slug
-        widget: string
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
-      - label: Publication
-        name: statut
-        widget: select
-        default: publie
-        options:
-          - {label: "Publié", value: publie}
-          - {label: "Brouillon", value: brouillon}
+      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - *publication
+      - *order
       - {label: "Présentation", name: description, widget: text}
+      - *old_slugs
+      - *seo
 
   - name: actualites
     label: Actualités
@@ -214,23 +376,16 @@ collections:
     extension: json
     format: json
     create: true
+    delete: false
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{datePublication}} — {{titre}} — {{statut}}"
     sortable_fields: [datePublication, titre, statut]
+    view_filters: *status_filters
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - label: Adresse
-        name: slug
-        widget: string
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
-      - label: Publication
-        name: statut
-        widget: select
-        default: publie
-        options:
-          - {label: "Publié", value: publie}
-          - {label: "Brouillon", value: brouillon}
+      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - *publication
       - {label: "Date", name: datePublication, widget: datetime, date_format: "DD/MM/YYYY", time_format: false, format: "YYYY-MM-DD"}
       - label: Catégorie
         name: type
@@ -246,54 +401,134 @@ collections:
       - {label: "Texte alternatif de l’image", name: imageAlt, widget: string, required: false}
       - {label: "Lien externe", name: lienExterne, widget: string, required: false, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
       - {label: "Document PDF", name: document, widget: file, allow_multiple: false, required: false}
+      - *old_slugs
+      - *seo
+
+  - name: pages_fixes
+    label: Pages principales
+    format: json
+    delete: false
+    files:
+      - name: accueil
+        label: Accueil
+        file: nouveau-site/content/pages-fixes/accueil.json
+        fields:
+          - {label: "Titre", name: titre, widget: string}
+          - {label: "Adresse", name: slug, widget: hidden, default: accueil}
+          - {label: "Publication", name: statut, widget: hidden, default: publie}
+          - {label: "Type", name: type, widget: hidden, default: accueil}
+          - {label: "Ordre", name: ordre, widget: hidden, default: 0}
+          - label: Sections de l’accueil
+            name: sections
+            widget: list
+            min: 6
+            max: 6
+            summary: "{{fields.titre}}"
+            fields:
+              - {label: "Identifiant", name: id, widget: hidden}
+              - {label: "Titre", name: titre, widget: string}
+              - {label: "Texte", name: contenu, widget: text}
+          - {label: "Liens", name: liens, widget: hidden, default: []}
+          - {label: "Images", name: images, widget: hidden, default: []}
+          - {label: "Documents", name: documents, widget: hidden, default: []}
+          - *old_slugs
+          - *seo
+      - name: actualites
+        label: Page Actualités
+        file: nouveau-site/content/pages-fixes/actualites.json
+        fields:
+          - {label: "Titre", name: titre, widget: string}
+          - {label: "Adresse", name: slug, widget: hidden, default: actualites}
+          - {label: "Publication", name: statut, widget: hidden, default: publie}
+          - {label: "Type", name: type, widget: hidden, default: actualites}
+          - {label: "Ordre", name: ordre, widget: hidden, default: 10}
+          - label: Texte de référence
+            name: sections
+            widget: list
+            min: 1
+            max: 1
+            fields:
+              - {label: "Intertitre", name: titre, widget: string, required: false}
+              - {label: "Texte", name: contenu, widget: text}
+          - {label: "Liens", name: liens, widget: hidden, default: []}
+          - {label: "Images", name: images, widget: hidden, default: []}
+          - {label: "Documents", name: documents, widget: hidden, default: []}
+          - *old_slugs
+          - *seo
+      - name: mentions_legales
+        label: Mentions légales
+        file: nouveau-site/content/pages-fixes/mentions-legales.json
+        fields:
+          # Page légale obligatoire : son adresse et son statut restent figés,
+          # comme pour l’accueil et les actualités.
+          - {label: "Titre", name: titre, widget: string}
+          - {label: "Adresse", name: slug, widget: hidden, default: mentions-legales}
+          - {label: "Publication", name: statut, widget: hidden, default: publie}
+          - *order
+          - {label: "Type", name: type, widget: hidden, default: legal}
+          - &page_eyebrow {label: "Rubrique de la carte", name: rubrique, widget: string, required: false}
+          - &page_action {label: "Action de la carte", name: libelleAction, widget: string, required: false}
+          - &page_sections
+            label: Sections
+            name: sections
+            widget: list
+            min: 1
+            summary: "{{fields.titre}}"
+            fields:
+              - {label: "Intertitre", name: titre, widget: string, required: false}
+              - {label: "Texte", name: contenu, widget: text}
+          - &page_links
+            label: Liens
+            name: liens
+            widget: list
+            required: false
+            fields:
+              - {label: "Type", name: type, widget: select, options: [externe, email, document, livre, page]}
+              - {label: "Libellé", name: texte, widget: string, required: false}
+              - {label: "Adresse ou document", name: href, widget: string, required: false}
+              - {label: "Livre ou page liée", name: slug, widget: string, required: false}
+          - &page_images
+            label: Images
+            name: images
+            widget: list
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - {label: "Image", name: image, widget: image, allow_multiple: false}
+              - {label: "Texte alternatif", name: alt, widget: string, required: false}
+          - &page_documents
+            label: Documents
+            name: documents
+            widget: list
+            required: false
+            field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+          - *old_slugs
+          - *seo
 
   - name: pages
-    label: Pages
+    label: Pages de la maison
     label_singular: Page
     folder: nouveau-site/content/pages
     extension: json
     format: json
-    create: false
+    create: true
     delete: false
     identifier_field: titre
+    slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
+    sortable_fields: [ordre, titre, statut]
+    view_filters: *status_filters
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - {label: "Adresse", name: slug, widget: hidden}
-      - label: Publication
-        name: statut
-        widget: select
-        options:
-          - {label: "Publié", value: publie}
-          - {label: "Brouillon", value: brouillon}
-      - {label: "Type", name: type, widget: hidden, required: false}
-      - label: Sections
-        name: sections
-        widget: list
-        min: 1
-        summary: "{{fields.titre}}"
-        fields:
-          - {label: "Intertitre", name: titre, widget: string, required: false}
-          - {label: "Texte", name: contenu, widget: text}
-      - label: Liens
-        name: liens
-        widget: list
-        required: false
-        fields:
-          - label: Type
-            name: type
-            widget: select
-            options: [externe, email, document, livre, page]
-          - {label: "Libellé", name: texte, widget: string, required: false}
-          - {label: "Adresse ou document", name: href, widget: string, required: false}
-          - {label: "Livre ou page liée", name: slug, widget: string, required: false}
-      - label: Images
-        name: images
-        widget: list
-        required: false
-        field: {label: "Image", name: image, widget: image, allow_multiple: false}
-      - label: Documents
-        name: documents
-        widget: list
-        required: false
-        field: {label: "PDF", name: document, widget: file, allow_multiple: false}
+      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - *publication
+      - *order
+      - {label: "Type", name: type, widget: hidden, default: page}
+      - *page_eyebrow
+      - *page_action
+      - *page_sections
+      - *page_links
+      - *page_images
+      - *page_documents
+      - *old_slugs
+      - *seo
