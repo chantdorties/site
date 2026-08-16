@@ -20,6 +20,12 @@ def load_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def settings(name):
+    """Les libellés viennent des réglages : les recopier ici rendrait la suite
+    rouge dès que le client édite un texte, sans aucune régression réelle."""
+    return load_json(ROOT / "content" / "reglages" / f"{name}.json")
+
+
 def local_target(value):
     parsed = urlsplit(value)
     if parsed.scheme or parsed.netloc or value.startswith(("mailto:", "tel:", "#")):
@@ -44,6 +50,7 @@ class BuiltSiteTest(unittest.TestCase):
         cls.collections = load_json(DIST / "data" / "collections.json")
 
     def test_report_and_public_data_match_output(self):
+        self.assertEqual(169, self.report["pagesHtml"])
         self.assertEqual(len(self.html_files), self.report["pagesHtml"])
         self.assertEqual(len(self.books), self.report["livres"])
         self.assertEqual(len(self.people), self.report["personnes"])
@@ -60,11 +67,13 @@ class BuiltSiteTest(unittest.TestCase):
 
     def test_draft_pages_are_not_published(self):
         source_pages = [
-            load_json(path) for path in (ROOT / "content" / "pages").glob("*.json")
+            load_json(path)
+            for folder in ("pages", "pages-fixes")
+            for path in (ROOT / "content" / folder).glob("*.json")
         ]
         sitemap = (DIST / "sitemap.xml").read_text(encoding="utf-8")
         for page in source_pages:
-            if page["statut"] != "brouillon":
+            if page["statut"] == "publie":
                 continue
             self.assertFalse((DIST / page["slug"]).exists(), page["slug"])
             self.assertNotIn(f"/{page['slug']}/", sitemap)
@@ -118,6 +127,32 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual([], unexpected)
         self.assertGreater(len(list(DIST.rglob("*.webp"))), 0)
 
+    def test_every_referenced_raster_image_is_processed(self):
+        source_books = [load_json(path) for path in (ROOT / "content" / "livres").glob("*.json")]
+        source_people = [load_json(path) for path in (ROOT / "content" / "personnes").glob("*.json")]
+        source_pages = [
+            load_json(path)
+            for folder in ("pages", "pages-fixes")
+            for path in (ROOT / "content" / folder).glob("*.json")
+        ]
+        source_news = [load_json(path) for path in (ROOT / "content" / "actualites").glob("*.json")]
+        source_collections = [load_json(path) for path in (ROOT / "content" / "collections").glob("*.json")]
+        seo_images = {
+            item.get("seo", {}).get("image")
+            for item in [*source_books, *source_people, *source_pages, *source_news, *source_collections]
+            if item.get("seo", {}).get("image")
+        }
+        expected = (
+            2 * len(source_books)
+            + sum(len(book["illustrations"]) for book in source_books)
+            + 2 * sum(bool(person["imagePrincipale"]) for person in source_people)
+            + sum(len(person["images"]) for person in source_people)
+            + sum(len(page["images"]) for page in source_pages if page["slug"] != "actualites")
+            + sum(bool(item.get("image")) for item in source_news)
+            + len(seo_images)
+        )
+        self.assertEqual(expected, self.report["medias"]["images"])
+
     def test_every_published_pdf_is_readable(self):
         if not PDFINFO_BINARY:
             self.skipTest("pdfinfo absent")
@@ -134,7 +169,7 @@ class BuiltSiteTest(unittest.TestCase):
     def test_news_page_and_optional_entries(self):
         soup = BeautifulSoup((DIST / "actualites" / "index.html").read_text(encoding="utf-8"), "html.parser")
         self.assertIsNotNone(soup.select_one(".news-callout"))
-        self.assertIn("Nos prochaines rencontres", soup.get_text(" ", strip=True))
+        self.assertIn(settings("pages")["actualites"]["appelTitre"], soup.get_text(" ", strip=True))
         self.assertNotIn("En images", soup.get_text(" ", strip=True))
         self.assertEqual(self.report["actualites"], len(soup.select(".news-card")))
 
@@ -175,7 +210,57 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("github", config["backend"]["name"])
         self.assertEqual("chantdorties/site", config["backend"]["repo"])
         self.assertEqual("http://127.0.0.1:8082/api/v1", config["local_backend"]["url"])
+        collections = {item["name"]: item for item in config["collections"]}
+        self.assertIn("reglages", collections)
+        self.assertIn("pages_fixes", collections)
+        self.assertTrue(collections["pages"]["create"])
+        self.assertFalse(collections["pages"]["delete"])
+        self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
+        self.assertEqual(
+            {"accueil", "actualites", "mentions_legales"},
+            {item["name"] for item in collections["pages_fixes"]["files"]},
+        )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
+
+    def test_admin_exposes_every_editable_json_field(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        collections = {item["name"]: item for item in config["collections"]}
+        source_folders = {
+            "livres": ROOT / "content" / "livres",
+            "personnes": ROOT / "content" / "personnes",
+            "collections": ROOT / "content" / "collections",
+            "actualites": ROOT / "content" / "actualites",
+            "pages": ROOT / "content" / "pages",
+        }
+        for name, folder in source_folders.items():
+            source_fields = {
+                key
+                for path in folder.glob("*.json")
+                for key in load_json(path)
+            }
+            admin_fields = {field["name"] for field in collections[name]["fields"]}
+            self.assertLessEqual(source_fields, admin_fields, name)
+
+        settings_files = {
+            item["name"]: item for item in collections["reglages"]["files"]
+        }
+        for path in (ROOT / "content" / "reglages").glob("*.json"):
+            self.assertEqual(
+                set(load_json(path)),
+                {field["name"] for field in settings_files[path.stem]["fields"]},
+                path.name,
+            )
+
+        fixed_files = {
+            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
+            for item in collections["pages_fixes"]["files"]
+        }
+        for path in (ROOT / "content" / "pages-fixes").glob("*.json"):
+            self.assertLessEqual(
+                set(load_json(path)),
+                {field["name"] for field in fixed_files[path.stem]["fields"]},
+                path.name,
+            )
 
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
@@ -220,12 +305,13 @@ class BuiltSiteTest(unittest.TestCase):
             'form.donation-form[action="https://www.paypal.com/donate"]'
         )
         self.assertIsNotNone(donation_form)
+        payment = settings("paiement")
         self.assertEqual(
-            "G4GQ22SF6LMW6",
+            payment["donationHostedButtonId"],
             donation_form.select_one('input[name="hosted_button_id"]')["value"],
         )
         self.assertEqual(
-            "Faire un don",
+            payment["libelleDon"],
             donation_form.select_one("button").get_text(" ", strip=True),
         )
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
@@ -235,6 +321,54 @@ class BuiltSiteTest(unittest.TestCase):
         legacy = load_json(ROOT / "config" / "legacy-redirects.json")["livres"]
         for slug, source in legacy.items():
             self.assertIn(f'"/{source}" "/livres/{slug}/"', redirects)
+        source_records = [
+            (record, f"/livres/{record['slug']}/")
+            for record in (load_json(path) for path in (ROOT / "content" / "livres").glob("*.json"))
+        ]
+        source_records += [
+            (record, f"/{record['slug']}/")
+            for folder in ("pages", "pages-fixes")
+            for record in (load_json(path) for path in (ROOT / "content" / folder).glob("*.json"))
+            if record["slug"] not in {"accueil"}
+        ]
+        for record, target in source_records:
+            for source in record["anciensSlugs"]:
+                self.assertIn(f'"/{source.lstrip("/")}" "{target}"', redirects)
+
+    def test_explicit_home_selection_and_alternative_texts_are_rendered(self):
+        source_books = [load_json(path) for path in (ROOT / "content" / "livres").glob("*.json")]
+        selected = sorted(
+            (book for book in source_books if book["miseEnAvantAccueil"] and book["disponible"]),
+            key=lambda book: (book["ordreAccueil"], book["ordre"], book["slug"]),
+        )
+        home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
+        self.assertEqual(
+            [f"/livres/{book['slug']}/" for book in selected],
+            [link["href"] for link in home.select(".cover-ribbon > a")],
+        )
+        for book in source_books:
+            page = BeautifulSoup(
+                (DIST / "livres" / book["slug"] / "index.html").read_text(encoding="utf-8"),
+                "html.parser",
+            )
+            self.assertEqual(book["couvertureAlt"], page.select_one(".book-detail__cover")["alt"])
+            self.assertEqual(
+                [item["alt"] for item in book["illustrations"]],
+                [image["alt"] for image in page.select(".gallery-grid img")],
+            )
+
+    def test_custom_seo_fields_override_the_automatic_fallbacks(self):
+        book = load_json(ROOT / "content" / "livres" / "a-quelques-pas-de-l-usine.json")
+        soup = BeautifulSoup(
+            (DIST / "livres" / book["slug"] / "index.html").read_text(encoding="utf-8"),
+            "html.parser",
+        )
+        self.assertEqual(
+            f"{book['seo']['titre']} | {settings('site')['nom']}",
+            soup.title.get_text(strip=True),
+        )
+        self.assertEqual(book["seo"]["description"], soup.select_one('meta[name="description"]')["content"])
+        self.assertIn("/assets/media/social/", soup.select_one('meta[property="og:image"]')["content"])
 
     def test_javascript_syntax(self):
         for path in DIST.rglob("*.js"):
