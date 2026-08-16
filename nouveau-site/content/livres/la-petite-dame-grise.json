@@ -22,10 +22,26 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-la-petite-dame-grise.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-la-petite-dame-grise-01-images-pdg-pdg-image-1.jpg"
+    {
+      "image": "content/media/uploads/illustrations-la-petite-dame-grise-01-images-pdg-pdg-image-1.jpg",
+      "alt": "Illustration intérieure de La petite dame grise — 1"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-la-petite-dame-grise-01-documents-la-petite-dame-grise-extrait.pdf"
   ],
-  "paypalHostedButtonId": "PUNKPNUYLRYD8"
+  "paypalHostedButtonId": "PUNKPNUYLRYD8",
+  "ordre": 50,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de La petite dame grise",
+  "anciensSlugs": [
+    "la-petite-dame-grise.html"
+  ]
 }

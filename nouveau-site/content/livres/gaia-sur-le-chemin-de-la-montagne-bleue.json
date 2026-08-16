@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-gaia-sur-le-chemin-de-la-montagne-bleue.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-01-images-gsc-gaia2-1.png",
-    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-02-images-gsc-gaia2-2.png",
-    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-03-images-gsc-gaia2-3.png",
-    "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-04-images-gsc-gaia2-4.png"
+    {
+      "image": "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-01-images-gsc-gaia2-1.png",
+      "alt": "Illustration intérieure de Gaïa - Sur le chemin de la Montagne Bleue — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-02-images-gsc-gaia2-2.png",
+      "alt": "Illustration intérieure de Gaïa - Sur le chemin de la Montagne Bleue — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-03-images-gsc-gaia2-3.png",
+      "alt": "Illustration intérieure de Gaïa - Sur le chemin de la Montagne Bleue — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-gaia-sur-le-chemin-de-la-montagne-bleue-04-images-gsc-gaia2-4.png",
+      "alt": "Illustration intérieure de Gaïa - Sur le chemin de la Montagne Bleue — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-gaia-sur-le-chemin-de-la-montagne-bleue-01-documents-gaia2-extrait.pdf"
   ],
-  "paypalHostedButtonId": "P2G656QN6TJUQ"
+  "paypalHostedButtonId": "P2G656QN6TJUQ",
+  "ordre": 60,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Gaïa - Sur le chemin de la Montagne Bleue",
+  "anciensSlugs": [
+    "gaia_sur_le_chemin_de_la_montagne_bleue.html"
+  ]
 }

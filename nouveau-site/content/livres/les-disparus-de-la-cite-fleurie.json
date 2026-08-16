@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-les-disparus-de-la-cite-fleurie.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-01-images-dcf-dcf1.jpg",
-    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-02-images-dcf-dcf2.jpg",
-    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-03-images-dcf-dcf3.jpg",
-    "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-04-images-dcf-dcf4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-01-images-dcf-dcf1.jpg",
+      "alt": "Illustration intérieure de Les disparus de la Cité Fleurie — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-02-images-dcf-dcf2.jpg",
+      "alt": "Illustration intérieure de Les disparus de la Cité Fleurie — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-03-images-dcf-dcf3.jpg",
+      "alt": "Illustration intérieure de Les disparus de la Cité Fleurie — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-disparus-de-la-cite-fleurie-04-images-dcf-dcf4.jpg",
+      "alt": "Illustration intérieure de Les disparus de la Cité Fleurie — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-les-disparus-de-la-cite-fleurie-01-documents-disparus-cite-fleurie-extrait.pdf"
   ],
-  "paypalHostedButtonId": "G6NKQRT38LTXA"
+  "paypalHostedButtonId": "G6NKQRT38LTXA",
+  "ordre": 150,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Les disparus de la Cité Fleurie",
+  "anciensSlugs": [
+    "les-disparus-de-la-cite-fleurie.html"
+  ]
 }

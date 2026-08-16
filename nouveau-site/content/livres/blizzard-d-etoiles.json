@@ -22,12 +22,34 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-blizzard-d-etoiles.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-blizzard-d-etoiles-01-images-be-1chap1-p7.jpg",
-    "content/media/uploads/illustrations-blizzard-d-etoiles-02-images-be-2chap1p15.jpg",
-    "content/media/uploads/illustrations-blizzard-d-etoiles-03-images-be-3chap2p21.jpg"
+    {
+      "image": "content/media/uploads/illustrations-blizzard-d-etoiles-01-images-be-1chap1-p7.jpg",
+      "alt": "Illustration intérieure de Blizzard d'étoiles — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-blizzard-d-etoiles-02-images-be-2chap1p15.jpg",
+      "alt": "Illustration intérieure de Blizzard d'étoiles — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-blizzard-d-etoiles-03-images-be-3chap2p21.jpg",
+      "alt": "Illustration intérieure de Blizzard d'étoiles — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-blizzard-d-etoiles-01-documents-blizzard-d-etoiles-extrait.pdf"
   ],
-  "paypalHostedButtonId": "9NDTHFRDED3H4"
+  "paypalHostedButtonId": "9NDTHFRDED3H4",
+  "ordre": 20,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon",
+    "gaia-conte-de-la-montagne-bleue"
+  ],
+  "couvertureAlt": "Couverture de Blizzard d'étoiles",
+  "anciensSlugs": [
+    "blizzard_d_etoiles.html"
+  ]
 }

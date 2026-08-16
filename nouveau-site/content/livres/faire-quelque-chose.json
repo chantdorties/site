@@ -22,12 +22,34 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-faire-quelque-chose.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-faire-quelque-chose-01-images-fqc-fqc-1.jpg",
-    "content/media/uploads/illustrations-faire-quelque-chose-02-images-fqc-fqc-2.jpg",
-    "content/media/uploads/illustrations-faire-quelque-chose-03-images-fqc-fqc-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-faire-quelque-chose-01-images-fqc-fqc-1.jpg",
+      "alt": "Illustration intérieure de Faire quelque chose — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-faire-quelque-chose-02-images-fqc-fqc-2.jpg",
+      "alt": "Illustration intérieure de Faire quelque chose — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-faire-quelque-chose-03-images-fqc-fqc-3.jpg",
+      "alt": "Illustration intérieure de Faire quelque chose — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-faire-quelque-chose-01-documents-extrait-faireqqchose.pdf"
   ],
-  "paypalHostedButtonId": "CC464HDNSA9Y8"
+  "paypalHostedButtonId": "CC464HDNSA9Y8",
+  "ordre": 20,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "l-impasse",
+    "la-dame-a-sa-fenetre",
+    "le-chien-anarchiste"
+  ],
+  "couvertureAlt": "Couverture de Faire quelque chose",
+  "anciensSlugs": [
+    "faireqqchose.html"
+  ]
 }

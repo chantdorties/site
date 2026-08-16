@@ -32,10 +32,28 @@
     }
   ],
   "images": [
-    "content/media/uploads/pages-amis-images-01-amis-divergences2.jpg",
-    "content/media/uploads/pages-amis-images-02-amis-mai68mai2008.png",
-    "content/media/uploads/pages-amis-images-03-amis-les-editions-du-chemin-de-fer.jpg",
-    "content/media/uploads/pages-amis-images-04-amis-logo-encres-vagabondes.jpg"
+    {
+      "image": "content/media/uploads/pages-amis-images-01-amis-divergences2.jpg",
+      "alt": "Amis — image 1"
+    },
+    {
+      "image": "content/media/uploads/pages-amis-images-02-amis-mai68mai2008.png",
+      "alt": "Amis — image 2"
+    },
+    {
+      "image": "content/media/uploads/pages-amis-images-03-amis-les-editions-du-chemin-de-fer.jpg",
+      "alt": "Amis — image 3"
+    },
+    {
+      "image": "content/media/uploads/pages-amis-images-04-amis-logo-encres-vagabondes.jpg",
+      "alt": "Amis — image 4"
+    }
   ],
-  "documents": []
+  "documents": [],
+  "ordre": 20,
+  "rubrique": "Réseau",
+  "libelleAction": "Découvrir nos amis",
+  "anciensSlugs": [
+    "amis.html"
+  ]
 }

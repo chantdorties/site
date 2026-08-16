@@ -22,14 +22,42 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-aldo-revait.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-aldo-revait-01-images-ar-pages4-5.jpg",
-    "content/media/uploads/illustrations-aldo-revait-02-images-ar-pages10-11.jpg",
-    "content/media/uploads/illustrations-aldo-revait-03-images-ar-pages20-21.jpg",
-    "content/media/uploads/illustrations-aldo-revait-04-images-ar-page2.jpg",
-    "content/media/uploads/illustrations-aldo-revait-05-images-ar-page3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-aldo-revait-01-images-ar-pages4-5.jpg",
+      "alt": "Illustration intérieure de Aldo rêvait — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-aldo-revait-02-images-ar-pages10-11.jpg",
+      "alt": "Illustration intérieure de Aldo rêvait — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-aldo-revait-03-images-ar-pages20-21.jpg",
+      "alt": "Illustration intérieure de Aldo rêvait — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-aldo-revait-04-images-ar-page2.jpg",
+      "alt": "Illustration intérieure de Aldo rêvait — 4"
+    },
+    {
+      "image": "content/media/uploads/illustrations-aldo-revait-05-images-ar-page3.jpg",
+      "alt": "Illustration intérieure de Aldo rêvait — 5"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-aldo-revait-01-documents-aldo-revait-extrait.pdf"
   ],
-  "paypalHostedButtonId": "JG7KHDFRK9DQ2"
+  "paypalHostedButtonId": "JG7KHDFRK9DQ2",
+  "ordre": 20,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela",
+    "la-petite-dame-grise"
+  ],
+  "couvertureAlt": "Couverture de Aldo rêvait",
+  "anciensSlugs": [
+    "aldorevait.html"
+  ]
 }

@@ -22,13 +22,38 @@
   "issnCollection": "2105-9780",
   "couverture": "content/media/uploads/couvertures-le-coeur-a-l-ouvrage.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-01-images-co-ch-2-bis.jpg",
-    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-02-images-co-ch-12-13.jpg",
-    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-03-images-co-ch-23.jpg",
-    "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-04-images-co-ch-27.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-01-images-co-ch-2-bis.jpg",
+      "alt": "Illustration intérieure de Le coeur à l'ouvrage — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-02-images-co-ch-12-13.jpg",
+      "alt": "Illustration intérieure de Le coeur à l'ouvrage — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-03-images-co-ch-23.jpg",
+      "alt": "Illustration intérieure de Le coeur à l'ouvrage — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-coeur-a-l-ouvrage-04-images-co-ch-27.jpg",
+      "alt": "Illustration intérieure de Le coeur à l'ouvrage — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-le-coeur-a-l-ouvrage-01-documents-coeur-a-louvrage-chapitre1.pdf"
   ],
-  "paypalHostedButtonId": "LQVZVXTFN54XY"
+  "paypalHostedButtonId": "LQVZVXTFN54XY",
+  "ordre": 30,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "deni-de-patrie",
+    "la-malediction-du-beton",
+    "le-val-enchante",
+    "memoires-d-un-nouveau-ne"
+  ],
+  "couvertureAlt": "Couverture de Le coeur à l'ouvrage",
+  "anciensSlugs": [
+    "coeuralouvrage.html"
+  ]
 }

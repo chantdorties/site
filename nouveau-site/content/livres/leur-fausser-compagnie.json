@@ -22,12 +22,34 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-leur-fausser-compagnie.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-leur-fausser-compagnie-01-images-lfc-leur-fausser-compagnie1.jpg",
-    "content/media/uploads/illustrations-leur-fausser-compagnie-02-images-lfc-leur-fausser-compagnie2.jpg",
-    "content/media/uploads/illustrations-leur-fausser-compagnie-03-images-lfc-leur-fausser-compagnie3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-leur-fausser-compagnie-01-images-lfc-leur-fausser-compagnie1.jpg",
+      "alt": "Illustration intérieure de Leur fausser compagnie — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-leur-fausser-compagnie-02-images-lfc-leur-fausser-compagnie2.jpg",
+      "alt": "Illustration intérieure de Leur fausser compagnie — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-leur-fausser-compagnie-03-images-lfc-leur-fausser-compagnie3.jpg",
+      "alt": "Illustration intérieure de Leur fausser compagnie — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-leur-fausser-compagnie-01-documents-leur-fausser-compagnie-extrait.pdf"
   ],
-  "paypalHostedButtonId": "2RM8JPZZP39S6"
+  "paypalHostedButtonId": "2RM8JPZZP39S6",
+  "ordre": 170,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Leur fausser compagnie",
+  "anciensSlugs": [
+    "leur-fausser-compagnie.html"
+  ]
 }

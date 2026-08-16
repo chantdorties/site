@@ -22,11 +22,36 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-robin-des-bois-blancs.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-robin-des-bois-blancs-01-images-collection-eglantine-images-rbb-robin1.jpg",
-    "content/media/uploads/illustrations-robin-des-bois-blancs-02-images-collection-eglantine-images-rbb-robin2.jpg",
-    "content/media/uploads/illustrations-robin-des-bois-blancs-03-images-collection-eglantine-images-rbb-robin3.jpg",
-    "content/media/uploads/illustrations-robin-des-bois-blancs-04-images-collection-eglantine-images-rbb-robin4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-robin-des-bois-blancs-01-images-collection-eglantine-images-rbb-robin1.jpg",
+      "alt": "Illustration intérieure de Robin des Bois-Blancs — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-robin-des-bois-blancs-02-images-collection-eglantine-images-rbb-robin2.jpg",
+      "alt": "Illustration intérieure de Robin des Bois-Blancs — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-robin-des-bois-blancs-03-images-collection-eglantine-images-rbb-robin3.jpg",
+      "alt": "Illustration intérieure de Robin des Bois-Blancs — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-robin-des-bois-blancs-04-images-collection-eglantine-images-rbb-robin4.jpg",
+      "alt": "Illustration intérieure de Robin des Bois-Blancs — 4"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "YPX4ME42LNCNL"
+  "paypalHostedButtonId": "YPX4ME42LNCNL",
+  "ordre": 130,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Robin des Bois-Blancs",
+  "anciensSlugs": [
+    "robindesboisblancs.html"
+  ]
 }

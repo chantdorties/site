@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-perisse-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-perisse-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-perisse-chantdorties.jpg",
+      "alt": "Thierry Périssé — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 770,
+  "imagePrincipaleAlt": "Portrait de Thierry Périssé",
+  "anciensSlugs": []
 }

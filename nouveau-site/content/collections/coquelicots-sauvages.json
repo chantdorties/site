@@ -2,5 +2,9 @@
   "slug": "coquelicots-sauvages",
   "statut": "publie",
   "titre": "Les coquelicots sauvages",
-  "description": "Albums jeunesse pour les plus jeunes."
+  "description": "Albums jeunesse pour les plus jeunes.",
+  "ordre": 20,
+  "anciensSlugs": [
+    "coquelicotssauvages.html"
+  ]
 }

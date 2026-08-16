@@ -22,12 +22,34 @@
   "issnCollection": "2105-9780",
   "couverture": "content/media/uploads/couvertures-la-malediction-du-beton.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-la-malediction-du-beton-01-images-mb-au-fil-de-l-eau.jpg",
-    "content/media/uploads/illustrations-la-malediction-du-beton-02-images-mb-chauffeur-si-t-es.jpg",
-    "content/media/uploads/illustrations-la-malediction-du-beton-03-images-mb-rodney-king.jpg"
+    {
+      "image": "content/media/uploads/illustrations-la-malediction-du-beton-01-images-mb-au-fil-de-l-eau.jpg",
+      "alt": "Illustration intérieure de La malédiction du béton — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-malediction-du-beton-02-images-mb-chauffeur-si-t-es.jpg",
+      "alt": "Illustration intérieure de La malédiction du béton — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-malediction-du-beton-03-images-mb-rodney-king.jpg",
+      "alt": "Illustration intérieure de La malédiction du béton — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-la-malediction-du-beton-01-documents-malediction-du-beton-texte1.pdf"
   ],
-  "paypalHostedButtonId": "322U766QV2KA8"
+  "paypalHostedButtonId": "322U766QV2KA8",
+  "ordre": 20,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "deni-de-patrie",
+    "le-coeur-a-l-ouvrage",
+    "le-val-enchante",
+    "memoires-d-un-nouveau-ne"
+  ],
+  "couvertureAlt": "Couverture de La malédiction du béton",
+  "anciensSlugs": [
+    "maledictiondubeton.html"
+  ]
 }

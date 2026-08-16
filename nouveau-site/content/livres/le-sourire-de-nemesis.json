@@ -22,11 +22,36 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-le-sourire-de-nemesis.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-sourire-de-nemesis-01-images-collection-eglantine-images-sn-nemesis1.jpg",
-    "content/media/uploads/illustrations-le-sourire-de-nemesis-02-images-collection-eglantine-images-sn-nemesis2.jpg",
-    "content/media/uploads/illustrations-le-sourire-de-nemesis-03-images-collection-eglantine-images-sn-nemesis3.jpg",
-    "content/media/uploads/illustrations-le-sourire-de-nemesis-04-images-collection-eglantine-images-sn-nemesis4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-sourire-de-nemesis-01-images-collection-eglantine-images-sn-nemesis1.jpg",
+      "alt": "Illustration intérieure de Le sourire de Némésis — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-sourire-de-nemesis-02-images-collection-eglantine-images-sn-nemesis2.jpg",
+      "alt": "Illustration intérieure de Le sourire de Némésis — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-sourire-de-nemesis-03-images-collection-eglantine-images-sn-nemesis3.jpg",
+      "alt": "Illustration intérieure de Le sourire de Némésis — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-sourire-de-nemesis-04-images-collection-eglantine-images-sn-nemesis4.jpg",
+      "alt": "Illustration intérieure de Le sourire de Némésis — 4"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "CEEQLVSXQXVSA"
+  "paypalHostedButtonId": "CEEQLVSXQXVSA",
+  "ordre": 80,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Le sourire de Némésis",
+  "anciensSlugs": [
+    "souriredenemesis.html"
+  ]
 }

@@ -22,13 +22,38 @@
   "issnCollection": "2105-9780",
   "couverture": "content/media/uploads/couvertures-poings-de-suture.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-poings-de-suture-01-images-ps-poingdesuture-illu6.jpg",
-    "content/media/uploads/illustrations-poings-de-suture-02-images-ps-poingdesuture-illu4.jpg",
-    "content/media/uploads/illustrations-poings-de-suture-03-images-ps-poingdesuture-illu7.jpg",
-    "content/media/uploads/illustrations-poings-de-suture-04-images-ps-poingdesuture-illu10.jpg"
+    {
+      "image": "content/media/uploads/illustrations-poings-de-suture-01-images-ps-poingdesuture-illu6.jpg",
+      "alt": "Illustration intérieure de Poings de suture — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-poings-de-suture-02-images-ps-poingdesuture-illu4.jpg",
+      "alt": "Illustration intérieure de Poings de suture — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-poings-de-suture-03-images-ps-poingdesuture-illu7.jpg",
+      "alt": "Illustration intérieure de Poings de suture — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-poings-de-suture-04-images-ps-poingdesuture-illu10.jpg",
+      "alt": "Illustration intérieure de Poings de suture — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-poings-de-suture-01-documents-extrait-poingsdesutur.pdf"
   ],
-  "paypalHostedButtonId": "UUXGXWEBBPM6N"
+  "paypalHostedButtonId": "UUXGXWEBBPM6N",
+  "ordre": 60,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 60,
+  "aDecouvrir": [
+    "deni-de-patrie",
+    "la-malediction-du-beton",
+    "le-coeur-a-l-ouvrage",
+    "le-val-enchante"
+  ],
+  "couvertureAlt": "Couverture de Poings de suture",
+  "anciensSlugs": [
+    "poingsdesuture.html"
+  ]
 }

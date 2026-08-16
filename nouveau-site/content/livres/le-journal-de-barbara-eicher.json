@@ -22,10 +22,26 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-le-journal-de-barbara-eicher.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-journal-de-barbara-eicher-01-images-jbe-barbara-eicher-illustrations.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-journal-de-barbara-eicher-01-images-jbe-barbara-eicher-illustrations.jpg",
+      "alt": "Illustration intérieure de Le journal de Barbara Eicher — 1"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-le-journal-de-barbara-eicher-01-documents-barbara-eicher-extrait.pdf"
   ],
-  "paypalHostedButtonId": "94K9UZSW3WTGW"
+  "paypalHostedButtonId": "94K9UZSW3WTGW",
+  "ordre": 120,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Le journal de Barbara Eicher",
+  "anciensSlugs": [
+    "le-journal-de-barbara-eicher.html"
+  ]
 }

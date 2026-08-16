@@ -2,5 +2,9 @@
   "slug": "rues-en-friche",
   "statut": "publie",
   "titre": "Rues en friche",
-  "description": "Romans à partir de 14 ans."
+  "description": "Romans à partir de 14 ans.",
+  "ordre": 60,
+  "anciensSlugs": [
+    "ruesenfriche.html"
+  ]
 }

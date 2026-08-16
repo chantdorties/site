@@ -27,7 +27,7 @@ function createPersonCard(person) {
   if (person.imagePrincipale) {
     const image = document.createElement('img');
     image.src = person.imagePrincipale;
-    image.alt = `Portrait de ${person.nom}`;
+    image.alt = person.imagePrincipaleAlt || `Portrait de ${person.nom}`;
     image.loading = 'lazy';
     image.width = 480;
     image.height = 480;

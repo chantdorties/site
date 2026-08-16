@@ -22,10 +22,26 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-travaille-ton-super-vouloir.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-travaille-ton-super-vouloir-01-images-tsv-tsv-image.png"
+    {
+      "image": "content/media/uploads/illustrations-travaille-ton-super-vouloir-01-images-tsv-tsv-image.png",
+      "alt": "Illustration intérieure de Travaille ton Super-Vouloir — 1"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-travaille-ton-super-vouloir-01-documents-super-vouloir-extrait.pdf"
   ],
-  "paypalHostedButtonId": "JG426BGD8VSV2"
+  "paypalHostedButtonId": "JG426BGD8VSV2",
+  "ordre": 150,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 20,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Travaille ton Super-Vouloir",
+  "anciensSlugs": [
+    "travaille_ton_super-vouloir.html"
+  ]
 }

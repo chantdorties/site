@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-l-ombre-de-la-lune.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-l-ombre-de-la-lune-01-images-ol-imageol1.png",
-    "content/media/uploads/illustrations-l-ombre-de-la-lune-02-images-ol-imageol2.png",
-    "content/media/uploads/illustrations-l-ombre-de-la-lune-03-images-ol-imageol3.png",
-    "content/media/uploads/illustrations-l-ombre-de-la-lune-04-images-ol-imageol4.png"
+    {
+      "image": "content/media/uploads/illustrations-l-ombre-de-la-lune-01-images-ol-imageol1.png",
+      "alt": "Illustration intérieure de L'ombre de la lune — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-ombre-de-la-lune-02-images-ol-imageol2.png",
+      "alt": "Illustration intérieure de L'ombre de la lune — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-ombre-de-la-lune-03-images-ol-imageol3.png",
+      "alt": "Illustration intérieure de L'ombre de la lune — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-ombre-de-la-lune-04-images-ol-imageol4.png",
+      "alt": "Illustration intérieure de L'ombre de la lune — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-l-ombre-de-la-lune-01-documents-lombre-de-la-lune-extrait.pdf"
   ],
-  "paypalHostedButtonId": "XRPH2KNV8GWBC"
+  "paypalHostedButtonId": "XRPH2KNV8GWBC",
+  "ordre": 80,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de L'ombre de la lune",
+  "anciensSlugs": [
+    "l-ombre-de-la-lune.html"
+  ]
 }

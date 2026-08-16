@@ -8,9 +8,15 @@
   "biographie": "Né à lille, depuis 1999, date de son diplôme à l'ESAD de Strasbourg, il conçoit principalement des albums jeunesse au gré de ses humeurs, aux tonalités variées.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-doremus-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-doremus-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-doremus-chantdorties.jpg",
+      "alt": "Gaëtan Dorémus — image 1"
+    }
   ],
   "liensExternes": [
     "http://gaetan.doremus.free.fr/"
-  ]
+  ],
+  "ordre": 320,
+  "imagePrincipaleAlt": "Portrait de Gaëtan Dorémus",
+  "anciensSlugs": []
 }

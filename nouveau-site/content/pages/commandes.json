@@ -23,5 +23,11 @@
   "images": [],
   "documents": [
     "content/media/uploads/pages-commandes-documents-01-documents-commande-chantdorties.pdf"
+  ],
+  "ordre": 40,
+  "rubrique": "Commander",
+  "libelleAction": "Commander un livre",
+  "anciensSlugs": [
+    "commandes.html"
   ]
 }

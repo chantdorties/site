@@ -2,5 +2,9 @@
   "slug": "racines-de-la-colere",
   "statut": "publie",
   "titre": "Les racines de la colère",
-  "description": "Textes du domaine public à redécouvrir."
+  "description": "Textes du domaine public à redécouvrir.",
+  "ordre": 50,
+  "anciensSlugs": [
+    "racinesdelacolere.html"
+  ]
 }

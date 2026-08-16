@@ -26,11 +26,23 @@
     }
   ],
   "images": [
-    "content/media/uploads/pages-atelier-ecriture-images-01-livres-couvmosaique.jpg",
-    "content/media/uploads/pages-atelier-ecriture-images-02-livres-couvpuzzles.jpg"
+    {
+      "image": "content/media/uploads/pages-atelier-ecriture-images-01-livres-couvmosaique.jpg",
+      "alt": "Atelier d’écriture — image 1"
+    },
+    {
+      "image": "content/media/uploads/pages-atelier-ecriture-images-02-livres-couvpuzzles.jpg",
+      "alt": "Atelier d’écriture — image 2"
+    }
   ],
   "documents": [
     "content/media/uploads/pages-atelier-ecriture-documents-01-documents-1erextrait-mosaique.pdf",
     "content/media/uploads/pages-atelier-ecriture-documents-02-documents-2eextrait-mosaique.pdf"
+  ],
+  "ordre": 30,
+  "rubrique": "Transmission",
+  "libelleAction": "Découvrir l’atelier",
+  "anciensSlugs": [
+    "atelier-ecriture.html"
   ]
 }

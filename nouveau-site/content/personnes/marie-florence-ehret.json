@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-ehret-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-ehret-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-ehret-chantdorties.jpg",
+      "alt": "Marie-Florence Ehret — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 500,
+  "imagePrincipaleAlt": "Portrait de Marie-Florence Ehret",
+  "anciensSlugs": []
 }

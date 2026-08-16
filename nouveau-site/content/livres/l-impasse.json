@@ -22,11 +22,36 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-l-impasse.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-l-impasse-01-images-collection-eglantine-images-i-impasse1.jpg",
-    "content/media/uploads/illustrations-l-impasse-02-images-collection-eglantine-images-i-impasse2.jpg",
-    "content/media/uploads/illustrations-l-impasse-03-images-collection-eglantine-images-i-impasse3.jpg",
-    "content/media/uploads/illustrations-l-impasse-04-images-collection-eglantine-images-i-impasse4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-l-impasse-01-images-collection-eglantine-images-i-impasse1.jpg",
+      "alt": "Illustration intérieure de L'impasse — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-impasse-02-images-collection-eglantine-images-i-impasse2.jpg",
+      "alt": "Illustration intérieure de L'impasse — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-impasse-03-images-collection-eglantine-images-i-impasse3.jpg",
+      "alt": "Illustration intérieure de L'impasse — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-impasse-04-images-collection-eglantine-images-i-impasse4.jpg",
+      "alt": "Illustration intérieure de L'impasse — 4"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "G7LF3ZYET6LVG"
+  "paypalHostedButtonId": "G7LF3ZYET6LVG",
+  "ordre": 30,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "la-dame-a-sa-fenetre",
+    "le-chien-anarchiste"
+  ],
+  "couvertureAlt": "Couverture de L'impasse",
+  "anciensSlugs": [
+    "impasse.html"
+  ]
 }

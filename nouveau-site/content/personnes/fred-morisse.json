@@ -9,9 +9,15 @@
   "biographie": "Faute d’être devenu dessinateur, il barbouille des toiles et écrit. Inspirés de son vécu dans la grande banlieue de Paris, ses textes et images témoignent du quotidien entre barres et tours.",
   "imagePrincipale": "content/media/uploads/personnes-auteurs-morisse-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-morisse-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-morisse-chantdorties.jpg",
+      "alt": "Fred Morisse — image 1"
+    }
   ],
   "liensExternes": [
     "http://www.fred-morisse.com/topic/index.html"
-  ]
+  ],
+  "ordre": 300,
+  "imagePrincipaleAlt": "Portrait de Fred Morisse",
+  "anciensSlugs": []
 }

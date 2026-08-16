@@ -2,5 +2,9 @@
   "slug": "graines-d-orties",
   "statut": "publie",
   "titre": "Graines d’orties",
-  "description": "Romans jeunesse et nouvelles pour les 7-15 ans."
+  "description": "Romans jeunesse et nouvelles pour les 7-15 ans.",
+  "ordre": 40,
+  "anciensSlugs": [
+    "grainesdorties.html"
+  ]
 }

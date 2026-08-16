@@ -23,5 +23,11 @@
   ],
   "liens": [],
   "images": [],
-  "documents": []
+  "documents": [],
+  "ordre": 90,
+  "rubrique": "À venir",
+  "libelleAction": "Découvrir les projets",
+  "anciensSlugs": [
+    "projets.html"
+  ]
 }

@@ -22,10 +22,32 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-rompez.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-rompez-01-images-r-rompez-page-2.jpg",
-    "content/media/uploads/illustrations-rompez-02-images-r-rompez-page-11.jpg",
-    "content/media/uploads/illustrations-rompez-03-images-r-rompez-page-16.jpg"
+    {
+      "image": "content/media/uploads/illustrations-rompez-01-images-r-rompez-page-2.jpg",
+      "alt": "Illustration intérieure de Rompez ! — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-rompez-02-images-r-rompez-page-11.jpg",
+      "alt": "Illustration intérieure de Rompez ! — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-rompez-03-images-r-rompez-page-16.jpg",
+      "alt": "Illustration intérieure de Rompez ! — 3"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "ZPGAS9X8LME5N"
+  "paypalHostedButtonId": "ZPGAS9X8LME5N",
+  "ordre": 120,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Rompez !",
+  "anciensSlugs": [
+    "rompez.html"
+  ]
 }

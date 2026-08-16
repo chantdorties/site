@@ -8,9 +8,15 @@
   "biographie": "De tâches d'encre en tâches d'encre, armées de colle et de ciseaux, Catherine et Marion, la mère et la fille, aiment donner vie aux histoires comme Mémoires d'un nouveau-né .",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-zenobie-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-zenobie-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-zenobie-chantdorties.jpg",
+      "alt": "Catherine Senaffe — image 1"
+    }
   ],
   "liensExternes": [
     "http://marionclaeys.canalblog.com/"
-  ]
+  ],
+  "ordre": 130,
+  "imagePrincipaleAlt": "Portrait de Catherine Senaffe",
+  "anciensSlugs": []
 }

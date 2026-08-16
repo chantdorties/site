@@ -50,12 +50,36 @@
     }
   ],
   "images": [
-    "content/media/uploads/pages-offres-speciales-images-01-livres-couv-gaia.jpg",
-    "content/media/uploads/pages-offres-speciales-images-02-livres-couv-gaia2.jpg",
-    "content/media/uploads/pages-offres-speciales-images-03-livres-couvdisparuscitefleurie.jpg",
-    "content/media/uploads/pages-offres-speciales-images-04-livres-couv-sources-d-or-cite-fleurie.jpg",
-    "content/media/uploads/pages-offres-speciales-images-05-livres-couvunairdeliberte.jpg",
-    "content/media/uploads/pages-offres-speciales-images-06-livres-couvombrelune.jpg"
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-01-livres-couv-gaia.jpg",
+      "alt": "Offres spéciales — image 1"
+    },
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-02-livres-couv-gaia2.jpg",
+      "alt": "Offres spéciales — image 2"
+    },
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-03-livres-couvdisparuscitefleurie.jpg",
+      "alt": "Offres spéciales — image 3"
+    },
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-04-livres-couv-sources-d-or-cite-fleurie.jpg",
+      "alt": "Offres spéciales — image 4"
+    },
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-05-livres-couvunairdeliberte.jpg",
+      "alt": "Offres spéciales — image 5"
+    },
+    {
+      "image": "content/media/uploads/pages-offres-speciales-images-06-livres-couvombrelune.jpg",
+      "alt": "Offres spéciales — image 6"
+    }
   ],
-  "documents": []
+  "documents": [],
+  "ordre": 80,
+  "rubrique": "Sélection",
+  "libelleAction": "Voir les offres",
+  "anciensSlugs": [
+    "trois_offres_speciales.html"
+  ]
 }

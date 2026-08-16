@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-sauvons-les-animaux-du-zoo.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-01-images-saz-saz-1.jpeg",
-    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-02-images-saz-saz-2.jpg",
-    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-03-images-saz-saz-3.jpg",
-    "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-04-images-saz-saz-4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-01-images-saz-saz-1.jpeg",
+      "alt": "Illustration intérieure de Sauvons les animaux du zoo ! — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-02-images-saz-saz-2.jpg",
+      "alt": "Illustration intérieure de Sauvons les animaux du zoo ! — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-03-images-saz-saz-3.jpg",
+      "alt": "Illustration intérieure de Sauvons les animaux du zoo ! — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-sauvons-les-animaux-du-zoo-04-images-saz-saz-4.jpg",
+      "alt": "Illustration intérieure de Sauvons les animaux du zoo ! — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-sauvons-les-animaux-du-zoo-01-documents-sauvons-les-animaux-extrait.pdf"
   ],
-  "paypalHostedButtonId": "W9R26KZAABDZC"
+  "paypalHostedButtonId": "W9R26KZAABDZC",
+  "ordre": 200,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Sauvons les animaux du zoo !",
+  "anciensSlugs": [
+    "Sauvons les animaux du zoo.html"
+  ]
 }

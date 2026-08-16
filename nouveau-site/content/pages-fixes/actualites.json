@@ -11,5 +11,9 @@
   ],
   "liens": [],
   "images": [],
-  "documents": []
+  "documents": [],
+  "ordre": 10,
+  "anciensSlugs": [
+    "actualite.html"
+  ]
 }

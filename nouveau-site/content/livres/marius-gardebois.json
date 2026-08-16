@@ -25,5 +25,13 @@
   "extraits": [
     "content/media/uploads/extraits-marius-gardebois-01-documents-mariusgardebois-figuresdenomades.pdf"
   ],
-  "paypalHostedButtonId": "MA4GY5F57N7TN"
+  "paypalHostedButtonId": "MA4GY5F57N7TN",
+  "ordre": 10,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 50,
+  "aDecouvrir": [],
+  "couvertureAlt": "Couverture de Marius Gardebois",
+  "anciensSlugs": [
+    "mariusgardebois.html"
+  ]
 }

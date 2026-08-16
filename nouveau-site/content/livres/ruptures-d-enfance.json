@@ -22,13 +22,38 @@
   "issnCollection": "2109-7674",
   "couverture": "content/media/uploads/couvertures-ruptures-d-enfance.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-ruptures-d-enfance-01-images-re-int-a.jpg",
-    "content/media/uploads/illustrations-ruptures-d-enfance-02-images-re-int-e.jpg",
-    "content/media/uploads/illustrations-ruptures-d-enfance-03-images-re-int-g.jpg",
-    "content/media/uploads/illustrations-ruptures-d-enfance-04-images-re-int-k.jpg"
+    {
+      "image": "content/media/uploads/illustrations-ruptures-d-enfance-01-images-re-int-a.jpg",
+      "alt": "Illustration intérieure de Ruptures d'enfance — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ruptures-d-enfance-02-images-re-int-e.jpg",
+      "alt": "Illustration intérieure de Ruptures d'enfance — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ruptures-d-enfance-03-images-re-int-g.jpg",
+      "alt": "Illustration intérieure de Ruptures d'enfance — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ruptures-d-enfance-04-images-re-int-k.jpg",
+      "alt": "Illustration intérieure de Ruptures d'enfance — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-ruptures-d-enfance-01-documents-nouvelle-rupturesdenfances.pdf"
   ],
-  "paypalHostedButtonId": "H8V2RPZL4HX9Y"
+  "paypalHostedButtonId": "H8V2RPZL4HX9Y",
+  "ordre": 50,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 10,
+  "aDecouvrir": [
+    "a-quelques-pas-de-l-usine",
+    "avec-ou-sans-papiers",
+    "debout-dans-l-aquarium",
+    "noir-horizon"
+  ],
+  "couvertureAlt": "Couverture de Ruptures d'enfance",
+  "anciensSlugs": [
+    "rupturesdenfances.html"
+  ]
 }

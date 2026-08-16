@@ -22,10 +22,32 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-mon-monde-et-moi.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-mon-monde-et-moi-01-images-mmm-mmm-image1.jpg",
-    "content/media/uploads/illustrations-mon-monde-et-moi-02-images-mmm-mmm-image2.jpg",
-    "content/media/uploads/illustrations-mon-monde-et-moi-03-images-mmm-mmm-image3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-mon-monde-et-moi-01-images-mmm-mmm-image1.jpg",
+      "alt": "Illustration intérieure de Mon monde et moi — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-mon-monde-et-moi-02-images-mmm-mmm-image2.jpg",
+      "alt": "Illustration intérieure de Mon monde et moi — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-mon-monde-et-moi-03-images-mmm-mmm-image3.jpg",
+      "alt": "Illustration intérieure de Mon monde et moi — 3"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "CG485X762E4G4"
+  "paypalHostedButtonId": "CG485X762E4G4",
+  "ordre": 90,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Mon monde et moi",
+  "anciensSlugs": [
+    "Mon_monde_et_moi.html"
+  ]
 }

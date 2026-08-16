@@ -8,10 +8,19 @@
   "biographie": "Après s'être essayée à la boulangerie, aux arts de la cuisine, aux massages thérapeuthiques et à la vente en tout genre , elle est finalement revenue à ses premières amours: les formes et les couleurs.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-claeys-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-claeys-chantdorties.jpg",
-    "content/media/uploads/personnes-illustrateurs-zenobie-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-claeys-chantdorties.jpg",
+      "alt": "Marion Claeys — image 1"
+    },
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-zenobie-chantdorties.jpg",
+      "alt": "Marion Claeys — image 2"
+    }
   ],
   "liensExternes": [
     "http://marionclaeys.canalblog.com/"
-  ]
+  ],
+  "ordre": 510,
+  "imagePrincipaleAlt": "Portrait de Marion Claeys",
+  "anciensSlugs": []
 }

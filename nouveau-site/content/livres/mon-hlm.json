@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-mon-hlm.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-mon-hlm-01-images-hlm-01-demba-profil.jpg",
-    "content/media/uploads/illustrations-mon-hlm-02-images-hlm-04-fillettes.jpg",
-    "content/media/uploads/illustrations-mon-hlm-03-images-hlm-06-cafard.jpg",
-    "content/media/uploads/illustrations-mon-hlm-04-images-hlm-10-appart.jpg"
+    {
+      "image": "content/media/uploads/illustrations-mon-hlm-01-images-hlm-01-demba-profil.jpg",
+      "alt": "Illustration intérieure de Mon HLM — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-mon-hlm-02-images-hlm-04-fillettes.jpg",
+      "alt": "Illustration intérieure de Mon HLM — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-mon-hlm-03-images-hlm-06-cafard.jpg",
+      "alt": "Illustration intérieure de Mon HLM — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-mon-hlm-04-images-hlm-10-appart.jpg",
+      "alt": "Illustration intérieure de Mon HLM — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-mon-hlm-01-documents-extraitmonhlm.pdf"
   ],
-  "paypalHostedButtonId": "8C3RQPNKD3VNN"
+  "paypalHostedButtonId": "8C3RQPNKD3VNN",
+  "ordre": 190,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Mon HLM",
+  "anciensSlugs": [
+    "monhlm.html"
+  ]
 }

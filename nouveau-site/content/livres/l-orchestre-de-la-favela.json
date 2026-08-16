@@ -22,10 +22,26 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-l-orchestre-de-la-favela.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-l-orchestre-de-la-favela-01-images-of-orchestre-favela-image-1.jpg"
+    {
+      "image": "content/media/uploads/illustrations-l-orchestre-de-la-favela-01-images-of-orchestre-favela-image-1.jpg",
+      "alt": "Illustration intérieure de L'orchestre de la favela — 1"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-l-orchestre-de-la-favela-01-documents-orchestre-favela-extrait.pdf"
   ],
-  "paypalHostedButtonId": "SVPMCVZYVM4GE"
+  "paypalHostedButtonId": "SVPMCVZYVM4GE",
+  "ordre": 40,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "la-petite-dame-grise"
+  ],
+  "couvertureAlt": "Couverture de L'orchestre de la favela",
+  "anciensSlugs": [
+    "l_orchestre_de_la_favela.html"
+  ]
 }

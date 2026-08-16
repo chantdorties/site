@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-perrin-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-perrin-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-perrin-chantdorties.jpg",
+      "alt": "Michel Perrin — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 580,
+  "imagePrincipaleAlt": "Portrait de Michel Perrin",
+  "anciensSlugs": []
 }

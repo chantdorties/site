@@ -22,13 +22,38 @@
   "issnCollection": "2109-7674",
   "couverture": "content/media/uploads/couvertures-debout-dans-l-aquarium.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-debout-dans-l-aquarium-01-images-dda-chez-maurice.jpg",
-    "content/media/uploads/illustrations-debout-dans-l-aquarium-02-images-dda-pieces-detachees.jpg",
-    "content/media/uploads/illustrations-debout-dans-l-aquarium-03-images-dda-sabine.jpg",
-    "content/media/uploads/illustrations-debout-dans-l-aquarium-04-images-dda-epicerie-fine.jpg"
+    {
+      "image": "content/media/uploads/illustrations-debout-dans-l-aquarium-01-images-dda-chez-maurice.jpg",
+      "alt": "Illustration intérieure de Debout dans l'aquarium — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-debout-dans-l-aquarium-02-images-dda-pieces-detachees.jpg",
+      "alt": "Illustration intérieure de Debout dans l'aquarium — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-debout-dans-l-aquarium-03-images-dda-sabine.jpg",
+      "alt": "Illustration intérieure de Debout dans l'aquarium — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-debout-dans-l-aquarium-04-images-dda-epicerie-fine.jpg",
+      "alt": "Illustration intérieure de Debout dans l'aquarium — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-debout-dans-l-aquarium-01-documents-debout-dans-l-aquarium-nom-de-dieu.pdf"
   ],
-  "paypalHostedButtonId": "25SP8QLZZZWJS"
+  "paypalHostedButtonId": "25SP8QLZZZWJS",
+  "ordre": 30,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "a-quelques-pas-de-l-usine",
+    "avec-ou-sans-papiers",
+    "noir-horizon",
+    "ruptures-d-enfance"
+  ],
+  "couvertureAlt": "Couverture de Debout dans l'aquarium",
+  "anciensSlugs": [
+    "deboutdanslaquarium.html"
+  ]
 }

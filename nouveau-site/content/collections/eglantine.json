@@ -2,5 +2,9 @@
   "slug": "eglantine",
   "statut": "publie",
   "titre": "L’églantine",
-  "description": "Mini romans jeunesse pour les 7-14 ans."
+  "description": "Mini romans jeunesse pour les 7-14 ans.",
+  "ordre": 30,
+  "anciensSlugs": [
+    "eglantine.html"
+  ]
 }

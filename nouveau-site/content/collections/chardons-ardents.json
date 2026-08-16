@@ -2,5 +2,9 @@
   "slug": "chardons-ardents",
   "statut": "publie",
   "titre": "Chardons ardents",
-  "description": "Recueils de nouvelles à partir de 14 ans."
+  "description": "Recueils de nouvelles à partir de 14 ans.",
+  "ordre": 10,
+  "anciensSlugs": [
+    "chardonsardents.html"
+  ]
 }

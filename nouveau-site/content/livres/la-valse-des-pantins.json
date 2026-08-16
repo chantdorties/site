@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-la-valse-des-pantins.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-la-valse-des-pantins-01-images-vp-bete01ok.jpg",
-    "content/media/uploads/illustrations-la-valse-des-pantins-02-images-vp-enfance01ok.jpg",
-    "content/media/uploads/illustrations-la-valse-des-pantins-03-images-vp-valse01ok.jpg",
-    "content/media/uploads/illustrations-la-valse-des-pantins-04-images-vp-voyage01ok.jpg"
+    {
+      "image": "content/media/uploads/illustrations-la-valse-des-pantins-01-images-vp-bete01ok.jpg",
+      "alt": "Illustration intérieure de La valse des pantins — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-valse-des-pantins-02-images-vp-enfance01ok.jpg",
+      "alt": "Illustration intérieure de La valse des pantins — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-valse-des-pantins-03-images-vp-valse01ok.jpg",
+      "alt": "Illustration intérieure de La valse des pantins — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-valse-des-pantins-04-images-vp-voyage01ok.jpg",
+      "alt": "Illustration intérieure de La valse des pantins — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-la-valse-des-pantins-01-documents-extrait-valse.pdf"
   ],
-  "paypalHostedButtonId": "RUB97HQ5SPSN6"
+  "paypalHostedButtonId": "RUB97HQ5SPSN6",
+  "ordre": 100,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de La valse des pantins",
+  "anciensSlugs": [
+    "valse-des-pantins.html"
+  ]
 }

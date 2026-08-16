@@ -22,11 +22,30 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-qui-sont-les-pirates.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-qui-sont-les-pirates-01-images-qsp-qsp-image1.jpg",
-    "content/media/uploads/illustrations-qui-sont-les-pirates-02-images-qsp-qsp-image3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-qui-sont-les-pirates-01-images-qsp-qsp-image1.jpg",
+      "alt": "Illustration intérieure de Qui sont les pirates ? — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-qui-sont-les-pirates-02-images-qsp-qsp-image3.jpg",
+      "alt": "Illustration intérieure de Qui sont les pirates ? — 2"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-qui-sont-les-pirates-01-documents-extrait-qui-sont-les-pirates.pdf"
   ],
-  "paypalHostedButtonId": "25WDYSCNLJDQA"
+  "paypalHostedButtonId": "25WDYSCNLJDQA",
+  "ordre": 110,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Qui sont les pirates ?",
+  "anciensSlugs": [
+    "qui_sont_les_pirates.html"
+  ]
 }

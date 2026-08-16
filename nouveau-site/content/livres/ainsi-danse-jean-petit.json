@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-ainsi-danse-jean-petit.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-ainsi-danse-jean-petit-01-images-jp-p-43.jpg",
-    "content/media/uploads/illustrations-ainsi-danse-jean-petit-02-images-jp-p-60.jpg",
-    "content/media/uploads/illustrations-ainsi-danse-jean-petit-03-images-jp-p-130.jpg",
-    "content/media/uploads/illustrations-ainsi-danse-jean-petit-04-images-jp-p-138.jpg"
+    {
+      "image": "content/media/uploads/illustrations-ainsi-danse-jean-petit-01-images-jp-p-43.jpg",
+      "alt": "Illustration intérieure de Ainsi danse Jean Petit — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ainsi-danse-jean-petit-02-images-jp-p-60.jpg",
+      "alt": "Illustration intérieure de Ainsi danse Jean Petit — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ainsi-danse-jean-petit-03-images-jp-p-130.jpg",
+      "alt": "Illustration intérieure de Ainsi danse Jean Petit — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ainsi-danse-jean-petit-04-images-jp-p-138.jpg",
+      "alt": "Illustration intérieure de Ainsi danse Jean Petit — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-ainsi-danse-jean-petit-01-documents-jean-petit-extrait.pdf"
   ],
-  "paypalHostedButtonId": "M4ZABKZA8TNL8"
+  "paypalHostedButtonId": "M4ZABKZA8TNL8",
+  "ordre": 10,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon",
+    "gaia-conte-de-la-montagne-bleue"
+  ],
+  "couvertureAlt": "Couverture de Ainsi danse Jean Petit",
+  "anciensSlugs": [
+    "jeanpetit.html"
+  ]
 }

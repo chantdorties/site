@@ -31,5 +31,11 @@
     "content/media/uploads/pages-soutien-documents-01-documents-statuts-chant-d-orties.pdf",
     "content/media/uploads/pages-soutien-documents-02-documents-reglement-interieur.pdf",
     "content/media/uploads/pages-soutien-documents-03-documents-adhesion-soutien-chantdorties.pdf"
+  ],
+  "ordre": 100,
+  "rubrique": "Association",
+  "libelleAction": "Soutenir la maison",
+  "anciensSlugs": [
+    "soutien.html"
   ]
 }

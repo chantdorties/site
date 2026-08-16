@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-c-est-quoi-ce-travail.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-c-est-quoi-ce-travail-01-images-cqt-barbelles.jpg",
-    "content/media/uploads/illustrations-c-est-quoi-ce-travail-02-images-cqt-pere.jpg",
-    "content/media/uploads/illustrations-c-est-quoi-ce-travail-03-images-cqt-tonneau.jpg",
-    "content/media/uploads/illustrations-c-est-quoi-ce-travail-04-images-cqt-voiture.jpg"
+    {
+      "image": "content/media/uploads/illustrations-c-est-quoi-ce-travail-01-images-cqt-barbelles.jpg",
+      "alt": "Illustration intérieure de C'est quoi ce travail ? — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-c-est-quoi-ce-travail-02-images-cqt-pere.jpg",
+      "alt": "Illustration intérieure de C'est quoi ce travail ? — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-c-est-quoi-ce-travail-03-images-cqt-tonneau.jpg",
+      "alt": "Illustration intérieure de C'est quoi ce travail ? — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-c-est-quoi-ce-travail-04-images-cqt-voiture.jpg",
+      "alt": "Illustration intérieure de C'est quoi ce travail ? — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-c-est-quoi-ce-travail-01-documents-extrait-cestquoicetravail.pdf"
   ],
-  "paypalHostedButtonId": "P3ECSTW5ZJAR2"
+  "paypalHostedButtonId": "P3ECSTW5ZJAR2",
+  "ordre": 30,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "chez-poulardon",
+    "gaia-conte-de-la-montagne-bleue"
+  ],
+  "couvertureAlt": "Couverture de C'est quoi ce travail ?",
+  "anciensSlugs": [
+    "cest-quoi-ce-travail.html"
+  ]
 }

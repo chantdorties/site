@@ -22,16 +22,47 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-dent-de-lion.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-dent-de-lion-01-images-ddl-illu3-ddl-chantdorties.jpg",
-    "content/media/uploads/illustrations-dent-de-lion-02-images-ddl-illu2-ddl-chantdorties.jpg",
-    "content/media/uploads/illustrations-dent-de-lion-03-images-ddl-illu6-ddl-chantdorties.jpg",
-    "content/media/uploads/illustrations-dent-de-lion-04-images-ddl-glossaire-ail-ddl-chantdorties.jpg",
-    "content/media/uploads/illustrations-dent-de-lion-05-images-ddl-illu8-ddl-chantdorties.jpg",
-    "content/media/uploads/illustrations-dent-de-lion-06-images-ddl-lamiers-croquis-ddl-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-01-images-ddl-illu3-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-02-images-ddl-illu2-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-03-images-ddl-illu6-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-04-images-ddl-glossaire-ail-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 4"
+    },
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-05-images-ddl-illu8-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 5"
+    },
+    {
+      "image": "content/media/uploads/illustrations-dent-de-lion-06-images-ddl-lamiers-croquis-ddl-chantdorties.jpg",
+      "alt": "Illustration intérieure de Dent de lion — 6"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-dent-de-lion-01-documents-dentdelion-extrait1.pdf",
     "content/media/uploads/extraits-dent-de-lion-02-documents-dentdelion-extrait2.pdf"
   ],
-  "paypalHostedButtonId": "5FEABWRJQEB7C"
+  "paypalHostedButtonId": "5FEABWRJQEB7C",
+  "ordre": 30,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "l-orchestre-de-la-favela",
+    "la-petite-dame-grise"
+  ],
+  "couvertureAlt": "Couverture de Dent de lion",
+  "anciensSlugs": [
+    "dentdelion.html"
+  ]
 }

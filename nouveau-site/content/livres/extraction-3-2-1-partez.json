@@ -22,11 +22,33 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-extraction-3-2-1-partez.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-extraction-3-2-1-partez-01-images-e123-e123-1.jpg",
-    "content/media/uploads/illustrations-extraction-3-2-1-partez-02-images-e123-e123-2.jpg",
-    "content/media/uploads/illustrations-extraction-3-2-1-partez-03-images-e123-e123-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-extraction-3-2-1-partez-01-images-e123-e123-1.jpg",
+      "alt": "Illustration intérieure de Extraction 3, 2, 1, Partez ! — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-extraction-3-2-1-partez-02-images-e123-e123-2.jpg",
+      "alt": "Illustration intérieure de Extraction 3, 2, 1, Partez ! — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-extraction-3-2-1-partez-03-images-e123-e123-3.jpg",
+      "alt": "Illustration intérieure de Extraction 3, 2, 1, Partez ! — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-extraction-3-2-1-partez-01-documents-extraction-extrait.pdf"
+  ],
+  "ordre": 10,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre",
+    "le-chien-anarchiste"
+  ],
+  "couvertureAlt": "Couverture de Extraction 3, 2, 1, Partez !",
+  "anciensSlugs": [
+    "extraction_1_2_3_partez.html"
   ]
 }

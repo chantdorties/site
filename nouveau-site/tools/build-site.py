@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import html
 import json
@@ -17,16 +18,12 @@ from urllib.parse import quote
 
 from PIL import Image, ImageFile, ImageOps
 
-from content_data import load_content
+from content_data import load_content, media_alt, media_path
 
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-SITE_NAME = "Éditions Chant d’orties"
-CONTACT_EMAIL = "chantdorties@free.fr"
-FACEBOOK_URL = "https://www.facebook.com/pages/%C3%89ditions-Chant-dorties/377765272338134"
-DEFAULT_BASE_URL = "http://chantdorties.free.fr"
 PDFINFO_BINARY = "/usr/bin/pdfinfo" if Path("/usr/bin/pdfinfo").is_file() else shutil.which("pdfinfo")
 GHOSTSCRIPT_BINARY = "/usr/bin/gs" if Path("/usr/bin/gs").is_file() else shutil.which("gs")
 
@@ -54,27 +51,6 @@ NEWS_TYPE_LABELS = {
     "rencontre": "Rencontre",
     "maison": "Vie de la maison",
 }
-
-HOUSE_PAGE_META = {
-    "amis": ("Réseau", "Découvrir nos amis"),
-    "atelier-ecriture": ("Transmission", "Découvrir l’atelier"),
-    "commandes": ("Commander", "Commander un livre"),
-    "librairies-partenaires": ("Près de chez vous", "Trouver une librairie"),
-    "manuscrits": ("Proposer un texte", "Consulter les modalités"),
-    "mentions-legales": ("Informations", "Lire les mentions"),
-    "offres-speciales": ("Sélection", "Voir les offres"),
-    "projets": ("À venir", "Découvrir les projets"),
-    "soutien": ("Association", "Soutenir la maison"),
-}
-
-NAV_ITEMS = [
-    ("home", "/", "Accueil"),
-    ("catalogue", "/catalogue/", "Catalogue"),
-    ("collections", "/collections/", "Collections"),
-    ("people", "/personnes/", "Auteurs & illustrateurs"),
-    ("actualites", "/actualites/", "Actualités"),
-    ("maison", "/la-maison/", "La maison"),
-]
 
 ICONS = {
     "arrow-right": '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
@@ -156,22 +132,17 @@ class SiteBuilder:
         output: Path,
         *,
         include_drafts: bool,
-        base_url: str,
+        base_url: str | None,
     ) -> None:
         self.root = root.resolve()
         self.output = output.resolve()
         self.temp_output = self.output.with_name(f".{self.output.name}-build")
         self.include_drafts = include_drafts
-        self.base_url = base_url.rstrip("/")
         self.content_dir = self.root / "content"
         self.frontend_dir = self.root / "frontend"
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
-        self.paypal_config = read_json(self.root / "config" / "paypal.json")
-        donation_button_id = self.paypal_config.get("donationHostedButtonId", "")
-        if not re.fullmatch(r"[A-Z0-9]{13}", donation_button_id):
-            raise ValueError("Identifiant du bouton de don PayPal invalide")
         asset_digest = hashlib.sha256()
         for asset in ("assets/css/site.css", "assets/js/site.js"):
             asset_digest.update((self.frontend_dir / asset).read_bytes())
@@ -183,6 +154,17 @@ class SiteBuilder:
         self.collections = content["collections"]
         self.pages = content["pages"]
         self.news = content["news"]
+        self.raw = content["raw"]
+        self.legacy = content["legacy"]
+        self.settings = content["settings"]
+        self.site_settings = self.settings["site"]
+        self.navigation_settings = self.settings["navigation"]
+        self.footer_settings = self.settings["footer"]
+        self.home_settings = self.settings["accueil"]
+        self.page_settings = self.settings["pages"]
+        self.payment_settings = self.settings["paiement"]
+        self.resolve_page_counts()
+        self.base_url = (base_url or self.site_settings["domaine"]).rstrip("/")
         self.books_by_slug = {book["slug"]: book for book in self.books}
         self.people_by_slug = {person["slug"]: person for person in self.people}
         self.collections_by_slug = {item["slug"]: item for item in self.collections}
@@ -190,9 +172,11 @@ class SiteBuilder:
 
         self.cover_media: dict[str, dict[str, str]] = {}
         self.person_media: dict[str, dict[str, str]] = {}
+        self.person_gallery_media: dict[str, str] = {}
         self.illustration_media: dict[str, str] = {}
         self.page_image_media: dict[str, str] = {}
         self.news_image_media: dict[str, str] = {}
+        self.seo_image_media: dict[str, str] = {}
         self.document_media: dict[str, str] = {}
         self.pdf_hashes: dict[str, str] = {}
         self.skipped_documents: list[str] = []
@@ -204,13 +188,56 @@ class SiteBuilder:
             "skippedDocuments": 0,
         }
 
+    def resolve_page_counts(self) -> None:
+        """Remplace le jeton {nombre} des réglages par le compte réel.
+
+        Les libellés de rubrique annoncent des quantités (« 64 ouvrages »). Les
+        figer dans les réglages les rendrait faux dès le premier ajout depuis
+        l’administration, sans que personne ne s’en aperçoive.
+        """
+        counts = {
+            "catalogue": len(self.books),
+            "personnes": len(self.people),
+            "collections": len(self.collections),
+            "actualites": len(self.news),
+            "maison": len(self.published_editorial_pages()),
+        }
+        for block, count in counts.items():
+            labels = self.page_settings[block]
+            for field, value in labels.items():
+                if isinstance(value, str) and "{nombre}" in value:
+                    labels[field] = value.replace("{nombre}", str(count))
+
     def validate_source(self) -> None:
-        for required_page in ("accueil", "actualites", "mentions-legales"):
+        for required_page in ("accueil", "actualites"):
             if required_page not in self.pages_by_slug:
                 raise ValueError(f"Page obligatoire absente : {required_page}")
         for book in self.books:
             if not (self.root / book["couverture"]).is_file():
                 raise FileNotFoundError(book["couverture"])
+
+    def acquire_lock(self) -> None:
+        """Interdit deux générations simultanées vers la même sortie.
+
+        Le serveur de développement régénère le site à chaque enregistrement et
+        partage ce dossier temporaire avec « make build ». Sans verrou, les deux
+        générations se détruisent mutuellement en pleine écriture.
+        """
+        self.lock_path = self.temp_output.with_name(f"{self.temp_output.name}.lock")
+        self.lock_file = self.lock_path.open("w")
+        try:
+            fcntl.flock(self.lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            self.lock_file.close()
+            raise SystemExit(
+                f"Une génération est déjà en cours vers {self.output.name}/. "
+                "Arrêter « make dev » ou « make admin » avant de relancer la génération."
+            ) from None
+
+    def release_lock(self) -> None:
+        fcntl.flock(self.lock_file, fcntl.LOCK_UN)
+        self.lock_file.close()
+        self.lock_path.unlink(missing_ok=True)
 
     def prepare_output(self) -> None:
         if self.temp_output.exists():
@@ -261,7 +288,10 @@ class SiteBuilder:
                 "large": f"/assets/media/covers/{large.name}",
             }
 
-            for index, path in enumerate(book["illustrations"], start=1):
+            for index, item in enumerate(book["illustrations"], start=1):
+                path = media_path(item)
+                if not path:
+                    continue
                 source = self.root / path
                 destination = (
                     self.temp_output
@@ -278,24 +308,42 @@ class SiteBuilder:
 
         for person in self.people:
             image_path = person.get("imagePrincipale")
-            if not image_path:
-                continue
-            source = self.root / image_path
-            small = self.temp_output / "assets" / "media" / "people" / f"{person['slug']}-480.webp"
-            large = self.temp_output / "assets" / "media" / "people" / f"{person['slug']}-900.webp"
-            self.save_webp(source, small, (480, 720))
-            self.save_webp(source, large, (900, 1200))
-            self.person_media[person["slug"]] = {
-                "small": f"/assets/media/people/{small.name}",
-                "large": f"/assets/media/people/{large.name}",
-            }
+            if image_path:
+                source = self.root / image_path
+                small = self.temp_output / "assets" / "media" / "people" / f"{person['slug']}-480.webp"
+                large = self.temp_output / "assets" / "media" / "people" / f"{person['slug']}-900.webp"
+                self.save_webp(source, small, (480, 720))
+                self.save_webp(source, large, (900, 1200))
+                self.person_media[person["slug"]] = {
+                    "small": f"/assets/media/people/{small.name}",
+                    "large": f"/assets/media/people/{large.name}",
+                }
+            for index, item in enumerate(person["images"], start=1):
+                path = media_path(item)
+                if not path:
+                    continue
+                destination = (
+                    self.temp_output
+                    / "assets"
+                    / "media"
+                    / "people"
+                    / person["slug"]
+                    / f"{index:02d}.webp"
+                )
+                self.save_webp(self.root / path, destination, (1400, 1400))
+                self.person_gallery_media[path] = (
+                    f"/assets/media/people/{person['slug']}/{destination.name}"
+                )
 
         for page in self.pages:
             if page["slug"] == "actualites":
                 continue
             if page["aVerifier"] and not self.include_drafts:
                 continue
-            for index, path in enumerate(page["images"], start=1):
+            for index, item in enumerate(page["images"], start=1):
+                path = media_path(item)
+                if not path:
+                    continue
                 source = self.root / path
                 destination = (
                     self.temp_output
@@ -316,6 +364,17 @@ class SiteBuilder:
             destination = self.temp_output / "assets" / "media" / "news" / f"{item['slug']}.webp"
             self.save_webp(source, destination, (1200, 900))
             self.news_image_media[item["slug"]] = f"/assets/media/news/{destination.name}"
+
+        seo_records = [*self.books, *self.people, *self.collections, *self.pages, *self.news]
+        for item in seo_records:
+            source_path = item.get("seo", {}).get("image")
+            if not source_path or source_path in self.seo_image_media:
+                continue
+            source = self.root / source_path
+            digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:10]
+            destination = self.temp_output / "assets" / "media" / "social" / f"{item['slug']}-{digest}.webp"
+            self.save_webp(source, destination, (1200, 630))
+            self.seo_image_media[source_path] = f"/assets/media/social/{destination.name}"
 
     def copy_pdf(self, relative_path: str) -> str | None:
         if relative_path in self.document_media:
@@ -412,7 +471,9 @@ class SiteBuilder:
                 {
                     "slug": book["slug"],
                     "titre": book["titre"],
+                    "ordre": book["ordre"],
                     "collection": book["collection"],
+                    "collectionOrdre": self.collections_by_slug[book["collection"]]["ordre"],
                     "typeOuvrage": book["typeOuvrage"],
                     "ageMinimum": book["ageMinimum"],
                     "auteurNoms": self.person_names(book["auteurs"]),
@@ -420,6 +481,7 @@ class SiteBuilder:
                     "prixCentimes": book["prixCentimes"],
                     "disponible": book["disponible"],
                     "couverture": self.cover_media[book["slug"]]["small"],
+                    "couvertureAlt": book.get("couvertureAlt") or f"Couverture de {book['titre']}",
                 }
             )
 
@@ -434,8 +496,10 @@ class SiteBuilder:
                 {
                     "slug": person["slug"],
                     "nom": person["nom"],
+                    "ordre": person["ordre"],
                     "roles": person["roles"],
                     "imagePrincipale": self.person_media.get(person["slug"], {}).get("small"),
+                    "imagePrincipaleAlt": person.get("imagePrincipaleAlt") or f"Portrait de {person['nom']}",
                     "monogram": monogram(person["nom"]),
                     "nombreLivres": len(related),
                 }
@@ -456,27 +520,42 @@ class SiteBuilder:
 
     def render_nav(self, active: str, *, mobile: bool = False) -> str:
         links = []
-        for key, href, label in NAV_ITEMS:
-            current = ' aria-current="page"' if key == active else ""
-            links.append(f'<a class="nav-link" href="{href}"{current}>{e(label)}</a>')
+        navigation = sorted(
+            (item for item in self.navigation_settings["liens"] if item["visible"]),
+            key=lambda item: (item["ordre"], item["id"]),
+        )
+        for item in navigation:
+            current = ' aria-current="page"' if item["id"] == active else ""
+            links.append(
+                f'<a class="nav-link" href="{e(item["url"])}"{current}>'
+                f'{e(item["libelle"])}</a>'
+            )
+        search_settings = self.navigation_settings["recherche"]
         search = (
-            '<a class="nav-link" href="/catalogue/#recherche">Rechercher un livre</a>'
+            f'<a class="nav-link" href="{e(search_settings["url"])}">'
+            f'{e(search_settings["libelle"])}</a>'
             if mobile
             else (
-                '<a class="icon-button" href="/catalogue/#recherche" '
-                'title="Rechercher un livre" aria-label="Rechercher un livre">'
+                f'<a class="icon-button" href="{e(search_settings["url"])}" '
+                f'title="{e(search_settings["libelle"])}" '
+                f'aria-label="{e(search_settings["libelle"])}">'
                 f'{icon("search")}</a>'
             )
         )
         return "".join(links) + search
 
     def render_header(self, active: str) -> str:
+        short_name = self.site_settings["nomCourt"]
+        if " " in short_name:
+            name_start, name_accent = short_name.rsplit(" ", 1)
+        else:
+            name_start, name_accent = short_name, ""
         return f"""
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="/" aria-label="{e(SITE_NAME)}, accueil">
+    <a class="wordmark" href="/" aria-label="{e(self.site_settings['nom'])}, accueil">
       <img class="site-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241">
-      <span class="wordmark__text">Chant <span class="wordmark__accent">d’orties</span></span>
+      <span class="wordmark__text">{e(name_start)} <span class="wordmark__accent">{e(name_accent)}</span></span>
     </a>
     <nav class="primary-nav" aria-label="Navigation principale">
       {self.render_nav(active)}
@@ -494,8 +573,21 @@ class SiteBuilder:
 
     def render_footer(self) -> str:
         legal_link = ""
-        if self.include_drafts or not self.pages_by_slug["mentions-legales"]["aVerifier"]:
-            legal_link = '<li><a href="/mentions-legales/">Mentions légales</a></li>'
+        legal_page = self.pages_by_slug.get("mentions-legales")
+        if legal_page and (self.include_drafts or not legal_page["aVerifier"]):
+            legal_link = (
+                '<li><a href="/mentions-legales/">'
+                f'{e(self.footer_settings["libelleMentions"])}</a></li>'
+            )
+        navigation_links = "".join(
+            f'<li><a href="{e(item["url"])}">{e(item["libelle"])}</a></li>'
+            for item in sorted(
+                self.footer_settings["liensNavigation"],
+                key=lambda item: (item["ordre"], item["url"]),
+            )
+        )
+        email = self.site_settings["courriel"]
+        facebook = self.site_settings["facebook"]
         return f"""
 <footer class="site-footer">
   <div class="container">
@@ -503,32 +595,29 @@ class SiteBuilder:
       <div class="footer-identity">
         <img class="footer-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241" loading="lazy">
         <div>
-          <p class="footer-brand">{e(SITE_NAME)}</p>
-          <p class="footer-intro">Une maison d’édition associative de littérature jeunesse, pour les jeunes lecteurs et ceux qui ont gardé leur âme d’enfant.</p>
+          <p class="footer-brand">{e(self.site_settings['nom'])}</p>
+          <p class="footer-intro">{e(self.footer_settings['presentation'])}</p>
         </div>
       </div>
       <div>
-        <h2 class="footer-title">Découvrir</h2>
+        <h2 class="footer-title">{e(self.footer_settings['titreNavigation'])}</h2>
         <ul class="footer-links">
-          <li><a href="/catalogue/">Catalogue</a></li>
-          <li><a href="/collections/">Collections</a></li>
-          <li><a href="/personnes/">Auteurs & illustrateurs</a></li>
-          <li><a href="/actualites/">Actualités</a></li>
+          {navigation_links}
         </ul>
       </div>
       <div>
-        <h2 class="footer-title">Informations</h2>
+        <h2 class="footer-title">{e(self.footer_settings['titreInformations'])}</h2>
         <ul class="footer-links">
-          <li><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></li>
-          <li><a href="{FACEBOOK_URL}" target="_blank" rel="noopener noreferrer">Facebook {icon("external")}</a></li>
-          <li><a href="/manuscrits/">Manuscrits</a></li>
-          <li><a href="/plan-du-site/">Plan du site</a></li>
+          <li><a href="mailto:{e(email)}">{e(email)}</a></li>
+          <li><a href="{e(facebook)}" target="_blank" rel="noopener noreferrer">{e(self.footer_settings['libelleFacebook'])} {icon("external")}</a></li>
+          <li><a href="/manuscrits/">{e(self.footer_settings['libelleManuscrits'])}</a></li>
+          <li><a href="/plan-du-site/">{e(self.footer_settings['libellePlan'])}</a></li>
           {legal_link}
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {datetime.now().year} {e(SITE_NAME)}</span>
+      <span>© {datetime.now().year} {e(self.site_settings['nom'])}</span>
       <button class="icon-button back-to-top" type="button" data-back-to-top hidden title="Revenir en haut">
         {icon("arrow-up", label="Revenir en haut")}
       </button>
@@ -551,7 +640,7 @@ class SiteBuilder:
         og_image: str | None = None,
         structured_data: dict[str, Any] | None = None,
     ) -> str:
-        page_title = SITE_NAME if route == "/" else f"{title} | {SITE_NAME}"
+        page_title = title if route == "/" else f"{title} | {self.site_settings['nom']}"
         canonical_url = absolute_url(self.base_url, route)
         canonical = f'<link rel="canonical" href="{e(canonical_url)}">'
         robots = '<meta name="robots" content="noindex, nofollow">' if draft else ""
@@ -607,6 +696,22 @@ class SiteBuilder:
         if route != "/404.html":
             self.generated_routes.append(route)
 
+    def seo_values(
+        self,
+        record: dict[str, Any],
+        *,
+        default_title: str,
+        default_description: str,
+        default_image: str | None = None,
+    ) -> tuple[str, str, str | None]:
+        seo = record.get("seo") or {}
+        image_path = seo.get("image")
+        return (
+            seo.get("titre") or default_title,
+            seo.get("description") or default_description,
+            self.seo_image_media.get(image_path) if image_path else default_image,
+        )
+
     def render_breadcrumbs(self, items: list[tuple[str, str | None]]) -> str:
         parts = []
         for label, href in items:
@@ -631,7 +736,7 @@ class SiteBuilder:
 <article class="book-card">
   <a class="book-card__cover-link" href="/livres/{e(book['slug'])}/">
     <img class="book-card__cover" src="{self.cover_media[book['slug']]['small']}"
-      alt="Couverture de {e(book['titre'])}" loading="{loading}" width="480" height="720">
+      alt="{e(book.get('couvertureAlt') or f'Couverture de {book["titre"]}')}" loading="{loading}" width="480" height="720">
   </a>
   <p class="book-card__collection">{e(collection['titre'])}</p>
   <h3><a href="/livres/{e(book['slug'])}/">{e(book['titre'])}</a></h3>
@@ -666,33 +771,30 @@ class SiteBuilder:
         return '<div class="collection-showcase">' + "".join(tiles) + "</div>"
 
     def featured_books(self) -> list[dict[str, Any]]:
-        featured = []
-        for collection in self.collections:
-            available = [
-                self.books_by_slug[slug]
-                for slug in collection["livres"]
-                if self.books_by_slug[slug]["disponible"]
-            ]
-            if available:
-                featured.append(available[-1])
-        return featured
+        selected = [
+            book
+            for book in self.books
+            if book["miseEnAvantAccueil"] and book["disponible"]
+        ]
+        return sorted(selected, key=lambda book: (book["ordreAccueil"], book["ordre"], book["slug"]))
 
     def build_home(self) -> None:
         home_sections = self.pages_by_slug["accueil"]["sections"]
-        sections_by_title = {section["titre"]: section for section in home_sections}
-        intro = sections_by_title["Présentation"]["contenu"]
-        house_update = sections_by_title["Information"]
-        commercial_info = sections_by_title["Soutien et commandes"]
-        booksellers_info = sections_by_title["Libraires"]
-        individuals_info = sections_by_title["Particuliers"]
-        support_info = sections_by_title["Soutien"]
+        sections_by_id = {section.get("id"): section for section in home_sections}
+        intro = sections_by_id["presentation"]["contenu"]
+        house_update = sections_by_id["information"]
+        commercial_info = sections_by_id["soutien-commandes"]
+        booksellers_info = sections_by_id["libraires"]
+        individuals_info = sections_by_id["particuliers"]
+        support_info = sections_by_id["soutien"]
+        labels = self.home_settings
         featured = self.featured_books()
         covers = "".join(
             f"""
 <a href="/livres/{e(book['slug'])}/" aria-label="Découvrir {e(book['titre'])}">
   <img src="{self.cover_media[book['slug']]['small']}"
     srcset="{self.cover_media[book['slug']]['small']} 480w, {self.cover_media[book['slug']]['large']} 900w"
-    sizes="(max-width: 760px) 30vw, 15vw" alt="Couverture de {e(book['titre'])}"
+    sizes="(max-width: 760px) 30vw, 15vw" alt="{e(book.get('couvertureAlt') or f'Couverture de {book["titre"]}')}"
     loading="{'eager' if index < 3 else 'lazy'}" width="480" height="720">
 </a>""".strip()
             for index, book in enumerate(featured)
@@ -701,12 +803,12 @@ class SiteBuilder:
 <section class="hero">
   <div class="container">
     <div class="hero-copy">
-      <p class="eyebrow">Maison d’édition jeunesse indépendante</p>
-      <h1>Éditions Chant <span>d’orties</span></h1>
-      <p class="lead">Des histoires illustrées qui grattent, dérangent et sèment les germes d’utopies futures.</p>
+      <p class="eyebrow">{e(labels['heroRubrique'])}</p>
+      <h1>{e(labels['heroTitre'])} <span>{e(labels['heroAccent'])}</span></h1>
+      <p class="lead">{e(labels['heroAccroche'])}</p>
       <div class="hero-actions">
-        <a class="button" href="/catalogue/">Explorer le catalogue <span aria-hidden="true">→</span></a>
-        <a class="button button--secondary" href="/collections/">Voir les collections</a>
+        <a class="button" href="/catalogue/">{e(labels['boutonCatalogue'])} <span aria-hidden="true">→</span></a>
+        <a class="button button--secondary" href="/collections/">{e(labels['boutonCollections'])}</a>
       </div>
     </div>
     <div class="cover-ribbon">{covers}</div>
@@ -716,7 +818,7 @@ class SiteBuilder:
   <div class="container home-commercial__layout">
     <div>
       <p class="eyebrow">{e(house_update['titre'])}</p>
-      <h2>La maison poursuit son activité</h2>
+      <h2>{e(labels['titreInformation'])}</h2>
       <p class="lead">{e(house_update['contenu'])}</p>
     </div>
     <div class="home-commercial__details">
@@ -735,8 +837,8 @@ class SiteBuilder:
       <p class="commercial-support">{self.linkify_text(support_info['contenu'], internal_links={'page de soutien': '/soutien/'})}</p>
       <div class="hero-actions">
         <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
-          <input type="hidden" name="hosted_button_id" value="{e(self.paypal_config['donationHostedButtonId'])}">
-          <button class="button" type="submit">{icon('heart')} Faire un don</button>
+          <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
+          <button class="button" type="submit">{icon('heart')} {e(self.payment_settings['libelleDon'])}</button>
         </form>
         <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
       </div>
@@ -746,7 +848,7 @@ class SiteBuilder:
 <section class="section">
   <div class="container">
     <div class="section-heading">
-      <div><p class="eyebrow">Notre ligne éditoriale</p><h2>Six collections, autant de chemins de traverse</h2></div>
+      <div><p class="eyebrow">{e(labels['collectionsRubrique'])}</p><h2>{e(labels['collectionsTitre'])}</h2></div>
       <p>{e(intro)}</p>
     </div>
     {self.render_collection_showcase(heading_level=3)}
@@ -755,32 +857,39 @@ class SiteBuilder:
 <section class="section section--ink">
   <div class="container">
     <div class="section-heading">
-      <div><p class="eyebrow">La maison</p><h2>Suivre et participer</h2></div>
+      <div><p class="eyebrow">{e(labels['suivreRubrique'])}</p><h2>{e(labels['suivreTitre'])}</h2></div>
     </div>
     <div class="split-callout">
-      <a href="/actualites/"><p class="eyebrow">Actualités</p><h3>Salons, parutions et rencontres</h3><span>Suivre les nouvelles <span aria-hidden="true">→</span></span></a>
-      <a href="/manuscrits/"><p class="eyebrow">Manuscrits</p><h3>Proposer un texte à la maison</h3><span>Consulter les modalités <span aria-hidden="true">→</span></span></a>
+      <a href="/actualites/"><p class="eyebrow">{e(labels['actualitesRubrique'])}</p><h3>{e(labels['actualitesTitre'])}</h3><span>{e(labels['actualitesAction'])} <span aria-hidden="true">→</span></span></a>
+      <a href="/manuscrits/"><p class="eyebrow">{e(labels['manuscritsRubrique'])}</p><h3>{e(labels['manuscritsTitre'])}</h3><span>{e(labels['manuscritsAction'])} <span aria-hidden="true">→</span></span></a>
     </div>
   </div>
 </section>"""
+        seo_title, seo_description, seo_image = self.seo_values(
+            self.pages_by_slug["accueil"],
+            default_title=self.site_settings["nom"],
+            default_description=self.site_settings["description"],
+        )
         page = self.render_page(
-            title=SITE_NAME,
-            description="Maison d’édition associative de littérature jeunesse illustrée.",
+            title=seo_title,
+            description=seo_description,
             route="/",
             content=content,
             active="home",
             body_class="home-page",
+            og_image=seo_image,
         )
         self.write_route("/", page)
 
     def build_catalogue(self) -> None:
+        labels = self.page_settings["catalogue"]
         content = f"""
 <header class="page-heading">
   <div class="container">
     {self.render_breadcrumbs([('Accueil', '/'), ('Catalogue', None)])}
-    <p class="eyebrow">64 ouvrages</p>
-    <h1>Le catalogue</h1>
-    <p class="lead">Romans, albums et nouvelles illustrées à parcourir par collection, âge ou disponibilité.</p>
+    <p class="eyebrow">{e(labels['rubrique'])}</p>
+    <h1>{e(labels['titre'])}</h1>
+    <p class="lead">{e(labels['introduction'])}</p>
   </div>
 </header>
 <section class="filter-panel" id="recherche" aria-label="Filtres du catalogue">
@@ -793,14 +902,14 @@ class SiteBuilder:
 </section>
 <section class="section">
   <div class="container">
-    <div class="results-bar"><p class="results-status" data-results-status aria-live="polite">Chargement du catalogue…</p><div class="field"><label for="book-sort">Trier</label><select id="book-sort"><option value="title">Titre</option><option value="price-asc">Prix croissant</option><option value="price-desc">Prix décroissant</option></select></div></div>
+    <div class="results-bar"><p class="results-status" data-results-status aria-live="polite">Chargement du catalogue…</p><div class="field"><label for="book-sort">Trier</label><select id="book-sort"><option value="order">Ordre du catalogue</option><option value="title">Titre</option><option value="price-asc">Prix croissant</option><option value="price-desc">Prix décroissant</option></select></div></div>
     <div class="book-grid" data-book-grid aria-busy="true"><p class="loading-state">Chargement des livres…</p></div>
     <noscript><p class="error-state">JavaScript est nécessaire pour filtrer le catalogue. Les livres restent accessibles depuis les pages des collections.</p></noscript>
   </div>
 </section>"""
         page = self.render_page(
-            title="Catalogue",
-            description="Découvrez les 64 livres publiés par les Éditions Chant d’orties.",
+            title=labels["titre"],
+            description=labels["descriptionSeo"],
             route="/catalogue/",
             content=content,
             active="catalogue",
@@ -809,13 +918,14 @@ class SiteBuilder:
         self.write_route("/catalogue/", page)
 
     def build_people_index(self) -> None:
+        labels = self.page_settings["personnes"]
         content = f"""
 <header class="page-heading">
   <div class="container">
     {self.render_breadcrumbs([('Accueil', '/'), ('Auteurs & illustrateurs', None)])}
-    <p class="eyebrow">81 personnes</p>
-    <h1>Auteurs & illustrateurs</h1>
-    <p class="lead">Les écrivains, artistes et préfaciers qui donnent voix et images aux livres de la maison.</p>
+    <p class="eyebrow">{e(labels['rubrique'])}</p>
+    <h1>{e(labels['titre'])}</h1>
+    <p class="lead">{e(labels['introduction'])}</p>
   </div>
 </header>
 <section class="filter-panel" id="recherche" aria-label="Filtres de l’annuaire">
@@ -831,8 +941,8 @@ class SiteBuilder:
   </div>
 </section>"""
         page = self.render_page(
-            title="Auteurs et illustrateurs",
-            description="Découvrez les auteurs, illustrateurs et préfaciers des Éditions Chant d’orties.",
+            title=labels["titre"],
+            description=labels["descriptionSeo"],
             route="/personnes/",
             content=content,
             active="people",
@@ -841,16 +951,17 @@ class SiteBuilder:
         self.write_route("/personnes/", page)
 
     def build_collections_index(self) -> None:
+        labels = self.page_settings["collections"]
         content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Collections', None)])}
-  <p class="eyebrow">Notre catalogue</p><h1>Les six collections</h1>
-  <p class="lead">Des premiers albums aux romans pour adolescents, chaque collection porte une voix et un âge de lecture.</p>
+  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
+  <p class="lead">{e(labels['introduction'])}</p>
 </div></header>
 <section class="section"><div class="container">{self.render_collection_showcase()}</div></section>"""
         page = self.render_page(
-            title="Collections",
-            description="Les six collections de littérature jeunesse des Éditions Chant d’orties.",
+            title=labels["titre"],
+            description=labels["descriptionSeo"],
             route="/collections/",
             content=content,
             active="collections",
@@ -919,7 +1030,7 @@ class SiteBuilder:
   <button class="button" type="submit">{icon('shopping-cart')} Ajouter au panier avec PayPal</button>
 </form>"""
             else:
-                purchase_action = f'<a class="button" href="mailto:{CONTACT_EMAIL}?subject={subject}">{icon("mail")} Nous contacter</a>'
+                purchase_action = f'<a class="button" href="mailto:{e(self.site_settings["courriel"])}?subject={subject}">{icon("mail")} Nous contacter</a>'
             purchase = f"""
 <div class="purchase-line">
   {price_html}<span class="availability{availability_class}">{availability_label}</span>
@@ -938,23 +1049,29 @@ class SiteBuilder:
             gallery = ""
             if book["illustrations"]:
                 gallery_items = [
-                    (self.illustration_media[path], f"Illustration intérieure de {book['titre']} — {index}")
-                    for index, path in enumerate(book["illustrations"], start=1)
+                    (
+                        self.illustration_media[media_path(item)],
+                        media_alt(item, f"Illustration intérieure de {book['titre']} — {index}"),
+                    )
+                    for index, item in enumerate(book["illustrations"], start=1)
+                    if media_path(item) in self.illustration_media
                 ]
                 gallery = f'<section class="section section--white"><div class="container"><div class="section-heading"><div><p class="eyebrow">À l’intérieur</p><h2>Quelques illustrations</h2></div></div>{self.render_gallery(gallery_items)}</div></section>'
 
-            related = [
-                self.books_by_slug[slug]
-                for slug in collection["livres"]
-                if slug != book["slug"]
-            ][:4]
+            related_slugs = book.get("aDecouvrir")
+            if related_slugs is None:
+                related_slugs = [slug for slug in collection["livres"] if slug != book["slug"]][:4]
+            related = [self.books_by_slug[slug] for slug in related_slugs if slug in self.books_by_slug]
             related_html = "".join(self.render_book_card(item) for item in related)
+            related_section = ""
+            if related_html:
+                related_section = f'<section class="section"><div class="container"><div class="section-heading"><div><p class="eyebrow">Dans la même collection</p><h2>À découvrir aussi</h2></div><a href="/collections/{e(collection["slug"])}/">Toute la collection</a></div><div class="book-grid">{related_html}</div></div></section>'
             content = f"""
 <section class="section section--white">
   <div class="container">
     {self.render_breadcrumbs([('Accueil', '/'), ('Catalogue', '/catalogue/'), (collection['titre'], f"/collections/{collection['slug']}/"), (book['titre'], None)])}
     <article class="book-detail">
-      <div><img class="book-detail__cover" src="{self.cover_media[book['slug']]['large']}" srcset="{self.cover_media[book['slug']]['small']} 480w, {self.cover_media[book['slug']]['large']} 900w" sizes="(max-width: 760px) 90vw, 390px" alt="Couverture de {e(book['titre'])}" width="900" height="1350"></div>
+      <div><img class="book-detail__cover" src="{self.cover_media[book['slug']]['large']}" srcset="{self.cover_media[book['slug']]['small']} 480w, {self.cover_media[book['slug']]['large']} 900w" sizes="(max-width: 760px) 90vw, 390px" alt="{e(book.get('couvertureAlt') or f'Couverture de {book["titre"]}')}" width="900" height="1350"></div>
       <div class="book-detail__content">
         <p class="eyebrow"><a href="/collections/{e(collection['slug'])}/">{e(collection['titre'])}</a></p>
         <h1>{e(book['titre'])}</h1>
@@ -968,7 +1085,7 @@ class SiteBuilder:
   </div>
 </section>
 {gallery}
-<section class="section"><div class="container"><div class="section-heading"><div><p class="eyebrow">Dans la même collection</p><h2>À découvrir aussi</h2></div><a href="/collections/{e(collection['slug'])}/">Toute la collection</a></div><div class="book-grid">{related_html}</div></div></section>"""
+{related_section}"""
 
             structured = {
                 "@context": "https://schema.org",
@@ -983,15 +1100,21 @@ class SiteBuilder:
             }
             if book["isbn"] and book["isbnValide"]:
                 structured["isbn"] = book["isbn"]
+            seo_title, seo_description, seo_image = self.seo_values(
+                book,
+                default_title=book["titre"],
+                default_description=book["description"] or f"Découvrez {book['titre']}.",
+                default_image=self.cover_media[book["slug"]]["large"],
+            )
             page = self.render_page(
-                title=book["titre"],
-                description=book["description"] or f"Découvrez {book['titre']}.",
+                title=seo_title,
+                description=seo_description,
                 route=f"/livres/{book['slug']}/",
                 content=content,
                 active="catalogue",
                 body_class="book-page",
                 og_type="book",
-                og_image=self.cover_media[book["slug"]]["large"],
+                og_image=seo_image,
                 structured_data=structured,
             )
             self.write_route(f"/livres/{book['slug']}/", page)
@@ -1006,12 +1129,18 @@ class SiteBuilder:
   <p class="eyebrow">{collection['nombreLivres']} livres</p><h1>{e(collection['titre'])}</h1><p class="lead">{e(collection['description'])}</p>
 </div></header>
 <section class="section"><div class="container"><div class="book-grid">{cards}</div></div></section>"""
+            seo_title, seo_description, seo_image = self.seo_values(
+                collection,
+                default_title=collection["titre"],
+                default_description=collection["description"],
+            )
             page = self.render_page(
-                title=collection["titre"],
-                description=collection["description"],
+                title=seo_title,
+                description=seo_description,
                 route=f"/collections/{collection['slug']}/",
                 content=content,
                 active="collections",
+                og_image=seo_image,
             )
             self.write_route(f"/collections/{collection['slug']}/", page)
 
@@ -1025,13 +1154,30 @@ class SiteBuilder:
             cards = "".join(self.render_book_card(self.books_by_slug[slug]) for slug in related_slugs)
             media = self.person_media.get(person["slug"])
             if media:
-                visual = f'<img src="{media["large"]}" srcset="{media["small"]} 480w, {media["large"]} 900w" sizes="(max-width: 760px) 90vw, 330px" alt="Portrait de {e(person["nom"])}" width="900" height="900">'
+                portrait_alt = person.get("imagePrincipaleAlt") or f"Portrait de {person['nom']}"
+                visual = f'<img src="{media["large"]}" srcset="{media["small"]} 480w, {media["large"]} 900w" sizes="(max-width: 760px) 90vw, 330px" alt="{e(portrait_alt)}" width="900" height="900">'
                 og_image = media["large"]
             else:
                 visual = f'<span class="monogram" aria-hidden="true">{e(monogram(person["nom"]))}</span>'
                 og_image = None
             roles = " · ".join(ROLE_LABELS.get(role, role.title()) for role in person["roles"])
             biography = person["biographie"] or "Cette personne a contribué aux ouvrages présentés ci-dessous."
+            gallery_items = [
+                (
+                    self.person_gallery_media[media_path(item)],
+                    media_alt(item, f"{person['nom']} — image {index}"),
+                )
+                for index, item in enumerate(person["images"], start=1)
+                if media_path(item) in self.person_gallery_media
+            ]
+            gallery = ""
+            if gallery_items:
+                gallery = (
+                    '<section class="section section--white"><div class="container">'
+                    '<div class="section-heading"><div><p class="eyebrow">En images</p>'
+                    f'<h2>{e(person["nom"])}</h2></div></div>{self.render_gallery(gallery_items)}'
+                    '</div></section>'
+                )
             external = ""
             if person["liensExternes"]:
                 links = "".join(
@@ -1047,6 +1193,7 @@ class SiteBuilder:
     <div><p class="eyebrow">{e(roles)}</p><h1>{e(person['nom'])}</h1><p class="lead">{e(biography)}</p>{external}</div>
   </article>
 </div></section>
+{gallery}
 <section class="section"><div class="container"><div class="section-heading"><div><p class="eyebrow">Bibliographie</p><h2>{len(related_slugs)} {'livres associés' if len(related_slugs) > 1 else 'livre associé'}</h2></div></div><div class="book-grid">{cards}</div></div></section>"""
             structured = {
                 "@context": "https://schema.org",
@@ -1055,13 +1202,19 @@ class SiteBuilder:
                 "description": person["biographie"],
                 "url": absolute_url(self.base_url, f"/personnes/{person['slug']}/"),
             }
+            seo_title, seo_description, seo_image = self.seo_values(
+                person,
+                default_title=person["nom"],
+                default_description=person["biographie"] or f"Découvrez les livres auxquels {person['nom']} a contribué.",
+                default_image=og_image,
+            )
             page = self.render_page(
-                title=person["nom"],
-                description=person["biographie"] or f"Découvrez les livres auxquels {person['nom']} a contribué.",
+                title=seo_title,
+                description=seo_description,
                 route=f"/personnes/{person['slug']}/",
                 content=content,
                 active="people",
-                og_image=og_image,
+                og_image=seo_image,
                 structured_data=structured,
             )
             self.write_route(f"/personnes/{person['slug']}/", page)
@@ -1129,8 +1282,12 @@ class SiteBuilder:
             gallery = ""
             if page_data["images"]:
                 gallery_items = [
-                    (self.page_image_media[path], f"{page_data['titre']} — image {index}")
-                    for index, path in enumerate(page_data["images"], start=1)
+                    (
+                        self.page_image_media[media_path(item)],
+                        media_alt(item, f"{page_data['titre']} — image {index}"),
+                    )
+                    for index, item in enumerate(page_data["images"], start=1)
+                    if media_path(item) in self.page_image_media
                 ]
                 gallery = f'<section class="section section--white"><div class="container"><h2>En images</h2>{self.render_gallery(gallery_items)}</div></section>'
             description = page_data["sections"][0]["contenu"]
@@ -1138,21 +1295,28 @@ class SiteBuilder:
             content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), (page_data['titre'], None)])}
-  <p class="eyebrow">{e(SITE_NAME)}</p><h1>{e(page_data['titre'])}</h1>
+  <p class="eyebrow">{e(page_data.get('rubrique') or self.site_settings['nom'])}</p><h1>{e(page_data['titre'])}</h1>
 </div></header>
 <section class="section"><div class="container editorial-layout"><article>{sections}</article>{aside}</div></section>
 {gallery}"""
+            seo_title, seo_description, seo_image = self.seo_values(
+                page_data,
+                default_title=page_data["titre"],
+                default_description=description,
+            )
             page = self.render_page(
-                title=page_data["titre"],
-                description=description,
+                title=seo_title,
+                description=seo_description,
                 route=f"/{page_data['slug']}/",
                 content=content,
                 active=active,
                 draft=draft,
+                og_image=seo_image,
             )
             self.write_route(f"/{page_data['slug']}/", page)
 
     def build_news_page(self, page_data: dict[str, Any]) -> None:
+        labels = self.page_settings["actualites"]
         news_items = []
         for item in self.news:
             image_html = ""
@@ -1201,24 +1365,26 @@ class SiteBuilder:
         content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Actualités', None)])}
-  <p class="eyebrow">{e(SITE_NAME)}</p><h1>Actualités</h1>
+  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
+  <p class="lead">{e(labels['introduction'])}</p>
 </div></header>
 {news_listing}
 <section class="section news-section"><div class="container">
   <div class="news-callout">
-    <p class="eyebrow">Suivre la maison</p>
-    <h2>Nos prochaines rencontres et nouvelles parutions</h2>
-    <p class="lead">Retrouvez toute l’actualité de Chant d’orties sur Facebook. La page est accessible même sans compte.</p>
+    <p class="eyebrow">{e(labels['appelRubrique'])}</p>
+    <h2>{e(labels['appelTitre'])}</h2>
+    <p class="lead">{e(labels['appelTexte'])}</p>
     <div class="news-topics" aria-label="Actualités publiées"><span>Salons et rencontres</span><span>Sorties de livres</span><span>Nouvelles de la maison</span></div>
-    <a class="button" href="{FACEBOOK_URL}" target="_blank" rel="noopener noreferrer">Voir la page Facebook {icon('external')}</a>
+    <a class="button" href="{e(self.site_settings['facebook'])}" target="_blank" rel="noopener noreferrer">{e(labels['boutonFacebook'])} {icon('external')}</a>
   </div>
 </div></section>"""
         page = self.render_page(
-            title="Actualités",
-            description=page_data["sections"][0]["contenu"],
+            title=(page_data.get("seo") or {}).get("titre") or labels["titre"],
+            description=(page_data.get("seo") or {}).get("description") or labels["descriptionSeo"],
             route="/actualites/",
             content=content,
             active="actualites",
+            og_image=self.seo_image_media.get((page_data.get("seo") or {}).get("image")),
         )
         self.write_route("/actualites/", page)
 
@@ -1231,9 +1397,11 @@ class SiteBuilder:
         ]
 
     def build_house_page(self) -> None:
+        labels = self.page_settings["maison"]
         cards = []
         for page in self.published_editorial_pages():
-            eyebrow, action = HOUSE_PAGE_META[page["slug"]]
+            eyebrow = page.get("rubrique") or self.site_settings["nomCourt"]
+            action = page.get("libelleAction") or f"Découvrir {page['titre']}"
             cards.append(
                 f"""
 <a class="house-card house-card--{e(page['slug'])}" href="/{e(page['slug'])}/">
@@ -1246,13 +1414,13 @@ class SiteBuilder:
         content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('La maison', None)])}
-  <p class="eyebrow">Édition associative</p><h1>La maison</h1>
-  <p class="lead">Découvrir notre fonctionnement, nos projets et les différentes manières de travailler avec Chant d’orties.</p>
+  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
+  <p class="lead">{e(labels['introduction'])}</p>
 </div></header>
 <section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>"""
         page = self.render_page(
-            title="La maison",
-            description="Découvrez la maison d’édition associative Chant d’orties, ses projets et ses partenaires.",
+            title=labels["titre"],
+            description=labels["descriptionSeo"],
             route="/la-maison/",
             content=content,
             active="maison",
@@ -1294,18 +1462,58 @@ class SiteBuilder:
 
     def build_redirects(self) -> None:
         redirects: dict[str, str] = {}
-        for book in self.books:
-            source = book["source"].get("anciennePage")
+
+        def add_old_addresses(record: dict[str, Any], target: str) -> None:
+            for source in record.get("anciensSlugs", []):
+                normalized = "/" + source.strip().lstrip("/")
+                if normalized != target:
+                    redirects[normalized] = target
+
+        # Les redirections sont construites sur le contenu brut : un contenu
+        # retiré du site (brouillon ou archivé) doit continuer à rediriger ses
+        # anciennes adresses, vers sa rubrique parente à défaut de sa page.
+        published = {
+            "books": {book["slug"] for book in self.books},
+            "people": {person["slug"] for person in self.people},
+            "collections": {item["slug"] for item in self.collections},
+            "pages": {
+                page["slug"]
+                for page in self.pages
+                if not (page["aVerifier"] and not self.include_drafts)
+            },
+        }
+
+        for book in self.raw["books"]:
+            slug = book["slug"]
+            target = f"/livres/{slug}/" if slug in published["books"] else "/catalogue/"
+            source = self.legacy["livres"].get(slug)
             if source and source.lower() != "index.html":
-                redirects[f"/{source}"] = f"/livres/{book['slug']}/"
-        for collection in self.collections:
-            redirects[f"/{collection['sourcePage']}"] = f"/collections/{collection['slug']}/"
-        for page in self.pages:
-            if page["slug"] in {"entree", "accueil"}:
+                redirects[f"/{source}"] = target
+            add_old_addresses(book, target)
+        for person in self.raw["people"]:
+            slug = person["slug"]
+            target = f"/personnes/{slug}/" if slug in published["people"] else "/personnes/"
+            add_old_addresses(person, target)
+        for collection in self.raw["collections"]:
+            slug = collection["slug"]
+            target = (
+                f"/collections/{slug}/" if slug in published["collections"] else "/collections/"
+            )
+            source = self.legacy["collections"].get(slug)
+            if source:
+                redirects[f"/{source}"] = target
+            add_old_addresses(collection, target)
+        for page in self.raw["pages"]:
+            slug = page["slug"]
+            if slug in {"entree", "accueil"}:
                 continue
-            if page["aVerifier"] and not self.include_drafts:
-                continue
-            redirects[f"/{page['source']['anciennePage']}"] = f"/{page['slug']}/"
+            target = f"/{slug}/" if slug in published["pages"] else "/la-maison/"
+            source = self.legacy["pages"].get(slug)
+            if source:
+                redirects[f"/{source}"] = target
+            add_old_addresses(page, target)
+        for item in self.raw["news"]:
+            add_old_addresses(item, "/actualites/")
         redirects.update(
             {
                 "/auteurs.html": "/personnes/",
@@ -1352,6 +1560,13 @@ class SiteBuilder:
 
     def build(self) -> None:
         self.validate_source()
+        self.acquire_lock()
+        try:
+            self.build_output()
+        finally:
+            self.release_lock()
+
+    def build_output(self) -> None:
         self.prepare_output()
         self.optimize_images()
         self.prepare_documents()
@@ -1378,7 +1593,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parent.parent)
     parser.add_argument("--output", type=Path, default=Path("dist"))
     parser.add_argument("--include-drafts", action="store_true")
-    parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
+    parser.add_argument("--base-url", help="Remplace temporairement le domaine défini dans les réglages")
     return parser.parse_args()
 
 

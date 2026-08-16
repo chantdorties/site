@@ -9,10 +9,19 @@
   "biographie": "Membre du groupe Osfub , Eric est un talentueux bidouilleur de sons, de textes et d’images. Debout dans l’aquarium , son premier ouvrage, fait la part belle à une écriture musicale et poétique.",
   "imagePrincipale": "content/media/uploads/personnes-auteurs-eric-chantdorties.gif",
   "images": [
-    "content/media/uploads/personnes-auteurs-eric-chantdorties.gif",
-    "content/media/uploads/personnes-auteurs-lemaire-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-eric-chantdorties.gif",
+      "alt": "Éric Lemaire — image 1"
+    },
+    {
+      "image": "content/media/uploads/personnes-auteurs-lemaire-chantdorties.jpg",
+      "alt": "Éric Lemaire — image 2"
+    }
   ],
   "liensExternes": [
     "http://eric.osfub.free.fr/"
-  ]
+  ],
+  "ordre": 240,
+  "imagePrincipaleAlt": "Portrait de Éric Lemaire",
+  "anciensSlugs": []
 }

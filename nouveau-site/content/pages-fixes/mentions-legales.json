@@ -41,5 +41,11 @@
     }
   ],
   "images": [],
-  "documents": []
+  "documents": [],
+  "ordre": 70,
+  "rubrique": "Informations",
+  "libelleAction": "Lire les mentions",
+  "anciensSlugs": [
+    "mentions-legales.html"
+  ]
 }

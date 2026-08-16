@@ -8,9 +8,15 @@
   "biographie": "Artiste peintre, illustratrice et peintre en décors, elle a toujours été passionnée par el dessin. Touche à tout, elle utilise des médiums très variés.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-grugeaux-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-grugeaux-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-grugeaux-chantdorties.jpg",
+      "alt": "Julie Grugeaux — image 1"
+    }
   ],
   "liensExternes": [
     "http://www.julie-grugeaux.com/"
-  ]
+  ],
+  "ordre": 430,
+  "imagePrincipaleAlt": "Portrait de Julie Grugeaux",
+  "anciensSlugs": []
 }

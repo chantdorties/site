@@ -22,10 +22,26 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-le-jardin-de-la-megere.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-jardin-de-la-megere-01-images-jm-jm-5.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-jardin-de-la-megere-01-images-jm-jm-5.jpg",
+      "alt": "Illustration intérieure de Le jardin de la mégère — 1"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-le-jardin-de-la-megere-01-documents-le-jardin-de-la-megere-extrait.pdf"
   ],
-  "paypalHostedButtonId": "L6462C4EQEUKJ"
+  "paypalHostedButtonId": "L6462C4EQEUKJ",
+  "ordre": 60,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Le jardin de la mégère",
+  "anciensSlugs": [
+    "le_jardin_de_la_megere.html"
+  ]
 }

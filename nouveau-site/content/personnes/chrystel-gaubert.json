@@ -8,5 +8,8 @@
   "biographie": null,
   "imagePrincipale": null,
   "images": [],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 180,
+  "imagePrincipaleAlt": "",
+  "anciensSlugs": []
 }

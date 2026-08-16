@@ -8,8 +8,17 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-maricourt-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-maricourt-chantdorties.jpg",
-    "content/media/uploads/personnes-auteurs-maricourt2-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-maricourt-chantdorties.jpg",
+      "alt": "Thierry Maricourt — image 1"
+    },
+    {
+      "image": "content/media/uploads/personnes-auteurs-maricourt2-chantdorties.jpg",
+      "alt": "Thierry Maricourt — image 2"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 760,
+  "imagePrincipaleAlt": "Portrait de Thierry Maricourt",
+  "anciensSlugs": []
 }

@@ -22,11 +22,30 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-les-dialogues-sauvages.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-les-dialogues-sauvages-01-images-ds-ds-image1.jpg",
-    "content/media/uploads/illustrations-les-dialogues-sauvages-02-images-ds-ds-image2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-les-dialogues-sauvages-01-images-ds-ds-image1.jpg",
+      "alt": "Illustration intérieure de Les dialogues sauvages — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-dialogues-sauvages-02-images-ds-ds-image2.jpg",
+      "alt": "Illustration intérieure de Les dialogues sauvages — 2"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-les-dialogues-sauvages-01-documents-dialogues-sauvages-extrait.pdf"
   ],
-  "paypalHostedButtonId": "C8QFHQXG4228Q"
+  "paypalHostedButtonId": "C8QFHQXG4228Q",
+  "ordre": 80,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Les dialogues sauvages",
+  "anciensSlugs": [
+    "les-dialogues-sauvages.html"
+  ]
 }

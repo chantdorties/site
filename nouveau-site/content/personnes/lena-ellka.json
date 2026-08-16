@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-ellka-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-ellka-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-ellka-chantdorties.jpg",
+      "alt": "Léna Ellka — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 470,
+  "imagePrincipaleAlt": "Portrait de Léna Ellka",
+  "anciensSlugs": []
 }

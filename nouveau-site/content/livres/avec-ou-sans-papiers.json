@@ -22,13 +22,38 @@
   "issnCollection": "2109-7674",
   "couverture": "content/media/uploads/couvertures-avec-ou-sans-papiers.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-avec-ou-sans-papiers-01-images-avsp-hommes.jpg",
-    "content/media/uploads/illustrations-avec-ou-sans-papiers-02-images-avsp-la-goutte-d-or.jpg",
-    "content/media/uploads/illustrations-avec-ou-sans-papiers-03-images-avsp-seule.jpg",
-    "content/media/uploads/illustrations-avec-ou-sans-papiers-04-images-avsp-visages.jpg"
+    {
+      "image": "content/media/uploads/illustrations-avec-ou-sans-papiers-01-images-avsp-hommes.jpg",
+      "alt": "Illustration intérieure de Avec ou sans papiers — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-avec-ou-sans-papiers-02-images-avsp-la-goutte-d-or.jpg",
+      "alt": "Illustration intérieure de Avec ou sans papiers — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-avec-ou-sans-papiers-03-images-avsp-seule.jpg",
+      "alt": "Illustration intérieure de Avec ou sans papiers — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-avec-ou-sans-papiers-04-images-avsp-visages.jpg",
+      "alt": "Illustration intérieure de Avec ou sans papiers — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-avec-ou-sans-papiers-01-documents-extrait-avecousanspapiers.pdf"
   ],
-  "paypalHostedButtonId": "TJURDX28YJJXG"
+  "paypalHostedButtonId": "TJURDX28YJJXG",
+  "ordre": 20,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "a-quelques-pas-de-l-usine",
+    "debout-dans-l-aquarium",
+    "noir-horizon",
+    "ruptures-d-enfance"
+  ],
+  "couvertureAlt": "Couverture de Avec ou sans papiers",
+  "anciensSlugs": [
+    "avecousanspapiers.html"
+  ]
 }

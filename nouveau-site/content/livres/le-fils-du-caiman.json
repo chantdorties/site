@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-le-fils-du-caiman.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-fils-du-caiman-01-images-fc-epson025.jpg",
-    "content/media/uploads/illustrations-le-fils-du-caiman-02-images-fc-epson027.jpg",
-    "content/media/uploads/illustrations-le-fils-du-caiman-03-images-fc-epson029.jpg",
-    "content/media/uploads/illustrations-le-fils-du-caiman-04-images-fc-epson031.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-fils-du-caiman-01-images-fc-epson025.jpg",
+      "alt": "Illustration intérieure de Le fils du caïman — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-fils-du-caiman-02-images-fc-epson027.jpg",
+      "alt": "Illustration intérieure de Le fils du caïman — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-fils-du-caiman-03-images-fc-epson029.jpg",
+      "alt": "Illustration intérieure de Le fils du caïman — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-fils-du-caiman-04-images-fc-epson031.jpg",
+      "alt": "Illustration intérieure de Le fils du caïman — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-le-fils-du-caiman-01-documents-le-fils-du-caiman-extrait.pdf"
   ],
-  "paypalHostedButtonId": "J2S9WEFDYKD3C"
+  "paypalHostedButtonId": "J2S9WEFDYKD3C",
+  "ordre": 110,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Le fils du caïman",
+  "anciensSlugs": [
+    "Le_fils_du_caiman.html"
+  ]
 }

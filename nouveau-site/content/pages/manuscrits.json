@@ -11,5 +11,11 @@
   ],
   "liens": [],
   "images": [],
-  "documents": []
+  "documents": [],
+  "ordre": 60,
+  "rubrique": "Proposer un texte",
+  "libelleAction": "Consulter les modalités",
+  "anciensSlugs": [
+    "manuscrits.html"
+  ]
 }

@@ -23,5 +23,18 @@
   "couverture": "content/media/uploads/couvertures-ma-traversee.jpg",
   "illustrations": [],
   "extraits": [],
-  "paypalHostedButtonId": "G6XHCMQLB9ENW"
+  "paypalHostedButtonId": "G6XHCMQLB9ENW",
+  "ordre": 180,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Ma traversée",
+  "anciensSlugs": [
+    "ma-traversee.html"
+  ]
 }

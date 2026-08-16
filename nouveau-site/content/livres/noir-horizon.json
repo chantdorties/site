@@ -22,14 +22,39 @@
   "issnCollection": "2109-7674",
   "couverture": "content/media/uploads/couvertures-noir-horizon.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-noir-horizon-01-images-nh-vignette1.jpg",
-    "content/media/uploads/illustrations-noir-horizon-02-images-nh-vignette3.jpg",
-    "content/media/uploads/illustrations-noir-horizon-03-images-nh-vignette5.jpg",
-    "content/media/uploads/illustrations-noir-horizon-04-images-nh-vignette8.jpg"
+    {
+      "image": "content/media/uploads/illustrations-noir-horizon-01-images-nh-vignette1.jpg",
+      "alt": "Illustration intérieure de Noir horizon — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-noir-horizon-02-images-nh-vignette3.jpg",
+      "alt": "Illustration intérieure de Noir horizon — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-noir-horizon-03-images-nh-vignette5.jpg",
+      "alt": "Illustration intérieure de Noir horizon — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-noir-horizon-04-images-nh-vignette8.jpg",
+      "alt": "Illustration intérieure de Noir horizon — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-noir-horizon-01-documents-nouvelle-nh-chantdorties.pdf",
     "content/media/uploads/extraits-noir-horizon-02-documents-nouvelle-regarde-chantdorties.pdf"
   ],
-  "paypalHostedButtonId": "JJZYRER6AUPRQ"
+  "paypalHostedButtonId": "JJZYRER6AUPRQ",
+  "ordre": 40,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "a-quelques-pas-de-l-usine",
+    "avec-ou-sans-papiers",
+    "debout-dans-l-aquarium",
+    "ruptures-d-enfance"
+  ],
+  "couvertureAlt": "Couverture de Noir horizon",
+  "anciensSlugs": [
+    "noirhorizon.html"
+  ]
 }

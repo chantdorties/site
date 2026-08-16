@@ -22,12 +22,34 @@
   "issnCollection": "2104-7073",
   "couverture": "content/media/uploads/couvertures-tais-toi.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-tais-toi-01-images-tt-tais-toi-1.jpg",
-    "content/media/uploads/illustrations-tais-toi-02-images-tt-tais-toi-2.jpg",
-    "content/media/uploads/illustrations-tais-toi-03-images-tt-tais-toi-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-tais-toi-01-images-tt-tais-toi-1.jpg",
+      "alt": "Illustration intérieure de Tais-toi ! — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-tais-toi-02-images-tt-tais-toi-2.jpg",
+      "alt": "Illustration intérieure de Tais-toi ! — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-tais-toi-03-images-tt-tais-toi-3.jpg",
+      "alt": "Illustration intérieure de Tais-toi ! — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-tais-toi-01-documents-tais-toi-extrait-chantdorties.pdf"
   ],
-  "paypalHostedButtonId": "BNPDL7Q5EAXE6"
+  "paypalHostedButtonId": "BNPDL7Q5EAXE6",
+  "ordre": 130,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ailes-d-arc-en-ciel",
+    "aldo-revait",
+    "dent-de-lion",
+    "l-orchestre-de-la-favela"
+  ],
+  "couvertureAlt": "Couverture de Tais-toi !",
+  "anciensSlugs": [
+    "tais-toi.html"
+  ]
 }

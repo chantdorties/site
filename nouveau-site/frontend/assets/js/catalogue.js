@@ -40,7 +40,7 @@ function createBookCard(book) {
   const image = document.createElement('img');
   image.className = 'book-card__cover';
   image.src = book.couverture;
-  image.alt = `Couverture de ${book.titre}`;
+  image.alt = book.couvertureAlt || `Couverture de ${book.titre}`;
   image.loading = 'lazy';
   image.width = 480;
   image.height = 720;
@@ -89,6 +89,11 @@ function updateFilters() {
 
   const collator = new Intl.Collator('fr', { sensitivity: 'base' });
   filtered.sort((left, right) => {
+    if (sortSelect.value === 'order') {
+      return left.collectionOrdre - right.collectionOrdre
+        || left.ordre - right.ordre
+        || collator.compare(left.titre, right.titre);
+    }
     if (sortSelect.value === 'price-asc') {
       return (left.prixCentimes ?? Number.MAX_SAFE_INTEGER)
         - (right.prixCentimes ?? Number.MAX_SAFE_INTEGER);

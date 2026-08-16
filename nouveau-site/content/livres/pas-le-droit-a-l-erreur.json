@@ -22,9 +22,28 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-pas-le-droit-a-l-erreur.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-01-images-collection-eglantine-images-pde-pasledroit1.jpg",
-    "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-02-images-collection-eglantine-images-pde-pasledroit2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-01-images-collection-eglantine-images-pde-pasledroit1.jpg",
+      "alt": "Illustration intérieure de Pas le droit à l'erreur — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-pas-le-droit-a-l-erreur-02-images-collection-eglantine-images-pde-pasledroit2.jpg",
+      "alt": "Illustration intérieure de Pas le droit à l'erreur — 2"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "PZ29FVPAP99G2"
+  "paypalHostedButtonId": "PZ29FVPAP99G2",
+  "ordre": 120,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Pas le droit à l'erreur",
+  "anciensSlugs": [
+    "pasledroitalerreur.html"
+  ]
 }

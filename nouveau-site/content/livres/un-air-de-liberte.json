@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-un-air-de-liberte.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-un-air-de-liberte-01-images-ual-ual-image1.jpg",
-    "content/media/uploads/illustrations-un-air-de-liberte-02-images-ual-ual-image2.jpg",
-    "content/media/uploads/illustrations-un-air-de-liberte-03-images-ual-ual-image3.jpg",
-    "content/media/uploads/illustrations-un-air-de-liberte-04-images-ual-ual-image4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-un-air-de-liberte-01-images-ual-ual-image1.jpg",
+      "alt": "Illustration intérieure de Un air de liberté — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-un-air-de-liberte-02-images-ual-ual-image2.jpg",
+      "alt": "Illustration intérieure de Un air de liberté — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-un-air-de-liberte-03-images-ual-ual-image3.jpg",
+      "alt": "Illustration intérieure de Un air de liberté — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-un-air-de-liberte-04-images-ual-ual-image4.jpg",
+      "alt": "Illustration intérieure de Un air de liberté — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-un-air-de-liberte-01-documents-un-air-de-liberte-extrait.pdf"
   ],
-  "paypalHostedButtonId": "W5JSJ2MCYTVK4"
+  "paypalHostedButtonId": "W5JSJ2MCYTVK4",
+  "ordre": 210,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 40,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Un air de liberté",
+  "anciensSlugs": [
+    "unairdeliberte.html"
+  ]
 }

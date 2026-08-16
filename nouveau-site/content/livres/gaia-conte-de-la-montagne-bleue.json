@@ -22,12 +22,34 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-gaia-conte-de-la-montagne-bleue.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-01-images-gcmb-gaia-1.jpg",
-    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-02-images-gcmb-gaia-2.jpg",
-    "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-03-images-gcmb-gaia-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-01-images-gcmb-gaia-1.jpg",
+      "alt": "Illustration intérieure de Gaïa - Conte de la Montagne Bleue — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-02-images-gcmb-gaia-2.jpg",
+      "alt": "Illustration intérieure de Gaïa - Conte de la Montagne Bleue — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-gaia-conte-de-la-montagne-bleue-03-images-gcmb-gaia-3.jpg",
+      "alt": "Illustration intérieure de Gaïa - Conte de la Montagne Bleue — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-gaia-conte-de-la-montagne-bleue-01-documents-gaia-extrait.pdf"
   ],
-  "paypalHostedButtonId": "EW9SPDWJDXZ2Q"
+  "paypalHostedButtonId": "EW9SPDWJDXZ2Q",
+  "ordre": 50,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Gaïa - Conte de la Montagne Bleue",
+  "anciensSlugs": [
+    "gaia_conte_de_le_montagne_bleue.html"
+  ]
 }

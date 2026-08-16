@@ -8,7 +8,13 @@
   "biographie": "Dans ses images aux accents naïfs où les animaux et les arbres occupent souvent une grande place, elle privilégie le travail des couleurs et les jeux de transparence. Lorsqu'elle ne dessine pas, elle travaille en librairie ou bibliothèque.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-maurice-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-maurice-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-maurice-chantdorties.jpg",
+      "alt": "Julie Maurice — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 440,
+  "imagePrincipaleAlt": "Portrait de Julie Maurice",
+  "anciensSlugs": []
 }

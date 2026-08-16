@@ -22,12 +22,34 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-la-marseillaise.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-la-marseillaise-01-images-lm-marseillaise-1.jpg",
-    "content/media/uploads/illustrations-la-marseillaise-02-images-lm-marseillaise-2.jpg",
-    "content/media/uploads/illustrations-la-marseillaise-03-images-lm-marseillaise-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-la-marseillaise-01-images-lm-marseillaise-1.jpg",
+      "alt": "Illustration intérieure de La marseillaise — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-marseillaise-02-images-lm-marseillaise-2.jpg",
+      "alt": "Illustration intérieure de La marseillaise — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-marseillaise-03-images-lm-marseillaise-3.jpg",
+      "alt": "Illustration intérieure de La marseillaise — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-la-marseillaise-01-documents-extrait-marseillaise.pdf"
   ],
-  "paypalHostedButtonId": "VEFCMK4B4NVYE"
+  "paypalHostedButtonId": "VEFCMK4B4NVYE",
+  "ordre": 90,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de La marseillaise",
+  "anciensSlugs": [
+    "lamarseillaise.html"
+  ]
 }

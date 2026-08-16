@@ -22,13 +22,43 @@
   "issnCollection": "2109-7674",
   "couverture": "content/media/uploads/couvertures-a-quelques-pas-de-l-usine.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-01-images-aqpu-couv12paschantortie.jpg",
-    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-02-images-aqpu-driss.jpg",
-    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-03-images-aqpu-epiciere.jpg",
-    "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-04-images-aqpu-ferailleur.jpg"
+    {
+      "image": "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-01-images-aqpu-couv12paschantortie.jpg",
+      "alt": "Illustration intérieure de A quelques pas de l'usine — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-02-images-aqpu-driss.jpg",
+      "alt": "Illustration intérieure de A quelques pas de l'usine — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-03-images-aqpu-epiciere.jpg",
+      "alt": "Illustration intérieure de A quelques pas de l'usine — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-a-quelques-pas-de-l-usine-04-images-aqpu-ferailleur.jpg",
+      "alt": "Illustration intérieure de A quelques pas de l'usine — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-a-quelques-pas-de-l-usine-01-documents-aquelquespasdelusine-extrait.pdf"
   ],
-  "paypalHostedButtonId": "8GJFQDLCN5VJJ"
+  "paypalHostedButtonId": "8GJFQDLCN5VJJ",
+  "ordre": 10,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "avec-ou-sans-papiers",
+    "debout-dans-l-aquarium",
+    "noir-horizon",
+    "ruptures-d-enfance"
+  ],
+  "couvertureAlt": "Couverture de A quelques pas de l'usine",
+  "anciensSlugs": [
+    "aquelquespasusine.html"
+  ],
+  "seo": {
+    "titre": "A quelques pas de l'usine",
+    "description": "A quelques pas de l'usine retrace l'existence de celles et de ceux qui vivent au pied du monstre d'acier.",
+    "image": "content/media/uploads/couvertures-a-quelques-pas-de-l-usine.jpg"
+  }
 }

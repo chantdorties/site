@@ -8,9 +8,15 @@
   "biographie": "Observateur et explorateur tous terrains, des études d'architecture, une partie de vie en amérique du sud, du réalisme et de l'imaginaire, du noir et des réhauts de couleur.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-bourdeleau-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-bourdeleau-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-bourdeleau-chantdorties.jpg",
+      "alt": "Jean-Pierre Bourdeleau — image 1"
+    }
   ],
   "liensExternes": [
     "http://fr.linkedin.com/pub/jean-pierre-bourdeleau-jean-pierre/54/821/3"
-  ]
+  ],
+  "ordre": 400,
+  "imagePrincipaleAlt": "Portrait de Jean-Pierre Bourdeleau",
+  "anciensSlugs": []
 }

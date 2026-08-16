@@ -22,12 +22,34 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-le-chien-anarchiste.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-chien-anarchiste-01-images-ca-chien-chats.jpg",
-    "content/media/uploads/illustrations-le-chien-anarchiste-02-images-ca-les-chasseurs.jpg",
-    "content/media/uploads/illustrations-le-chien-anarchiste-03-images-ca-voiture-chien.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-chien-anarchiste-01-images-ca-chien-chats.jpg",
+      "alt": "Illustration intérieure de Le chien anarchiste — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-chien-anarchiste-02-images-ca-les-chasseurs.jpg",
+      "alt": "Illustration intérieure de Le chien anarchiste — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-chien-anarchiste-03-images-ca-voiture-chien.jpg",
+      "alt": "Illustration intérieure de Le chien anarchiste — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-le-chien-anarchiste-01-documents-chien-anarchiste-extrait.pdf"
   ],
-  "paypalHostedButtonId": "XXGSVQCUHWYY2"
+  "paypalHostedButtonId": "XXGSVQCUHWYY2",
+  "ordre": 50,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Le chien anarchiste",
+  "anciensSlugs": [
+    "chienanarchiste.html"
+  ]
 }

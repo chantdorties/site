@@ -32,5 +32,11 @@
     }
   ],
   "images": [],
-  "documents": []
+  "documents": [],
+  "ordre": 50,
+  "rubrique": "Près de chez vous",
+  "libelleAction": "Trouver une librairie",
+  "anciensSlugs": [
+    "librairies-partenaires.html"
+  ]
 }

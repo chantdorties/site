@@ -9,7 +9,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-cavendi-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-cavendi-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-cavendi-chantdorties.jpg",
+      "alt": "Hellena Cavendi — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 360,
+  "imagePrincipaleAlt": "Portrait de Hellena Cavendi",
+  "anciensSlugs": []
 }

@@ -8,9 +8,15 @@
   "biographie": "Quand Anaïs n'est pas en résidence dans un théatre indonésien près de Jakarta, elle s'occupe de sa maison d'édition Ma petite crokette ou réalise des illustration pour des albums jeunesse comme Tout au bout de mon jardin .",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-ruch-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-ruch-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-ruch-chantdorties.jpg",
+      "alt": "Anaïs Ruch — image 1"
+    }
   ],
   "liensExternes": [
     "http://www.anaisruch.com/"
-  ]
+  ],
+  "ordre": 60,
+  "imagePrincipaleAlt": "Portrait de Anaïs Ruch",
+  "anciensSlugs": []
 }

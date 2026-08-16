@@ -22,9 +22,28 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-ville-rouge.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-ville-rouge-01-images-collection-eglantine-images-vr-villerouge1.jpg",
-    "content/media/uploads/illustrations-ville-rouge-02-images-collection-eglantine-images-vr-villerouge2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-ville-rouge-01-images-collection-eglantine-images-vr-villerouge1.jpg",
+      "alt": "Illustration intérieure de Ville rouge — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-ville-rouge-02-images-collection-eglantine-images-vr-villerouge2.jpg",
+      "alt": "Illustration intérieure de Ville rouge — 2"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "ZECUXFF3CZXFN"
+  "paypalHostedButtonId": "ZECUXFF3CZXFN",
+  "ordre": 160,
+  "miseEnAvantAccueil": true,
+  "ordreAccueil": 30,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Ville rouge",
+  "anciensSlugs": [
+    "villerouge.html"
+  ]
 }

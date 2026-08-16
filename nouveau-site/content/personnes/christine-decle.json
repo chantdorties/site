@@ -8,8 +8,17 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-decle2-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-decle2-chantdorties.jpg",
-    "content/media/uploads/personnes-illustrateurs-decle-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-decle2-chantdorties.jpg",
+      "alt": "Christine Dècle — image 1"
+    },
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-decle-chantdorties.jpg",
+      "alt": "Christine Dècle — image 2"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 150,
+  "imagePrincipaleAlt": "Portrait de Christine Dècle",
+  "anciensSlugs": []
 }

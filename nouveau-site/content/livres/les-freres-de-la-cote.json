@@ -22,10 +22,32 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-les-freres-de-la-cote.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-les-freres-de-la-cote-01-images-collection-eglantine-images-fc-freres1.jpg",
-    "content/media/uploads/illustrations-les-freres-de-la-cote-02-images-collection-eglantine-images-fc-freres2.jpg",
-    "content/media/uploads/illustrations-les-freres-de-la-cote-03-images-collection-eglantine-images-fc-freres3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-les-freres-de-la-cote-01-images-collection-eglantine-images-fc-freres1.jpg",
+      "alt": "Illustration intérieure de Les frères de la côte — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-freres-de-la-cote-02-images-collection-eglantine-images-fc-freres2.jpg",
+      "alt": "Illustration intérieure de Les frères de la côte — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-freres-de-la-cote-03-images-collection-eglantine-images-fc-freres3.jpg",
+      "alt": "Illustration intérieure de Les frères de la côte — 3"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "3NQA89SMJU87U"
+  "paypalHostedButtonId": "3NQA89SMJU87U",
+  "ordre": 90,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Les frères de la côte",
+  "anciensSlugs": [
+    "freresdelacote.html"
+  ]
 }

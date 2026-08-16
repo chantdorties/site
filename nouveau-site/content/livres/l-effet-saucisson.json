@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-l-effet-saucisson.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-l-effet-saucisson-01-images-es-alexwidendaele-la-lettre-des-animaux.jpg",
-    "content/media/uploads/illustrations-l-effet-saucisson-02-images-es-alexwidendaele-l-effet-saucisson-affiche.jpg",
-    "content/media/uploads/illustrations-l-effet-saucisson-03-images-es-alexwidendaele-l-effet-saucisson-grange-vide.jpg",
-    "content/media/uploads/illustrations-l-effet-saucisson-04-images-es-alexwidendaele-l-effet-saucisson-les-objets-et-animaux.jpg"
+    {
+      "image": "content/media/uploads/illustrations-l-effet-saucisson-01-images-es-alexwidendaele-la-lettre-des-animaux.jpg",
+      "alt": "Illustration intérieure de L'effet saucisson — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-effet-saucisson-02-images-es-alexwidendaele-l-effet-saucisson-affiche.jpg",
+      "alt": "Illustration intérieure de L'effet saucisson — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-effet-saucisson-03-images-es-alexwidendaele-l-effet-saucisson-grange-vide.jpg",
+      "alt": "Illustration intérieure de L'effet saucisson — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-l-effet-saucisson-04-images-es-alexwidendaele-l-effet-saucisson-les-objets-et-animaux.jpg",
+      "alt": "Illustration intérieure de L'effet saucisson — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-l-effet-saucisson-01-documents-effet-sausisson-chapitre2.pdf"
   ],
-  "paypalHostedButtonId": "6KD5EHLAKA96C"
+  "paypalHostedButtonId": "6KD5EHLAKA96C",
+  "ordre": 70,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de L'effet saucisson",
+  "anciensSlugs": [
+    "effet-saucisson.html"
+  ]
 }

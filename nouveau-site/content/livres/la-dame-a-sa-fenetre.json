@@ -22,9 +22,28 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-la-dame-a-sa-fenetre.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-la-dame-a-sa-fenetre-01-images-collection-eglantine-images-df-dame1.jpg",
-    "content/media/uploads/illustrations-la-dame-a-sa-fenetre-02-images-collection-eglantine-images-df-dame2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-la-dame-a-sa-fenetre-01-images-collection-eglantine-images-df-dame1.jpg",
+      "alt": "Illustration intérieure de La dame à sa fenêtre — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-la-dame-a-sa-fenetre-02-images-collection-eglantine-images-df-dame2.jpg",
+      "alt": "Illustration intérieure de La dame à sa fenêtre — 2"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "KBCM2N7W2L9SN"
+  "paypalHostedButtonId": "KBCM2N7W2L9SN",
+  "ordre": 40,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "le-chien-anarchiste"
+  ],
+  "couvertureAlt": "Couverture de La dame à sa fenêtre",
+  "anciensSlugs": [
+    "damefenetre.html"
+  ]
 }

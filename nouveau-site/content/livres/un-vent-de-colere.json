@@ -22,11 +22,33 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-un-vent-de-colere.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-un-vent-de-colere-01-images-vc-vc-1.jpg",
-    "content/media/uploads/illustrations-un-vent-de-colere-02-images-vc-vc-2.jpg",
-    "content/media/uploads/illustrations-un-vent-de-colere-03-images-vc-vc-3.jpg"
+    {
+      "image": "content/media/uploads/illustrations-un-vent-de-colere-01-images-vc-vc-1.jpg",
+      "alt": "Illustration intérieure de Un vent de colère — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-un-vent-de-colere-02-images-vc-vc-2.jpg",
+      "alt": "Illustration intérieure de Un vent de colère — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-un-vent-de-colere-03-images-vc-vc-3.jpg",
+      "alt": "Illustration intérieure de Un vent de colère — 3"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-un-vent-de-colere-01-documents-un-vent-de-colere-extrait.pdf"
+  ],
+  "ordre": 150,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Un vent de colère",
+  "anciensSlugs": [
+    "un_vent_de_colere.html"
   ]
 }

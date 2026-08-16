@@ -9,9 +9,15 @@
   "biographie": "Parallèlement à l'écriture de romans et d'albums jeunesse, elle met en scène son monde intérieur dans des sculptures en recyclage ainsi qu'à travers la photographie.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-guillemard-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-guillemard-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-guillemard-chantdorties.jpg",
+      "alt": "Béatrice Guillemard — image 1"
+    }
   ],
   "liensExternes": [
     "http://unjardinextra.free.fr/"
-  ]
+  ],
+  "ordre": 90,
+  "imagePrincipaleAlt": "Portrait de Béatrice Guillemard",
+  "anciensSlugs": []
 }

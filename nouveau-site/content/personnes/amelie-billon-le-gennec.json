@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-billon-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-billon-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-billon-chantdorties.jpg",
+      "alt": "Amélie Billon-Le Gennec — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 50,
+  "imagePrincipaleAlt": "Portrait de Amélie Billon-Le Gennec",
+  "anciensSlugs": []
 }

@@ -8,9 +8,15 @@
   "biographie": "Née en 1985, illustratrice belge de formation, enseignante en arts plastiques, peintre contemporaine, elle parle d'émotions sensibles, donnant du corps délicat mais non moins vigoureux à ses images dans un univers poétique .",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-boulanger-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-boulanger-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-boulanger-chantdorties.jpg",
+      "alt": "Gaëlle Boulanger — image 1"
+    }
   ],
   "liensExternes": [
     "http://www.omalou.be/pages/012/Accueil.fr.php#"
-  ]
+  ],
+  "ordre": 310,
+  "imagePrincipaleAlt": "Portrait de Gaëlle Boulanger",
+  "anciensSlugs": []
 }

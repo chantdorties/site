@@ -8,7 +8,13 @@
   "biographie": null,
   "imagePrincipale": "content/media/uploads/personnes-auteurs-lecorre-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-auteurs-lecorre-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-auteurs-lecorre-chantdorties.jpg",
+      "alt": "Michel Lecorre — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 570,
+  "imagePrincipaleAlt": "Portrait de Michel Lecorre",
+  "anciensSlugs": []
 }

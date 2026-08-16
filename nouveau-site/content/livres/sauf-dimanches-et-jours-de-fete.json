@@ -24,9 +24,28 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-sauf-dimanches-et-jours-de-fete.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-01-images-collection-eglantine-images-sdjf-saufdimaches1.jpg",
-    "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-02-images-collection-eglantine-images-sdjf-saufdimaches2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-01-images-collection-eglantine-images-sdjf-saufdimaches1.jpg",
+      "alt": "Illustration intérieure de Sauf dimanches et jours de fête — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-sauf-dimanches-et-jours-de-fete-02-images-collection-eglantine-images-sdjf-saufdimaches2.jpg",
+      "alt": "Illustration intérieure de Sauf dimanches et jours de fête — 2"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "ZLAYGDVW2LSMW"
+  "paypalHostedButtonId": "ZLAYGDVW2LSMW",
+  "ordre": 140,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Sauf dimanches et jours de fête",
+  "anciensSlugs": [
+    "saufdimanches.html"
+  ]
 }

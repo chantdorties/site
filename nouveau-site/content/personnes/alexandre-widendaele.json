@@ -8,9 +8,15 @@
   "biographie": "Dresseur de poules dans un cirque itinérant, le jeune Alexandre, dessinateur à ses heures perdues, passe ses soirées à décorer les cages de ses volatiles. Il a mis en image trois romans jeunesse chez Chant d'orties.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-widendaele-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-widendaele-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-widendaele-chantdorties.jpg",
+      "alt": "Alexandre Widendaele — image 1"
+    }
   ],
   "liensExternes": [
     "http://alexwidendaele.tumblr.com/"
-  ]
+  ],
+  "ordre": 20,
+  "imagePrincipaleAlt": "Portrait de Alexandre Widendaele",
+  "anciensSlugs": []
 }

@@ -22,13 +22,38 @@
   "issnCollection": "2101-7425",
   "couverture": "content/media/uploads/couvertures-les-sources-d-or-de-la-cite-fleurie.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-01-images-socf-socf-1.jpg",
-    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-02-images-socf-socf-2.jpg",
-    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-03-images-socf-socf-3.jpg",
-    "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-04-images-socf-socf-4.jpg"
+    {
+      "image": "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-01-images-socf-socf-1.jpg",
+      "alt": "Illustration intérieure de Les sources d'or de la Cité Fleurie — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-02-images-socf-socf-2.jpg",
+      "alt": "Illustration intérieure de Les sources d'or de la Cité Fleurie — 2"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-03-images-socf-socf-3.jpg",
+      "alt": "Illustration intérieure de Les sources d'or de la Cité Fleurie — 3"
+    },
+    {
+      "image": "content/media/uploads/illustrations-les-sources-d-or-de-la-cite-fleurie-04-images-socf-socf-4.jpg",
+      "alt": "Illustration intérieure de Les sources d'or de la Cité Fleurie — 4"
+    }
   ],
   "extraits": [
     "content/media/uploads/extraits-les-sources-d-or-de-la-cite-fleurie-01-documents-sources-d-or-cite-fleurie-extrait.pdf"
   ],
-  "paypalHostedButtonId": "L43EMB4V8VFGY"
+  "paypalHostedButtonId": "L43EMB4V8VFGY",
+  "ordre": 160,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "ainsi-danse-jean-petit",
+    "blizzard-d-etoiles",
+    "c-est-quoi-ce-travail",
+    "chez-poulardon"
+  ],
+  "couvertureAlt": "Couverture de Les sources d'or de la Cité Fleurie",
+  "anciensSlugs": [
+    "les-sources-d-or-de-la-cite-fleurie.html"
+  ]
 }

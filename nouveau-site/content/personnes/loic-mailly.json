@@ -8,7 +8,13 @@
   "biographie": "Mi-Picard, mi-Breton Loïc Mailly après plusieurs petits boulots et quelques aller-retour entre la France et le Mali, a déposé ses valises à Amiens où il navigue gaiement entre son métier d’animateur interculturel et celui d’illustrateur.",
   "imagePrincipale": "content/media/uploads/personnes-illustrateurs-mailly-chantdorties.jpg",
   "images": [
-    "content/media/uploads/personnes-illustrateurs-mailly-chantdorties.jpg"
+    {
+      "image": "content/media/uploads/personnes-illustrateurs-mailly-chantdorties.jpg",
+      "alt": "Loïc Mailly — image 1"
+    }
   ],
-  "liensExternes": []
+  "liensExternes": [],
+  "ordre": 480,
+  "imagePrincipaleAlt": "Portrait de Loïc Mailly",
+  "anciensSlugs": []
 }

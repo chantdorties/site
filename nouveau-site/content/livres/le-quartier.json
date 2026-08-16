@@ -22,9 +22,28 @@
   "issnCollection": null,
   "couverture": "content/media/uploads/couvertures-le-quartier.jpg",
   "illustrations": [
-    "content/media/uploads/illustrations-le-quartier-01-images-collection-eglantine-images-q-quartier1.jpg",
-    "content/media/uploads/illustrations-le-quartier-02-images-collection-eglantine-images-q-quartier2.jpg"
+    {
+      "image": "content/media/uploads/illustrations-le-quartier-01-images-collection-eglantine-images-q-quartier1.jpg",
+      "alt": "Illustration intérieure de Le quartier — 1"
+    },
+    {
+      "image": "content/media/uploads/illustrations-le-quartier-02-images-collection-eglantine-images-q-quartier2.jpg",
+      "alt": "Illustration intérieure de Le quartier — 2"
+    }
   ],
   "extraits": [],
-  "paypalHostedButtonId": "SPN2KGTTYL47W"
+  "paypalHostedButtonId": "SPN2KGTTYL47W",
+  "ordre": 70,
+  "miseEnAvantAccueil": false,
+  "ordreAccueil": 999,
+  "aDecouvrir": [
+    "extraction-3-2-1-partez",
+    "faire-quelque-chose",
+    "l-impasse",
+    "la-dame-a-sa-fenetre"
+  ],
+  "couvertureAlt": "Couverture de Le quartier",
+  "anciensSlugs": [
+    "quartier.html"
+  ]
 }

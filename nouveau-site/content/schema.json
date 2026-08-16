@@ -1,16 +1,47 @@
 {
-  "version": 2,
+  "version": 3,
   "statuts": [
     "brouillon",
-    "publie"
+    "publie",
+    "archive"
   ],
   "champs": {
     "livre": {
+      "ordre": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "miseEnAvantAccueil": {
+        "type": "boolean"
+      },
+      "aDecouvrir": {
+        "type": "array",
+        "relation": "livre"
+      },
       "paypalHostedButtonId": {
         "type": "string",
         "obligatoireSiDisponible": true,
         "pattern": "^[A-Z0-9]{13}$"
+      },
+      "couvertureAlt": {
+        "type": "string",
+        "fallback": "Couverture de {titre}"
       }
+    },
+    "mediaAvecAlt": {
+      "type": "object",
+      "champs": {
+        "image": "content/media/...",
+        "alt": "string"
+      }
+    },
+    "seo": {
+      "type": "object",
+      "champs": [
+        "titre",
+        "description",
+        "image"
+      ]
     }
   }
 }
