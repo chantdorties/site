@@ -1,0 +1,448 @@
+[
+  {
+    "slug": "entree",
+    "titre": "Chant d'orties",
+    "type": "entree",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Chant d'orties albums romans recueils de nouvelles illustrés pour les jeunes et ceux qui ont gardé leur âme d'enfant cliquez pour entrer"
+      }
+    ],
+    "liens": [
+      {
+        "type": "page",
+        "slug": "accueil",
+        "texte": "cliquez pour entrer"
+      }
+    ],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "index.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "accueil",
+    "titre": "Accueil",
+    "type": "accueil",
+    "sections": [
+      {
+        "titre": "Présentation",
+        "contenu": "Au travers de ses six collections de littérature jeunesse, Chant d'orties met en scène des dissidents de tous poils qui grattent, dérangent et sèment à tout vent les germes de la rébellion et d'utopies futures. Au plaisir de la lecture s'ajoute le plaisir des images ; le regard d'un jeune artiste vient renforcer les mots de l'auteur. Si vous souhaitez nous proposer un texte, merci de consulter la rubrique \"manuscrits\"."
+      },
+      {
+        "titre": "Information",
+        "contenu": "Chant d'orties traverse une passe difficile avec la perte de son distributeur et de son diffuseur."
+      },
+      {
+        "titre": "Soutien et commandes",
+        "contenu": "En attendant des jours meilleurs et pour poursuivre les activités de la maison d'édition, nous mettons en place des offres spécifiques le temps de retrouver un diffuseur. Libraires: passez commande par mail à chantdorties@free.fr avec 40% de remise et les frais de port offerts via Mondial Relay. Particuliers : les frais de port via Mondial Relay sont offerts quelle que soit votre commande. N'oubliez pas de renseigner votre adresse postale, mail et n° de téléphone lors de la commande. Vous voulez nous soutenir plus ? Vous pouvez nous faire un don en cliquant ci-dessous."
+      }
+    ],
+    "liens": [],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "accueil-juillet2026.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "actualites",
+    "titre": "Actualités",
+    "type": "actualites",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Retrouvez toutes nos actualités sur notre page Facebook , accessible même si vous n'avez pas de compte: Pour ne manquer aucun salon ni sortie de livre, abonnez-vous ou passez régulièrement la voir."
+      }
+    ],
+    "liens": [
+      {
+        "type": "externe",
+        "href": "https://www.facebook.com/pages/%C3%89ditions-Chant-dorties/377765272338134",
+        "texte": "Facebook"
+      }
+    ],
+    "images": [
+      "migration/front-assets/pages/actualites/images/01-images-facebook.jpg"
+    ],
+    "documents": [],
+    "source": {
+      "anciennePage": "actualite.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "commandes",
+    "titre": "Commandes",
+    "type": "commande",
+    "sections": [
+      {
+        "titre": "Pour les libraires",
+        "contenu": "Si vous souhaitez passer commande, vous pouvez nous contacter directement sur chantdorties@free.fr. Nous sommes dans l'attente d'un nouveau diffuseur. Vous pouvez devenir librairie-partenaire. Dans ce cas les frais de port sont offerts et nous nous mettons d'accord sur le nombre d'exemplaires à vous envoyer à chaque sortie de livre (possibilité de retour avec avoir)."
+      },
+      {
+        "titre": "Pour les particuliers",
+        "contenu": "Nos livres sont disponibles dans toutes les librairies sur commande puisque nous sommes recensés dans les grandes bases de données. Les librairies-partenaires ont un stock de nos ouvrages directement sur place. Vous pouvez également commander sur notre site: Il vous suffit de cliquer sur le bouton \"Acheter maintenant\" sur la page du livre désiré. Vous pouvez ainsi enregistrer plusieurs livres et cliquer sur \"afficher le panier\" lorsque votre commande est complète. Les frais de port sont offerts pour toute commande en France. Pour régler en ligne vous rejoignez alors le serveur sécurisé \"paypal\" qui offre la possibilité de payer par carte bleue sans avoir besoin de s'enregistrer. Si vous ne souhaitez pas passer par internet, il vous est possible d'imprimer un bon de commande papier et de nous l'envoyer, accompagné de votre chèque, à Chant d'orties, 9 chemin Serre de Cassagnes, 34600 Bédarieux."
+      }
+    ],
+    "liens": [
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/commandes/documents/01-documents-commande-chantdorties.pdf",
+        "texte": "bon de commande"
+      }
+    ],
+    "images": [],
+    "documents": [
+      "migration/front-assets/pages/commandes/documents/01-documents-commande-chantdorties.pdf"
+    ],
+    "source": {
+      "anciennePage": "commandes.html"
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "conditions_commerciales_a_actualiser"
+    ]
+  },
+  {
+    "slug": "mentions-legales",
+    "titre": "Mentions légales",
+    "type": "legal",
+    "sections": [
+      {
+        "titre": "Informations éditeur",
+        "contenu": "Le site chantdorties.free.fr est animé par l’association CHANT D'ORTIES, association loi de 1901, numéro de siret 509 516 886 00017 sise au 9 Chemin Serre de Cassagnes, 34600 Bédarieux. La directrice de publication du site est : Mme Guillemard Béatrice, domiciliée à l'adresse susmentionnée. Toute réclamation ou commentaire doit être adressée par mail en suivant le lien contact ou par courrier postal à l'adresse susmentionnée."
+      },
+      {
+        "titre": "Informations hébergeur",
+        "contenu": "L'hébergement de ce site est assuré par la société Free, société FREE SAS, inscrite au RCS de Paris sous le numéro n° B 421 938 861 75371, Paris Cedex 08"
+      },
+      {
+        "titre": "Informatique et libertés",
+        "contenu": "L’association CHANT D’ORTIES garantit la plus stricte confidentialité des informations collectées sur le site. L’association CHANT D’ORTIES ne collecte que les données qui sont strictement nécessaires au traitement des commandes passées par l'internaute. Conformément à la loi \"Informatique et Liberté\" du 6 janvier 1978, l'internaute dispose d'un droit d'opposition, d'accès, de rectification et de suppression sur les données à caractère personnel le concernant. Pour ce faire, il doit écrire un courrier électronique à l'adresse chantdorties@free.fr ou par courrier postal à l'adresse susmentionnée. Les données de l'internaute seront systématiquement détruites trois mois après réception par CHANT D’ORTIES de la commande adressée par l'internaute."
+      },
+      {
+        "titre": "Cookies",
+        "contenu": "L'internaute est informé qu’aucun cookie n’est installé lors de la visite du site."
+      },
+      {
+        "titre": "Prospection par courriel",
+        "contenu": "En passant une commande, l'internaute autorise l’association CHANT D’ORTIES à le recontacter par mail pendant une durée de trois mois consécutifs après envoi de la commande. En laissant son courriel lors d'un salon, l'internaute autorise l’association CHANT D’ORTIES à le recontacter par mail pour une durée illimitée mais l'association s'engage à le rayer immédiatement de sa liste de diffusion en cas de demande."
+      },
+      {
+        "titre": "Annonces publicitaires",
+        "contenu": "Le site chantdorties.free.fr est indépendant. Aucune annonce publicitaire n’y est associée."
+      },
+      {
+        "titre": "Propriété intellectuelle",
+        "contenu": "L'internaute reconnaît que le contenu, y compris de façon non limitative, les textes, programmes informatiques, musiques, sons, photo, graphiques, vidéos, outils présents sur le site sont protégés par le droit d'auteur, le droit des marques ou tous autres droits et lois relatifs à la propriété intellectuelle. L'internaute reconnaît qu'il n'est autorisé à utiliser ces éléments et informations que dans les limites expressément fixées par les présentes. L'internaute est autorisé à faire des copies sur papier des pages du site pour une utilisation strictement privée et non commerciale. L'internaute est autorisé à mettre en place des liens hypertextes à partir d'un autre site internet vers les pages du site accompagnées d'un court descriptif. Toute reproduction est interdite sans l'autorisation de l'Editeur."
+      }
+    ],
+    "liens": [
+      {
+        "type": "email",
+        "href": "mailto:chantdorties@free.fr",
+        "texte": "contact"
+      }
+    ],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "mentions-legales.html"
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "mentions_legales_a_actualiser"
+    ]
+  },
+  {
+    "slug": "amis",
+    "titre": "Amis",
+    "type": "page",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Si vous aimez les découvertes, voici quelques sites de médias ou éditeurs qui nous tiennent particulièrement à coeur. Divergences 2 est un site d'information comme on en voit rarement, pour des articles sans concessions ni \"politiquement correct\". Créé en mai 2008 mais toujours en activité, voici un collectif d'illustrateurs qui mettent gracieusement à dispositions des affiches de mai 68 détournées ou des créations actuelles. Editeur éclectique et prolifique, le Chemin de fer propose des nouvelles illustrées alliant la modernité d'un texte à l'originalité des illustrations. Site de critiques littéraires, Encres Vagabondes propose un panorama exigeant des sorties en jeunesse et adulte en France."
+      }
+    ],
+    "liens": [
+      {
+        "type": "externe",
+        "href": "http://divergences.be/",
+        "texte": null
+      },
+      {
+        "type": "externe",
+        "href": "http://imaginaction.over-blog.org/",
+        "texte": null
+      },
+      {
+        "type": "externe",
+        "href": "http://www.chemindefer.org/",
+        "texte": null
+      },
+      {
+        "type": "externe",
+        "href": "http://www.encres-vagabondes.com/",
+        "texte": null
+      }
+    ],
+    "images": [
+      "migration/front-assets/pages/amis/images/01-amis-divergences2.jpg",
+      "migration/front-assets/pages/amis/images/02-amis-mai68mai2008.png",
+      "migration/front-assets/pages/amis/images/03-amis-les-editions-du-chemin-de-fer.jpg",
+      "migration/front-assets/pages/amis/images/04-amis-logo-encres-vagabondes.jpg"
+    ],
+    "documents": [],
+    "source": {
+      "anciennePage": "amis.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "atelier-ecriture",
+    "titre": "Atelier d’écriture",
+    "type": "page",
+    "sections": [
+      {
+        "titre": "Présentation",
+        "contenu": "En 2008-2009 et en 2009-2010, notre association a organisé un atelier d'écriture à Saintry-sur-Seine, près de Corbeil-Essonnes (91) en partenariat avec la municipalité. Il était animé par l'un de nos auteurs, Thierry Périssé et se tenait tous les mercredis (en période scolaire) de 20h00 à 22h00 à la bibliothèque de Saintry, 1 rue de l'Enfer (si si !) - 91250 Saintry-sur-Seine"
+      },
+      {
+        "titre": "Historique et publications",
+        "contenu": "Entre 2010 et 2013, l'atelier d'écriture n'est plus fait en partenariat avec la mairie et s'est tenu sous une forme plus libre. En mai 2013 l'atelier a finalement cessé ses activités régulières mais la tenue occasionnelle de réunion est envisageable. Si vous êtes intéressé vous pouvez nous contacter par mail à chantdorties@free.fr ou par téléphone au 01.60.75.61.38. « J’ai toujours écrit, pour moi, seule, et puis un jour, je me suis arrêtée. La source s’était tarie, ou je n’en voulais plus, je tournais en rond. L’atelier d’écriture m’a donné un second souffle. » « Depuis des années, j'ai envie d'écrire, depuis des années je n'y arrive pas, je commence à peine et je m'essouffle, il me manque l'étincelle de départ. Je l'ai trouvée cette année, tous les vendredis soirs, une date devenue très importante dans ma semaine. » « L’atelier, c’est partager nos doutes, nos hésitations, mais aussi nos émotions, tristes ou gaies, dans une ambiance de compréhension et de tolérance. » Mosaïque de vie, d’idées, de destins, mosaïque de nouvelles et de mots, mots qui dérivent, se mêlent et prennent vie sur la page... Mosaïque est un recueil de textes réalisés dans le cadre de l’atelier d’écriture de Saintry-sur-Seine, en partenariat avec la mairie, la bibliothèque et l’association Chant d’orties. Un atelier qui, pour sa première année d’existence, a le plaisir de vous présenter le fruit de son travail. L'année scolaire 2008-2009 s'est achevée par la publication d'un recueil des textes réalisés lors de l'atelier, intitulé Mosaïque. En voici la couverture : Lire un extrait de la nouvelle \"Le canal\" Lire un extrait de la nouvelle \"Un soleil si bleu\" Fin 2009-2010 un nouveau recueil parait, intitulé Puzzles :"
+      }
+    ],
+    "liens": [
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/atelier-ecriture/documents/01-documents-1erextrait-mosaique.pdf",
+        "texte": "Lire un extrait de la nouvelle"
+      },
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/atelier-ecriture/documents/02-documents-2eextrait-mosaique.pdf",
+        "texte": "Lire un extrait de la nouvelle"
+      }
+    ],
+    "images": [
+      "migration/front-assets/pages/atelier-ecriture/images/01-livres-couvmosaique.jpg",
+      "migration/front-assets/pages/atelier-ecriture/images/02-livres-couvpuzzles.jpg"
+    ],
+    "documents": [
+      "migration/front-assets/pages/atelier-ecriture/documents/01-documents-1erextrait-mosaique.pdf",
+      "migration/front-assets/pages/atelier-ecriture/documents/02-documents-2eextrait-mosaique.pdf"
+    ],
+    "source": {
+      "anciennePage": "atelier-ecriture.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "librairies-partenaires",
+    "titre": "Librairies partenaires",
+    "type": "page",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Voici des lieux avec lesquels nous avons des relations privilégiées. Dans ces librairies vous pouvez trouver nos livres sans avoir besoin de les commander. Si vous êtes libraire et que vous souhaitez nous commander des livres ou devenir librairie-partenaire, rendez-vous à la page commande. 75 Publico 145 rue Amelot 75011 Paris Tél : 01 48 05 34 08 http://www.librairie-publico.com/ Quilombo 23 rue Voltaire 75011 Paris Tél : 01 43 71 21 07 http://www.librairie-quilombo.org/ 34 Joie de Connaître 17 Rue de la République 34600 Bédarieux Tèl: 04 67 95 05 65 https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/"
+      }
+    ],
+    "liens": [
+      {
+        "type": "externe",
+        "href": "http://lautodidacte.lautre.net/",
+        "texte": null
+      },
+      {
+        "type": "externe",
+        "href": "http://www.librairie-publico.com/",
+        "texte": "http://www.librairie-publico.com/"
+      },
+      {
+        "type": "externe",
+        "href": "http://www.librairie-quilombo.org/",
+        "texte": "http://www.librairie-quilombo.org/"
+      },
+      {
+        "type": "externe",
+        "href": "https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/",
+        "texte": "https://fr-fr.facebook.com/Librairie-Presse-Bedarieux-577728402283038/"
+      }
+    ],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "librairies-partenaires.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "manuscrits",
+    "titre": "Manuscrits",
+    "type": "page",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Au travers de ses six collections de littérature jeunesse, Chant d'orties met en scène des dissidents de tous poils qui grattent, dérangent et sèment à tout vent les germes de la rébellion et d'utopies futures. Au plaisir de la lecture s'ajoute le plaisir des images ; le regard d'un jeune artiste vient renforcer les mots de l'auteur. Notre adresse mail pour envoyer vos propositions d'albums change: chantdorties.lecture@free.fr (une erreur s'était glissée dans l'adresse que nous avions notée, voici donc la bonne)"
+      }
+    ],
+    "liens": [],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "manuscrits.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "projets",
+    "titre": "Projets",
+    "type": "page",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Trois projets pour fin 2026-début 2027"
+      },
+      {
+        "titre": "Hôtel du Nord",
+        "contenu": "Album pour les 3-5 ans écrit par Najat Azira illustré par Sébastien Boscus Collection Les coquelicots sauvages sortie prévue décembre 2026"
+      },
+      {
+        "titre": "Gaïa tome 3",
+        "contenu": "Roman pour le 10-14 ans écrit par Amanda Belassami-Sideris et illustré par Pavlos Habidis Collection Les coquelicots sauvages sortie prévue décembre 2026"
+      },
+      {
+        "titre": "Renard ou les fruits du hasard",
+        "contenu": "Album pour les 3-5 ans écrit par Laure Philippon illustré par Nesseldë Collection Les coquelicots sauvages sortie prévue janvier 2027"
+      }
+    ],
+    "liens": [],
+    "images": [],
+    "documents": [],
+    "source": {
+      "anciennePage": "projets.html"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "soutien",
+    "titre": "Qui sommes-nous ?",
+    "type": "page",
+    "sections": [
+      {
+        "titre": null,
+        "contenu": "Notre maison d’édition fonctionne en association. Il y a deux manières de nous soutenir et nous aider à publier de nouveaux ouvrages : * Adhérer à l’association : En adhérant à l’association vous bénéficierez pendant un an : - une carte d’adhérent - de 10 % de remise sur nos publications commandées par courrier à l’adresse ci-dessous. - des frais de port gratuits. - d’un sachet de graines de fleurs des champs - d’un sachet de graines d’orties (merci de cocher la case sur le bulletin si vous souhaitez l’obtenir) Vous pourrez également vous investir dans le fonctionnement de l’association. Cliquez ici pour lire les statuts et le règlement intérieur . * Faire un don d’un montant libre : Vous ne bénéficierez pas des avantages ci-dessus mais aiderez à promouvoir la littérature sociale. Imprimez le bulletin ICI et retournez-le sous enveloppe affranchie avec votre (vos) chèque(s) libellé(s) à l'ordre de Chant d'orties à: Chant d'orties 9 Chemin Serre de Cassagnes 34600 Bédarieux Il vous est maintenant également possible de devenir adhérent via paypal. Choisissez votre cadeau et cliquez sur le bouton \"souscrire\": Si vous souhaitez faire un don:"
+      }
+    ],
+    "liens": [
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/soutien/documents/01-documents-statuts-chant-d-orties.pdf",
+        "texte": "statuts"
+      },
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/soutien/documents/02-documents-reglement-interieur.pdf",
+        "texte": "règlement intérieur"
+      },
+      {
+        "type": "document",
+        "href": "migration/front-assets/pages/soutien/documents/03-documents-adhesion-soutien-chantdorties.pdf",
+        "texte": "ICI"
+      }
+    ],
+    "images": [],
+    "documents": [
+      "migration/front-assets/pages/soutien/documents/01-documents-statuts-chant-d-orties.pdf",
+      "migration/front-assets/pages/soutien/documents/02-documents-reglement-interieur.pdf",
+      "migration/front-assets/pages/soutien/documents/03-documents-adhesion-soutien-chantdorties.pdf"
+    ],
+    "source": {
+      "anciennePage": "soutien.html"
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "modalites_adhesion_et_paiement_a_actualiser"
+    ]
+  },
+  {
+    "slug": "offres-speciales",
+    "titre": "Offres spéciales",
+    "type": "page",
+    "sections": [
+      {
+        "titre": "Les deux tomes de Gaïa",
+        "contenu": "conte rebelle pour toute la famille Tome 1 - Conte de la Montagne Bleue Tome 2 - Sur le chemin de la Montagne Bleue Romans jeunesse d'Amanda Belassami-Sideris illustrés par Pavlos Habidis 16€ pièce / offre spéciale 25€ les deux."
+      },
+      {
+        "titre": "Les enquêtes de Théo",
+        "contenu": "pour les 10-14 ans Tome 1 - Les disparus de la Cité Fleurie Tome 2 - Les sources d'or de la Cité Fleurie Romans jeunesse de Fred Morisse illustrés par l'auteur 16€ pièce / offre spéciale 25€ les deux."
+      },
+      {
+        "titre": "D'un voyage à travers le temps",
+        "contenu": "aux sources d'une société plus égalitaire, deux romans haletants pour un même idéal Tome 1 - Un air de liberté Tome 2 - L'ombre de la lune Romans jeunesse d'Hellena Cavendi illustrés par Julie Grugeaux T.1 et l'autrice T.2 15€ T.1 et 18€ T.2 séparément Offre spéciale 25€ les deux tomes."
+      }
+    ],
+    "liens": [
+      {
+        "type": "livre",
+        "slug": "gaia-conte-de-la-montagne-bleue",
+        "texte": "Tome 1"
+      },
+      {
+        "type": "livre",
+        "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
+        "texte": "Tome 2"
+      },
+      {
+        "type": "livre",
+        "slug": "les-disparus-de-la-cite-fleurie",
+        "texte": "Tome 1"
+      },
+      {
+        "type": "livre",
+        "slug": "les-sources-d-or-de-la-cite-fleurie",
+        "texte": "Tome 2"
+      },
+      {
+        "type": "livre",
+        "slug": "un-air-de-liberte",
+        "texte": "Tome 1"
+      },
+      {
+        "type": "livre",
+        "slug": "l-ombre-de-la-lune",
+        "texte": "Tome 2"
+      }
+    ],
+    "images": [
+      "migration/front-assets/pages/offres-speciales/images/01-livres-couv-gaia.jpg",
+      "migration/front-assets/pages/offres-speciales/images/02-livres-couv-gaia2.jpg",
+      "migration/front-assets/pages/offres-speciales/images/03-livres-couvdisparuscitefleurie.jpg",
+      "migration/front-assets/pages/offres-speciales/images/04-livres-couv-sources-d-or-cite-fleurie.jpg",
+      "migration/front-assets/pages/offres-speciales/images/05-livres-couvunairdeliberte.jpg",
+      "migration/front-assets/pages/offres-speciales/images/06-livres-couvombrelune.jpg"
+    ],
+    "documents": [],
+    "source": {
+      "anciennePage": "trois_offres_speciales.html"
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "offres_et_prix_a_actualiser"
+    ]
+  }
+]

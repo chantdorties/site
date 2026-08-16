@@ -1,0 +1,15 @@
+{
+  "mode": "production",
+  "pagesHtml": 164,
+  "routesIndexees": 163,
+  "livres": 64,
+  "personnes": 81,
+  "collections": 6,
+  "medias": {
+    "images": 398,
+    "documents": 50,
+    "compressedDocuments": 1,
+    "skippedDocuments": 0
+  },
+  "documentsIgnores": []
+}

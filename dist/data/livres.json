@@ -1,0 +1,1025 @@
+[
+  {
+    "slug": "a-quelques-pas-de-l-usine",
+    "titre": "A quelques pas de l'usine",
+    "collection": "chardons-ardents",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Jean-Pierre Levaray"
+    ],
+    "illustrateurNoms": [
+      "Matt Mahlen"
+    ],
+    "prixCentimes": 1100,
+    "disponible": true,
+    "couverture": "/assets/media/covers/a-quelques-pas-de-l-usine-480.webp"
+  },
+  {
+    "slug": "avec-ou-sans-papiers",
+    "titre": "Avec ou sans papiers",
+    "collection": "chardons-ardents",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Marie-Florence Ehret"
+    ],
+    "illustrateurNoms": [
+      "Marion Claeys"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/avec-ou-sans-papiers-480.webp"
+  },
+  {
+    "slug": "debout-dans-l-aquarium",
+    "titre": "Debout dans l'aquarium",
+    "collection": "chardons-ardents",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Éric Lemaire"
+    ],
+    "illustrateurNoms": [
+      "Éric Lemaire"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/debout-dans-l-aquarium-480.webp"
+  },
+  {
+    "slug": "noir-horizon",
+    "titre": "Noir horizon",
+    "collection": "chardons-ardents",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Thierry Périssé"
+    ],
+    "illustrateurNoms": [
+      "Matt Mahlen"
+    ],
+    "prixCentimes": 1200,
+    "disponible": false,
+    "couverture": "/assets/media/covers/noir-horizon-480.webp"
+  },
+  {
+    "slug": "ruptures-d-enfance",
+    "titre": "Ruptures d'enfance",
+    "collection": "chardons-ardents",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Michel Gutel"
+    ],
+    "illustrateurNoms": [
+      "Gaëtan Dorémus"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/ruptures-d-enfance-480.webp"
+  },
+  {
+    "slug": "ailes-d-arc-en-ciel",
+    "titre": "Ailes d'arc-en-ciel",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 5,
+    "auteurNoms": [
+      "Michel Perrin"
+    ],
+    "illustrateurNoms": [
+      "Béatrice Guillemard"
+    ],
+    "prixCentimes": 1100,
+    "disponible": true,
+    "couverture": "/assets/media/covers/ailes-d-arc-en-ciel-480.webp"
+  },
+  {
+    "slug": "aldo-revait",
+    "titre": "Aldo rêvait",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 3,
+    "auteurNoms": [
+      "Léna Ellka"
+    ],
+    "illustrateurNoms": [
+      "Marion Claeys"
+    ],
+    "prixCentimes": 1000,
+    "disponible": true,
+    "couverture": "/assets/media/covers/aldo-revait-480.webp"
+  },
+  {
+    "slug": "dent-de-lion",
+    "titre": "Dent de lion",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "texte-illustre",
+    "ageMinimum": 6,
+    "auteurNoms": [
+      "Béatrice Guillemard"
+    ],
+    "illustrateurNoms": [
+      "Christine Dècle"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/dent-de-lion-480.webp"
+  },
+  {
+    "slug": "l-orchestre-de-la-favela",
+    "titre": "L'orchestre de la favela",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 5,
+    "auteurNoms": [
+      "France Quatromme"
+    ],
+    "illustrateurNoms": [
+      "Sébastien Boscus"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/l-orchestre-de-la-favela-480.webp"
+  },
+  {
+    "slug": "la-petite-dame-grise",
+    "titre": "La petite dame grise",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 5,
+    "auteurNoms": [
+      "Chrystel Gaubert"
+    ],
+    "illustrateurNoms": [
+      "Sébastien Boscus"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/la-petite-dame-grise-480.webp"
+  },
+  {
+    "slug": "le-jardin-de-la-megere",
+    "titre": "Le jardin de la mégère",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 6,
+    "auteurNoms": [
+      "Chrystel Gaubert"
+    ],
+    "illustrateurNoms": [
+      "Sébastien Boscus"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-jardin-de-la-megere-480.webp"
+  },
+  {
+    "slug": "les-affiches",
+    "titre": "Les affiches",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 7,
+    "auteurNoms": [
+      "Alexia Olagnon"
+    ],
+    "illustrateurNoms": [
+      "David Rebaud"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-affiches-480.webp"
+  },
+  {
+    "slug": "les-dialogues-sauvages",
+    "titre": "Les dialogues sauvages",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 5,
+    "auteurNoms": [
+      "Georges Printemps"
+    ],
+    "illustrateurNoms": [
+      "Julie Maurice"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-dialogues-sauvages-480.webp"
+  },
+  {
+    "slug": "mon-monde-et-moi",
+    "titre": "Mon monde et moi",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 9,
+    "auteurNoms": [
+      "Roxane Tilman"
+    ],
+    "illustrateurNoms": [
+      "Somotho"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/mon-monde-et-moi-480.webp"
+  },
+  {
+    "slug": "pas-une",
+    "titre": "Pas une",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 6,
+    "auteurNoms": [
+      "Georges Printemps"
+    ],
+    "illustrateurNoms": [
+      "Fabio Peissl"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/pas-une-480.webp"
+  },
+  {
+    "slug": "qui-sont-les-pirates",
+    "titre": "Qui sont les pirates ?",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "texte-illustre",
+    "ageMinimum": 6,
+    "auteurNoms": [
+      "Neil Jobard"
+    ],
+    "illustrateurNoms": [
+      "Julien Mélique"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/qui-sont-les-pirates-480.webp"
+  },
+  {
+    "slug": "rompez",
+    "titre": "Rompez !",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 7,
+    "auteurNoms": [
+      "Anne-Sophie Plat"
+    ],
+    "illustrateurNoms": [
+      "Laetitia Serano"
+    ],
+    "prixCentimes": 1700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/rompez-480.webp"
+  },
+  {
+    "slug": "tais-toi",
+    "titre": "Tais-toi !",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 4,
+    "auteurNoms": [
+      "Amélie Billon-Le Gennec"
+    ],
+    "illustrateurNoms": [
+      "Gaëlle Boulanger"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/tais-toi-480.webp"
+  },
+  {
+    "slug": "tout-au-bout-de-mon-jardin",
+    "titre": "Tout au bout de mon jardin",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "album",
+    "ageMinimum": 4,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Anaïs Ruch"
+    ],
+    "prixCentimes": 1000,
+    "disponible": true,
+    "couverture": "/assets/media/covers/tout-au-bout-de-mon-jardin-480.webp"
+  },
+  {
+    "slug": "travaille-ton-super-vouloir",
+    "titre": "Travaille ton Super-Vouloir",
+    "collection": "coquelicots-sauvages",
+    "typeOuvrage": "texte-illustre",
+    "ageMinimum": 5,
+    "auteurNoms": [
+      "Neil Jobard"
+    ],
+    "illustrateurNoms": [
+      "Julien Mélique"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/travaille-ton-super-vouloir-480.webp"
+  },
+  {
+    "slug": "extraction-3-2-1-partez",
+    "titre": "Extraction 3, 2, 1, Partez !",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 9,
+    "auteurNoms": [
+      "Grâce Belder"
+    ],
+    "illustrateurNoms": [
+      "Soazic Deleplanque"
+    ],
+    "prixCentimes": null,
+    "disponible": false,
+    "couverture": "/assets/media/covers/extraction-3-2-1-partez-480.webp"
+  },
+  {
+    "slug": "faire-quelque-chose",
+    "titre": "Faire quelque chose",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Jean-Pierre Levaray"
+    ],
+    "illustrateurNoms": [
+      "Brigitte Roussel"
+    ],
+    "prixCentimes": 800,
+    "disponible": true,
+    "couverture": "/assets/media/covers/faire-quelque-chose-480.webp"
+  },
+  {
+    "slug": "l-impasse",
+    "titre": "L'impasse",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 10,
+    "auteurNoms": [
+      "Pierre Debuys"
+    ],
+    "illustrateurNoms": [
+      "Jacques Tardi"
+    ],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/l-impasse-480.webp"
+  },
+  {
+    "slug": "la-dame-a-sa-fenetre",
+    "titre": "La dame à sa fenêtre",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 13,
+    "auteurNoms": [
+      "Colère Noire"
+    ],
+    "illustrateurNoms": [
+      "Chrysalis'"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/la-dame-a-sa-fenetre-480.webp"
+  },
+  {
+    "slug": "le-chien-anarchiste",
+    "titre": "Le chien anarchiste",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 7,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Loïc Mailly"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-chien-anarchiste-480.webp"
+  },
+  {
+    "slug": "le-fabuliste",
+    "titre": "Le fabuliste",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 8,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Fabian"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-fabuliste-480.webp"
+  },
+  {
+    "slug": "le-quartier",
+    "titre": "Le quartier",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 13,
+    "auteurNoms": [
+      "Serge Livrozet"
+    ],
+    "illustrateurNoms": [
+      "Simon André"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-quartier-480.webp"
+  },
+  {
+    "slug": "le-sourire-de-nemesis",
+    "titre": "Le sourire de Némésis",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 13,
+    "auteurNoms": [
+      "Cathy Ytak"
+    ],
+    "illustrateurNoms": [
+      "Manu Rich"
+    ],
+    "prixCentimes": 200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-sourire-de-nemesis-480.webp"
+  },
+  {
+    "slug": "les-freres-de-la-cote",
+    "titre": "Les frères de la côte",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 11,
+    "auteurNoms": [
+      "Sébastien Doubinsky"
+    ],
+    "illustrateurNoms": [
+      "Manu Rich"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-freres-de-la-cote-480.webp"
+  },
+  {
+    "slug": "les-gouts-florissants",
+    "titre": "Les goûts florissants",
+    "collection": "eglantine",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": 14,
+    "auteurNoms": [
+      "Daniel Zimmermann"
+    ],
+    "illustrateurNoms": [
+      "Maud Lenglet"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-gouts-florissants-480.webp"
+  },
+  {
+    "slug": "les-mains-bleues",
+    "titre": "Les mains bleues",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 12,
+    "auteurNoms": [
+      "Christophe Martin"
+    ],
+    "illustrateurNoms": [
+      "François Saint-Remy"
+    ],
+    "prixCentimes": 800,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-mains-bleues-480.webp"
+  },
+  {
+    "slug": "pas-le-droit-a-l-erreur",
+    "titre": "Pas le droit à l'erreur",
+    "collection": "eglantine",
+    "typeOuvrage": "recueil-de-nouvelles",
+    "ageMinimum": 14,
+    "auteurNoms": [
+      "Angel Reinhart"
+    ],
+    "illustrateurNoms": [
+      "Chrysalis'"
+    ],
+    "prixCentimes": 600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/pas-le-droit-a-l-erreur-480.webp"
+  },
+  {
+    "slug": "robin-des-bois-blancs",
+    "titre": "Robin des Bois-Blancs",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 11,
+    "auteurNoms": [
+      "Vincent Valdelièvre"
+    ],
+    "illustrateurNoms": [
+      "Maud Lenglet"
+    ],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/robin-des-bois-blancs-480.webp"
+  },
+  {
+    "slug": "sauf-dimanches-et-jours-de-fete",
+    "titre": "Sauf dimanches et jours de fête",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 13,
+    "auteurNoms": [
+      "Victoire Perdrot"
+    ],
+    "illustrateurNoms": [
+      "Stephen Davies"
+    ],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/sauf-dimanches-et-jours-de-fete-480.webp"
+  },
+  {
+    "slug": "un-vent-de-colere",
+    "titre": "Un vent de colère",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 8,
+    "auteurNoms": [
+      "Grâce Belder"
+    ],
+    "illustrateurNoms": [
+      "Soazic Deleplanque"
+    ],
+    "prixCentimes": null,
+    "disponible": false,
+    "couverture": "/assets/media/covers/un-vent-de-colere-480.webp"
+  },
+  {
+    "slug": "ville-rouge",
+    "titre": "Ville rouge",
+    "collection": "eglantine",
+    "typeOuvrage": "mini-roman",
+    "ageMinimum": 15,
+    "auteurNoms": [
+      "Ricardo Montserra"
+    ],
+    "illustrateurNoms": [
+      "Bénédicte Waryn"
+    ],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/ville-rouge-480.webp"
+  },
+  {
+    "slug": "ainsi-danse-jean-petit",
+    "titre": "Ainsi danse Jean Petit",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 11,
+    "auteurNoms": [
+      "Josef Ulla"
+    ],
+    "illustrateurNoms": [
+      "David Rebaud"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/ainsi-danse-jean-petit-480.webp"
+  },
+  {
+    "slug": "blizzard-d-etoiles",
+    "titre": "Blizzard d'étoiles",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Sylvie Huguet"
+    ],
+    "illustrateurNoms": [
+      "Florène Vaxlaire"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/blizzard-d-etoiles-480.webp"
+  },
+  {
+    "slug": "c-est-quoi-ce-travail",
+    "titre": "C'est quoi ce travail ?",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 7,
+    "auteurNoms": [
+      "Jean-Pierre Levaray"
+    ],
+    "illustrateurNoms": [
+      "David Rebaud"
+    ],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/c-est-quoi-ce-travail-480.webp"
+  },
+  {
+    "slug": "chez-poulardon",
+    "titre": "Chez Poulardon",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Michel Bonnefoi"
+    ],
+    "illustrateurNoms": [
+      "Nicolas Le Fessant"
+    ],
+    "prixCentimes": 1100,
+    "disponible": true,
+    "couverture": "/assets/media/covers/chez-poulardon-480.webp"
+  },
+  {
+    "slug": "gaia-conte-de-la-montagne-bleue",
+    "titre": "Gaïa - Conte de la Montagne Bleue",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Amanda Belassami-Sideris"
+    ],
+    "illustrateurNoms": [
+      "Pavlos Habidis"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/gaia-conte-de-la-montagne-bleue-480.webp"
+  },
+  {
+    "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
+    "titre": "Gaïa - Sur le chemin de la Montagne Bleue",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Amanda Belassami-Sideris"
+    ],
+    "illustrateurNoms": [
+      "Pavlos Habidis"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/gaia-sur-le-chemin-de-la-montagne-bleue-480.webp"
+  },
+  {
+    "slug": "l-effet-saucisson",
+    "titre": "L'effet saucisson",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 10,
+    "auteurNoms": [
+      "Pierre Debuys"
+    ],
+    "illustrateurNoms": [
+      "Alexandre Widendaele"
+    ],
+    "prixCentimes": 1100,
+    "disponible": true,
+    "couverture": "/assets/media/covers/l-effet-saucisson-480.webp"
+  },
+  {
+    "slug": "l-ombre-de-la-lune",
+    "titre": "L'ombre de la lune",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 12,
+    "auteurNoms": [
+      "Hellena Cavendi"
+    ],
+    "illustrateurNoms": [
+      "Hellena Cavendi"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/l-ombre-de-la-lune-480.webp"
+  },
+  {
+    "slug": "la-marseillaise",
+    "titre": "La marseillaise",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 11,
+    "auteurNoms": [
+      "Hervé Mestron"
+    ],
+    "illustrateurNoms": [
+      "Christine Dècle"
+    ],
+    "prixCentimes": 800,
+    "disponible": true,
+    "couverture": "/assets/media/covers/la-marseillaise-480.webp"
+  },
+  {
+    "slug": "la-valse-des-pantins",
+    "titre": "La valse des pantins",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 8,
+    "auteurNoms": [
+      "Michel Perrin"
+    ],
+    "illustrateurNoms": [
+      "Matt Mahlen"
+    ],
+    "prixCentimes": 1000,
+    "disponible": true,
+    "couverture": "/assets/media/covers/la-valse-des-pantins-480.webp"
+  },
+  {
+    "slug": "le-fils-du-caiman",
+    "titre": "Le fils du caïman",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Jane Hervé"
+    ],
+    "illustrateurNoms": [
+      "Michel Julliard"
+    ],
+    "prixCentimes": 1300,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-fils-du-caiman-480.webp"
+  },
+  {
+    "slug": "le-journal-de-barbara-eicher",
+    "titre": "Le journal de Barbara Eicher",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Régis Pasquet"
+    ],
+    "illustrateurNoms": [
+      "Fred Morisse"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-journal-de-barbara-eicher-480.webp"
+  },
+  {
+    "slug": "le-secret-de-la-famille-zorig",
+    "titre": "Le secret de la famille Zorig",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Régis Pasquet"
+    ],
+    "illustrateurNoms": [
+      "Florène Vaxlaire"
+    ],
+    "prixCentimes": 1700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-secret-de-la-famille-zorig-480.webp"
+  },
+  {
+    "slug": "les-demons-du-museum",
+    "titre": "Les démons du muséum",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 10,
+    "auteurNoms": [
+      "Michel Perrin"
+    ],
+    "illustrateurNoms": [
+      "Alexandre Widendaele"
+    ],
+    "prixCentimes": 1300,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-demons-du-museum-480.webp"
+  },
+  {
+    "slug": "les-disparus-de-la-cite-fleurie",
+    "titre": "Les disparus de la Cité Fleurie",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Fred Morisse"
+    ],
+    "illustrateurNoms": [
+      "Fred Morisse"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-disparus-de-la-cite-fleurie-480.webp"
+  },
+  {
+    "slug": "les-sources-d-or-de-la-cite-fleurie",
+    "titre": "Les sources d'or de la Cité Fleurie",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 9,
+    "auteurNoms": [
+      "Fred Morisse"
+    ],
+    "illustrateurNoms": [
+      "Fred Morisse"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/les-sources-d-or-de-la-cite-fleurie-480.webp"
+  },
+  {
+    "slug": "leur-fausser-compagnie",
+    "titre": "Leur fausser compagnie",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Hélène Deregnaucourt"
+    ],
+    "prixCentimes": 1400,
+    "disponible": true,
+    "couverture": "/assets/media/covers/leur-fausser-compagnie-480.webp"
+  },
+  {
+    "slug": "ma-traversee",
+    "titre": "Ma traversée",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Zoumana Koné"
+    ],
+    "illustrateurNoms": [
+      "Nald Kib"
+    ],
+    "prixCentimes": 1400,
+    "disponible": true,
+    "couverture": "/assets/media/covers/ma-traversee-480.webp"
+  },
+  {
+    "slug": "mon-hlm",
+    "titre": "Mon HLM",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 7,
+    "auteurNoms": [
+      "Béatrice Guillemard"
+    ],
+    "illustrateurNoms": [
+      "Zodanzo"
+    ],
+    "prixCentimes": 800,
+    "disponible": true,
+    "couverture": "/assets/media/covers/mon-hlm-480.webp"
+  },
+  {
+    "slug": "sauvons-les-animaux-du-zoo",
+    "titre": "Sauvons les animaux du zoo !",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Fred Morisse"
+    ],
+    "illustrateurNoms": [
+      "David Rebaud"
+    ],
+    "prixCentimes": 1600,
+    "disponible": true,
+    "couverture": "/assets/media/covers/sauvons-les-animaux-du-zoo-480.webp"
+  },
+  {
+    "slug": "un-air-de-liberte",
+    "titre": "Un air de liberté",
+    "collection": "graines-d-orties",
+    "typeOuvrage": "roman",
+    "ageMinimum": 10,
+    "auteurNoms": [
+      "Hellena Cavendi"
+    ],
+    "illustrateurNoms": [
+      "Julie Grugeaux"
+    ],
+    "prixCentimes": 1500,
+    "disponible": true,
+    "couverture": "/assets/media/covers/un-air-de-liberte-480.webp"
+  },
+  {
+    "slug": "marius-gardebois",
+    "titre": "Marius Gardebois",
+    "collection": "racines-de-la-colere",
+    "typeOuvrage": "recueil-de-textes",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Albert Londres"
+    ],
+    "illustrateurNoms": [],
+    "prixCentimes": 700,
+    "disponible": true,
+    "couverture": "/assets/media/covers/marius-gardebois-480.webp"
+  },
+  {
+    "slug": "deni-de-patrie",
+    "titre": "Déni de patrie",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Benoît Drouart"
+    ],
+    "prixCentimes": 1200,
+    "disponible": true,
+    "couverture": "/assets/media/covers/deni-de-patrie-480.webp"
+  },
+  {
+    "slug": "la-malediction-du-beton",
+    "titre": "La malédiction du béton",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "recueil-de-recits",
+    "ageMinimum": 15,
+    "auteurNoms": [
+      "Fred Morisse"
+    ],
+    "illustrateurNoms": [
+      "Jean-Pierre Bourdeleau"
+    ],
+    "prixCentimes": 1300,
+    "disponible": true,
+    "couverture": "/assets/media/covers/la-malediction-du-beton-480.webp"
+  },
+  {
+    "slug": "le-coeur-a-l-ouvrage",
+    "titre": "Le coeur à l'ouvrage",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Thierry Périssé"
+    ],
+    "illustrateurNoms": [
+      "Zodanzo"
+    ],
+    "prixCentimes": 1300,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-coeur-a-l-ouvrage-480.webp"
+  },
+  {
+    "slug": "le-val-enchante",
+    "titre": "Le val enchanté",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "roman",
+    "ageMinimum": 14,
+    "auteurNoms": [
+      "Fred Morisse"
+    ],
+    "illustrateurNoms": [
+      "Fred Morisse"
+    ],
+    "prixCentimes": 1800,
+    "disponible": true,
+    "couverture": "/assets/media/covers/le-val-enchante-480.webp"
+  },
+  {
+    "slug": "memoires-d-un-nouveau-ne",
+    "titre": "Mémoires d'un nouveau-né",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "roman",
+    "ageMinimum": 14,
+    "auteurNoms": [
+      "Thierry Maricourt"
+    ],
+    "illustrateurNoms": [
+      "Marion Claeys",
+      "Catherine Senaffe"
+    ],
+    "prixCentimes": 1000,
+    "disponible": true,
+    "couverture": "/assets/media/covers/memoires-d-un-nouveau-ne-480.webp"
+  },
+  {
+    "slug": "poings-de-suture",
+    "titre": "Poings de suture",
+    "collection": "rues-en-friche",
+    "typeOuvrage": "roman",
+    "ageMinimum": null,
+    "auteurNoms": [
+      "Michel Lecorre"
+    ],
+    "illustrateurNoms": [
+      "Alexandre Widendaele"
+    ],
+    "prixCentimes": 1300,
+    "disponible": true,
+    "couverture": "/assets/media/covers/poings-de-suture-480.webp"
+  }
+]

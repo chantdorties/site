@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{page_title}}</title>
+  <meta name="description" content="{{description}}">
+  {{robots}}
+  {{canonical}}
+  <meta property="og:type" content="{{og_type}}">
+  <meta property="og:title" content="{{page_title}}">
+  <meta property="og:description" content="{{description}}">
+  {{og_image}}
+  <meta name="theme-color" content="#f7f7f4">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  {{structured_data}}
+</head>
+<body class="{{body_class}}">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  {{header}}
+  <main id="contenu" tabindex="-1">
+    {{content}}
+  </main>
+  {{footer}}
+  <script type="module" src="/assets/js/site.js"></script>
+  {{page_scripts}}
+</body>
+</html>

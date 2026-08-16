@@ -1,0 +1,2472 @@
+[
+  {
+    "slug": "albert-londres",
+    "nom": "Albert Londres",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "marius-gardebois"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "mariusgardebois.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "alexandre-widendaele",
+    "nom": "Alexandre Widendaele",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "l-effet-saucisson",
+        "les-demons-du-museum",
+        "poings-de-suture"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Dresseur de poules dans un cirque itinérant, le jeune Alexandre, dessinateur à ses heures perdues, passe ses soirées à décorer les cages de ses volatiles. Il a mis en image trois romans jeunesse chez Chant d'orties.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-widendaele-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-widendaele-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://alexwidendaele.tumblr.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "demonsdumuseum.html",
+        "effet-saucisson.html",
+        "poingsdesuture.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "widendaele"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "alexia-olagnon",
+    "nom": "Alexia Olagnon",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "les-affiches"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "les-affiches.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "amanda-belassami-sideris",
+    "nom": "Amanda Belassami-Sideris",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "gaia-conte-de-la-montagne-bleue",
+        "gaia-sur-le-chemin-de-la-montagne-bleue"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "gaia_conte_de_le_montagne_bleue.html",
+        "gaia_sur_le_chemin_de_la_montagne_bleue.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "amelie-billon-le-gennec",
+    "nom": "Amélie Billon-Le Gennec",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "tais-toi"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-billon-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-billon-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "tais-toi.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "anais-ruch",
+    "nom": "Anaïs Ruch",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "tout-au-bout-de-mon-jardin"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Quand Anaïs n'est pas en résidence dans un théatre indonésien près de Jakarta, elle s'occupe de sa maison d'édition Ma petite crokette ou réalise des illustration pour des albums jeunesse comme Tout au bout de mon jardin .",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-ruch-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-ruch-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://www.anaisruch.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "toutaubout.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "ruch"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "angel-reinhart",
+    "nom": "Angel Reinhart",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "pas-le-droit-a-l-erreur"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "pasledroitalerreur.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "anne-sophie-plat",
+    "nom": "Anne-Sophie Plat",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "rompez"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "rompez.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "beatrice-guillemard",
+    "nom": "Béatrice Guillemard",
+    "type": "personne",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [
+        "dent-de-lion",
+        "mon-hlm"
+      ],
+      "illustrateur": [
+        "ailes-d-arc-en-ciel"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Parallèlement à l'écriture de romans et d'albums jeunesse, elle met en scène son monde intérieur dans des sculptures en recyclage ainsi qu'à travers la photographie.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-guillemard-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-guillemard-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://unjardinextra.free.fr/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "ailesdarcenciel.html",
+        "dentdelion.html",
+        "monhlm.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "guillemard"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "benedicte-waryn",
+    "nom": "Bénédicte Waryn",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "ville-rouge"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "villerouge.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "benoit-drouart",
+    "nom": "Benoît Drouart",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "deni-de-patrie"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "denidepatrie.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "brigitte-roussel",
+    "nom": "Brigitte Roussel",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "faire-quelque-chose"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "faireqqchose.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "catherine-senaffe",
+    "nom": "Catherine Senaffe",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "memoires-d-un-nouveau-ne"
+      ],
+      "prefacier": []
+    },
+    "biographie": "De tâches d'encre en tâches d'encre, armées de colle et de ciseaux, Catherine et Marion, la mère et la fille, aiment donner vie aux histoires comme Mémoires d'un nouveau-né .",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-zenobie-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-zenobie-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://marionclaeys.canalblog.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "memoiresnouveaune.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "zenobie"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "cathy-ytak",
+    "nom": "Cathy Ytak",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "le-sourire-de-nemesis"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "souriredenemesis.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "christine-decle",
+    "nom": "Christine Dècle",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "dent-de-lion",
+        "la-marseillaise"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-decle2-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-decle2-chantdorties.jpg",
+      "migration/front-assets/personnes/illustrateurs-decle-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "dentdelion.html",
+        "lamarseillaise.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "debuys"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "christophe-martin",
+    "nom": "Christophe Martin",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "les-mains-bleues"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "mainsbleues.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "chrysalis",
+    "nom": "Chrysalis'",
+    "type": "pseudonyme",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "la-dame-a-sa-fenetre",
+        "pas-le-droit-a-l-erreur"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "damefenetre.html",
+        "pasledroitalerreur.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "chrystel-gaubert",
+    "nom": "Chrystel Gaubert",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "la-petite-dame-grise",
+        "le-jardin-de-la-megere"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "la-petite-dame-grise.html",
+        "le_jardin_de_la_megere.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "claire-auzias",
+    "nom": "Claire Auzias",
+    "type": "personne",
+    "roles": [
+      "prefacier"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [],
+      "prefacier": [
+        "marius-gardebois"
+      ]
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "mariusgardebois.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "colere-noire",
+    "nom": "Colère Noire",
+    "type": "collectif",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "la-dame-a-sa-fenetre"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "damefenetre.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "d-daeninckx",
+    "nom": "D. Daeninckx",
+    "type": "personne",
+    "roles": [
+      "prefacier"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [],
+      "prefacier": [
+        "sauf-dimanches-et-jours-de-fete"
+      ]
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "saufdimanches.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "daniel-zimmermann",
+    "nom": "Daniel Zimmermann",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "les-gouts-florissants"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "goutsflorissants.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "david-rebaud",
+    "nom": "David Rebaud",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "ainsi-danse-jean-petit",
+        "c-est-quoi-ce-travail",
+        "les-affiches",
+        "sauvons-les-animaux-du-zoo"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Il pratique en amateur l'éclectisme graphique en mélangeant le sec, le mouillé, les pinceaux, ses doigts ou tout ce qui lui tombe sous la main.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-rebaud-chantdorties.jpeg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-rebaud-chantdorties.jpeg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Sauvons les animaux du zoo.html",
+        "cest-quoi-ce-travail.html",
+        "jeanpetit.html",
+        "les-affiches.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "rebaud"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "eric-lemaire",
+    "nom": "Éric Lemaire",
+    "type": "personne",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [
+        "debout-dans-l-aquarium"
+      ],
+      "illustrateur": [
+        "debout-dans-l-aquarium"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Membre du groupe Osfub , Eric est un talentueux bidouilleur de sons, de textes et d’images. Debout dans l’aquarium , son premier ouvrage, fait la part belle à une écriture musicale et poétique.",
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-eric-chantdorties.gif",
+    "images": [
+      "migration/front-assets/personnes/auteurs-eric-chantdorties.gif",
+      "migration/front-assets/personnes/auteurs-lemaire-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://eric.osfub.free.fr/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "deboutdanslaquarium.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "lemaire"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "fabian",
+    "nom": "Fabian",
+    "type": "pseudonyme",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-fabuliste"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "fabuliste.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "fabio-peissl",
+    "nom": "Fabio Peissl",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "pas-une"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Pas-une.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "florene-vaxlaire",
+    "nom": "Florène Vaxlaire",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "blizzard-d-etoiles",
+        "le-secret-de-la-famille-zorig"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "blizzard_d_etoiles.html",
+        "le-secret-de-la-famille-zorig.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "france-quatromme",
+    "nom": "France Quatromme",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "l-orchestre-de-la-favela"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "l_orchestre_de_la_favela.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "francois-saint-remy",
+    "nom": "François Saint-Remy",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "les-mains-bleues"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "mainsbleues.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "fred-morisse",
+    "nom": "Fred Morisse",
+    "type": "personne",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [
+        "la-malediction-du-beton",
+        "le-val-enchante",
+        "les-disparus-de-la-cite-fleurie",
+        "les-sources-d-or-de-la-cite-fleurie",
+        "sauvons-les-animaux-du-zoo"
+      ],
+      "illustrateur": [
+        "le-journal-de-barbara-eicher",
+        "le-val-enchante",
+        "les-disparus-de-la-cite-fleurie",
+        "les-sources-d-or-de-la-cite-fleurie"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Faute d’être devenu dessinateur, il barbouille des toiles et écrit. Inspirés de son vécu dans la grande banlieue de Paris, ses textes et images témoignent du quotidien entre barres et tours.",
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-morisse-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-morisse-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://www.fred-morisse.com/topic/index.html"
+    ],
+    "source": {
+      "pagesLivres": [
+        "Sauvons les animaux du zoo.html",
+        "le-journal-de-barbara-eicher.html",
+        "les-disparus-de-la-cite-fleurie.html",
+        "les-sources-d-or-de-la-cite-fleurie.html",
+        "maledictiondubeton.html",
+        "valenchante.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "morisse"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "gaelle-boulanger",
+    "nom": "Gaëlle Boulanger",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "tais-toi"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Née en 1985, illustratrice belge de formation, enseignante en arts plastiques, peintre contemporaine, elle parle d'émotions sensibles, donnant du corps délicat mais non moins vigoureux à ses images dans un univers poétique .",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-boulanger-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-boulanger-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://www.omalou.be/pages/012/Accueil.fr.php#"
+    ],
+    "source": {
+      "pagesLivres": [
+        "tais-toi.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "boulanger"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "gaetan-doremus",
+    "nom": "Gaëtan Dorémus",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "ruptures-d-enfance"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Né à lille, depuis 1999, date de son diplôme à l'ESAD de Strasbourg, il conçoit principalement des albums jeunesse au gré de ses humeurs, aux tonalités variées.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-doremus-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-doremus-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://gaetan.doremus.free.fr/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "rupturesdenfances.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "doremus"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "georges-printemps",
+    "nom": "Georges Printemps",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "les-dialogues-sauvages",
+        "pas-une"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Pas-une.html",
+        "les-dialogues-sauvages.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "grace-belder",
+    "nom": "Grâce Belder",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "extraction-3-2-1-partez",
+        "un-vent-de-colere"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "extraction_1_2_3_partez.html",
+        "un_vent_de_colere.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "helene-deregnaucourt",
+    "nom": "Hélène Deregnaucourt",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "leur-fausser-compagnie"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "leur-fausser-compagnie.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "hellena-cavendi",
+    "nom": "Hellena Cavendi",
+    "type": "personne",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [
+        "l-ombre-de-la-lune",
+        "un-air-de-liberte"
+      ],
+      "illustrateur": [
+        "l-ombre-de-la-lune"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-cavendi-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-cavendi-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "l-ombre-de-la-lune.html",
+        "unairdeliberte.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "herve-mestron",
+    "nom": "Hervé Mestron",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "la-marseillaise"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-mestron-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-mestron-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "lamarseillaise.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "jacques-tardi",
+    "nom": "Jacques Tardi",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "l-impasse"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "impasse.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "jane-herve",
+    "nom": "Jane Hervé",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "le-fils-du-caiman"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Le_fils_du_caiman.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "jean-pierre-bourdeleau",
+    "nom": "Jean-Pierre Bourdeleau",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "la-malediction-du-beton"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Observateur et explorateur tous terrains, des études d'architecture, une partie de vie en amérique du sud, du réalisme et de l'imaginaire, du noir et des réhauts de couleur.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-bourdeleau-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-bourdeleau-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://fr.linkedin.com/pub/jean-pierre-bourdeleau-jean-pierre/54/821/3"
+    ],
+    "source": {
+      "pagesLivres": [
+        "maledictiondubeton.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "bourdeleau"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "jean-pierre-levaray",
+    "nom": "Jean-Pierre Levaray",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "a-quelques-pas-de-l-usine",
+        "c-est-quoi-ce-travail",
+        "faire-quelque-chose"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-levaray-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-levaray-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "aquelquespasusine.html",
+        "cest-quoi-ce-travail.html",
+        "faireqqchose.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "josef-ulla",
+    "nom": "Josef Ulla",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "ainsi-danse-jean-petit"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "jeanpetit.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "julie-grugeaux",
+    "nom": "Julie Grugeaux",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "un-air-de-liberte"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Artiste peintre, illustratrice et peintre en décors, elle a toujours été passionnée par el dessin. Touche à tout, elle utilise des médiums très variés.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-grugeaux-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-grugeaux-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://www.julie-grugeaux.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "unairdeliberte.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "grugeaux"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "julie-maurice",
+    "nom": "Julie Maurice",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "les-dialogues-sauvages"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Dans ses images aux accents naïfs où les animaux et les arbres occupent souvent une grande place, elle privilégie le travail des couleurs et les jeux de transparence. Lorsqu'elle ne dessine pas, elle travaille en librairie ou bibliothèque.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-maurice-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-maurice-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "les-dialogues-sauvages.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "Maurice"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "julien-melique",
+    "nom": "Julien Mélique",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "qui-sont-les-pirates",
+        "travaille-ton-super-vouloir"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "qui_sont_les_pirates.html",
+        "travaille_ton_super-vouloir.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "laetitia-serano",
+    "nom": "Laetitia Serano",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "rompez"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "rompez.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "lena-ellka",
+    "nom": "Léna Ellka",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "aldo-revait"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-ellka-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-ellka-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "aldorevait.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "loic-mailly",
+    "nom": "Loïc Mailly",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-chien-anarchiste"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Mi-Picard, mi-Breton Loïc Mailly après plusieurs petits boulots et quelques aller-retour entre la France et le Mali, a déposé ses valises à Amiens où il navigue gaiement entre son métier d’animateur interculturel et celui d’illustrateur.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-mailly-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-mailly-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "chienanarchiste.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "mailly"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "manu-rich",
+    "nom": "Manu Rich",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-sourire-de-nemesis",
+        "les-freres-de-la-cote"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "freresdelacote.html",
+        "souriredenemesis.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "marie-florence-ehret",
+    "nom": "Marie-Florence Ehret",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "avec-ou-sans-papiers"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-ehret-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-ehret-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "avecousanspapiers.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "marion-claeys",
+    "nom": "Marion Claeys",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "aldo-revait",
+        "avec-ou-sans-papiers",
+        "memoires-d-un-nouveau-ne"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Après s'être essayée à la boulangerie, aux arts de la cuisine, aux massages thérapeuthiques et à la vente en tout genre , elle est finalement revenue à ses premières amours: les formes et les couleurs.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-claeys-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-claeys-chantdorties.jpg",
+      "migration/front-assets/personnes/illustrateurs-zenobie-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://marionclaeys.canalblog.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "aldorevait.html",
+        "avecousanspapiers.html",
+        "memoiresnouveaune.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "claeys"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "matt-mahlen",
+    "nom": "Matt Mahlen",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "a-quelques-pas-de-l-usine",
+        "la-valse-des-pantins",
+        "noir-horizon"
+      ],
+      "prefacier": []
+    },
+    "biographie": "bricoleur d'images et de mots, il est aussi l'auteur de La ligne des Horizons publié aux éditions Gros Textes, recueil de 122 dessins, extraits d'un travail de dessins pour une année. Il a illustré trois livres de Chant d'orties.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-matt-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-matt-chantdorties.jpg",
+      "migration/front-assets/personnes/illustrateurs-mattdos-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://mahlen.free.fr/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "aquelquespasusine.html",
+        "noirhorizon.html",
+        "valse-des-pantins.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "mahlen"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "maud-lenglet",
+    "nom": "Maud Lenglet",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "les-gouts-florissants",
+        "robin-des-bois-blancs"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "goutsflorissants.html",
+        "robindesboisblancs.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "michel-bonnefoi",
+    "nom": "Michel Bonnefoi",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "chez-poulardon"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "chez-poulardon.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "michel-gutel",
+    "nom": "Michel Gutel",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "ruptures-d-enfance"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-gutel-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-gutel-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "rupturesdenfances.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "michel-julliard",
+    "nom": "Michel Julliard",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-fils-du-caiman"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Le_fils_du_caiman.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "michel-lecorre",
+    "nom": "Michel Lecorre",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "poings-de-suture"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-lecorre-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-lecorre-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "poingsdesuture.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "michel-perrin",
+    "nom": "Michel Perrin",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "ailes-d-arc-en-ciel",
+        "la-valse-des-pantins",
+        "les-demons-du-museum"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-perrin-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-perrin-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "ailesdarcenciel.html",
+        "demonsdumuseum.html",
+        "valse-des-pantins.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "nald-kib",
+    "nom": "Nald Kib",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "ma-traversee"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "ma-traversee.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "neil-jobard",
+    "nom": "Neil Jobard",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "qui-sont-les-pirates",
+        "travaille-ton-super-vouloir"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "qui_sont_les_pirates.html",
+        "travaille_ton_super-vouloir.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "nicolas-le-fessant",
+    "nom": "Nicolas Le Fessant",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "chez-poulardon"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "chez-poulardon.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "pavlos-habidis",
+    "nom": "Pavlos Habidis",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "gaia-conte-de-la-montagne-bleue",
+        "gaia-sur-le-chemin-de-la-montagne-bleue"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "gaia_conte_de_le_montagne_bleue.html",
+        "gaia_sur_le_chemin_de_la_montagne_bleue.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "pierre-debuys",
+    "nom": "Pierre Debuys",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "l-effet-saucisson",
+        "l-impasse"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-debuys-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-debuys-chantdorties.jpg",
+      "migration/front-assets/personnes/auteurs-photo-pierre-debuys.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "effet-saucisson.html",
+        "impasse.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "regis-pasquet",
+    "nom": "Régis Pasquet",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "le-journal-de-barbara-eicher",
+        "le-secret-de-la-famille-zorig"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "le-journal-de-barbara-eicher.html",
+        "le-secret-de-la-famille-zorig.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "ricardo-montserra",
+    "nom": "Ricardo Montserra",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "ville-rouge"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "villerouge.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "variante_possible_de_ricardo-montserrat"
+    ]
+  },
+  {
+    "slug": "ricardo-montserrat",
+    "nom": "Ricardo Montserrat",
+    "type": "personne",
+    "roles": [
+      "prefacier"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [],
+      "prefacier": [
+        "les-mains-bleues"
+      ]
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "mainsbleues.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": true,
+    "anomalies": [
+      "variante_possible_de_ricardo-montserra"
+    ]
+  },
+  {
+    "slug": "roxane-tilman",
+    "nom": "Roxane Tilman",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "mon-monde-et-moi"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "Mon_monde_et_moi.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "sebastien-boscus",
+    "nom": "Sébastien Boscus",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "l-orchestre-de-la-favela",
+        "la-petite-dame-grise",
+        "le-jardin-de-la-megere"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "l_orchestre_de_la_favela.html",
+        "la-petite-dame-grise.html",
+        "le_jardin_de_la_megere.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "sebastien-doubinsky",
+    "nom": "Sébastien Doubinsky",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "les-freres-de-la-cote"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "freresdelacote.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "serge-livrozet",
+    "nom": "Serge Livrozet",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "le-quartier"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "quartier.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "simon-andre",
+    "nom": "Simon André",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-quartier"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "quartier.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "soazic-deleplanque",
+    "nom": "Soazic Deleplanque",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "extraction-3-2-1-partez",
+        "un-vent-de-colere"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "extraction_1_2_3_partez.html",
+        "un_vent_de_colere.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "somotho",
+    "nom": "Somotho",
+    "type": "pseudonyme",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "mon-monde-et-moi"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Elle aime les parfums du mimosa et du lilas, les 4 saisons, le goût de la fleur d'oranger, la pluie des tropiques, faire la cuisine, composer des berceuses pour son enfant, méditer et rêver les yeux ouverts. Ses crayons et ses pinceaux sont toujours à portée de mains... Ses illustrations aiment raconter d'autres histoires que celles que l'on lit... Comme une seconde lecture entre les lignes...la liberté que s'octroient les images.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-somotho-1.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-somotho-1.jpg"
+    ],
+    "liensExternes": [
+      "https://www.somotho.ultra-book.com",
+      "https://www.somotho.ultra-book.com/"
+    ],
+    "source": {
+      "pagesLivres": [
+        "Mon_monde_et_moi.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "Somotho"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "stephen-davies",
+    "nom": "Stephen Davies",
+    "type": "personne",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "sauf-dimanches-et-jours-de-fete"
+      ],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "saufdimanches.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "sylvie-huguet",
+    "nom": "Sylvie Huguet",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "blizzard-d-etoiles"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "blizzard_d_etoiles.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "thierry-maricourt",
+    "nom": "Thierry Maricourt",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "deni-de-patrie",
+        "le-chien-anarchiste",
+        "le-fabuliste",
+        "leur-fausser-compagnie",
+        "memoires-d-un-nouveau-ne",
+        "tout-au-bout-de-mon-jardin"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-maricourt-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-maricourt-chantdorties.jpg",
+      "migration/front-assets/personnes/auteurs-maricourt2-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "chienanarchiste.html",
+        "denidepatrie.html",
+        "fabuliste.html",
+        "leur-fausser-compagnie.html",
+        "memoiresnouveaune.html",
+        "toutaubout.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "thierry-perisse",
+    "nom": "Thierry Périssé",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "le-coeur-a-l-ouvrage",
+        "noir-horizon"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": "migration/front-assets/personnes/auteurs-perisse-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/auteurs-perisse-chantdorties.jpg"
+    ],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "coeuralouvrage.html",
+        "noirhorizon.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "victoire-perdrot",
+    "nom": "Victoire Perdrot",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "sauf-dimanches-et-jours-de-fete"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "saufdimanches.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "vincent-valdelievre",
+    "nom": "Vincent Valdelièvre",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "robin-des-bois-blancs"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "robindesboisblancs.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "zodanzo",
+    "nom": "Zodanzo",
+    "type": "pseudonyme",
+    "roles": [
+      "illustrateur"
+    ],
+    "livres": {
+      "auteur": [],
+      "illustrateur": [
+        "le-coeur-a-l-ouvrage",
+        "mon-hlm"
+      ],
+      "prefacier": []
+    },
+    "biographie": "Illustrateur satirique et de critique sociale, ZODANZO possède un chat artiste qui renverse les flacons d’encre-de-chine sur ses images. ZODANZO doit alors tout refaire, et depuis il travaille au tippex sur papier noir.",
+    "imagePrincipale": "migration/front-assets/personnes/illustrateurs-zodanzo-chantdorties.jpg",
+    "images": [
+      "migration/front-assets/personnes/illustrateurs-zodanzo-chantdorties.jpg"
+    ],
+    "liensExternes": [
+      "http://zodanzo.ultra-book.com/portfolio"
+    ],
+    "source": {
+      "pagesLivres": [
+        "coeuralouvrage.html",
+        "monhlm.html"
+      ],
+      "pageIllustrateurs": "illustrateurs.html",
+      "ancreIllustrateurs": "zodanzo"
+    },
+    "aVerifier": false,
+    "anomalies": []
+  },
+  {
+    "slug": "zoumana-kone",
+    "nom": "Zoumana Koné",
+    "type": "personne",
+    "roles": [
+      "auteur"
+    ],
+    "livres": {
+      "auteur": [
+        "ma-traversee"
+      ],
+      "illustrateur": [],
+      "prefacier": []
+    },
+    "biographie": null,
+    "imagePrincipale": null,
+    "images": [],
+    "liensExternes": [],
+    "source": {
+      "pagesLivres": [
+        "ma-traversee.html"
+      ],
+      "pageIllustrateurs": null,
+      "ancreIllustrateurs": null
+    },
+    "aVerifier": false,
+    "anomalies": []
+  }
+]

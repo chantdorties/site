@@ -1,0 +1,816 @@
+[
+  {
+    "slug": "albert-londres",
+    "nom": "Albert Londres",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "AL",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "alexandre-widendaele",
+    "nom": "Alexandre Widendaele",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/alexandre-widendaele-480.webp",
+    "monogram": "AW",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "alexia-olagnon",
+    "nom": "Alexia Olagnon",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "AO",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "amanda-belassami-sideris",
+    "nom": "Amanda Belassami-Sideris",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "AB",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "amelie-billon-le-gennec",
+    "nom": "Amélie Billon-Le Gennec",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/amelie-billon-le-gennec-480.webp",
+    "monogram": "AB",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "anais-ruch",
+    "nom": "Anaïs Ruch",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/anais-ruch-480.webp",
+    "monogram": "AR",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "angel-reinhart",
+    "nom": "Angel Reinhart",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "AR",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "anne-sophie-plat",
+    "nom": "Anne-Sophie Plat",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "AS",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "beatrice-guillemard",
+    "nom": "Béatrice Guillemard",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/beatrice-guillemard-480.webp",
+    "monogram": "BG",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "benedicte-waryn",
+    "nom": "Bénédicte Waryn",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "BW",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "benoit-drouart",
+    "nom": "Benoît Drouart",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "BD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "brigitte-roussel",
+    "nom": "Brigitte Roussel",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "BR",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "catherine-senaffe",
+    "nom": "Catherine Senaffe",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/catherine-senaffe-480.webp",
+    "monogram": "CS",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "cathy-ytak",
+    "nom": "Cathy Ytak",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "CY",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "christine-decle",
+    "nom": "Christine Dècle",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/christine-decle-480.webp",
+    "monogram": "CD",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "christophe-martin",
+    "nom": "Christophe Martin",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "CM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "chrysalis",
+    "nom": "Chrysalis'",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "C",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "chrystel-gaubert",
+    "nom": "Chrystel Gaubert",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "CG",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "claire-auzias",
+    "nom": "Claire Auzias",
+    "roles": [
+      "prefacier"
+    ],
+    "imagePrincipale": null,
+    "monogram": "CA",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "colere-noire",
+    "nom": "Colère Noire",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "CN",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "d-daeninckx",
+    "nom": "D. Daeninckx",
+    "roles": [
+      "prefacier"
+    ],
+    "imagePrincipale": null,
+    "monogram": "DD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "daniel-zimmermann",
+    "nom": "Daniel Zimmermann",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "DZ",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "david-rebaud",
+    "nom": "David Rebaud",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/david-rebaud-480.webp",
+    "monogram": "DR",
+    "nombreLivres": 4
+  },
+  {
+    "slug": "eric-lemaire",
+    "nom": "Éric Lemaire",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/eric-lemaire-480.webp",
+    "monogram": "ÉL",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "fabian",
+    "nom": "Fabian",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "F",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "fabio-peissl",
+    "nom": "Fabio Peissl",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "FP",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "florene-vaxlaire",
+    "nom": "Florène Vaxlaire",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "FV",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "france-quatromme",
+    "nom": "France Quatromme",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "FQ",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "francois-saint-remy",
+    "nom": "François Saint-Remy",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "FS",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "fred-morisse",
+    "nom": "Fred Morisse",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/fred-morisse-480.webp",
+    "monogram": "FM",
+    "nombreLivres": 6
+  },
+  {
+    "slug": "gaelle-boulanger",
+    "nom": "Gaëlle Boulanger",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/gaelle-boulanger-480.webp",
+    "monogram": "GB",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "gaetan-doremus",
+    "nom": "Gaëtan Dorémus",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/gaetan-doremus-480.webp",
+    "monogram": "GD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "georges-printemps",
+    "nom": "Georges Printemps",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "GP",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "grace-belder",
+    "nom": "Grâce Belder",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "GB",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "helene-deregnaucourt",
+    "nom": "Hélène Deregnaucourt",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "HD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "hellena-cavendi",
+    "nom": "Hellena Cavendi",
+    "roles": [
+      "auteur",
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/hellena-cavendi-480.webp",
+    "monogram": "HC",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "herve-mestron",
+    "nom": "Hervé Mestron",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/herve-mestron-480.webp",
+    "monogram": "HM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "jacques-tardi",
+    "nom": "Jacques Tardi",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "JT",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "jane-herve",
+    "nom": "Jane Hervé",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "JH",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "jean-pierre-bourdeleau",
+    "nom": "Jean-Pierre Bourdeleau",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/jean-pierre-bourdeleau-480.webp",
+    "monogram": "JP",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "jean-pierre-levaray",
+    "nom": "Jean-Pierre Levaray",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/jean-pierre-levaray-480.webp",
+    "monogram": "JP",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "josef-ulla",
+    "nom": "Josef Ulla",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "JU",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "julie-grugeaux",
+    "nom": "Julie Grugeaux",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/julie-grugeaux-480.webp",
+    "monogram": "JG",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "julie-maurice",
+    "nom": "Julie Maurice",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/julie-maurice-480.webp",
+    "monogram": "JM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "julien-melique",
+    "nom": "Julien Mélique",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "JM",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "laetitia-serano",
+    "nom": "Laetitia Serano",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "LS",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "lena-ellka",
+    "nom": "Léna Ellka",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/lena-ellka-480.webp",
+    "monogram": "LE",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "loic-mailly",
+    "nom": "Loïc Mailly",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/loic-mailly-480.webp",
+    "monogram": "LM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "manu-rich",
+    "nom": "Manu Rich",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "MR",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "marie-florence-ehret",
+    "nom": "Marie-Florence Ehret",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/marie-florence-ehret-480.webp",
+    "monogram": "MF",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "marion-claeys",
+    "nom": "Marion Claeys",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/marion-claeys-480.webp",
+    "monogram": "MC",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "matt-mahlen",
+    "nom": "Matt Mahlen",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/matt-mahlen-480.webp",
+    "monogram": "MM",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "maud-lenglet",
+    "nom": "Maud Lenglet",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "ML",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "michel-bonnefoi",
+    "nom": "Michel Bonnefoi",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "MB",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "michel-gutel",
+    "nom": "Michel Gutel",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/michel-gutel-480.webp",
+    "monogram": "MG",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "michel-julliard",
+    "nom": "Michel Julliard",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "MJ",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "michel-lecorre",
+    "nom": "Michel Lecorre",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/michel-lecorre-480.webp",
+    "monogram": "ML",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "michel-perrin",
+    "nom": "Michel Perrin",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/michel-perrin-480.webp",
+    "monogram": "MP",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "nald-kib",
+    "nom": "Nald Kib",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "NK",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "neil-jobard",
+    "nom": "Neil Jobard",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "NJ",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "nicolas-le-fessant",
+    "nom": "Nicolas Le Fessant",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "NL",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "pavlos-habidis",
+    "nom": "Pavlos Habidis",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "PH",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "pierre-debuys",
+    "nom": "Pierre Debuys",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/pierre-debuys-480.webp",
+    "monogram": "PD",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "regis-pasquet",
+    "nom": "Régis Pasquet",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "RP",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "ricardo-montserra",
+    "nom": "Ricardo Montserra",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "RM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "ricardo-montserrat",
+    "nom": "Ricardo Montserrat",
+    "roles": [
+      "prefacier"
+    ],
+    "imagePrincipale": null,
+    "monogram": "RM",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "roxane-tilman",
+    "nom": "Roxane Tilman",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "RT",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "sebastien-boscus",
+    "nom": "Sébastien Boscus",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SB",
+    "nombreLivres": 3
+  },
+  {
+    "slug": "sebastien-doubinsky",
+    "nom": "Sébastien Doubinsky",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "serge-livrozet",
+    "nom": "Serge Livrozet",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SL",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "simon-andre",
+    "nom": "Simon André",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SA",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "soazic-deleplanque",
+    "nom": "Soazic Deleplanque",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SD",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "somotho",
+    "nom": "Somotho",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/somotho-480.webp",
+    "monogram": "S",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "stephen-davies",
+    "nom": "Stephen Davies",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SD",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "sylvie-huguet",
+    "nom": "Sylvie Huguet",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "SH",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "thierry-maricourt",
+    "nom": "Thierry Maricourt",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/thierry-maricourt-480.webp",
+    "monogram": "TM",
+    "nombreLivres": 6
+  },
+  {
+    "slug": "thierry-perisse",
+    "nom": "Thierry Périssé",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": "/assets/media/people/thierry-perisse-480.webp",
+    "monogram": "TP",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "victoire-perdrot",
+    "nom": "Victoire Perdrot",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "VP",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "vincent-valdelievre",
+    "nom": "Vincent Valdelièvre",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "VV",
+    "nombreLivres": 1
+  },
+  {
+    "slug": "zodanzo",
+    "nom": "Zodanzo",
+    "roles": [
+      "illustrateur"
+    ],
+    "imagePrincipale": "/assets/media/people/zodanzo-480.webp",
+    "monogram": "Z",
+    "nombreLivres": 2
+  },
+  {
+    "slug": "zoumana-kone",
+    "nom": "Zoumana Koné",
+    "roles": [
+      "auteur"
+    ],
+    "imagePrincipale": null,
+    "monogram": "ZK",
+    "nombreLivres": 1
+  }
+]
