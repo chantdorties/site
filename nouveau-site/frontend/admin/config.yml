@@ -27,6 +27,10 @@ collections:
     label: Réglages du site
     format: json
     delete: false
+    # Les réglages ne correspondent à aucune page : sans cette ligne, Decap
+    # applique l’aperçu dont le nom coïncide avec celui du fichier.
+    editor:
+      preview: false
     files:
       - name: site
         label: Identité et contact
@@ -405,7 +409,7 @@ collections:
     format: json
     delete: false
     files:
-      - name: accueil
+      - name: page_accueil
         label: Accueil
         file: nouveau-site/content/pages-fixes/accueil.json
         fields:
@@ -429,7 +433,7 @@ collections:
           - {label: "Documents", name: documents, widget: hidden, default: []}
           - *old_slugs
           - *seo
-      - name: actualites
+      - name: page_actualites
         label: Page Actualités
         file: nouveau-site/content/pages-fixes/actualites.json
         fields:
@@ -451,7 +455,7 @@ collections:
           - {label: "Documents", name: documents, widget: hidden, default: []}
           - *old_slugs
           - *seo
-      - name: mentions_legales
+      - name: page_mentions_legales
         label: Mentions légales
         file: nouveau-site/content/pages-fixes/mentions-legales.json
         fields:

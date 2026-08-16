@@ -75,10 +75,20 @@
     }
   });
 
+  // widgetsFor lève une exception quand le champ n’existe pas sur l’entrée,
+  // ce qui vide tout le volet d’aperçu au lieu du seul bloc concerné.
+  const safeWidgetsFor = (widgetsFor, name) => {
+    try {
+      return widgetsFor(name);
+    } catch (error) {
+      return null;
+    }
+  };
+
   const PagePreview = createClass({
     render() {
       const { entry, widgetsFor } = this.props;
-      const sections = widgetsFor('sections');
+      const sections = safeWidgetsFor(widgetsFor, 'sections');
       return h('article', { className: 'content-preview' },
         status(entry),
         h('h1', {}, value(entry, 'titre', 'Page sans titre')),

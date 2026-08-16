@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import re
 import shutil
 import subprocess
 import unittest
@@ -217,7 +218,7 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertFalse(collections["pages"]["delete"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
         self.assertEqual(
-            {"accueil", "actualites", "mentions_legales"},
+            {"page_accueil", "page_actualites", "page_mentions_legales"},
             {item["name"] for item in collections["pages_fixes"]["files"]},
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
@@ -244,6 +245,30 @@ class BuiltSiteTest(unittest.TestCase):
                 for field in entry["fields"]:
                     self.assertIn("name", field, f"{collection['name']}/{entry.get('name')}")
                     self.assertIn("widget", field, f"{collection['name']}/{field.get('name')}")
+
+    def test_no_preview_template_can_be_applied_to_the_wrong_entry(self):
+        """Decap retrouve un aperçu par nom de rubrique ET par nom de fichier.
+
+        Un fichier de réglages nommé comme une rubrique de contenu reçoit donc
+        son aperçu, qui plante sur des champs qu’il n’a pas.
+        """
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        registered = set(
+            re.findall(
+                r"registerPreviewTemplate\(\s*['\"]([^'\"]+)['\"]",
+                (DIST / "admin" / "preview.js").read_text(encoding="utf-8"),
+            )
+        )
+        self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
+        for collection in config["collections"]:
+            if (collection.get("editor") or {}).get("preview") is False:
+                continue
+            for entry in collection.get("files") or []:
+                self.assertNotIn(
+                    entry["name"],
+                    registered - {collection["name"]},
+                    f"{collection['name']}/{entry['name']} recevrait un aperçu étranger",
+                )
 
     def test_admin_exposes_every_editable_json_field(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
