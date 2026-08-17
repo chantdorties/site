@@ -301,7 +301,16 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     button_id = payment.get("donationHostedButtonId")
     if not isinstance(button_id, str) or not PAYPAL_BUTTON_PATTERN.fullmatch(button_id):
         raise ContentError("Réglage paiement: identifiant du bouton de don PayPal invalide")
-    require_text(payment, "libelleDon", "Réglage paiement")
+    for field in (
+        "libelleDon",
+        "libelleOffres",
+        "libellePanier",
+        "libelleDisponible",
+        "libelleIndisponible",
+        "libelleContact",
+        "libelleExtrait",
+    ):
+        require_text(payment, field, "Réglage paiement")
 
 
 def normalized_isbn(value: str | None) -> str:

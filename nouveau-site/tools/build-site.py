@@ -864,7 +864,7 @@ class SiteBuilder:
           <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
           <button class="button" type="submit">{icon('heart')} {e(self.payment_settings['libelleDon'])}</button>
         </form>
-        <a class="button button--secondary" href="/offres-speciales/">Voir les offres</a>
+        <a class="button button--secondary" href="/offres-speciales/">{e(self.payment_settings['libelleOffres'])}</a>
       </div>
     </div>
   </div>
@@ -1096,17 +1096,21 @@ class SiteBuilder:
             price = format_price(book["prixCentimes"])
             price_html = f'<span class="price">{e(price)}</span>' if price else ""
             availability_class = "" if book["disponible"] else " availability--unavailable"
-            availability_label = "Disponible" if book["disponible"] else "Actuellement indisponible"
+            availability_label = (
+                self.payment_settings["libelleDisponible"]
+                if book["disponible"]
+                else self.payment_settings["libelleIndisponible"]
+            )
             subject = quote(f"Question — {book['titre']}")
             if book["disponible"]:
                 purchase_action = f"""
 <form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
   <input type="hidden" name="cmd" value="_s-xclick">
   <input type="hidden" name="hosted_button_id" value="{e(book['paypalHostedButtonId'])}">
-  <button class="button" type="submit">{icon('shopping-cart')} Ajouter au panier avec PayPal</button>
+  <button class="button" type="submit">{icon('shopping-cart')} {e(self.payment_settings['libellePanier'])}</button>
 </form>"""
             else:
-                purchase_action = f'<a class="button" href="mailto:{e(self.site_settings["courriel"])}?subject={subject}">{icon("mail")} Nous contacter</a>'
+                purchase_action = f'<a class="button" href="mailto:{e(self.site_settings["courriel"])}?subject={subject}">{icon("mail")} {e(self.payment_settings["libelleContact"])}</a>'
             purchase = f"""
 <div class="purchase-line">
   {price_html}<span class="availability{availability_class}">{availability_label}</span>
@@ -1117,7 +1121,7 @@ class SiteBuilder:
             valid_excerpts = [path for path in book["extraits"] if path in self.document_media]
             if valid_excerpts:
                 excerpt_links = "".join(
-                    f'<li><a class="button button--secondary button--small" href="{self.document_media[path]}" target="_blank">{icon("file")} Lire l’extrait {index if len(valid_excerpts) > 1 else ""}</a></li>'
+                    f'<li><a class="button button--secondary button--small" href="{self.document_media[path]}" target="_blank">{icon("file")} {e(self.payment_settings["libelleExtrait"])} {index if len(valid_excerpts) > 1 else ""}</a></li>'
                     for index, path in enumerate(valid_excerpts, start=1)
                 )
                 excerpts = f'<div><h2>Extraits</h2><ul class="link-list">{excerpt_links}</ul></div>'
@@ -1445,6 +1449,20 @@ class SiteBuilder:
   </div>
 </article>""".strip()
             )
+        # Les catégories annoncées sont celles qui figurent vraiment sur la page : écrites
+        # à la main, elles promettaient des rencontres même quand il n’y en avait aucune.
+        published_types = [
+            NEWS_TYPE_LABELS[key]
+            for key in NEWS_TYPE_LABELS
+            if any(item["type"] == key for item in self.news)
+        ]
+        topics = ""
+        if published_types:
+            topics = (
+                '<div class="news-topics" aria-label="Catégories publiées">'
+                + "".join(f"<span>{e(label)}</span>" for label in published_types)
+                + "</div>"
+            )
         news_listing = ""
         if news_items:
             news_listing = (
@@ -1463,7 +1481,7 @@ class SiteBuilder:
     <p class="eyebrow">{e(labels['appelRubrique'])}</p>
     <h2>{e(labels['appelTitre'])}</h2>
     <p class="lead">{e(labels['appelTexte'])}</p>
-    <div class="news-topics" aria-label="Actualités publiées"><span>Salons et rencontres</span><span>Sorties de livres</span><span>Nouvelles de la maison</span></div>
+    {topics}
     <a class="button" href="{e(self.site_settings['facebook'])}" target="_blank" rel="noopener noreferrer">{e(labels['boutonFacebook'])} {icon('external')}</a>
   </div>
 </div></section>"""

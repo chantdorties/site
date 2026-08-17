@@ -176,6 +176,35 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertNotIn("En images", soup.get_text(" ", strip=True))
         self.assertEqual(self.report["actualites"], len(soup.select(".news-card")))
 
+    def test_announced_news_topics_are_really_published(self):
+        """Les pastilles annonçaient des rencontres même quand il n’y en avait aucune."""
+        published = {
+            json.loads(path.read_text(encoding="utf-8"))["type"]
+            for path in (ROOT / "content" / "actualites").glob("*.json")
+            if json.loads(path.read_text(encoding="utf-8"))["statut"] == "publie"
+        }
+        labels = {"salon": "Salon", "parution": "Parution", "rencontre": "Rencontre", "maison": "Vie de la maison"}
+        soup = BeautifulSoup((DIST / "actualites" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        topics = {span.get_text(strip=True) for span in soup.select(".news-topics span")}
+        self.assertEqual({labels[key] for key in published}, topics)
+
+    def test_commercial_labels_come_from_the_settings(self):
+        """Ces mots suivent les offres et le mode de vente : ils doivent rester éditables."""
+        payment = settings("paiement")
+        available = next(book for book in self.books if book["disponible"])
+        unavailable = next(book for book in self.books if not book["disponible"])
+        for slug, expected in (
+            (available["slug"], (payment["libellePanier"], payment["libelleDisponible"])),
+            (unavailable["slug"], (payment["libelleContact"], payment["libelleIndisponible"])),
+        ):
+            text = BeautifulSoup(
+                (DIST / "livres" / slug / "index.html").read_text(encoding="utf-8"), "html.parser"
+            ).get_text(" ", strip=True)
+            for label in expected:
+                self.assertIn(label, text, slug)
+        home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
+        self.assertIn(payment["libelleOffres"], home.get_text(" ", strip=True))
+
     def test_every_collection_shows_its_emblem(self):
         """Les emblèmes viennent de l’ancien site : leur perte passerait inaperçue."""
         for collection in self.collections:

@@ -155,6 +155,17 @@ collections:
             hint: Réglage avancé à 13 caractères fourni par PayPal.
             pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
           - {label: "Libellé du bouton de don", name: libelleDon, widget: string}
+          # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
+          # mode de vente, pas avec le catalogue.
+          - {label: "Bouton « voir les offres » (accueil)", name: libelleOffres, widget: string}
+          - {label: "Bouton d’achat d’un livre", name: libellePanier, widget: string}
+          - {label: "Mention « disponible »", name: libelleDisponible, widget: string}
+          - {label: "Mention « indisponible »", name: libelleIndisponible, widget: string}
+          - label: Bouton de contact d’un livre indisponible
+            name: libelleContact
+            widget: string
+            hint: Il ouvre un courriel prérempli avec le titre du livre.
+          - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
 
   - name: livres
     label: Livres
@@ -490,6 +501,10 @@ collections:
 
   - name: pages_fixes
     label: Pages principales
+    description: >-
+      Le titre et le texte de la page Actualités ne se règlent pas ici mais dans
+      « Réglages du site > Introductions des pages > Actualités ». Cette page est
+      engendrée : ses articles viennent de la rubrique Actualités.
     format: json
     delete: false
     files:
@@ -523,7 +538,7 @@ collections:
       # adresses se règlent ici ; les autres champs sont masqués pour ne pas laisser
       # croire qu’écrire dedans changerait la page.
       - name: page_actualites
-        label: Page Actualités (référencement)
+        label: Actualités — référencement seulement
         file: nouveau-site/content/pages-fixes/actualites.json
         fields:
           - {label: "Titre", name: titre, widget: hidden, default: Actualités}

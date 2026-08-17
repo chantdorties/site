@@ -1,4 +1,10 @@
 {
   "donationHostedButtonId": "G4GQ22SF6LMW6",
-  "libelleDon": "Faire un don"
+  "libelleDon": "Faire un don",
+  "libelleOffres": "Voir les offres",
+  "libellePanier": "Ajouter au panier avec PayPal",
+  "libelleDisponible": "Disponible",
+  "libelleIndisponible": "Actuellement indisponible",
+  "libelleContact": "Nous contacter",
+  "libelleExtrait": "Lire l’extrait"
 }

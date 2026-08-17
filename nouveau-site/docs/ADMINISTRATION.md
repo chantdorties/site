@@ -28,7 +28,17 @@ L’administration permet de modifier :
 - l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
 - les textes alternatifs, les titres SEO, les descriptions SEO et les images sociales ;
-- les anciennes adresses à rediriger et le bouton PayPal général de don.
+- les anciennes adresses à rediriger, le bouton PayPal général de don et les mots du
+  parcours d’achat — « Ajouter au panier », « Actuellement indisponible », « Nous
+  contacter », « Voir les offres », « Lire l’extrait », réunis dans « Réglages du
+  site > Paiement et dons ».
+
+Les pages engendrées se règlent ailleurs que là où elles s’affichent. Le titre,
+l’introduction et l’encart Facebook de la page **Actualités** viennent de « Réglages
+du site > Introductions des pages > Actualités » — l’entrée « Actualités » des Pages
+principales ne porte que son référencement. Il en va de même du catalogue, des
+auteurs, des collections et de la maison. Les catégories annoncées en bas de la page
+Actualités ne s’écrivent pas : ce sont celles des articles réellement publiés.
 
 De nouvelles pages de la maison peuvent être créées. La suppression reste
 désactivée partout sauf dans la rubrique **Projets** : un projet n’a pas d’adresse
