@@ -11,7 +11,7 @@ si l’un d’eux disparaît, et comment s’en remettre.
 | Dépôt `chantdorties/site` | compte GitHub **chantdorties** | contenus, code, secrets, automatisations |
 | Hébergement du site | pages perso **Free** du client | le site public |
 | Administration (Decap) | site Netlify **chantdorties-admin**, compte personnel du prestataire | interface de saisie |
-| Relais d’authentification | OAuth App GitHub + service `api.netlify.com/auth` | connexion à l’administration |
+| Relais d’authentification | OAuth App GitHub du compte **chantdorties**, relayée par `api.netlify.com/auth` | connexion à l’administration |
 | Aperçu client | hébergement OVH du prestataire | temporaire, disparaît à la mise en ligne |
 
 Le compte GitHub `chantdorties` est destiné au client : il est propriétaire du dépôt, et
@@ -43,8 +43,11 @@ La réparation ne dépend de personne, et prend une dizaine de minutes :
 1. Créer un compte Netlify, `Add new site > Import an existing project`, choisir le dépôt
    `chantdorties/site`. Les réglages viennent du `netlify.toml` : base `nouveau-site`,
    publication `frontend`, branche `main`.
-2. Créer une OAuth App sur `github.com/settings/developers` : URL de rappel
-   `https://api.netlify.com/auth/done`, sans expiration des jetons.
+2. Créer une OAuth App sur `github.com/settings/developers`, depuis le compte
+   `chantdorties` : URL de rappel `https://api.netlify.com/auth/done`, sans expiration
+   des jetons. Une application existante se transfère d’un compte à l’autre par
+   `Transfer ownership`, sans que le Client ID ni le Client Secret ne changent — rien
+   n’est alors à reporter dans Netlify.
 3. Dans Netlify, `Project configuration > Access & security > OAuth > Install provider`,
    y coller le Client ID et le Client Secret.
 4. **Reporter le nouveau domaine Netlify dans `frontend/admin/config.yml`**, clé
@@ -60,14 +63,9 @@ chaîne n’en dépend pas.
 1. **Transmettre les identifiants du compte GitHub `chantdorties`** au client, par un
    canal sûr, puis y activer l’authentification à deux facteurs et une adresse de
    récupération à son nom.
-2. **Transférer l’OAuth App** du compte personnel du prestataire vers `chantdorties` :
-   `github.com/settings/developers` > l’application > `Transfer ownership`. Le
-   destinataire doit accepter depuis sa propre page OAuth apps. Vérifier ensuite qu’une
-   connexion à l’administration fonctionne toujours ; si le Client ID a changé, le
-   reporter dans Netlify.
-3. **Changer le mot de passe FTP Free**, puis mettre à jour le secret `FREE_FTP_PASSWORD`
+2. **Changer le mot de passe FTP Free**, puis mettre à jour le secret `FREE_FTP_PASSWORD`
    du dépôt.
-4. **Décider de la publication** : la variable `FREE_DEPLOY_ENABLED` reste absente tant
+3. **Décider de la publication** : la variable `FREE_DEPLOY_ENABLED` reste absente tant
    que le nouveau site ne doit pas écraser l’ancien. La créer à `true` déclenche la
    publication réelle au prochain contenu validé.
 
