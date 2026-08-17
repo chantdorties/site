@@ -53,10 +53,38 @@ La réparation ne dépend de personne, et prend une dizaine de minutes :
 4. **Reporter le nouveau domaine Netlify dans `frontend/admin/config.yml`**, clé
    `backend.site_domain`. Sans cela l’authentification échoue silencieusement.
 
+## Plan de repli du relais d’authentification
+
 Le service `api.netlify.com/auth` est un vestige que Netlify retire progressivement — la
-section OAuth a déjà disparu de certaines interfaces. S’il ferme, il faudra le remplacer
-par un relais d’authentification autonome (une petite fonction serveur). Le reste de la
-chaîne n’en dépend pas.
+page permettant d’en installer un a déjà disparu de certaines interfaces. Il fonctionne
+aujourd’hui ; le remplacer n’est pas urgent, mais le jour venu il faudra un relais à soi.
+
+Son rôle tient en trois gestes : rediriger vers `github.com/login/oauth/authorize`,
+recevoir le code d’autorisation, l’échanger contre un jeton et le renvoyer à Decap par
+`postMessage`. Une soixantaine de lignes. Il détient le Client Secret, d’où la nécessité
+d’un serveur.
+
+Les hébergements ont été mesurés, inutile de refaire l’essai :
+
+| Hébergement | PHP | Sorties réseau | Verdict |
+|---|---|---|---|
+| Free, pages perso du client | 5.6.34 | **bloquées** (refus immédiat) | impossible |
+| OVH mutualisé du prestataire | 8.2.31 | libres, GitHub joignable | viable |
+| Fonction Netlify, site d’admin | — | libres | viable, et sur le même domaine |
+
+Free est hors jeu : ses pages perso ne peuvent joindre aucun serveur extérieur, ce qui
+interdit l’échange du jeton, quelle que soit la version de PHP.
+
+Deux options restent donc, selon qui doit posséder la chaîne. Une **fonction Netlify**
+dans le site d’administration : rien de nouveau à maintenir, relais sur le même domaine
+que l’admin — la politique de sécurité peut alors se resserrer à `'self'` — et le client
+garde la capacité de tout reconstruire. Ou un **script PHP sur un hébergement du
+prestataire** : maîtrise complète, aucun éditeur ne peut le déprécier, mais le client en
+dépend durablement.
+
+Dans les deux cas, la bascule tient en trois changements : `backend.base_url` et
+`backend.auth_endpoint` dans `frontend/admin/config.yml`, l’URL de rappel de l’OAuth App
+repointée vers le nouveau relais, et le Client Secret déposé côté serveur.
 
 ## À faire pour achever la passation
 
