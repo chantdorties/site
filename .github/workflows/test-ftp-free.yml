@@ -1,0 +1,38 @@
+name: Test Free FTP reachability
+
+# Workflow temporaire : Free filtrant le FTP selon la provenance géographique, on
+# vérifie si un runner GitHub standard est refusé. Si la connexion passe, le runner
+# auto-hébergé décrit dans docs/DEPLOIEMENT.md devient inutile.
+# À supprimer une fois la réponse obtenue.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Where is this runner
+        run: curl -s --max-time 15 https://ipinfo.io/json || echo "ipinfo indisponible"
+      - name: Try to reach Free over FTP
+        run: |
+          python3 - <<'FIN'
+          import ftplib, socket, time
+          host = "ftpperso.free.fr"
+          print("IP resolue :", socket.gethostbyname(host))
+          debut = time.time()
+          try:
+              ftp = ftplib.FTP(host, timeout=25)
+              print(f"banniere ({time.time() - debut:.1f}s) :", ftp.getwelcome())
+              try:
+                  ftp.login("test-inexistant-xyz", "mauvais")
+                  print("login accepte, inattendu")
+              except ftplib.error_perm as erreur:
+                  print("reponse au login :", str(erreur).strip()[:200])
+              ftp.close()
+          except Exception as erreur:
+              print("connexion KO :", type(erreur).__name__, str(erreur)[:200])
+          FIN
