@@ -1525,7 +1525,22 @@ class SiteBuilder:
                 "/accueil-juillet2026.html": "/",
             }
         )
-        lines = ["Options -Indexes", "ErrorDocument 404 /404.html", ""]
+        # Hébergement Free : le .htaccess est bien lu, mais seules certaines
+        # directives sont acceptées. mod_rewrite est absent : ne jamais ajouter
+        # de RewriteRule ici. Les types MIME sont déclarés car le serveur ne
+        # connaît pas toujours le WebP, et un module JavaScript est refusé par
+        # le navigateur si son type est incorrect.
+        lines = [
+            "# Fichier produit par tools/build-site.py : ne pas modifier à la main.",
+            "Options -Indexes -ExecCGI -Includes",
+            "ErrorDocument 404 /404.html",
+            "",
+            "AddType image/webp .webp",
+            "AddType application/json .json",
+            "AddType application/pdf .pdf",
+            "AddType text/javascript .js",
+            "",
+        ]
         for source, target in sorted(redirects.items(), key=lambda item: item[0].lower()):
             lines.append(f'Redirect 301 "{source}" "{target}"')
         write_text(self.temp_output / ".htaccess", "\n".join(lines) + "\n")
