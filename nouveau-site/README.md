@@ -75,4 +75,5 @@ Cette commande valide les JSON et médias, génère `dist/`, puis contrôle les 
 liens, scripts, images, PDF, brouillons et redirections.
 
 Les modes d’emploi complets sont dans [Administration](docs/ADMINISTRATION.md) et
-[Déploiement](docs/DEPLOIEMENT.md).
+[Déploiement](docs/DEPLOIEMENT.md). Les comptes dont dépend la publication, et la marche
+à suivre si l’un d’eux est perdu, sont recensés dans [Passation](docs/PASSATION.md).
