@@ -10,4 +10,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "camera=(), geolocation=(), microphone=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com https://api.netlify.com https://*.netlify.app; frame-src 'self' blob:; worker-src 'self' blob:; font-src 'self' data:; base-uri 'self'; form-action 'self' https://github.com https://api.netlify.com"
+    # Decap interprète sa configuration à l’exécution : sans 'unsafe-eval', l’interface
+    # refuse de démarrer sur « Error loading the CMS configuration ».
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com https://api.netlify.com https://*.netlify.app; frame-src 'self' blob:; worker-src 'self' blob:; font-src 'self' data:; base-uri 'self'; form-action 'self' https://github.com https://api.netlify.com"
