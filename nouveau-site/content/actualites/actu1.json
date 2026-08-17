@@ -1,9 +1,11 @@
 {
-  "statut": "publie",
-  "titre": "vjgg",
   "slug": "actu1",
-  "datePublication": "2026-08-18",
-  "type": "maison",
   "resume": "!,l,",
-  "contenu": ";nkjguyfytd"
+  "imageAlt": "",
+  "titre": "vjgg",
+  "statut": "publie",
+  "contenu": ";nkjguyfytd",
+  "type": "maison",
+  "datePublication": "2026-08-18",
+  "lienExterne": "https://www.youtube.com/"
 }
