@@ -100,7 +100,10 @@
     }
   });
 
-  CMS.registerPreviewStyle('/admin/preview.css');
+  // La feuille est injectée dans le cadre d’aperçu, dont l’adresse de base n’est pas
+  // celle de cette page : l’URL est donc résolue ici, à partir de l’administration
+  // elle-même. Servie à la racine du sous-domaine chez OVH, sous /admin/ en local.
+  CMS.registerPreviewStyle(new URL('preview.css', document.baseURI).href);
   CMS.registerPreviewTemplate('livres', BookPreview);
   CMS.registerPreviewTemplate('personnes', PersonPreview);
   CMS.registerPreviewTemplate('collections', CollectionPreview);

@@ -27,14 +27,15 @@ def settings(name):
     return load_json(ROOT / "content" / "reglages" / f"{name}.json")
 
 
-def local_target(value):
+def local_target(value, directory):
+    """Le fichier visé par une adresse locale, relative au document qui la porte."""
     parsed = urlsplit(value)
     if parsed.scheme or parsed.netloc or value.startswith(("mailto:", "tel:", "#")):
         return None
     path = parsed.path
     if not path:
         return None
-    target = DIST / path.lstrip("/")
+    target = DIST / path.lstrip("/") if path.startswith("/") else directory / path
     if path.endswith("/"):
         target /= "index.html"
     return target
@@ -101,13 +102,13 @@ class BuiltSiteTest(unittest.TestCase):
                     value = element.get(attribute)
                     if not value:
                         continue
-                    target = local_target(value)
+                    target = local_target(value, path.parent)
                     if target is not None and not target.is_file():
                         missing.append((path.relative_to(DIST).as_posix(), value))
             for image in soup.find_all("img", srcset=True):
                 for candidate in image["srcset"].split(","):
                     value = candidate.strip().split()[0]
-                    target = local_target(value)
+                    target = local_target(value, path.parent)
                     if target is not None and not target.is_file():
                         missing.append((path.relative_to(DIST).as_posix(), value))
         self.assertEqual([], missing)
