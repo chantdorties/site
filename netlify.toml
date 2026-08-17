@@ -2,6 +2,11 @@
   base = "nouveau-site"
   publish = "frontend"
   command = "printf 'Administration statique : aucun build requis.\\n'"
+  # Ne reconstruire que si l’administration a changé. Sans cette ligne, chaque
+  # contenu enregistré par un rédacteur déclenche un déploiement, alors que le
+  # dossier publié est identique — le forfait Netlify s’épuise pour rien.
+  # Une sortie nulle annule la construction, d’où l’usage de « git diff --quiet ».
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- frontend ../netlify.toml"
 
 [[headers]]
   for = "/admin/*"
