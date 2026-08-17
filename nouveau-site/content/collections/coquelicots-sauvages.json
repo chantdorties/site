@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "Les coquelicots sauvages",
   "description": "Albums jeunesse pour les plus jeunes.",
+  "logo": "content/media/uploads/collections-coquelicots-sauvages.gif",
+  "logoAlt": "Un coquelicot rouge, emblème de la collection Les coquelicots sauvages",
   "ordre": 20,
   "anciensSlugs": [
     "coquelicotssauvages.html"

@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "Graines d’orties",
   "description": "Romans jeunesse et nouvelles pour les 7-15 ans.",
+  "logo": "content/media/uploads/collections-graines-d-orties.gif",
+  "logoAlt": "Une tige d’ortie verte, emblème de la collection Graines d’orties",
   "ordre": 40,
   "anciensSlugs": [
     "grainesdorties.html"

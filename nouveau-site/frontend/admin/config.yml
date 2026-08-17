@@ -371,6 +371,14 @@ collections:
       - *publication
       - *order
       - {label: "Présentation", name: description, widget: text}
+      - label: Emblème
+        name: logo
+        widget: image
+        allow_multiple: false
+        required: false
+        hint: Le petit dessin de la collection, sur fond transparent.
+        media_library: {config: {max_file_size: 20971520}}
+      - {label: "Texte alternatif de l’emblème", name: logoAlt, widget: string, required: false}
       - *old_slugs
       - *seo
 

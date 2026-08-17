@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "L’églantine",
   "description": "Mini romans jeunesse pour les 7-14 ans.",
+  "logo": "content/media/uploads/collections-eglantine.gif",
+  "logoAlt": "Une églantine rose, emblème de la collection L’églantine",
   "ordre": 30,
   "anciensSlugs": [
     "eglantine.html"

@@ -174,6 +174,7 @@ class SiteBuilder:
         self.cover_media: dict[str, dict[str, str]] = {}
         self.person_media: dict[str, dict[str, str]] = {}
         self.person_gallery_media: dict[str, str] = {}
+        self.collection_logo_media: dict[str, str] = {}
         self.illustration_media: dict[str, str] = {}
         self.page_image_media: dict[str, str] = {}
         self.news_image_media: dict[str, str] = {}
@@ -306,6 +307,20 @@ class SiteBuilder:
                 self.illustration_media[path] = (
                     f"/assets/media/illustrations/{book['slug']}/{destination.name}"
                 )
+
+        # Les emblèmes des collections viennent de l’ancien site : de petits dessins
+        # transparents, affichés au plus à 180 pixels. Une seule taille suffit.
+        for collection in self.collections:
+            logo_path = collection.get("logo")
+            if not logo_path:
+                continue
+            destination = (
+                self.temp_output / "assets" / "media" / "collections" / f"{collection['slug']}.webp"
+            )
+            self.save_webp(self.root / logo_path, destination, (360, 360))
+            self.collection_logo_media[collection["slug"]] = (
+                f"/assets/media/collections/{destination.name}"
+            )
 
         for person in self.people:
             image_path = person.get("imagePrincipale")
@@ -757,10 +772,18 @@ class SiteBuilder:
                 for slug in book_slugs
             )
             count = f"{item['nombreLivres']} {'livres' if item['nombreLivres'] > 1 else 'livre'}"
+            # L’emblème est décoratif ici : le nom de la collection le suit immédiatement.
+            logo = ""
+            if item["slug"] in self.collection_logo_media:
+                logo = (
+                    f'<img class="collection-showcase__emblem" src="{self.collection_logo_media[item["slug"]]}" '
+                    'alt="" loading="lazy" width="90" height="90">'
+                )
             tiles.append(
                 f"""
 <a class="collection-showcase__item" href="/collections/{e(item['slug'])}/">
   <span class="collection-showcase__copy">
+    {logo}
     <span class="collection-showcase__number">Collection {index:02d}</span>
     <h{heading_level}>{e(item['titre'])}</h{heading_level}>
     <span class="collection-showcase__description">{e(item['description'])}</span>
@@ -1176,10 +1199,19 @@ class SiteBuilder:
         for collection in self.collections:
             books = [self.books_by_slug[slug] for slug in collection["livres"]]
             cards = "".join(self.render_book_card(book) for book in books)
+            logo = ""
+            if collection["slug"] in self.collection_logo_media:
+                logo_source = self.collection_logo_media[collection["slug"]]
+                logo_alt = collection["logoAlt"] or f"Emblème de la collection {collection['titre']}"
+                logo = (
+                    f'<img class="collection-emblem" src="{logo_source}" '
+                    f'alt="{e(logo_alt)}" width="180" height="180">'
+                )
             content = f"""
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Collections', '/collections/'), (collection['titre'], None)])}
-  <p class="eyebrow">{collection['nombreLivres']} livres</p><h1>{e(collection['titre'])}</h1><p class="lead">{e(collection['description'])}</p>
+  {logo}
+  <p class="eyebrow">{collection['nombreLivres']} {'livres' if collection['nombreLivres'] > 1 else 'livre'}</p><h1>{e(collection['titre'])}</h1><p class="lead">{e(collection['description'])}</p>
 </div></header>
 <section class="section"><div class="container"><div class="book-grid">{cards}</div></div></section>"""
             seo_title, seo_description, seo_image = self.seo_values(

@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "Rues en friche",
   "description": "Romans à partir de 14 ans.",
+  "logo": "content/media/uploads/collections-rues-en-friche.gif",
+  "logoAlt": "Des herbes folles bleues poussant sur un trottoir, emblème de la collection Rues en friche",
   "ordre": 60,
   "anciensSlugs": [
     "ruesenfriche.html"

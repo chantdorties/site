@@ -25,6 +25,8 @@ L’administration permet de modifier :
 - les trois pages principales et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;
 - les livres mis en avant sur l’accueil et les suggestions « À découvrir aussi » ;
+- l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
+  s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
 - les textes alternatifs, les titres SEO, les descriptions SEO et les images sociales ;
 - les anciennes adresses à rediriger et le bouton PayPal général de don.
 
@@ -119,7 +121,8 @@ RELAIS-AUTH.md.
 La publication est refusée si un slug, une relation, un ordre, un ISBN, un prix,
 une date ou un média est invalide. Chaque collection publiée doit avoir exactement
 un livre disponible mis en avant sur l’accueil. Les médias doivent peser au plus
-20 Mo. Une actualité avec image doit posséder un texte alternatif. Les PDF sont
+20 Mo. Une actualité avec image, comme une collection avec emblème, doit posséder
+un texte alternatif. Les PDF sont
 contrôlés avant publication.
 
 Les identifiants FTP ne sont jamais accessibles depuis l’administration ou le site.

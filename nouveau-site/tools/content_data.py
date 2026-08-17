@@ -52,7 +52,7 @@ OPTIONAL_FIELDS: dict[str, dict[str, Any]] = {
         "images": [],
         "liensExternes": [],
     },
-    "collections": {"anciensSlugs": []},
+    "collections": {"anciensSlugs": [], "logo": None, "logoAlt": None},
     "pages": {
         "anciensSlugs": [],
         "documents": [],
@@ -389,6 +389,9 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         require_text(collection, "titre", "Collection")
         require_text(collection, "description", "Collection")
         validate_order(collection, "Collection")
+        validate_media(root, collection.get("logo"), f"Collection {collection['slug']}")
+        if collection.get("logo") and not str(collection.get("logoAlt") or "").strip():
+            raise ContentError(f"Collection {collection['slug']}: texte alternatif de l’emblème obligatoire")
         validate_seo(root, collection, "Collection")
         validate_old_slugs(collection, "Collection")
 

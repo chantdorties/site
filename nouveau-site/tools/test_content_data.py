@@ -91,6 +91,8 @@ def referenced_media(raw):
         )
     for item in raw["news"]:
         paths.update(filter(None, [item.get("image"), item.get("document")]))
+    for collection in raw["collections"]:
+        paths.update(filter(None, [collection.get("logo")]))
     for kind in ("books", "people", "collections", "pages", "news"):
         paths.update(
             item.get("seo", {}).get("image")

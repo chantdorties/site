@@ -327,6 +327,21 @@ h3 {
   max-width: 900px;
 }
 
+/* Emblèmes des collections, repris de l’ancien site : de petits dessins
+   transparents, posés au-dessus du titre de la rubrique. */
+.collection-emblem {
+  display: block;
+  width: auto;
+  height: 90px;
+  margin-bottom: 18px;
+}
+
+.collection-showcase__emblem {
+  width: auto;
+  height: 58px;
+  margin-bottom: 18px;
+}
+
 .page-heading .lead {
   margin-bottom: 0;
 }

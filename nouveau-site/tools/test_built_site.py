@@ -151,6 +151,7 @@ class BuiltSiteTest(unittest.TestCase):
             + sum(len(person["images"]) for person in source_people)
             + sum(len(page["images"]) for page in source_pages if page["slug"] != "actualites")
             + sum(bool(item.get("image")) for item in source_news)
+            + sum(bool(item.get("logo")) for item in source_collections)
             + len(seo_images)
         )
         self.assertEqual(expected, self.report["medias"]["images"])
@@ -174,6 +175,20 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn(settings("pages")["actualites"]["appelTitre"], soup.get_text(" ", strip=True))
         self.assertNotIn("En images", soup.get_text(" ", strip=True))
         self.assertEqual(self.report["actualites"], len(soup.select(".news-card")))
+
+    def test_every_collection_shows_its_emblem(self):
+        """Les emblèmes viennent de l’ancien site : leur perte passerait inaperçue."""
+        for collection in self.collections:
+            soup = BeautifulSoup(
+                (DIST / "collections" / collection["slug"] / "index.html").read_text(encoding="utf-8"),
+                "html.parser",
+            )
+            emblem = soup.select_one(".collection-emblem")
+            self.assertIsNotNone(emblem, collection["slug"])
+            self.assertTrue(emblem["alt"].strip(), collection["slug"])
+            self.assertTrue((DIST / emblem["src"].lstrip("/")).is_file(), emblem["src"])
+        index = BeautifulSoup((DIST / "collections" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        self.assertEqual(len(self.collections), len(index.select(".collection-showcase__emblem")))
 
     def test_projects_page_lists_the_projects(self):
         soup = BeautifulSoup((DIST / "projets" / "index.html").read_text(encoding="utf-8"), "html.parser")

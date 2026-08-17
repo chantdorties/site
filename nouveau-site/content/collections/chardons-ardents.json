@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "Chardons ardents",
   "description": "Recueils de nouvelles à partir de 14 ans.",
+  "logo": "content/media/uploads/collections-chardons-ardents.gif",
+  "logoAlt": "Un chardon violet, emblème de la collection Chardons ardents",
   "ordre": 10,
   "anciensSlugs": [
     "chardonsardents.html"

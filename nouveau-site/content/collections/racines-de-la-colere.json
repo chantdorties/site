@@ -3,6 +3,8 @@
   "statut": "publie",
   "titre": "Les racines de la colère",
   "description": "Textes du domaine public à redécouvrir.",
+  "logo": "content/media/uploads/collections-racines-de-la-colere.gif",
+  "logoAlt": "Un arbre brun aux racines apparentes, emblème de la collection Les racines de la colère",
   "ordre": 50,
   "anciensSlugs": [
     "racinesdelacolere.html"
