@@ -436,23 +436,29 @@ collections:
           - {label: "Documents", name: documents, widget: hidden, default: []}
           - *old_slugs
           - *seo
+      # La page Actualités est engendrée : son titre, son introduction et son appel
+      # viennent de « Réglages du site > Introductions des pages », et la liste des
+      # articles de la collection Actualités. Seuls le référencement et les anciennes
+      # adresses se règlent ici ; les autres champs sont masqués pour ne pas laisser
+      # croire qu’écrire dedans changerait la page.
       - name: page_actualites
-        label: Page Actualités
+        label: Page Actualités (référencement)
         file: nouveau-site/content/pages-fixes/actualites.json
         fields:
-          - {label: "Titre", name: titre, widget: string}
+          - {label: "Titre", name: titre, widget: hidden, default: Actualités}
           - {label: "Adresse", name: slug, widget: hidden, default: actualites}
           - {label: "Publication", name: statut, widget: hidden, default: publie}
           - {label: "Type", name: type, widget: hidden, default: actualites}
           - {label: "Ordre", name: ordre, widget: hidden, default: 10}
           - label: Texte de référence
             name: sections
-            widget: list
-            min: 1
-            max: 1
-            fields:
-              - {label: "Intertitre", name: titre, widget: string, required: false}
-              - {label: "Texte", name: contenu, widget: text}
+            widget: hidden
+            default:
+              - titre: null
+                contenu: >-
+                  Cette page est engendrée : son texte se règle dans « Réglages du site >
+                  Introductions des pages > Actualités », et les articles s’ajoutent dans
+                  la collection Actualités.
           - {label: "Liens", name: liens, widget: hidden, default: []}
           - {label: "Images", name: images, widget: hidden, default: []}
           - {label: "Documents", name: documents, widget: hidden, default: []}
