@@ -117,8 +117,13 @@ le domaine Free, ses adresses canoniques et son plan du site seraient faux —, 
 d’indexation, puis envoie le tout par FTPS avec `tools/deploy-ftp.py --target ovh`.
 
 Contrairement à Free, OVH ne filtre pas le FTP selon la provenance : ce workflow tourne
-sur un runner GitHub standard. Si le serveur refuse le chiffrement, retirer `--tls` de
-l’appel au script.
+sur un runner GitHub standard.
+
+Le script accepte l’option `--tls` pour chiffrer la connexion, mais le FTP de ce cluster
+la refuse (`500 This security scheme is not implemented`) : le transfert se fait donc en
+clair, comme chez Free. Pour un aperçu temporaire protégé par mot de passe, c’est
+acceptable ; utiliser de préférence un compte FTP secondaire limité à ce dossier plutôt
+que le compte principal.
 
 Vérifications après publication :
 

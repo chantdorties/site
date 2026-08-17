@@ -65,6 +65,7 @@ jobs:
           OVH_FTP_USER: ${{ secrets.OVH_FTP_USER }}
           OVH_FTP_PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
           OVH_FTP_PATH: ${{ secrets.OVH_FTP_PATH }}
-        run: python3 tools/deploy-ftp.py --target ovh --tls --dist dist
+        # Sans --tls : le FTP du cluster refuse AUTH TLS. Voir docs/DEPLOIEMENT.md.
+        run: python3 tools/deploy-ftp.py --target ovh --dist dist
       - name: Summary
         run: echo "Aperçu publié sur $BASE_URL" >> "$GITHUB_STEP_SUMMARY"
