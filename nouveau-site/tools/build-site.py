@@ -154,6 +154,7 @@ class SiteBuilder:
         self.collections = content["collections"]
         self.pages = content["pages"]
         self.news = content["news"]
+        self.projects = content["projects"]
         self.raw = content["raw"]
         self.legacy = content["legacy"]
         self.settings = content["settings"]
@@ -974,6 +975,58 @@ class SiteBuilder:
             for slug in slugs
         )
 
+    def project_contributors(self, project: dict[str, Any], role: str) -> str:
+        """Les noms d’un rôle, fiches et noms libres réunis dans une seule énumération.
+
+        Un livre à paraître s’écrit souvent avant que ses auteurs aient une fiche : ceux
+        qui en ont une deviennent des liens, les autres restent du texte.
+        """
+        named = [slug for slug in project[role] if slug in self.people_by_slug]
+        parts = [part for part in (self.contributor_links(named),) if part]
+        free = ", ".join(e(name) for name in project[f"{role}HorsFiche"])
+        if free:
+            parts.append(free)
+        return ", ".join(parts)
+
+    def render_projects(self) -> str:
+        cards = []
+        for project in self.projects:
+            lines = []
+            if project["description"]:
+                lines.append(f'<p class="project-card__summary">{e(project["description"])}</p>')
+            credits = []
+            authors = self.project_contributors(project, "auteurs")
+            illustrators = self.project_contributors(project, "illustrateurs")
+            if authors:
+                credits.append(f"écrit par {authors}")
+            if illustrators:
+                credits.append(f"illustré par {illustrators}")
+            if credits:
+                lines.append(f'<p class="project-card__credits">{", ".join(credits)}</p>')
+            collection = self.collections_by_slug.get(project["collection"])
+            if collection:
+                lines.append(
+                    '<p class="project-card__collection">Collection '
+                    f'<a href="/collections/{e(collection["slug"])}/">{e(collection["titre"])}</a></p>'
+                )
+            if project["sortiePrevue"]:
+                lines.append(
+                    f'<p class="project-card__release">sortie prévue {e(project["sortiePrevue"])}</p>'
+                )
+            cards.append(
+                f"""
+<article class="project-card">
+  <h2>{e(project['titre'])}</h2>
+  {''.join(lines)}
+</article>""".strip()
+            )
+        if not cards:
+            return ""
+        return (
+            '<section class="section section--white"><div class="container">'
+            '<div class="project-grid">' + "".join(cards) + "</div></div></section>"
+        )
+
     def render_gallery(self, images: list[tuple[str, str]]) -> str:
         if not images:
             return ""
@@ -1290,6 +1343,9 @@ class SiteBuilder:
                     if media_path(item) in self.page_image_media
                 ]
                 gallery = f'<section class="section section--white"><div class="container"><h2>En images</h2>{self.render_gallery(gallery_items)}</div></section>'
+            # La page Projets porte son introduction dans ses sections ; la liste des
+            # projets, elle, vient de leur propre rubrique.
+            projects = self.render_projects() if page_data["slug"] == "projets" else ""
             description = page_data["sections"][0]["contenu"]
             active = "actualites" if page_data["slug"] == "actualites" else "maison"
             content = f"""
@@ -1298,6 +1354,7 @@ class SiteBuilder:
   <p class="eyebrow">{e(page_data.get('rubrique') or self.site_settings['nom'])}</p><h1>{e(page_data['titre'])}</h1>
 </div></header>
 <section class="section"><div class="container editorial-layout"><article>{sections}</article>{aside}</div></section>
+{projects}
 {gallery}"""
             seo_title, seo_description, seo_image = self.seo_values(
                 page_data,
@@ -1568,6 +1625,7 @@ class SiteBuilder:
             "personnes": len(self.people),
             "collections": len(self.collections),
             "actualites": len(self.news),
+            "projets": len(self.projects),
             "medias": self.media_stats,
             "documentsIgnores": self.skipped_documents,
         }

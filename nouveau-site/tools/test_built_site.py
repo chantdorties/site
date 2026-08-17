@@ -175,6 +175,33 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertNotIn("En images", soup.get_text(" ", strip=True))
         self.assertEqual(self.report["actualites"], len(soup.select(".news-card")))
 
+    def test_projects_page_lists_the_projects(self):
+        soup = BeautifulSoup((DIST / "projets" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        cards = soup.select(".project-card")
+        self.assertEqual(self.report["projets"], len(cards))
+        for card in cards:
+            self.assertIsNotNone(card.select_one("h2"), card)
+        text = soup.get_text(" ", strip=True)
+        # L’introduction reste éditable sur la page, la liste vient de la rubrique.
+        self.assertIn("Trois projets pour fin 2026-début 2027", text)
+        # Un intervenant qui a une fiche devient un lien, les autres restent du texte.
+        self.assertIn("/personnes/sebastien-boscus/", str(soup))
+        self.assertIn("Najat Azira", text)
+
+    def test_archived_projects_are_absent_from_the_projects_page(self):
+        published = {
+            json.loads(path.read_text(encoding="utf-8"))["titre"]
+            for path in (ROOT / "content" / "projets").glob("*.json")
+            if json.loads(path.read_text(encoding="utf-8"))["statut"] == "publie"
+        }
+        titles = {
+            card.select_one("h2").get_text(strip=True)
+            for card in BeautifulSoup(
+                (DIST / "projets" / "index.html").read_text(encoding="utf-8"), "html.parser"
+            ).select(".project-card")
+        }
+        self.assertEqual(published, titles)
+
     def test_collection_index_has_visual_previews(self):
         pages = {
             "home": BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser"),
@@ -217,6 +244,10 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("pages_fixes", collections)
         self.assertTrue(collections["pages"]["create"])
         self.assertFalse(collections["pages"]["delete"])
+        # Seuls les projets s’effacent vraiment : ils n’ont pas d’adresse à rediriger.
+        self.assertTrue(collections["projets"]["create"])
+        self.assertTrue(collections["projets"]["delete"])
+        self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
         self.assertEqual(
             {"page_accueil", "page_actualites", "page_mentions_legales"},

@@ -409,6 +409,77 @@ collections:
       - *old_slugs
       - *seo
 
+  # Les livres à paraître. Ils n’ont pas de page à eux : ils s’affichent sur la page
+  # Projets, sous son introduction. La suppression est donc autorisée ici — contrairement
+  # aux livres et aux pages, aucun projet n’a d’adresse à rediriger, et un projet paru
+  # n’a plus de raison d’encombrer la liste.
+  - name: projets
+    label: Projets
+    label_singular: Projet
+    folder: nouveau-site/content/projets
+    extension: json
+    format: json
+    create: true
+    delete: true
+    identifier_field: titre
+    slug: "{{fields.slug}}"
+    summary: "{{titre}} — {{sortiePrevue}} — {{statut}}"
+    sortable_fields: [ordre, titre, statut]
+    view_filters: *status_filters
+    fields:
+      - {label: "Titre", name: titre, widget: string}
+      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - *publication
+      - *order
+      - label: Description
+        name: description
+        widget: string
+        required: false
+        hint: Le genre et le public, par exemple « Album pour les 3-5 ans ».
+      - label: Collection
+        name: collection
+        widget: relation
+        required: false
+        collection: collections
+        search_fields: [titre]
+        display_fields: [titre]
+        value_field: slug
+      - label: Auteurs
+        name: auteurs
+        widget: relation
+        collection: personnes
+        multiple: true
+        required: false
+        search_fields: [nom]
+        display_fields: [nom]
+        value_field: slug
+      - label: Auteurs sans fiche
+        name: auteursHorsFiche
+        widget: list
+        required: false
+        hint: Pour un auteur qui n’a pas encore de fiche. Son nom s’affichera sans lien.
+        field: {label: "Nom", name: nom, widget: string}
+      - label: Illustrateurs
+        name: illustrateurs
+        widget: relation
+        collection: personnes
+        multiple: true
+        required: false
+        search_fields: [nom]
+        display_fields: [nom]
+        value_field: slug
+      - label: Illustrateurs sans fiche
+        name: illustrateursHorsFiche
+        widget: list
+        required: false
+        hint: Pour un illustrateur qui n’a pas encore de fiche. Son nom s’affichera sans lien.
+        field: {label: "Nom", name: nom, widget: string}
+      - label: Sortie prévue
+        name: sortiePrevue
+        widget: string
+        required: false
+        hint: Écrire la période telle qu’elle doit paraître, par exemple « décembre 2026 ».
+
   - name: pages_fixes
     label: Pages principales
     format: json

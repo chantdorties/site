@@ -21,7 +21,7 @@ masqué. Un contenu `brouillon` n’apparaît pas sur le site public. Un contenu
 L’administration permet de modifier :
 
 - l’identité, le contact, le menu, le pied de page et les principaux textes du site ;
-- les livres, personnes, collections et actualités ;
+- les livres, personnes, collections, actualités et projets ;
 - les trois pages principales et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;
 - les livres mis en avant sur l’accueil et les suggestions « À découvrir aussi » ;
@@ -29,8 +29,10 @@ L’administration permet de modifier :
 - les anciennes adresses à rediriger et le bouton PayPal général de don.
 
 De nouvelles pages de la maison peuvent être créées. La suppression reste
-désactivée : utiliser le statut `Archivé` pour retirer un contenu sans perdre son
-historique. Un contenu archivé disparaît du site mais **conserve ses anciennes
+désactivée partout sauf dans la rubrique **Projets** : un projet n’a pas d’adresse
+à lui, donc rien à rediriger, et un livre paru n’a plus à encombrer la liste — le
+dépôt en garde de toute façon l’historique. Ailleurs, utiliser le statut `Archivé`
+pour retirer un contenu sans perdre son historique. Un contenu archivé disparaît du site mais **conserve ses anciennes
 adresses**, qui renvoient alors vers sa rubrique parente plutôt que vers une page
 inexistante. Les pages Accueil, Actualités et Mentions légales doivent toujours
 rester publiées : leur adresse et leur statut ne sont pas modifiables.
@@ -38,6 +40,21 @@ rester publiées : leur adresse et leur statut ne sont pas modifiables.
 Une adresse (`slug`) ne doit plus être changée après la première publication. Si
 un changement est indispensable, ajouter l’adresse précédente dans « Anciennes
 adresses » afin que le générateur crée la redirection.
+
+## Les projets
+
+La rubrique **Projets** tient les livres à paraître. Ils n’ont pas de page à eux :
+ils s’affichent sur la page Projets, sous son introduction, du plus petit rang au
+plus grand. L’introduction, elle, s’écrit dans « Pages de la maison > Projets ».
+
+Un auteur ou un illustrateur qui possède déjà une fiche se choisit dans « Auteurs »
+ou « Illustrateurs », et son nom devient un lien vers elle. Celui qui n’en a pas
+encore — c’est fréquent pour un livre à paraître — s’écrit à la main dans le champ
+« sans fiche » voisin, et son nom s’affiche sans lien. Le jour où sa fiche existe,
+il suffit de déplacer le nom d’un champ à l’autre.
+
+Le jour de la parution, le projet se supprime et le livre prend sa place au
+catalogue.
 
 ## Règles vérifiées avant publication
 

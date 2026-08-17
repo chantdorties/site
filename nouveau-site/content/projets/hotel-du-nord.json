@@ -1,0 +1,17 @@
+{
+  "slug": "hotel-du-nord",
+  "statut": "publie",
+  "titre": "Hôtel du Nord",
+  "ordre": 10,
+  "description": "Album pour les 3-5 ans",
+  "collection": "coquelicots-sauvages",
+  "auteurs": [],
+  "auteursHorsFiche": [
+    "Najat Azira"
+  ],
+  "illustrateurs": [
+    "sebastien-boscus"
+  ],
+  "illustrateursHorsFiche": [],
+  "sortiePrevue": "décembre 2026"
+}

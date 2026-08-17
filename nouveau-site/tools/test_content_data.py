@@ -30,6 +30,10 @@ GENERATOR_REQUIRED_FIELDS = {
     "pages": ("documents", "images", "liens", "ordre", "sections", "titre"),
     "collections": ("description", "ordre", "titre"),
     "news": ("contenu", "datePublication", "document", "lienExterne"),
+    "projects": (
+        "auteurs", "auteursHorsFiche", "collection", "description", "illustrateurs",
+        "illustrateursHorsFiche", "ordre", "sortiePrevue", "titre",
+    ),
 }
 
 
@@ -122,6 +126,7 @@ class ContentDataTest(unittest.TestCase):
             ("personnes", self.people),
             ("collections", self.collections),
             ("actualites", self.raw["news"]),
+            ("projets", self.raw["projects"]),
         ):
             files = {path.stem for path in (CONTENT / folder).glob("*.json")}
             self.assertEqual({record["slug"] for record in records}, files)
@@ -294,6 +299,60 @@ class ContentDataTest(unittest.TestCase):
             with self.assertRaisesRegex(ContentError, "ordreAccueil .* utilisé deux fois"):
                 load_content(root, include_drafts=False)
 
+    def test_a_project_created_with_only_required_fields_can_be_generated(self):
+        """Un projet saisi à la va-vite ne doit pas casser la génération.
+
+        Decap n’écrit pas les champs laissés vides : le générateur les lit pourtant
+        en accès direct.
+        """
+        with content_sandbox() as root:
+            project = {
+                "slug": "un-projet-minimal",
+                "titre": "Un projet minimal",
+                "statut": "publie",
+                "ordre": 500,
+            }
+            (root / "content" / "projets" / "un-projet-minimal.json").write_text(
+                json.dumps(project, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+            bundle = load_content(root, include_drafts=False)
+            created = next(item for item in bundle["projects"] if item["slug"] == "un-projet-minimal")
+            for field in ("auteurs", "auteursHorsFiche", "illustrateurs", "illustrateursHorsFiche"):
+                self.assertEqual([], created[field])
+            self.assertIsNone(created["collection"])
+            self.assertIsNone(created["sortiePrevue"])
+
+    def test_a_project_cannot_point_at_an_unknown_person(self):
+        with content_sandbox() as root:
+            edit(root, "content/projets/gaia-tome-3.json", auteurs=["personne-inexistante"])
+            with self.assertRaisesRegex(ContentError, "personne inconnue"):
+                load_content(root, include_drafts=False)
+
+    def test_a_project_refuses_a_contributor_in_the_wrong_role(self):
+        with content_sandbox() as root:
+            edit(root, "content/projets/gaia-tome-3.json", illustrateurs=["amanda-belassami-sideris"])
+            with self.assertRaisesRegex(ContentError, "n’a pas le rôle illustrateur"):
+                load_content(root, include_drafts=False)
+
+    def test_a_contributor_without_a_record_is_accepted_as_plain_text(self):
+        with content_sandbox() as root:
+            bundle = load_content(root, include_drafts=False)
+            project = next(item for item in bundle["projects"] if item["slug"] == "hotel-du-nord")
+            self.assertEqual(["Najat Azira"], project["auteursHorsFiche"])
+            self.assertEqual(["sebastien-boscus"], project["illustrateurs"])
+
+    def test_duplicate_project_order_is_refused(self):
+        with content_sandbox() as root:
+            edit(root, "content/projets/gaia-tome-3.json", ordre=10)
+            with self.assertRaisesRegex(ContentError, "ordre .* utilisé deux fois"):
+                load_content(root, include_drafts=False)
+
+    def test_an_archived_project_leaves_the_site(self):
+        with content_sandbox() as root:
+            edit(root, "content/projets/gaia-tome-3.json", statut="archive")
+            bundle = load_content(root, include_drafts=True)
+            self.assertNotIn("gaia-tome-3", {item["slug"] for item in bundle["projects"]})
+
     def test_seo_text_length_is_bounded(self):
         for field, length in (("titre", 61), ("description", 161)):
             with self.subTest(field=field), content_sandbox() as root:
@@ -444,10 +503,15 @@ class ContentDataTest(unittest.TestCase):
             r"Auteurs Illustrateurs Graines d'orties|octets_nuls|BEGIN PKCS7",
             re.I,
         )
+        # Deux pages n’ont qu’une introduction : leur corps est engendré à partir
+        # d’une rubrique. Le plancher de longueur, lui, traque les pages tronquées
+        # par la migration de l’ancien site.
+        generated = {"actualites", "projets"}
         for page in self.pages:
             self.assertTrue(page["sections"], page["slug"])
             content = " ".join(section["contenu"] for section in page["sections"])
-            self.assertGreater(len(content), 40, page["slug"])
+            if page["slug"] not in generated:
+                self.assertGreater(len(content), 40, page["slug"])
             self.assertIsNone(forbidden.search(content), page["slug"])
 
 

@@ -66,6 +66,15 @@ OPTIONAL_FIELDS: dict[str, dict[str, Any]] = {
         "imageAlt": None,
         "lienExterne": None,
     },
+    "projects": {
+        "auteurs": [],
+        "auteursHorsFiche": [],
+        "collection": None,
+        "description": None,
+        "illustrateurs": [],
+        "illustrateursHorsFiche": [],
+        "sortiePrevue": None,
+    },
 }
 
 
@@ -350,6 +359,7 @@ def validate_unique_orders(raw: dict[str, Any]) -> None:
     check(listed("collections"), "Collection", "ordre")
     check(listed("people"), "Personne", "ordre")
     check(listed("pages"), "Page", "ordre")
+    check(listed("projects"), "Projet", "ordre")
 
 
 def apply_optional_defaults(raw: dict[str, Any]) -> None:
@@ -366,6 +376,7 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
     collections = raw["collections"]
     pages = raw["pages"]
     news = raw["news"]
+    projects = raw["projects"]
     settings = raw["settings"]
     validate_settings(root, settings)
     people_by_slug = {item["slug"]: item for item in people}
@@ -578,6 +589,43 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_seo(root, item, "Actualité")
         validate_old_slugs(item, "Actualité")
 
+    for project in projects:
+        validate_status(project, "Projet")
+        require_text(project, "titre", "Projet")
+        validate_order(project, "Projet")
+        for field in ("description", "sortiePrevue"):
+            value = project.get(field)
+            if value is not None and not isinstance(value, str):
+                raise ContentError(f"Projet {project['slug']}: champ {field} invalide")
+        collection_slug = project.get("collection")
+        if collection_slug is not None:
+            collection = collections_by_slug.get(collection_slug)
+            if not collection:
+                raise ContentError(f"Projet {project['slug']}: collection inconnue {collection_slug}")
+            if project["statut"] == "publie" and collection["statut"] != "publie":
+                raise ContentError(f"Projet publié {project['slug']}: collection non publiée")
+        # Un intervenant tient soit à une fiche existante, soit à un simple nom : les
+        # auteurs des livres à paraître n’ont pas toujours de fiche au moment du projet.
+        for field, role in (("auteurs", "auteur"), ("illustrateurs", "illustrateur")):
+            values = project.get(field, [])
+            if not isinstance(values, list):
+                raise ContentError(f"Projet {project['slug']}: {field} doit être une liste")
+            for person_slug in values:
+                person = people_by_slug.get(person_slug)
+                if not person:
+                    raise ContentError(f"Projet {project['slug']}: personne inconnue {person_slug}")
+                if role not in person["roles"]:
+                    raise ContentError(f"Projet {project['slug']}: {person_slug} n’a pas le rôle {role}")
+                if project["statut"] == "publie" and person["statut"] != "publie":
+                    raise ContentError(f"Projet publié {project['slug']}: personne non publiée {person_slug}")
+        for field in ("auteursHorsFiche", "illustrateursHorsFiche"):
+            values = project.get(field, [])
+            if not isinstance(values, list):
+                raise ContentError(f"Projet {project['slug']}: {field} doit être une liste")
+            for name in values:
+                if not isinstance(name, str) or not name.strip():
+                    raise ContentError(f"Projet {project['slug']}: nom vide dans {field}")
+
 
 def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
     content_dir = root / "content"
@@ -590,6 +638,7 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
             *load_folder(content_dir, "pages"),
         ],
         "news": load_folder(content_dir, "actualites"),
+        "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),
     }
     apply_optional_defaults(raw)
@@ -607,11 +656,13 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
     collections = [deepcopy(item) for item in raw["collections"] if visible(item)]
     pages = [deepcopy(item) for item in raw["pages"] if visible(item)]
     news = [deepcopy(item) for item in raw["news"] if visible(item)]
+    projects = [deepcopy(item) for item in raw["projects"] if visible(item)]
 
     collections.sort(key=lambda item: (item["ordre"], item["slug"]))
     books.sort(key=lambda item: (item["ordre"], item["titre"].casefold(), item["slug"]))
     people.sort(key=lambda item: (item["ordre"], item["nom"].casefold(), item["slug"]))
     pages.sort(key=lambda item: (item["ordre"], item["titre"].casefold(), item["slug"]))
+    projects.sort(key=lambda item: (item["ordre"], item["titre"].casefold(), item["slug"]))
 
     books_by_slug = {item["slug"]: item for item in books}
     people_by_slug = {item["slug"]: item for item in people}
@@ -642,6 +693,9 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         page["aVerifier"] = page["statut"] == "brouillon"
         page["source"] = {"anciennePage": legacy["pages"].get(page["slug"])}
 
+    for project in projects:
+        project["aVerifier"] = project["statut"] == "brouillon"
+
     news.sort(key=lambda item: (item["datePublication"], item["slug"]), reverse=True)
     return {
         "books": books,
@@ -649,6 +703,7 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         "collections": collections,
         "pages": pages,
         "news": news,
+        "projects": projects,
         "settings": deepcopy(raw["settings"]),
         "legacy": legacy,
         "raw": raw,
