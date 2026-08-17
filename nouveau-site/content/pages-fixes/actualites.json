@@ -1,19 +1,19 @@
 {
   "slug": "actualites",
-  "statut": "publie",
-  "titre": "Actualités",
-  "type": "actualites",
+  "liens": [],
   "sections": [
     {
       "titre": null,
       "contenu": "Retrouvez toutes nos actualités sur notre page Facebook , accessible même si vous n'avez pas de compte: Pour ne manquer aucun salon ni sortie de livre, abonnez-vous ou passez régulièrement la voir."
     }
   ],
-  "liens": [],
-  "images": [],
-  "documents": [],
-  "ordre": 10,
   "anciensSlugs": [
     "actualite.html"
-  ]
+  ],
+  "titre": "Actualitésffdfdgh",
+  "statut": "publie",
+  "ordre": 10,
+  "images": [],
+  "documents": [],
+  "type": "actualites"
 }
