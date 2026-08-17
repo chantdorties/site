@@ -74,22 +74,12 @@ touché par cette publication.
 1. Dans l’espace client OVH, en multisite, faire pointer le sous-domaine
    `orties.varascundo.com` vers un dossier dédié, avec le certificat Let’s Encrypt :
    l’adresse d’aperçu doit être en `https`. La racine retenue est `orties/dist`.
-2. Créer le fichier des comptes autorisés **un cran au-dessus** du dossier publié, dans
-   `orties/` : il n’est ainsi jamais servi aux visiteurs. Il n’est pas versionné, et le
-   script de déploiement ne le supprimera jamais, puisqu’il n’efface que les fichiers
-   inscrits dans son propre manifeste.
-
-   ```bash
-   htpasswd -cbB ~/orties/.htpasswd apercu '<mot de passe>'
-   chmod 644 ~/orties/.htpasswd
-   ```
-
-3. Relever le chemin absolu **tel qu’Apache le voit**, et non celui qu’affiche le shell.
-   Sur le mutualisé OVH, le compte est accessible sous deux noms : `/home/<login>/…`,
-   que renvoie `pwd`, et `/homez.<numéro>/<login>/…`, que renvoie `echo $HOME`. **Seul le
-   second fonctionne dans `AuthUserFile`** ; avec le premier, l’authentification échoue
-   par une erreur 500 une fois le mot de passe saisi. Déposer ce fichier **avant** le
-   premier déploiement : sans lui, Apache renvoie également une erreur 500.
+2. L’aperçu est accessible à qui possède le lien, mais exclu des moteurs de recherche
+   par un `robots.txt` en `Disallow` et un en-tête `X-Robots-Tag`. Pour le refermer
+   derrière un mot de passe, la marche à suivre est en commentaire dans
+   `config/apercu-ovh.htaccess`.
+3. Le secret `OVH_HTPASSWD_PATH` n’est plus utilisé par le workflow ; il ne sert que si
+   la protection par mot de passe est réactivée.
 4. Dans `Settings > Environments`, créer l’environnement `Apercu` — le nom doit
    correspondre exactement à celui déclaré dans `apercu.yml` — puis y ajouter ces
    secrets d’environnement. Ainsi seul un job déclarant cet environnement peut les
@@ -114,24 +104,23 @@ brouillons sont demandées au lancement. Le workflow régénère le site avec
 `--base-url https://orties.varascundo.com` — l’artefact de `Validate and publish` porte
 le domaine Free, ses adresses canoniques et son plan du site seraient faux —, ajoute
 `config/apercu-ovh.htaccess` au `.htaccess` généré, remplace `robots.txt` par un refus
-d’indexation, puis envoie le tout par FTPS avec `tools/deploy-ftp.py --target ovh`.
+d’indexation, puis envoie le tout avec `tools/deploy-ftp.py --target ovh`.
 
 Contrairement à Free, OVH ne filtre pas le FTP selon la provenance : ce workflow tourne
 sur un runner GitHub standard.
 
 Le script accepte l’option `--tls` pour chiffrer la connexion, mais le FTP de ce cluster
 la refuse (`500 This security scheme is not implemented`) : le transfert se fait donc en
-clair, comme chez Free. Pour un aperçu temporaire protégé par mot de passe, c’est
-acceptable ; utiliser de préférence un compte FTP secondaire limité à ce dossier plutôt
-que le compte principal.
+clair, comme chez Free. Utiliser de préférence un compte FTP secondaire limité à ce
+dossier plutôt que le compte principal.
 
 Vérifications après publication :
 
 ```bash
-curl -sI https://orties.varascundo.com/                     # 401 sans identifiants
-curl -sI -u apercu:motdepasse https://orties.varascundo.com/   # 200 + X-Robots-Tag: noindex
-curl -s -u apercu:motdepasse https://orties.varascundo.com/robots.txt   # Disallow: /
-curl -sI http://chantdorties.free.fr/                       # le site du client n’a pas bougé
+curl -sI https://orties.varascundo.com/              # 200 + X-Robots-Tag: noindex
+curl -s https://orties.varascundo.com/robots.txt     # Disallow: /
+curl -s https://orties.varascundo.com/ | grep canonical   # l’adresse de l’aperçu
+curl -sI http://chantdorties.free.fr/                # le site du client n’a pas bougé
 ```
 
 ### Administration pendant l’aperçu

@@ -52,12 +52,9 @@ jobs:
         run: |
           python3 tools/build-site.py --root . --base-url "$BASE_URL" \
             ${{ inputs.inclure_brouillons && '--include-drafts' || '' }}
-      - name: Keep the preview private and out of search engines
-        env:
-          CHEMIN_HTPASSWD: ${{ secrets.OVH_HTPASSWD_PATH }}
+      - name: Keep the preview out of search engines
         run: |
-          test -n "$CHEMIN_HTPASSWD" || { echo "Secret OVH_HTPASSWD_PATH manquant"; exit 1; }
-          sed "s|__CHEMIN_HTPASSWD__|$CHEMIN_HTPASSWD|" config/apercu-ovh.htaccess >> dist/.htaccess
+          cat config/apercu-ovh.htaccess >> dist/.htaccess
           printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
       - name: Deploy the preview to OVH
         env:
