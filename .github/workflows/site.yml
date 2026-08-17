@@ -56,4 +56,4 @@ jobs:
           FREE_FTP_USER: ${{ secrets.FREE_FTP_USER }}
           FREE_FTP_PASSWORD: ${{ secrets.FREE_FTP_PASSWORD }}
           FREE_FTP_PATH: ${{ secrets.FREE_FTP_PATH }}
-        run: python3 nouveau-site/tools/deploy-free.py --dist dist
+        run: python3 nouveau-site/tools/deploy-ftp.py --target free --dist dist

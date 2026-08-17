@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Deploy the generated public site to Free over passive FTP."""
+"""Deploy the generated public site over passive FTP.
+
+Deux cibles : « free », l'hébergement du client, et « ovh », l'aperçu montré avant
+la mise en ligne. Chaque cible lit ses propres variables d'environnement.
+"""
 
 from __future__ import annotations
 
@@ -16,12 +20,40 @@ from pathlib import Path, PurePosixPath
 
 MANIFEST_NAME = ".chantdorties-deploy.json"
 
+# Free n'expose qu'un seul hôte FTP ; chez OVH il dépend du cluster attribué au
+# compte, il n'y a donc pas de valeur par défaut raisonnable.
+DEFAULT_HOSTS = {"free": "ftpperso.free.fr", "ovh": None}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dist", type=Path, default=Path("dist"))
+    parser.add_argument("--target", choices=sorted(DEFAULT_HOSTS), default="free")
+    parser.add_argument(
+        "--tls",
+        action="store_true",
+        help="Chiffre la connexion (FTPS explicite). Accepté par OVH, pas par Free.",
+    )
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
+
+
+def connection_settings(target: str) -> dict[str, str]:
+    """Lit les variables d'environnement propres à la cible, par exemple OVH_FTP_USER."""
+
+    prefix = target.upper()
+
+    def read(name: str) -> str | None:
+        return os.environ.get(f"{prefix}_FTP_{name}") or None
+
+    host = read("HOST") or DEFAULT_HOSTS[target]
+    user = read("USER")
+    password = read("PASSWORD")
+    if not host:
+        raise SystemExit(f"{prefix}_FTP_HOST est obligatoire pour la cible « {target} »")
+    if not user or not password:
+        raise SystemExit(f"{prefix}_FTP_USER et {prefix}_FTP_PASSWORD sont obligatoires")
+    return {"host": host, "user": user, "password": password, "base": read("PATH") or "/"}
 
 
 def sha256(path: Path) -> str:
@@ -133,15 +165,14 @@ def main() -> None:
         print(f"Déploiement simulé : {len(files)} fichiers publics, administration exclue.")
         return
 
-    host = os.environ.get("FREE_FTP_HOST") or "ftpperso.free.fr"
-    user = os.environ.get("FREE_FTP_USER")
-    password = os.environ.get("FREE_FTP_PASSWORD")
-    base = os.environ.get("FREE_FTP_PATH") or "/"
-    if not user or not password:
-        raise SystemExit("FREE_FTP_USER et FREE_FTP_PASSWORD sont obligatoires")
+    settings = connection_settings(args.target)
+    base = settings["base"]
+    client = ftplib.FTP_TLS if args.tls else ftplib.FTP
 
-    with ftplib.FTP(host, timeout=45) as ftp:
-        ftp.login(user=user, passwd=password)
+    with client(settings["host"], timeout=45) as ftp:
+        ftp.login(user=settings["user"], passwd=settings["password"])
+        if args.tls:
+            ftp.prot_p()
         ftp.set_pasv(True)
         manifest_path = remote_path(base, MANIFEST_NAME)
         previous = read_remote_manifest(ftp, manifest_path)
@@ -163,7 +194,10 @@ def main() -> None:
         upload_atomic(ftp, payload, manifest_path)
         ftp.quit()
 
-    print(f"Déploiement terminé : {len(changed)} fichier(s) envoyé(s), {len(stale)} retiré(s).")
+    print(
+        f"Déploiement {args.target} terminé : "
+        f"{len(changed)} fichier(s) envoyé(s), {len(stale)} retiré(s)."
+    )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+# Ajouté au .htaccess généré, uniquement pour l’aperçu client hébergé chez OVH.
+# Ce fichier ne part jamais chez Free : l’aperçu ne doit être ni public ni indexé.
+# Le chemin du fichier de mots de passe vient du secret OVH_HTPASSWD_PATH, substitué
+# au moment du déploiement par le workflow « apercu.yml ».
+
+Header set X-Robots-Tag "noindex, nofollow"
+
+AuthType Basic
+AuthName "Aperçu du site des Éditions Chant d’orties"
+AuthUserFile __CHEMIN_HTPASSWD__
+Require valid-user

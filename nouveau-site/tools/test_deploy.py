@@ -7,10 +7,11 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
-MODULE_PATH = Path(__file__).with_name("deploy-free.py")
-SPEC = importlib.util.spec_from_file_location("deploy_free", MODULE_PATH)
+MODULE_PATH = Path(__file__).with_name("deploy-ftp.py")
+SPEC = importlib.util.spec_from_file_location("deploy_ftp", MODULE_PATH)
 deploy = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(deploy)
 
@@ -83,6 +84,33 @@ class DeployTest(unittest.TestCase):
     def test_remote_base_path_is_normalized(self):
         self.assertEqual("assets/site.css", deploy.remote_path("/", "assets/site.css"))
         self.assertEqual("public/assets/site.css", deploy.remote_path("/public/", "assets/site.css"))
+
+    def test_each_target_reads_its_own_variables(self):
+        environment = {
+            "FREE_FTP_USER": "client",
+            "FREE_FTP_PASSWORD": "secret-free",
+            "OVH_FTP_HOST": "ftp.cluster000.hosting.ovh.net",
+            "OVH_FTP_USER": "apercu",
+            "OVH_FTP_PASSWORD": "secret-ovh",
+            "OVH_FTP_PATH": "/orties",
+        }
+        with mock.patch.dict(deploy.os.environ, environment, clear=True):
+            free = deploy.connection_settings("free")
+            ovh = deploy.connection_settings("ovh")
+
+        self.assertEqual("ftpperso.free.fr", free["host"], "Free garde son hôte par défaut")
+        self.assertEqual("client", free["user"])
+        self.assertEqual("/", free["base"])
+        self.assertEqual("ftp.cluster000.hosting.ovh.net", ovh["host"])
+        self.assertEqual("apercu", ovh["user"])
+        self.assertEqual("/orties", ovh["base"])
+
+    def test_missing_ovh_host_is_refused(self):
+        environment = {"OVH_FTP_USER": "apercu", "OVH_FTP_PASSWORD": "secret"}
+        with mock.patch.dict(deploy.os.environ, environment, clear=True):
+            with self.assertRaises(SystemExit) as refusal:
+                deploy.connection_settings("ovh")
+        self.assertIn("OVH_FTP_HOST", str(refusal.exception))
 
 
 if __name__ == "__main__":

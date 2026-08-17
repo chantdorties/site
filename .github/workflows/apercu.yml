@@ -1,0 +1,70 @@
+name: Publish the client preview
+
+# Aperçu montré au client avant la mise en ligne, hébergé chez OVH sur
+# https://orties.varascundo.com/. Il ne touche jamais le site Free du client.
+# OVH n'applique pas le filtrage FTP géographique de Free : un runner GitHub
+# standard suffit, contrairement au job de publication de « site.yml ».
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Adresse publique de l’aperçu"
+        default: https://orties.varascundo.com
+      inclure_brouillons:
+        description: "Inclure les contenus non publiés"
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chantdorties-apercu
+  cancel-in-progress: true
+
+jobs:
+  apercu:
+    if: github.event_name == 'workflow_dispatch' || vars.APERCU_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: Apercu
+    defaults:
+      run:
+        working-directory: nouveau-site
+    env:
+      BASE_URL: ${{ inputs.base_url || 'https://orties.varascundo.com' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: nouveau-site/requirements.txt
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install --yes ghostscript poppler-utils
+      - name: Install Python dependencies
+        run: python -m pip install --requirement requirements.txt
+      # L'artefact de « site.yml » est construit avec le domaine Free : ses adresses
+      # canoniques et son plan du site seraient faux ici, d'où une génération dédiée.
+      - name: Build the site for the preview address
+        run: |
+          python3 tools/build-site.py --root . --base-url "$BASE_URL" \
+            ${{ inputs.inclure_brouillons && '--include-drafts' || '' }}
+      - name: Keep the preview private and out of search engines
+        env:
+          CHEMIN_HTPASSWD: ${{ secrets.OVH_HTPASSWD_PATH }}
+        run: |
+          test -n "$CHEMIN_HTPASSWD" || { echo "Secret OVH_HTPASSWD_PATH manquant"; exit 1; }
+          sed "s|__CHEMIN_HTPASSWD__|$CHEMIN_HTPASSWD|" config/apercu-ovh.htaccess >> dist/.htaccess
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+      - name: Deploy the preview to OVH
+        env:
+          OVH_FTP_HOST: ${{ secrets.OVH_FTP_HOST }}
+          OVH_FTP_USER: ${{ secrets.OVH_FTP_USER }}
+          OVH_FTP_PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
+          OVH_FTP_PATH: ${{ secrets.OVH_FTP_PATH }}
+        run: python3 tools/deploy-ftp.py --target ovh --tls --dist dist
+      - name: Summary
+        run: echo "Aperçu publié sur $BASE_URL" >> "$GITHUB_STEP_SUMMARY"
