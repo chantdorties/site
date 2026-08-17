@@ -1,0 +1,56 @@
+name: Publish the administration
+
+# L'administration et son relais d'authentification vivent sur l'hébergement OVH du
+# prestataire, sur leur propre sous-domaine. Ce workflow ne se déclenche que si l'un
+# des deux a réellement changé : un contenu enregistré par un rédacteur ne provoque
+# aucune publication ici.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nouveau-site/frontend/admin/**'
+      - 'nouveau-site/frontend/admin-serveur/**'
+      - '.github/workflows/admin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chantdorties-admin
+  cancel-in-progress: true
+
+jobs:
+  administration:
+    runs-on: ubuntu-latest
+    # Les identifiants FTP du compte OVH sont rangés dans cet environnement ; ils
+    # servent aussi bien à l'aperçu qu'à l'administration, seul le chemin diffère.
+    environment: Apercu
+    defaults:
+      run:
+        working-directory: nouveau-site
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      # Le dossier publié réunit l'interface et les deux scripts du relais ; le
+      # fichier de secrets, lui, reste sur le serveur, hors de ce dossier.
+      - name: Assemble the published folder
+        run: |
+          rm -rf .admin-publication
+          mkdir -p .admin-publication
+          cp -r frontend/admin/. .admin-publication/
+          cp frontend/admin-serveur/*.php .admin-publication/
+          cp frontend/admin-serveur/htaccess.conf .admin-publication/.htaccess
+          ls -a .admin-publication
+      - name: Deploy the administration to OVH
+        env:
+          OVH_ADMIN_FTP_HOST: ${{ secrets.OVH_FTP_HOST }}
+          OVH_ADMIN_FTP_USER: ${{ secrets.OVH_FTP_USER }}
+          OVH_ADMIN_FTP_PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
+          OVH_ADMIN_FTP_PATH: /orties-admin
+        run: python3 tools/deploy-ftp.py --target ovh-admin --dist .admin-publication
+      - name: Summary
+        run: echo "Administration publiée sur https://orties-admin.varascundo.com/" >> "$GITHUB_STEP_SUMMARY"

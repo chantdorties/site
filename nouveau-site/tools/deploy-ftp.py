@@ -21,8 +21,9 @@ from pathlib import Path, PurePosixPath
 MANIFEST_NAME = ".chantdorties-deploy.json"
 
 # Free n'expose qu'un seul hôte FTP ; chez OVH il dépend du cluster attribué au
-# compte, il n'y a donc pas de valeur par défaut raisonnable.
-DEFAULT_HOSTS = {"free": "ftpperso.free.fr", "ovh": None}
+# compte, il n'y a donc pas de valeur par défaut raisonnable. La cible « ovh-admin »
+# publie l'administration, qui vit sur son propre sous-domaine.
+DEFAULT_HOSTS = {"free": "ftpperso.free.fr", "ovh": None, "ovh-admin": None}
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,7 +42,7 @@ def parse_args() -> argparse.Namespace:
 def connection_settings(target: str) -> dict[str, str]:
     """Lit les variables d'environnement propres à la cible, par exemple OVH_FTP_USER."""
 
-    prefix = target.upper()
+    prefix = target.upper().replace("-", "_")
 
     def read(name: str) -> str | None:
         return os.environ.get(f"{prefix}_FTP_{name}") or None

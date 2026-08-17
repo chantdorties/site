@@ -105,6 +105,24 @@ class DeployTest(unittest.TestCase):
         self.assertEqual("apercu", ovh["user"])
         self.assertEqual("/orties", ovh["base"])
 
+    def test_admin_target_reads_its_own_prefix(self):
+        environment = {
+            "OVH_FTP_HOST": "apercu.example.net",
+            "OVH_FTP_USER": "apercu",
+            "OVH_FTP_PASSWORD": "secret-apercu",
+            "OVH_ADMIN_FTP_HOST": "admin.example.net",
+            "OVH_ADMIN_FTP_USER": "administration",
+            "OVH_ADMIN_FTP_PASSWORD": "secret-admin",
+            "OVH_ADMIN_FTP_PATH": "/orties-admin",
+        }
+        with mock.patch.dict(deploy.os.environ, environment, clear=True):
+            admin = deploy.connection_settings("ovh-admin")
+            apercu = deploy.connection_settings("ovh")
+
+        self.assertEqual("administration", admin["user"], "le tiret devient un souligné")
+        self.assertEqual("/orties-admin", admin["base"])
+        self.assertEqual("apercu", apercu["user"], "l'aperçu garde ses propres variables")
+
     def test_missing_ovh_host_is_refused(self):
         environment = {"OVH_FTP_USER": "apercu", "OVH_FTP_PASSWORD": "secret"}
         with mock.patch.dict(deploy.os.environ, environment, clear=True):
