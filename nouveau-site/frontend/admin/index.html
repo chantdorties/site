@@ -10,7 +10,10 @@
 </head>
 <body>
   <noscript>JavaScript est nécessaire pour accéder à l’administration.</noscript>
-  <script src="https://unpkg.com/decap-cms@3.15.1/dist/decap-cms.js"></script>
+  <!-- Decap est embarqué plutôt que chargé depuis un CDN : l’administration détient un
+       jeton d’écriture sur le dépôt, elle ne doit dépendre d’aucun tiers à l’exécution.
+       Mise à jour : remplacer le fichier de vendor/ et cette ligne. -->
+  <script src="/admin/vendor/decap-cms-3.15.1.js"></script>
   <script src="/admin/preview.js"></script>
 </body>
 </html>
