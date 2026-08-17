@@ -35,14 +35,16 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      # Le dossier publié réunit l'interface et les deux scripts du relais ; le
-      # fichier de secrets, lui, reste sur le serveur, hors de ce dossier.
+      # Le dossier publié réunit l'interface et le relais ; le fichier de secrets, lui,
+      # reste sur le serveur, hors de ce dossier. Le .js du relais compte autant que ses
+      # .php : la politique de sécurité interdit les scripts inline, la fenêtre de
+      # connexion resterait muette sans lui.
       - name: Assemble the published folder
         run: |
           rm -rf .admin-publication
           mkdir -p .admin-publication
           cp -r frontend/admin/. .admin-publication/
-          cp frontend/admin-serveur/*.php .admin-publication/
+          cp frontend/admin-serveur/*.php frontend/admin-serveur/*.js .admin-publication/
           cp frontend/admin-serveur/htaccess.conf .admin-publication/.htaccess
           ls -a .admin-publication
       - name: Deploy the administration to OVH

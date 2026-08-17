@@ -17,6 +17,7 @@ page permettant de l’installer a déjà disparu de plusieurs interfaces.
 | `frontend/admin/` | l’interface, script Decap embarqué compris |
 | `frontend/admin-serveur/auth.php` | redirige vers GitHub avec un jeton anti-rejeu |
 | `frontend/admin-serveur/callback.php` | échange le code contre un jeton, le remet à Decap |
+| `frontend/admin-serveur/callback.js` | parle à Decap depuis la fenêtre surgissante ; séparé du PHP à cause de la politique de sécurité |
 | `frontend/admin-serveur/htaccess.conf` | déposé sous le nom `.htaccess`, en-têtes de sécurité |
 | `~/orties-admin-secret.php` **sur le serveur** | Client ID et Client Secret, hors du dossier publié, jamais versionné |
 
@@ -144,6 +145,15 @@ restreindre par `<If "%{HTTP_HOST} == '…'">`.
 
 **L’origine du `postMessage` doit être nommée**, jamais `'*'`. Avec `'*'`, n’importe
 quelle page ouvrant le relais repart avec un jeton autorisant l’écriture dans le dépôt.
+
+**Aucun script écrit à même `callback.php`.** La politique de sécurité du sous-domaine
+impose `script-src 'self'` : un script inline est refusé par le navigateur, sans que rien
+ne le signale ailleurs que dans sa console. La fenêtre reste alors indéfiniment sur
+« Connexion en cours… », que l’échange ait réussi ou échoué — les sondages en ligne de
+commande, eux, continuent de montrer un jeton parfaitement obtenu. C’est pourquoi le code
+vit dans `callback.js` et reçoit son message par des attributs `data-`. Toute reprise de
+ce fichier doit conserver cette séparation, et le déploiement doit copier le `.js` en
+même temps que les `.php`.
 
 ## Reconstruire ailleurs
 

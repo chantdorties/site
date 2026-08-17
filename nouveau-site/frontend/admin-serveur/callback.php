@@ -23,32 +23,24 @@ if (($_SERVER['HTTPS'] ?? '') !== 'on' && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ??
 
 /**
  * Rend la page qui parle à Decap, puis s’arrête.
+ *
+ * Le script est un fichier à part, jamais écrit ici : la politique de sécurité du
+ * sous-domaine impose « script-src 'self' », et un script inline serait refusé par le
+ * navigateur — la fenêtre resterait alors sur « Connexion en cours… », quel que soit le
+ * résultat de l’échange. Le message voyage donc par des attributs « data- ».
  */
 function repondre_a_decap(string $type, string $charge, string $origine): never
 {
     $message = 'authorization:github:' . $type . ':' . $charge;
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
-    $message_json = json_encode($message, JSON_THROW_ON_ERROR);
-    $origine_json = json_encode($origine, JSON_THROW_ON_ERROR);
+    $message_html = htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $origine_html = htmlspecialchars($origine, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     echo <<<HTML
     <!doctype html>
     <html lang="fr"><head><meta charset="utf-8"><title>Connexion</title></head>
-    <body><p>Connexion en cours…</p>
-    <script>
-    (function () {
-      var origine = {$origine_json};
-      var message = {$message_json};
-      if (!window.opener) { document.body.textContent = "Cette page doit être ouverte par l’administration."; return; }
-      function transmettre(evenement) {
-        if (evenement.origin !== origine) { return; }
-        window.opener.postMessage(message, origine);
-        window.removeEventListener("message", transmettre, false);
-      }
-      window.addEventListener("message", transmettre, false);
-      window.opener.postMessage("authorizing:github", origine);
-    })();
-    </script>
+    <body><p id="etat">Connexion en cours…</p>
+    <script src="callback.js" data-origine="{$origine_html}" data-message="{$message_html}"></script>
     </body></html>
     HTML;
     exit;
