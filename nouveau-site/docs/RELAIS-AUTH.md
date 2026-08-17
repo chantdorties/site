@@ -68,26 +68,27 @@ Un secret se renouvelle sans rien casser d’autre : il ne concerne que le relai
 
 Le fichier doit rester en permissions `600` et **hors** du dossier `orties-admin`.
 
-## Basculer l’administration sur ce relais
+## La bascule, telle qu’elle a été faite
 
-Deux valeurs, et rien d’autre.
-
-Dans `frontend/admin/config.yml` :
+Deux valeurs, et rien d’autre. Dans `frontend/admin/config.yml` :
 
 ```yaml
 backend:
   base_url: https://orties-admin.varascundo.com
   auth_endpoint: auth.php
-  # site_domain disparaît : il ne servait qu’au relais Netlify
+  # site_domain a disparu : il ne servait qu’au relais Netlify
 ```
 
-Et sur l’OAuth App GitHub, **ajouter** l’URL de rappel
-`https://orties-admin.varascundo.com/callback.php`. L’application en accepte plusieurs :
-conserver celle de Netlify tant que la bascule n’est pas éprouvée.
+Et sur l’OAuth App GitHub, l’URL de rappel `https://orties-admin.varascundo.com/callback.php`
+a été **ajoutée**. L’application en accepte plusieurs : celle de Netlify a été conservée,
+elle ne gêne rien.
 
-**Retour en arrière** : remettre `base_url` à `https://api.netlify.com`, `auth_endpoint`
-à `auth` et `site_domain` à `chantdorties-admin.netlify.app`. Tant que le site Netlify
-existe, l’ancien chemin fonctionne toujours.
+**Retour en arrière.** Il ne suffit pas de rouvrir l’ancienne administration : l’origine
+du `postMessage` est nommée dans le fichier de secrets, si bien que la copie servie par
+Netlify ne peut pas se connecter à travers ce relais-ci. Les deux chemins ne fonctionnent
+donc jamais en parallèle. Revenir en arrière, c’est annuler le commit de bascule —
+`base_url` à `https://api.netlify.com`, `auth_endpoint` à `auth`, `site_domain` à
+`chantdorties-admin.netlify.app` — et laisser les deux publications se refaire.
 
 ## Vérifier
 
@@ -96,6 +97,26 @@ curl -sI https://orties-admin.varascundo.com/            # 200, en-têtes de sé
 curl -sI https://orties-admin.varascundo.com/auth.php    # 302 vers github.com, client_id et state présents
 curl -sI https://orties-admin.varascundo.com/magicieuse/ # 404 : rien d’autre du compte n’est servi
 ```
+
+L’échange du jeton, lui, se sonde sans navigateur : demander un `state`, le rejouer avec
+un code volontairement faux, et lire le motif du refus. GitHub distingue les trois pannes
+possibles.
+
+```bash
+S=$(curl -s -c /tmp/cj.txt -o /dev/null -D - \
+      https://orties-admin.varascundo.com/auth.php \
+    | grep -oP 'relais_etat=\K[0-9a-f]+' | head -1)
+curl -s -b /tmp/cj.txt \
+  "https://orties-admin.varascundo.com/callback.php?code=faux&state=$S" | grep 'message ='
+```
+
+GitHub renvoie sa phrase d’explication, que le relais recopie telle quelle :
+
+| Motif affiché | Ce qu’il faut corriger |
+|---|---|
+| *The code passed is incorrect or expired.* | rien : seul le code était faux, la chaîne est saine |
+| *The redirect_uri MUST match the registered callback URL…* | l’URL de rappel manque sur l’OAuth App |
+| *The client_id and/or client_secret passed are incorrect.* | le secret déposé sur le serveur est erroné |
 
 Puis, dans un navigateur : se connecter, créer une actualité, vérifier qu’une pull
 request apparaît sur le dépôt.

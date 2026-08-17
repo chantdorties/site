@@ -122,8 +122,9 @@ curl -sI http://chantdorties.free.fr/                # le site du client n’a p
 
 ### Administration pendant l’aperçu
 
-L’administration reste publiée par Netlify sur `chantdorties-admin.netlify.app` : elle
-n’est jamais transférée avec le site. Seules les clés `site_url` et `display_url` de
+L’administration a son propre sous-domaine OVH, `orties-admin.varascundo.com`, publié par
+`.github/workflows/admin.yml` : elle n’est jamais transférée avec le site, et le dossier
+d’aperçu ne la contient pas. Seules les clés `site_url` et `display_url` de
 `frontend/admin/config.yml` pointent vers l’aperçu, pour que les liens « voir le site »
 n’envoient pas le client sur l’ancien site. Les modifications continuent de passer par le
 flux éditorial : rien n’est publié sans validation.

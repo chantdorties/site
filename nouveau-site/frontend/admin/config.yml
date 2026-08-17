@@ -9,9 +9,11 @@ backend:
   name: github
   repo: chantdorties/site
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
-  site_domain: chantdorties-admin.netlify.app
+  # Relais d’authentification maison, sur le même domaine que cette administration —
+  # voir docs/RELAIS-AUTH.md. « site_domain » n’a plus lieu d’être : il ne servait qu’au
+  # relais Netlify, que ce dernier retire progressivement.
+  base_url: https://orties-admin.varascundo.com
+  auth_endpoint: auth.php
   squash_merges: true
   use_graphql: true
 

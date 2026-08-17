@@ -10,8 +10,8 @@ si l’un d’eux disparaît, et comment s’en remettre.
 |---|---|---|
 | Dépôt `chantdorties/site` | compte GitHub **chantdorties** | contenus, code, secrets, automatisations |
 | Hébergement du site | pages perso **Free** du client | le site public |
-| Administration (Decap) | site Netlify **chantdorties-admin**, compte personnel du prestataire | interface de saisie |
-| Relais d’authentification | OAuth App GitHub du compte **chantdorties**, relayée par `api.netlify.com/auth` | connexion à l’administration |
+| Administration (Decap) | hébergement OVH du prestataire, sous-domaine `orties-admin` | interface de saisie |
+| Relais d’authentification | deux fichiers PHP sur ce même sous-domaine, adossés à l’OAuth App GitHub du compte **chantdorties** | connexion à l’administration |
 | Aperçu client | hébergement OVH du prestataire | temporaire, disparaît à la mise en ligne |
 
 Le compte GitHub `chantdorties` est destiné au client : il est propriétaire du dépôt, et
@@ -23,9 +23,9 @@ collaborateur en écriture, ce qui suffit à intervenir sans détenir le compte.
 | Si… | Alors | Gravité |
 |---|---|---|
 | le compte GitHub `chantdorties` est perdu | plus de dépôt, plus de contenus versionnés | **critique** |
-| le compte Netlify du prestataire est perdu | plus d’administration ; le site en ligne continue de fonctionner | sérieux, réparable |
+| l’hébergement OVH du prestataire est perdu | plus d’administration ; le site en ligne continue de fonctionner | sérieux, réparable |
 | l’OAuth App GitHub est supprimée | plus de connexion à l’administration | réparable en 10 minutes |
-| `api.netlify.com/auth` ferme | plus de connexion à l’administration | à surveiller, voir plus bas |
+| le fichier de secrets du relais est perdu | plus de connexion à l’administration | réparable, voir `RELAIS-AUTH.md` |
 | l’hébergement Free ferme | le site n’est plus servi | le dépôt suffit à republier ailleurs |
 
 Aucun de ces incidents ne fait perdre les contenus : ils vivent dans Git, avec leur
@@ -33,38 +33,39 @@ historique complet.
 
 ## Point de fragilité connu
 
-**L’administration dépend du compte Netlify personnel du prestataire.** C’est un choix
-assumé tant qu’il reste en charge du site. Le client doit le savoir : sans ce compte,
-l’interface de saisie s’arrête — le site public, lui, continue de fonctionner et reste
-modifiable en éditant les fichiers JSON du dépôt.
+**L’administration et son relais dépendent de l’hébergement OVH du prestataire.** C’est
+un choix assumé tant qu’il reste en charge du site. Le client doit le savoir : sans cet
+hébergement, l’interface de saisie s’arrête — le site public, lui, continue de fonctionner
+et reste modifiable en éditant les fichiers JSON du dépôt.
 
-La réparation ne dépend de personne, et prend une dizaine de minutes :
+La réparation ne dépend de personne, et prend une dizaine de minutes. Elle est détaillée
+dans [RELAIS-AUTH.md](RELAIS-AUTH.md), section « Reconstruire ailleurs » ; en résumé :
 
-1. Créer un compte Netlify, `Add new site > Import an existing project`, choisir le dépôt
-   `chantdorties/site`. Les réglages viennent du `netlify.toml` : base `nouveau-site`,
-   publication `frontend`, branche `main`.
-2. Créer une OAuth App sur `github.com/settings/developers`, depuis le compte
-   `chantdorties` : URL de rappel `https://api.netlify.com/auth/done`, sans expiration
-   des jetons. Une application existante se transfère d’un compte à l’autre par
-   `Transfer ownership`, sans que le Client ID ni le Client Secret ne changent — rien
-   n’est alors à reporter dans Netlify.
-3. Dans Netlify, `Project configuration > Access & security > OAuth > Install provider`,
-   y coller le Client ID et le Client Secret.
-4. **Reporter le nouveau domaine Netlify dans `frontend/admin/config.yml`**, clé
-   `backend.site_domain`. Sans cela l’authentification échoue silencieusement.
+1. Déposer sur n’importe quel hébergement servant du PHP — **sauf les pages perso de
+   Free, qui bloquent toute sortie réseau** — le contenu de `frontend/admin/` et les deux
+   fichiers du relais, `frontend/admin-serveur/`. Le workflow `.github/workflows/admin.yml`
+   décrit exactement ce qu’il faut assembler.
+2. Recréer hors du dossier publié le fichier de secrets `orties-admin-secret.php`, avec le
+   Client ID, le Client Secret et la nouvelle origine.
+3. Sur `github.com/settings/developers`, compte `chantdorties`, ajouter l’URL de rappel du
+   nouveau relais. Une application existante se transfère d’un compte à l’autre par
+   `Transfer ownership`, sans que le Client ID ni le Client Secret ne changent.
+4. **Reporter la nouvelle adresse dans `frontend/admin/config.yml`**, clé
+   `backend.base_url`. Sans cela l’authentification échoue silencieusement.
 
-## Plan de repli du relais d’authentification
+## Le relais d’authentification, et pourquoi il est à nous
 
-Le service `api.netlify.com/auth` est un vestige que Netlify retire progressivement — la
-page permettant d’en installer un a déjà disparu de certaines interfaces. Il fonctionne
-aujourd’hui ; le remplacer n’est pas urgent, mais le jour venu il faudra un relais à soi.
+Le service `api.netlify.com/auth`, dont dépendait l’administration jusqu’ici, est un
+vestige que Netlify retire progressivement — la page permettant d’en installer un a déjà
+disparu de certaines interfaces. Il a donc été remplacé par un relais maison, décrit dans
+[RELAIS-AUTH.md](RELAIS-AUTH.md).
 
 Son rôle tient en trois gestes : rediriger vers `github.com/login/oauth/authorize`,
 recevoir le code d’autorisation, l’échanger contre un jeton et le renvoyer à Decap par
 `postMessage`. Une soixantaine de lignes. Il détient le Client Secret, d’où la nécessité
 d’un serveur.
 
-Les hébergements ont été mesurés, inutile de refaire l’essai :
+Les hébergements ont été mesurés avant de choisir, inutile de refaire l’essai :
 
 | Hébergement | PHP | Sorties réseau | Verdict |
 |---|---|---|---|
@@ -75,16 +76,15 @@ Les hébergements ont été mesurés, inutile de refaire l’essai :
 Free est hors jeu : ses pages perso ne peuvent joindre aucun serveur extérieur, ce qui
 interdit l’échange du jeton, quelle que soit la version de PHP.
 
-Deux options restent donc, selon qui doit posséder la chaîne. Une **fonction Netlify**
-dans le site d’administration : rien de nouveau à maintenir, relais sur le même domaine
-que l’admin — la politique de sécurité peut alors se resserrer à `'self'` — et le client
-garde la capacité de tout reconstruire. Ou un **script PHP sur un hébergement du
-prestataire** : maîtrise complète, aucun éditeur ne peut le déprécier, mais le client en
-dépend durablement.
+C’est donc le **script PHP sur l’hébergement OVH du prestataire** qui a été retenu, avec
+l’administration servie sur le même sous-domaine : maîtrise complète, aucun éditeur ne
+peut le déprécier, et la politique de sécurité se resserre puisque tout vient d’une seule
+origine. La contrepartie est écrite plus haut — le client en dépend durablement, et la
+reconstruction ailleurs ne demande qu’un hébergement PHP.
 
-Dans les deux cas, la bascule tient en trois changements : `backend.base_url` et
-`backend.auth_endpoint` dans `frontend/admin/config.yml`, l’URL de rappel de l’OAuth App
-repointée vers le nouveau relais, et le Client Secret déposé côté serveur.
+La bascule a tenu en trois changements, à refaire à l’identique le jour d’un déménagement :
+`backend.base_url` et `backend.auth_endpoint` dans `frontend/admin/config.yml`, l’URL de
+rappel ajoutée à l’OAuth App, et le Client Secret déposé côté serveur.
 
 ## À faire pour achever la passation
 

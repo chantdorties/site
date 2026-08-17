@@ -73,22 +73,29 @@ Ouvrir <http://127.0.0.1:8766/admin/>. Le proxy Decap local écrit directement d
 
 ## Accès en ligne sécurisé
 
-L’hébergement Free ne propose pas HTTPS pour ce site. L’administration doit donc
-être servie séparément en HTTPS afin de ne pas exposer le jeton GitHub.
+L’hébergement Free ne propose pas HTTPS pour ce site. L’administration est donc
+servie séparément en HTTPS, afin de ne pas exposer le jeton GitHub.
 
-1. Dans Netlify, créer un projet depuis le dépôt privé `chantdorties/site`.
-2. Choisir le nom de site `chantdorties-admin`. Le fichier `netlify.toml` publie
-   uniquement les sources statiques nécessaires ; aucun build Netlify n’est requis.
-3. Dans GitHub, créer une OAuth App avec :
-   - Homepage URL : `https://chantdorties-admin.netlify.app`
-   - Authorization callback URL : `https://api.netlify.com/auth/done`
-4. Dans Netlify, ouvrir `Project configuration > Access & security > OAuth`, puis
-   installer le fournisseur GitHub avec le Client ID et le Client Secret de l’app.
-5. Ouvrir <https://chantdorties-admin.netlify.app/admin/> et se connecter avec un
-   compte GitHub collaborateur du dépôt.
+Elle vit sur <https://orties-admin.varascundo.com/>, sur l’hébergement OVH du
+prestataire. Le workflow `.github/workflows/admin.yml` l’y publie à chaque
+modification de `frontend/admin/` ou `frontend/admin-serveur/` — un contenu
+enregistré par un rédacteur ne déclenche donc rien ici.
 
-Si Netlify attribue un autre nom, remplacer `chantdorties-admin.netlify.app` dans
-`frontend/admin/config.yml`, puis pousser la modification.
+La connexion passe par un relais d’authentification maison, deux fichiers PHP
+servis sur ce même domaine, qui échangent le code d’autorisation GitHub contre un
+jeton. L’OAuth App du compte `chantdorties` porte pour cela l’URL de rappel
+`https://orties-admin.varascundo.com/callback.php`, et le Client Secret reste sur
+le serveur, hors du dossier publié. Tout est décrit dans
+[RELAIS-AUTH.md](RELAIS-AUTH.md) : dépôt du secret, vérifications, reconstruction
+ailleurs.
+
+Pour s’en servir : ouvrir l’adresse ci-dessus et se connecter avec un compte
+GitHub collaborateur du dépôt.
+
+Le site Netlify `chantdorties-admin` existe toujours et sert de repli. Il ne
+fonctionne qu’avec l’ancien relais `api.netlify.com/auth` : y revenir suppose
+d’annuler la bascule dans `frontend/admin/config.yml`, comme l’explique
+RELAIS-AUTH.md.
 
 ## Contrôles appliqués
 
