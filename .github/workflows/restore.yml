@@ -39,7 +39,7 @@ jobs:
 
   restore:
     needs: rebuild
-    runs-on: [self-hosted, linux, free-deploy]
+    runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v7

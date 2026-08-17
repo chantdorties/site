@@ -42,7 +42,7 @@ jobs:
   publish:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.FREE_DEPLOY_ENABLED == 'true'
     needs: validate
-    runs-on: [self-hosted, linux, free-deploy]
+    runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v7

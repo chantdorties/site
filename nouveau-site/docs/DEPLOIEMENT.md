@@ -14,9 +14,11 @@ Un échec arrête la publication et laisse la version en ligne intacte.
 
 ## Déploiement Free
 
-Free limite les connexions FTP selon leur provenance géographique. La tâche de
-publication utilise donc un runner GitHub auto-hébergé, placé sur une machine en
-France et portant les labels `self-hosted`, `linux` et `free-deploy`.
+La publication tourne sur un runner GitHub standard. La documentation d’origine
+prévoyait un runner auto-hébergé en France, Free étant réputé filtrer le FTP selon la
+provenance géographique : la mesure a montré qu’il n’en est rien. Depuis un runner GitHub
+aux États-Unis, la connexion, l’authentification et le listage aboutissent exactement
+comme depuis une connexion française.
 
 Dans `Settings > Secrets and variables > Actions`, configurer :
 
@@ -28,11 +30,6 @@ Dans `Settings > Secrets and variables > Actions`, configurer :
 
 Créer aussi l’environnement GitHub `production`. Une approbation obligatoire peut
 y être activée avant chaque transfert.
-
-Le runner doit disposer de Git, Python 3 et d’une connexion autorisée par Free. Son
-installation se fait depuis `Settings > Actions > Runners > New self-hosted runner` ;
-GitHub fournit les commandes et le jeton temporaire propres au dépôt. Ajouter le
-label personnalisé `free-deploy`, puis installer le runner comme service.
 
 Le script `tools/deploy-ftp.py --target free` utilise le FTP passif. Il exclut `/admin/`,
 envoie les médias avant les pages, remplace chaque fichier par renommage et conserve un
