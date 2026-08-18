@@ -1,0 +1,86 @@
+/* Les cartes colorées de la page « La maison ». Leurs teintes alternent par
+   groupes de trois, d'où les règles :nth-child.
+   Le HTML est dans tools/rendu/pages/maison.py
+   La grille se resserre à 1020 px puis passe sur une colonne à 430 px :
+   voir 90-tablette-1020px.css et 92-mobile-430px.css */
+
+.collection-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.house-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.house-card {
+  --house-accent: var(--red);
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--house-accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.house-card:nth-child(3n + 2) {
+  --house-accent: var(--green);
+  background: var(--green-pale);
+}
+
+.house-card:nth-child(3n + 3) {
+  --house-accent: var(--blue);
+  background: #e5edf2;
+}
+
+.house-card:hover {
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.house-card__eyebrow {
+  margin-bottom: 12px;
+  color: var(--house-accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.house-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.55rem;
+}
+
+.house-card__summary {
+  color: #454b46;
+}
+
+.house-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.house-card__action .icon {
+  transition: transform 180ms ease;
+}
+
+.house-card:hover .house-card__action .icon {
+  transform: translateX(4px);
+}
+

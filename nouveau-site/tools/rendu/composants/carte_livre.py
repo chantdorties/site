@@ -4,8 +4,7 @@ Elle apparaît dans le catalogue, sur l'accueil et sur les pages de collection :
 la couverture cliquable, le nom de la collection, le titre, puis le type d'ouvrage,
 l'âge minimum et le prix réunis sur une seule ligne séparée par des points médians.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .book-card, .book-card__cover, .book-card__collection, .book-card__meta
+Le style correspondant est dans frontend/assets/css/30-cartes-livre-personne.css
 """
 
 from __future__ import annotations

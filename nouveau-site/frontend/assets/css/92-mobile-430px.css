@@ -1,0 +1,76 @@
+/* Ajustements pour les écrans de moins de 430 px : téléphones tenus debout.
+   Ces règles s'appliquent par-dessus celles de tous les fichiers précédents,
+   y compris 90 et 91. */
+
+@media (max-width: 430px) {
+  .house-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .house-card {
+    min-height: 245px;
+  }
+
+  .collection-showcase__item {
+    grid-template-columns: minmax(0, 1fr) 116px;
+    min-height: 300px;
+  }
+
+  .collection-showcase__copy {
+    padding-left: 20px;
+  }
+
+  .collection-showcase :is(h2, h3) {
+    font-size: 1.45rem;
+  }
+
+  .collection-showcase__covers {
+    padding-right: 8px;
+  }
+
+  .collection-showcase__covers img {
+    width: 82px;
+  }
+
+  .collection-showcase__covers img + img {
+    margin-left: -62px;
+  }
+
+  .book-grid,
+  .person-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-card {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .book-card__cover-link {
+    grid-row: 1 / span 4;
+    margin: 0;
+  }
+
+  .book-card__collection {
+    margin: 0;
+  }
+
+  .book-card h3 {
+    font-size: 1.08rem;
+  }
+
+  .person-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .person-card .monogram {
+    font-size: 2.2rem;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+}
+

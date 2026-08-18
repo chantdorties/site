@@ -1,3 +1,4 @@
+
 """L'annuaire des auteurs et illustrateurs, et la fiche de chaque personne.
 
 `build_people_index` dessine la page /personnes/ : titre, champ de recherche, filtre
@@ -7,9 +8,9 @@ frontend/assets/js/people.js, qui lit /data/personnes.json.
 `build_person_pages` dessine une page par personne : portrait ou monogramme,
 biographie, liens, galerie, et la liste de ses livres regroupés par rôle.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .person-grid, .person-card, .person-card__visual, .monogram,
-.person-detail, .person-detail__visual, .filter-grid--people
+Le style correspondant est dans frontend/assets/css/34-page-personne.css pour la
+fiche, 30-cartes-livre-personne.css pour les cartes de l'annuaire et
+31-filtres-et-resultats.css pour la recherche.
 """
 
 from __future__ import annotations

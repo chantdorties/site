@@ -5,8 +5,9 @@ disponibilité), puis d'une grille vide au chargement. Les livres eux-mêmes son
 déposés par frontend/assets/js/catalogue.js, qui lit /data/livres.json : le HTML
 ci-dessous ne contient donc aucun livre, seulement le décor et les champs.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .page-heading, .filter-panel, .filter-grid, .field, .results-bar, .book-grid
+Le style correspondant est dans frontend/assets/css/31-filtres-et-resultats.css ;
+le titre de la page suit 15-titre-de-page.css et les cartes
+30-cartes-livre-personne.css.
 """
 
 from __future__ import annotations

@@ -3,7 +3,9 @@
 Ce dossier contient les sources communes du site :
 
 - `templates/base.html` : le `<head>` et la carcasse des pages publiques ;
-- `assets/css/site.css` : mise en page et composants visuels ;
+- `assets/css/` : la feuille de style, découpée en fichiers courts numérotés et
+  recollée en un seul `site.css` à la génération ; le numéro donne l’ordre
+  d’application, donc renommer un fichier déplace ses règles dans la cascade ;
 - `assets/js/site.js` : menu mobile, retour en haut et galeries ;
 - `assets/js/catalogue.js` : recherche et filtres du catalogue ;
 - `assets/js/people.js` : recherche et filtres de l’annuaire ;

@@ -4,8 +4,7 @@ Chaque vignette est un bouton ; un clic ouvre l'image en grand dans une fenêtre
 superposée. L'ouverture et la fermeture sont assurées par
 frontend/assets/js/site.js.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .gallery-grid, .gallery-item, .gallery-dialog, .dialog-close
+Le style correspondant est dans frontend/assets/css/33-galerie.css
 """
 
 from __future__ import annotations

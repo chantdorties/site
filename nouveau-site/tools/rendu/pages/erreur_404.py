@@ -3,9 +3,9 @@
 Elle reste volontairement courte : le code 404, une explication d'une phrase, et un
 bouton qui ramène au catalogue.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .error-page et .error-code. La page pose aussi la classe « not-found-page »
-sur le <body>, prête à servir, mais aucune règle ne s'en sert aujourd'hui.
+Le style correspondant est dans frontend/assets/css/42-page-404.css. La page pose
+aussi la classe « not-found-page » sur le <body>, prête à servir, mais aucune
+règle ne s'en sert aujourd'hui.
 """
 
 from __future__ import annotations

@@ -6,8 +6,8 @@ loupe, et — sur téléphone — le bouton d'ouverture du menu puis le menu lui
 Les entrées du menu ne sont pas écrites ici : elles viennent de
 content/reglages/navigation.json et se modifient depuis l'administration.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .site-header, .wordmark, .primary-nav, .nav-link, .menu-button, .mobile-nav
+Le style correspondant est dans frontend/assets/css/10-en-tete.css pour le
+bandeau et la navigation, et 12-menu-mobile.css pour le menu des petits écrans.
 """
 
 from __future__ import annotations

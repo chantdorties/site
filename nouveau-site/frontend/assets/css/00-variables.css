@@ -1,0 +1,25 @@
+/* Les couleurs, les polices et les espacements de tout le site, réunis ici.
+   Changer une valeur ici la change partout : c'est le fichier à ouvrir en
+   premier pour retoucher l'ambiance générale.
+   Sur téléphone, certains espacements sont réduits : voir 91-mobile-760px.css */
+
+:root {
+  --paper: #f7f7f4;
+  --surface: #ffffff;
+  --ink: #171a18;
+  --muted: #626862;
+  --line: #d8dcd6;
+  --red: #c63f32;
+  --red-dark: #963128;
+  --green: #3e6b50;
+  --green-pale: #dfe9e2;
+  --blue: #275c7a;
+  --yellow: #f1c84b;
+  --header-height: 72px;
+  --content-width: 1180px;
+  --reading-width: 760px;
+  --radius: 6px;
+  --shadow: 0 14px 40px rgba(23, 26, 24, 0.1);
+  color-scheme: light;
+}
+

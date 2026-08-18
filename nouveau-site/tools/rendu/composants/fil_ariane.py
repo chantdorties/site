@@ -3,7 +3,7 @@
 Placé en haut des pages intérieures, il rappelle où l'on se trouve. Le dernier élément
 n'est pas un lien puisqu'il désigne la page courante.
 
-Le style correspondant est dans frontend/assets/css/site.css, règle .breadcrumbs
+Le style correspondant est dans frontend/assets/css/16-fil-ariane.css
 """
 
 from __future__ import annotations

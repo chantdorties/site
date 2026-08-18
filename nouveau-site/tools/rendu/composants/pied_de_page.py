@@ -7,8 +7,7 @@ en haut de page.
 Les textes et les liens viennent de content/reglages/pied-de-page.json et
 content/reglages/site.json ; ils se modifient depuis l'administration.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .site-footer, .footer-grid, .footer-identity, .footer-links, .footer-bottom
+Le style correspondant est dans frontend/assets/css/40-pied-de-page.css
 """
 
 from __future__ import annotations

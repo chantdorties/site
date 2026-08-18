@@ -4,8 +4,7 @@ Une carte par page éditoriale publiée : sa rubrique, son titre, les premiers m
 son texte, et son libellé d'action. Les couleurs des cartes alternent par groupes de
 trois (voir .house-card:nth-child dans la feuille de style).
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .house-grid, .house-card, .house-card__eyebrow, __summary, __action
+Le style correspondant est dans frontend/assets/css/24-cartes-maison.css
 """
 
 from __future__ import annotations

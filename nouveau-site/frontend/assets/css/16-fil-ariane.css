@@ -1,0 +1,17 @@
+/* Le chemin « Accueil / Catalogue / … » en haut des pages intérieures.
+   Le HTML est dans tools/rendu/composants/fil_ariane.py */
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.breadcrumbs a {
+  color: inherit;
+}
+

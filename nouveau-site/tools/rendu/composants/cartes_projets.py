@@ -5,9 +5,8 @@
 crédits, collection et date de sortie prévue — sans couverture ni prix, puisque le
 livre n'existe pas encore.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .project-grid, .project-card, .project-card__summary, __credits,
-__collection, __release, et .contributors
+Le style correspondant est dans frontend/assets/css/37-projets.css ; les noms
+des auteurs suivent .contributors, dans 32-page-livre.css.
 """
 
 from __future__ import annotations

@@ -1,0 +1,30 @@
+/* Les gabarits de largeur communs à toutes les pages.
+   .container centre le contenu et pose les marges latérales ; .reading-width
+   limite la longueur des lignes de texte ; .skip-link est le lien d'évitement
+   qui apparaît à la première tabulation, pour aller droit au contenu.
+   Le HTML est dans frontend/templates/base.html */
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 8px;
+  left: 8px;
+  padding: 10px 14px;
+  transform: translateY(-150%);
+  background: var(--ink);
+  color: #fff;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.container {
+  width: min(calc(100% - 40px), var(--content-width));
+  margin-inline: auto;
+}
+
+.reading-width {
+  width: min(100%, var(--reading-width));
+}
+

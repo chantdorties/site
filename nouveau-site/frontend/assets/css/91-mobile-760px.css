@@ -1,0 +1,183 @@
+/* Ajustements pour les écrans de moins de 760 px : téléphones tenus dans le
+   sens de la largeur et petites tablettes. Le plus fourni des quatre : la
+   plupart des mises en deux colonnes s'y défont.
+   Ces règles s'appliquent par-dessus celles des fichiers précédents. */
+
+@media (max-width: 760px) {
+  :root {
+    --header-height: 64px;
+  }
+
+  .container {
+    width: min(calc(100% - 28px), var(--content-width));
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .wordmark {
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 42px 0 34px;
+  }
+
+  .hero h1 {
+    font-size: 3.05rem;
+  }
+
+  .hero .lead {
+    font-size: 1.08rem;
+  }
+
+  .cover-ribbon {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .cover-ribbon a:nth-child(n + 4) {
+    display: none;
+  }
+
+  .cover-ribbon a:nth-child(even) img {
+    transform: none;
+  }
+
+  .page-heading {
+    padding: 44px 0 34px;
+  }
+
+  .section {
+    padding: 50px 0;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .collection-showcase__item {
+    grid-template-columns: minmax(0, 1fr) 190px;
+    min-height: 270px;
+  }
+
+  .collection-showcase__copy {
+    padding: 24px 0 22px 24px;
+  }
+
+  .collection-showcase__number {
+    margin-bottom: 17px;
+  }
+
+  .collection-showcase__covers {
+    padding-right: 14px;
+  }
+
+  .collection-showcase__covers img {
+    width: 100px;
+  }
+
+  .collection-showcase__covers img + img {
+    margin-left: -65px;
+  }
+
+  .book-grid,
+  .person-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 14px;
+  }
+
+  .filter-grid,
+  .filter-grid--people {
+    grid-template-columns: 1fr;
+  }
+
+  .book-detail,
+  .person-detail,
+  .editorial-layout {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .book-detail__cover,
+  .person-detail__visual {
+    width: min(100%, 380px);
+    margin-inline: auto;
+  }
+
+  .book-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .editorial-aside {
+    padding: 22px 0 0;
+    border-top: 3px solid var(--green);
+    border-left: 0;
+  }
+
+  .news-callout h2 {
+    font-size: 2.15rem;
+  }
+
+  .news-grid,
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .news-topics {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+  }
+
+  .news-topics span + span {
+    padding-left: 0;
+    border-top: 1px solid #aebdc5;
+    border-left: 0;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+  }
+
+  .split-callout {
+    grid-template-columns: 1fr;
+  }
+
+  .split-callout a + a {
+    border-top: 1px solid #3c413d;
+    border-left: 0;
+  }
+
+  .home-commercial__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .home-commercial__details {
+    border-top: 3px solid var(--red);
+    border-left: 0;
+    padding-top: 1.5rem;
+    padding-left: 0;
+  }
+
+  .commercial-audiences {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+

@@ -1,0 +1,12 @@
+/* Le bandeau « Prévisualisation » affiché uniquement par « make preview »,
+   au-dessus d'un contenu non encore validé. Il n'apparaît jamais en ligne.
+   Le HTML est dans tools/rendu/gabarit.py */
+
+.draft-notice {
+  padding: 14px 0;
+  border-bottom: 1px solid #cf9e2e;
+  background: #fff3c7;
+  color: #5b430a;
+  font-weight: 700;
+}
+

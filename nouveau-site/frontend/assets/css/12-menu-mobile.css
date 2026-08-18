@@ -1,0 +1,37 @@
+/* Le bouton d'ouverture du menu et le menu déroulant, visibles seulement sur
+   les écrans étroits. Ils sont masqués par défaut ici et rendus visibles par
+   90-tablette-1020px.css.
+   Le HTML est dans tools/rendu/composants/en_tete.py, l'ouverture et la
+   fermeture dans frontend/assets/js/site.js */
+
+.menu-button {
+  display: none;
+}
+
+.menu-button__open,
+.menu-button__close {
+  width: 100%;
+  height: 100%;
+  place-items: center;
+}
+
+.menu-button__open {
+  display: grid;
+}
+
+.menu-button__close {
+  display: none;
+}
+
+.menu-button[aria-expanded="true"] .menu-button__open {
+  display: none;
+}
+
+.menu-button[aria-expanded="true"] .menu-button__close {
+  display: grid;
+}
+
+.mobile-nav {
+  display: none;
+}
+

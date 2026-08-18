@@ -1,0 +1,41 @@
+/* Les pages de texte de la maison : colonne de lecture à gauche, encadré de
+   liens à droite.
+   Le HTML est dans tools/rendu/pages/editoriales.py
+   Les deux colonnes s'empilent sur téléphone : voir 91-mobile-760px.css */
+
+.editorial-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 72px;
+}
+
+.editorial-section {
+  padding-bottom: 34px;
+  margin-bottom: 34px;
+  border-bottom: 1px solid var(--line);
+}
+
+.editorial-section:last-child {
+  border-bottom: 0;
+}
+
+.editorial-section p:last-child {
+  margin-bottom: 0;
+}
+
+.editorial-aside {
+  align-self: start;
+  padding-left: 24px;
+  border-left: 3px solid var(--green);
+}
+
+.editorial-aside h2 {
+  font-family: inherit;
+  font-size: 0.84rem;
+  text-transform: uppercase;
+}
+
+.editorial-aside ul {
+  padding-left: 18px;
+}
+
