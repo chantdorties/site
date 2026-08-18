@@ -39,10 +39,13 @@ def main() -> None:
     )
     builder.build()
     report = read_json(builder.report_path)
+    medias = report["medias"]
+    reprises = medias["imagesReprises"]
+    detail = f" ({reprises} reprises du cache)" if reprises else ""
     print(
         f"Site generated in {output}: {report['pagesHtml']} HTML pages, "
-        f"{report['medias']['images']} optimized images, "
-        f"{report['medias']['documents']} documents."
+        f"{medias['images']} optimized images{detail}, "
+        f"{medias['documents']} documents."
     )
 
 

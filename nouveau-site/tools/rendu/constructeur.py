@@ -79,6 +79,10 @@ class SiteBuilder(
         self.temp_output = self.output.with_name(f".{self.output.name}-build")
         self.include_drafts = include_drafts
         self.content_dir = self.root / "content"
+        # Les images optimisées sont conservées d'une génération à l'autre. Ce dossier
+        # est délibérément hors de dist/ et de .dist-build/, qui sont effacés à chaque
+        # fois. Le supprimer est sans conséquence : il se reconstruit tout seul.
+        self.cache_medias = self.root / ".cache-medias"
         self.frontend_dir = self.root / "frontend"
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
@@ -129,6 +133,8 @@ class SiteBuilder(
         self.generated_routes: list[str] = []
         self.media_stats = {
             "images": 0,
+            # Parmi elles, celles reprises du cache faute d'avoir changé.
+            "imagesReprises": 0,
             "documents": 0,
             "compressedDocuments": 0,
             "skippedDocuments": 0,

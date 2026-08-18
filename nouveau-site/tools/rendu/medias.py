@@ -3,15 +3,22 @@
 Les couvertures, portraits, illustrations et emblèmes sont recompressés en WebP à deux
 tailles ; les PDF sont copiés et allégés. Ce fichier ne contient aucun HTML : il ne
 produit que les fichiers déposés dans dist/assets/media/.
+
+Recompresser les 447 images prend une quarantaine de secondes, soit la quasi-totalité
+du temps de génération. Le résultat est donc conservé dans .cache-medias/ : une image
+dont le fichier source n'a pas changé est reprise telle quelle. Ce dossier peut être
+supprimé à tout moment sans conséquence, il se reconstruit tout seul.
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 import shutil
 import subprocess
 from pathlib import Path
 
+import PIL
 from PIL import Image, ImageFile, ImageOps
 
 from content_data import media_path
@@ -23,18 +30,58 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 PDFINFO_BINARY = "/usr/bin/pdfinfo" if Path("/usr/bin/pdfinfo").is_file() else shutil.which("pdfinfo")
 GHOSTSCRIPT_BINARY = "/usr/bin/gs" if Path("/usr/bin/gs").is_file() else shutil.which("gs")
 
+# Réglages d'encodage des images, isolés ici parce qu'ils entrent dans la clé du cache.
+QUALITE_WEBP = 83
+METHODE_WEBP = 6
+
+# À incrémenter à la main si save_webp change de traitement — rotation, conversion,
+# redimensionnement. Sans cela, le cache resservirait des images fabriquées à l'ancienne.
+VERSION_RECETTE = 1
+
 
 class Medias:
+    def empreinte_image(self, source: Path, max_size: tuple[int, int]) -> Path:
+        """Le fichier du cache correspondant à cette image et à cette taille.
+
+        La clé couvre tout ce qui influe sur le résultat : les octets de la source — sa
+        date ne compte pas, recopier un fichier ne doit rien invalider —, la taille
+        demandée, les réglages d'encodage, la version de Pillow qui peut encoder
+        autrement d'une version à l'autre, et le numéro de recette.
+        """
+        recette = (
+            f"{VERSION_RECETTE}|{max_size[0]}x{max_size[1]}"
+            f"|q{QUALITE_WEBP}|m{METHODE_WEBP}|pillow{PIL.__version__}"
+        )
+        empreinte = hashlib.sha256()
+        empreinte.update(source.read_bytes())
+        empreinte.update(recette.encode("utf-8"))
+        return self.cache_medias / f"{empreinte.hexdigest()}.webp"
+
     def save_webp(self, source: Path, destination: Path, max_size: tuple[int, int]) -> None:
         destination.parent.mkdir(parents=True, exist_ok=True)
+        cache = self.empreinte_image(source, max_size)
+
+        if cache.is_file():
+            shutil.copyfile(cache, destination)
+            self.media_stats["images"] += 1
+            self.media_stats["imagesReprises"] += 1
+            return
+
         with Image.open(source) as raw_image:
             raw_image.seek(0)
             image = ImageOps.exif_transpose(raw_image)
             image.thumbnail(max_size, Image.Resampling.LANCZOS)
             if image.mode not in {"RGB", "RGBA"}:
                 image = image.convert("RGBA" if "transparency" in image.info else "RGB")
-            image.save(destination, "WEBP", quality=83, method=6)
+            image.save(destination, "WEBP", quality=QUALITE_WEBP, method=METHODE_WEBP)
         self.media_stats["images"] += 1
+
+        # Dépôt en deux temps : une génération interrompue ne doit pas laisser dans le
+        # cache une image tronquée, qui serait ensuite resservie telle quelle.
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        provisoire = cache.with_name(f"{cache.name}.{os.getpid()}.partiel")
+        shutil.copyfile(destination, provisoire)
+        provisoire.replace(cache)
 
     def optimize_images(self) -> None:
         for book in self.books:

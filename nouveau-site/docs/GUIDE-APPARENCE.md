@@ -180,10 +180,14 @@ make dev
 Ouvrir <http://127.0.0.1:8766/>. À chaque enregistrement d’un fichier — CSS, HTML ou
 `tools/rendu/` — le site est refait et la page se recharge toute seule.
 
-⏱️ **Compter une minute et demie à deux minutes par régénération.** Le site refait
-l’intégralité des 447 images à chaque fois. C’est long : enregistrer plusieurs
-modifications d’un coup plutôt qu’une par une, et attendre le message
-`[dev] Site régénéré.` avant de juger le résultat à l’écran.
+⏱️ **La première génération demande une quarantaine de secondes**, le temps de
+préparer les 447 images. Les suivantes prennent **moins d’une seconde** : les images
+inchangées sont reprises telles quelles dans le dossier `.cache-medias/`. Seule une
+image réellement remplacée est refaite.
+
+Ce dossier ne se trouve pas dans le dépôt et **peut être supprimé à tout moment sans
+risque** : il se reconstruit tout seul à la génération suivante. La seule conséquence
+est d’attendre à nouveau une quarantaine de secondes.
 
 Avant de proposer les modifications :
 

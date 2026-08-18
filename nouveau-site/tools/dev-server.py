@@ -84,8 +84,19 @@ def needs_initial_build(root: Path) -> bool:
 
 
 def copy_frontend_assets(root: Path, changed: set[Path]) -> bool:
+    """Recopie directement une ressource modifiée, sans régénérer tout le site.
+
+    Le CSS en est exclu : il n'est plus servi tel quel mais recollé à partir des
+    morceaux de frontend/assets/css/. Recopier un morceau le déposerait dans dist/ à
+    un emplacement que personne ne lit, et site.css resterait périmé — la modification
+    n'apparaîtrait jamais. Une modification de style passe donc par une génération
+    complète, désormais quasi instantanée grâce au cache des images.
+    """
     assets_root = root / "frontend" / "assets"
+    css_root = assets_root / "css"
     if not changed or not all(path.is_file() and path.is_relative_to(assets_root) for path in changed):
+        return False
+    if any(path.is_relative_to(css_root) for path in changed):
         return False
     for path in changed:
         destination = root / "dist" / "assets" / path.relative_to(assets_root)
