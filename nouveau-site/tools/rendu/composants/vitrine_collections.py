@@ -4,9 +4,7 @@ Une tuile par collection : son emblème, son numéro d'ordre, son titre, sa desc
 un lien « Découvrir N livres », et sur la droite jusqu'à trois couvertures en éventail.
 Elle sert sur l'accueil (titres de niveau 3) et sur la page Collections (niveau 2).
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .collection-showcase, .collection-showcase__item, __copy, __number,
-__description, __link, __covers, __emblem
+Le style correspondant est dans frontend/assets/css/25-vitrine-collections.css
 """
 
 from __future__ import annotations

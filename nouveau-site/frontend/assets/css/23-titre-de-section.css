@@ -1,0 +1,21 @@
+/* Le titre d'un bandeau, avec sa rubrique à gauche et son texte à droite.
+   Les deux se superposent sur téléphone : voir 91-mobile-760px.css */
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.section-heading h2,
+.section-heading p {
+  margin-bottom: 0;
+}
+
+.section-heading p {
+  max-width: 590px;
+  color: var(--muted);
+}
+

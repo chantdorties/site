@@ -1,0 +1,20 @@
+/* Deux habillages de texte réutilisés partout : .eyebrow, la petite ligne en
+   capitales au-dessus d'un titre, et .lead, le paragraphe d'introduction plus
+   grand que le texte courant. */
+
+.eyebrow {
+  margin-bottom: 0.7rem;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 760px;
+  color: #373d38;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.28rem;
+  line-height: 1.55;
+}
+

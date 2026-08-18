@@ -1,0 +1,84 @@
+/* Le bas de page : logo, présentation, colonnes de liens, mention d'année et
+   bouton de retour en haut.
+   Le HTML est dans tools/rendu/composants/pied_de_page.py
+   Les colonnes s'empilent sur téléphone : voir 91-mobile-760px.css */
+
+.site-footer {
+  padding: 58px 0 26px;
+  background: var(--ink);
+  color: #dce1dc;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(2, 1fr);
+  gap: 60px;
+}
+
+.footer-brand {
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.footer-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.footer-logo {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  object-fit: cover;
+}
+
+.footer-intro {
+  max-width: 430px;
+  color: #b9c0ba;
+}
+
+.footer-title {
+  margin-bottom: 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.footer-links {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer-links a {
+  color: #dce1dc;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 30px;
+  margin-top: 44px;
+  border-top: 1px solid #3c413d;
+  color: #9ca39d;
+  font-size: 0.82rem;
+}
+
+.back-to-top {
+  border-color: #5e655f;
+  background: transparent;
+  color: #fff;
+}
+
+.back-to-top[hidden] {
+  display: none;
+}
+

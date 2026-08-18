@@ -1,0 +1,63 @@
+/* Le bandeau commercial de l'accueil : information de la maison, libraires,
+   particuliers, soutien et bouton de don.
+   Le HTML est dans tools/rendu/pages/accueil.py
+   Il passe sur une colonne sur téléphone : voir 91-mobile-760px.css */
+
+.home-commercial {
+  background: #eef1ed;
+  border-block: 1px solid var(--line);
+}
+
+.home-commercial__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.home-commercial__layout h2,
+.home-commercial__layout h3 {
+  margin-top: 0;
+}
+
+.home-commercial__details {
+  border-left: 3px solid var(--red);
+  padding-left: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.home-commercial__details p {
+  max-width: 68ch;
+}
+
+.commercial-audiences {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 24px 0 18px;
+}
+
+.commercial-audience {
+  padding-top: 14px;
+  border-top: 3px solid var(--ink);
+}
+
+.commercial-audience:last-child {
+  border-top-color: var(--green);
+}
+
+.commercial-audience h4 {
+  margin: 0 0 7px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.commercial-audience p,
+.home-commercial__details .commercial-support {
+  margin: 0;
+}
+
+.commercial-support {
+  font-weight: 650;
+}
+

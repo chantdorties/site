@@ -21,6 +21,7 @@ from .composants.fil_ariane import FilAriane
 from .composants.galerie import Galerie
 from .composants.pied_de_page import PiedDePage
 from .composants.vitrine_collections import VitrineCollections
+from .feuille_de_style import assembler_css
 from .gabarit import Gabarit
 from .medias import Medias
 from .pages.accueil import PageAccueil
@@ -82,9 +83,13 @@ class SiteBuilder(
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
+        # L'empreinte force le navigateur à recharger le style et le script après une
+        # modification. Le CSS n'existe plus comme fichier unique : c'est le résultat
+        # du recollage qui est pris en compte, sinon retoucher un morceau passerait
+        # inaperçu et les visiteurs garderaient l'ancienne feuille en cache.
         asset_digest = hashlib.sha256()
-        for asset in ("assets/css/site.css", "assets/js/site.js"):
-            asset_digest.update((self.frontend_dir / asset).read_bytes())
+        asset_digest.update(assembler_css(self.frontend_dir).encode("utf-8"))
+        asset_digest.update((self.frontend_dir / "assets/js/site.js").read_bytes())
         self.asset_version = asset_digest.hexdigest()[:12]
 
         content = load_content(self.root, include_drafts=include_drafts)

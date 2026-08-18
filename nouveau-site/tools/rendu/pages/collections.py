@@ -7,8 +7,8 @@
 la grille des livres qui la composent, via la carte partagée
 (composants/carte_livre.py).
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .page-heading, .collection-emblem, .collection-showcase, .book-grid
+Le style correspondant est dans frontend/assets/css/25-vitrine-collections.css ;
+l'emblème en tête de page suit 15-titre-de-page.css.
 """
 
 from __future__ import annotations

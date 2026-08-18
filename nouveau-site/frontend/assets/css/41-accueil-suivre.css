@@ -1,0 +1,33 @@
+/* Le bandeau sombre « Nous suivre » de l'accueil, partagé en deux moitiés
+   cliquables : actualités et manuscrits.
+   Le HTML est dans tools/rendu/pages/accueil.py
+   Attention : ce bandeau est posé dans une .section--ink, dont la règle de
+   couleur des liens (21-sections.css) vise les mêmes liens. C'est la position
+   de ce fichier, après 21-sections.css, qui fait gagner les règles ci-dessous.
+   Les deux moitiés s'empilent sur téléphone : voir 91-mobile-760px.css */
+
+.split-callout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid #3c413d;
+}
+
+.split-callout a {
+  min-height: 220px;
+  padding: 34px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.split-callout a + a {
+  border-left: 1px solid #3c413d;
+}
+
+.split-callout a:hover {
+  background: #252a26;
+}
+
+.split-callout h3 {
+  font-size: 1.7rem;
+}
+

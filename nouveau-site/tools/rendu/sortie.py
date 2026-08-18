@@ -1,7 +1,7 @@
 """L'écriture du dossier dist/ : vérifications, verrou, copie des ressources, rapport.
 
 Ce fichier ne contient aucun HTML. Il décide seulement où chaque page est déposée
-(`write_route`), recopie les feuilles de style, les scripts et les images de
+(`write_route`), recolle la feuille de style, recopie les scripts et les images de
 frontend/assets/, et publie les données lues par le catalogue et l'annuaire.
 """
 
@@ -10,6 +10,7 @@ from __future__ import annotations
 import fcntl
 import shutil
 
+from .feuille_de_style import assembler_css
 from .outils import monogram, write_json, write_text
 
 
@@ -49,9 +50,11 @@ class Sortie:
         if self.temp_output.exists():
             shutil.rmtree(self.temp_output)
         self.temp_output.mkdir(parents=True)
-        shutil.copytree(
-            self.frontend_dir / "assets" / "css",
-            self.temp_output / "assets" / "css",
+        # Les morceaux de frontend/assets/css/ sont recollés en un seul fichier :
+        # le site publié n'en contient qu'un, le navigateur ne fait qu'une requête.
+        write_text(
+            self.temp_output / "assets" / "css" / "site.css",
+            assembler_css(self.frontend_dir),
         )
         shutil.copytree(
             self.frontend_dir / "assets" / "js",

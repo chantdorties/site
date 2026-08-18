@@ -1,0 +1,31 @@
+/* La fiche d'une personne : son portrait, ou son monogramme à défaut.
+   Le HTML est dans tools/rendu/pages/personnes.py
+   Le portrait se recentre sur téléphone : voir 91-mobile-760px.css */
+
+.person-detail {
+  display: grid;
+  grid-template-columns: minmax(220px, 330px) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.person-detail__visual {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--green-pale);
+}
+
+.person-detail__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-detail__visual .monogram {
+  font-size: 6rem;
+}
+

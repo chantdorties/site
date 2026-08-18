@@ -1,0 +1,58 @@
+/* Ajustements pour les écrans de moins de 1020 px : tablettes et petits
+   portables. C'est ici que la navigation cède la place au bouton de menu.
+   Ces règles s'appliquent par-dessus celles des fichiers précédents. */
+
+@media (max-width: 1020px) {
+  .primary-nav {
+    display: none;
+  }
+
+  .menu-button {
+    display: inline-grid;
+  }
+
+  .mobile-nav {
+    position: fixed;
+    z-index: 99;
+    inset: var(--header-height) 0 auto;
+    display: grid;
+    max-height: calc(100vh - var(--header-height));
+    padding: 22px 20px 30px;
+    overflow-y: auto;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+
+  .mobile-nav[hidden] {
+    display: none;
+  }
+
+  .mobile-nav .nav-link {
+    min-height: 52px;
+    border-bottom: 1px solid var(--line);
+    font-size: 1rem;
+  }
+
+  .book-grid,
+  .person-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .book-detail {
+    gap: 44px;
+  }
+
+  .collection-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .house-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

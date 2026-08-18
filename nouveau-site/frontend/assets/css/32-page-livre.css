@@ -1,0 +1,108 @@
+/* La page d'un livre : couverture, auteurs, résumé, tableau des
+   caractéristiques, ligne d'achat avec son bouton PayPal, prix, disponibilité
+   et liste de liens.
+   Le HTML est dans tools/rendu/pages/livres.py
+   La mise en deux colonnes se défait à 1020 px : voir 90-tablette-1020px.css */
+
+.book-detail {
+  display: grid;
+  grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
+  gap: 72px;
+  align-items: start;
+}
+
+.book-detail__cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+.book-detail__content h1 {
+  margin-bottom: 12px;
+}
+
+.contributors {
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: 1.06rem;
+}
+
+.contributors a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.book-description {
+  max-width: 710px;
+  font-size: 1.06rem;
+}
+
+.book-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 28px 0;
+  border-top: 1px solid var(--line);
+}
+
+.book-facts div {
+  padding: 13px 12px 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.book-facts dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.book-facts dd {
+  margin: 2px 0 0;
+  font-weight: 650;
+}
+
+.purchase-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 3px solid var(--ink);
+}
+
+.paypal-form {
+  margin: 0;
+}
+
+.paypal-form .button {
+  font: inherit;
+}
+
+.price {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.availability {
+  color: var(--green);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.availability--unavailable {
+  color: var(--red-dark);
+}
+
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+

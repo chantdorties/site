@@ -1,0 +1,16 @@
+/* Pour les personnes ayant demandé à leur système de limiter les animations :
+   toutes les transitions du site sont désactivées.
+   Ce fichier doit rester le dernier, afin de pouvoir tout neutraliser. */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -11,9 +11,9 @@ Quatre bandeaux, dans l'ordre :
 Les textes viennent de content/reglages/accueil.json et de la page « accueil » ;
 les livres mis en avant sont cochés dans chaque fiche livre.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .hero, .cover-ribbon, .home-commercial, .commercial-audience,
-.section-heading, .split-callout
+Le style correspondant est réparti en trois fichiers, dans l'ordre des bandeaux :
+frontend/assets/css/20-accueil-banniere.css, 22-accueil-commercial.css et
+41-accueil-suivre.css. Les collections passent par 25-vitrine-collections.css.
 """
 
 from __future__ import annotations

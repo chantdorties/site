@@ -4,8 +4,8 @@ Les entrées sont regroupées par catégorie (salon, parution, rencontre, vie de
 maison). Chaque entrée porte sa date, son titre, son texte, éventuellement une image
 et un lien.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .news-section, .news-topics, .news-grid, .news-card, .news-callout
+Le style correspondant est dans frontend/assets/css/36-actualites.css pour les
+cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.
 """
 
 from __future__ import annotations

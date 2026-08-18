@@ -1,0 +1,43 @@
+/* Les boutons d'action : .button plein, .button--secondary en contour,
+   .button--small pour les emplacements serrés.
+   Ils passent en pleine largeur sur téléphone : voir 92-mobile-430px.css */
+
+.button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 18px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: #fff;
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.button--secondary:hover {
+  background: var(--surface);
+  color: var(--red-dark);
+}
+
+.button--small {
+  min-height: 40px;
+  padding: 8px 13px;
+  font-size: 0.9rem;
+}
+

@@ -1,0 +1,75 @@
+/* Le panneau de filtres du catalogue et de l'annuaire, les champs qu'il
+   contient, la ligne de résultats et les messages d'attente ou d'erreur.
+   Le HTML est dans tools/rendu/pages/catalogue.py et
+   tools/rendu/pages/personnes.py ; le filtrage lui-même est dans
+   frontend/assets/js/catalogue.js et people.js
+   La grille des filtres se replie à 1020 px : voir 90-tablette-1020px.css */
+
+.filter-panel {
+  position: relative;
+  z-index: 2;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 2fr) repeat(3, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.filter-grid--people {
+  grid-template-columns: minmax(240px, 2fr) minmax(180px, 1fr);
+  max-width: 760px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #aeb5ae;
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--blue);
+}
+
+.results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  margin-bottom: 24px;
+  color: var(--muted);
+}
+
+.results-status {
+  margin: 0;
+  font-weight: 700;
+}
+
+.loading-state,
+.empty-state,
+.error-state {
+  grid-column: 1 / -1;
+  padding: 56px 24px;
+  border: 1px dashed #aeb5ae;
+  text-align: center;
+}
+

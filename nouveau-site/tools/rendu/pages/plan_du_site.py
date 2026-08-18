@@ -3,8 +3,7 @@
 Livres et personnes, collections, puis la maison. Il sert aux visiteurs comme aux
 moteurs de recherche.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .editorial-layout, .editorial-section
+Le style correspondant est dans frontend/assets/css/35-pages-de-texte.css
 """
 
 from __future__ import annotations

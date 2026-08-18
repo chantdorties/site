@@ -1,0 +1,40 @@
+/* L'encart de tête de la page Actualités et la liste des catégories publiées.
+   Le HTML est dans tools/rendu/pages/actualites.py
+   Ajustements sur téléphone : voir 91-mobile-760px.css */
+
+.news-callout {
+  width: min(100%, 900px);
+}
+
+.news-callout h2 {
+  max-width: 820px;
+  margin-bottom: 20px;
+  font-size: 3rem;
+}
+
+.news-callout .lead {
+  margin-bottom: 28px;
+}
+
+/* Le nombre de catégories suit les actualités publiées : les colonnes se répartissent
+   d’elles-mêmes plutôt que d’être figées à trois. */
+.news-topics {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  margin: 38px 0;
+  border-top: 1px solid #aebdc5;
+  border-bottom: 1px solid #aebdc5;
+}
+
+.news-topics span {
+  padding: 16px 18px 16px 0;
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.news-topics span + span {
+  padding-left: 18px;
+  border-left: 1px solid #aebdc5;
+}
+

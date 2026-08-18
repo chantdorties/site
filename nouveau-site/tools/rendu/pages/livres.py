@@ -8,9 +8,8 @@ la galerie d'illustrations.
 Le bouton PayPal de chaque livre est celui saisi dans sa fiche : il ne doit jamais
 être fabriqué ici, sous peine d'envoyer l'argent au mauvais endroit.
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .book-detail, .book-detail__cover, .contributors, .book-description,
-.book-facts, .purchase-line, .paypal-form, .price, .availability, .link-list
+Le style correspondant est dans frontend/assets/css/32-page-livre.css ;
+la galerie d'illustrations suit 33-galerie.css.
 """
 
 from __future__ import annotations

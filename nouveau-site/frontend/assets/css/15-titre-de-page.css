@@ -1,0 +1,33 @@
+/* Le bloc de titre en haut des pages intérieures : fil d'Ariane, rubrique,
+   titre, introduction. Contient aussi les emblèmes dessinés des collections.
+   Ses espacements sont réduits sur téléphone : voir 91-mobile-760px.css */
+
+.page-heading {
+  padding: 70px 0 50px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.page-heading h1 {
+  max-width: 900px;
+}
+
+/* Emblèmes des collections, repris de l’ancien site : de petits dessins
+   transparents, posés au-dessus du titre de la rubrique. */
+.collection-emblem {
+  display: block;
+  width: auto;
+  height: 90px;
+  margin-bottom: 18px;
+}
+
+.collection-showcase__emblem {
+  width: auto;
+  height: 58px;
+  margin-bottom: 18px;
+}
+
+.page-heading .lead {
+  margin-bottom: 0;
+}
+

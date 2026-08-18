@@ -1,0 +1,20 @@
+/* La page affichée quand une adresse n'existe pas.
+   Le HTML est dans tools/rendu/pages/erreur_404.py */
+
+.error-page {
+  display: grid;
+  min-height: calc(100vh - var(--header-height));
+  place-items: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.error-code {
+  margin-bottom: 12px;
+  color: var(--red);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+

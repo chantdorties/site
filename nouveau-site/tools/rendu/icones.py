@@ -3,7 +3,7 @@
 Chaque icône est le contenu d'un dessin SVG de 24 pixels sur 24. Pour remplacer une
 icône, remplacer son tracé ci-dessous ; elle change alors partout où elle est utilisée.
 
-Le style correspondant est dans frontend/assets/css/site.css, règle .icon
+Le style correspondant est dans frontend/assets/css/11-icones.css
 """
 
 from __future__ import annotations

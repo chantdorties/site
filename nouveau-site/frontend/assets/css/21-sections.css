@@ -1,0 +1,26 @@
+/* Les grands bandeaux horizontaux qui rythment les pages : .section pour le
+   fond crème, .section--white pour le fond blanc, .section--ink pour le fond
+   sombre à texte clair.
+   Attention : .section--ink a impose la couleur des liens qu'il contient. */
+
+.section {
+  padding: 72px 0;
+}
+
+.section--white {
+  background: var(--surface);
+}
+
+.section--ink {
+  background: var(--ink);
+  color: #fff;
+}
+
+.section--ink a {
+  color: #fff;
+}
+
+.section--ink .eyebrow {
+  color: #a9d1b4;
+}
+

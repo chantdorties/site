@@ -6,8 +6,8 @@ la même mise en page : titre, colonne de texte en sections, et colonne de liens
 droite. La page Projets ajoute la grille des livres à paraître
 (composants/cartes_projets.py).
 
-Le style correspondant est dans frontend/assets/css/site.css :
-règles .editorial-layout, .editorial-section, .editorial-aside
+Le style correspondant est dans frontend/assets/css/35-pages-de-texte.css ;
+la page Projets ajoute 37-projets.css.
 """
 
 from __future__ import annotations
