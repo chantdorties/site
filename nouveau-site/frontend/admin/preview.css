@@ -51,3 +51,14 @@ body {
   border-top: 1px solid #d8dcd6;
   color: #626862;
 }
+
+.content-preview__facts:empty {
+  display: none;
+}
+
+/* L’emblème d’une collection est un petit dessin, pas une couverture. */
+.content-preview__emblem {
+  width: auto;
+  height: 96px;
+  margin: 18px 0 0;
+}

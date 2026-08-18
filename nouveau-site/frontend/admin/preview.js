@@ -5,16 +5,55 @@
     const asset = getAsset(path);
     return asset ? asset.toString() : '';
   };
-  const status = (entry) => h('p', { className: 'content-preview__status' }, value(entry, 'statut'));
+
+  // L’aperçu montrait les valeurs enregistrées — « publie », « coquelicots-sauvages »,
+  // « recueil-de-nouvelles » — au lieu des mots que la personne vient de choisir.
+  const LIBELLES = {
+    statut: { publie: 'Publié', brouillon: 'Brouillon', archive: 'Archivé' },
+    role: { auteur: 'Auteur', illustrateur: 'Illustrateur', prefacier: 'Préfacier' },
+    categorie: { salon: 'Salon', parution: 'Parution', rencontre: 'Rencontre', maison: 'Vie de la maison' },
+    ouvrage: {
+      'album': 'Album',
+      'album-jeunesse': 'Album jeunesse',
+      'mini-roman': 'Mini roman',
+      'mini-roman-jeunesse': 'Mini roman jeunesse',
+      'nouvelles': 'Nouvelles',
+      'recueil-de-nouvelles': 'Recueil de nouvelles',
+      'recueil-de-recits': 'Recueil de récits',
+      'recueil-de-textes': 'Recueil de textes',
+      'roman': 'Roman',
+      'roman-jeunesse': 'Roman jeunesse',
+      'texte-illustre': 'Texte illustré'
+    },
+    reliure: { souple: 'Souple', cartonne: 'Cartonnée' }
+  };
+  const libelle = (table, cle) => (cle ? LIBELLES[table][cle] || cle : '');
+
+  // Les relations n’enregistrent qu’une adresse : faute d’accès aux autres fiches depuis
+  // l’aperçu, on la rend au moins lisible — « coquelicots-sauvages » → « coquelicots
+  // sauvages ».
+  const lisible = (slug) => (slug ? String(slug).replace(/-/g, ' ') : '');
+  const listeLisible = (valeurs) =>
+    (valeurs?.map?.(lisible) ?? []).filter(Boolean).join(', ');
+
+  const dateFr = (valeur) => {
+    if (!valeur) return '';
+    const [annee, mois, jour] = String(valeur).slice(0, 10).split('-');
+    return jour && mois && annee ? `${jour}/${mois}/${annee}` : valeur;
+  };
+
+  const status = (entry) =>
+    h('p', { className: 'content-preview__status' }, libelle('statut', value(entry, 'statut')));
 
   const BookPreview = createClass({
     render() {
       const { entry, getAsset } = this.props;
       const cover = assetUrl(getAsset, value(entry, 'couverture'));
       const price = value(entry, 'prixEuros', null);
+      const age = value(entry, 'ageMinimum', null);
       return h('article', { className: 'content-preview' },
         status(entry),
-        h('p', { className: 'content-preview__meta' }, value(entry, 'collection')),
+        h('p', { className: 'content-preview__meta' }, lisible(value(entry, 'collection'))),
         h('h1', {}, value(entry, 'titre', 'Livre sans titre')),
         cover ? h('img', {
           src: cover,
@@ -22,7 +61,18 @@
         }) : null,
         h('p', { className: 'content-preview__lead' }, value(entry, 'description')),
         h('p', { className: 'content-preview__facts' },
-          [value(entry, 'typeOuvrage'), price === null ? '' : `${price} €`].filter(Boolean).join(' · ')
+          [
+            libelle('ouvrage', value(entry, 'typeOuvrage')),
+            age === null || age === '' ? '' : `Dès ${age} ans`,
+            price === null || price === '' ? '' : `${price} €`,
+            value(entry, 'disponible') === false ? 'Actuellement indisponible' : ''
+          ].filter(Boolean).join(' · ')
+        ),
+        h('p', { className: 'content-preview__facts' },
+          [
+            listeLisible(value(entry, 'auteurs', [])) && `Écrit par ${listeLisible(value(entry, 'auteurs', []))}`,
+            listeLisible(value(entry, 'illustrateurs', [])) && `Illustré par ${listeLisible(value(entry, 'illustrateurs', []))}`
+          ].filter(Boolean).join(' · ')
         )
       );
     }
@@ -35,7 +85,8 @@
       const roles = value(entry, 'roles');
       return h('article', { className: 'content-preview' },
         status(entry),
-        h('p', { className: 'content-preview__meta' }, roles?.join?.(' · ') || ''),
+        h('p', { className: 'content-preview__meta' },
+          (roles?.map?.((role) => libelle('role', role)) ?? []).join(' · ')),
         h('h1', {}, value(entry, 'nom', 'Personne sans nom')),
         portrait ? h('img', {
           src: portrait,
@@ -48,12 +99,47 @@
 
   const CollectionPreview = createClass({
     render() {
-      const { entry } = this.props;
+      const { entry, getAsset } = this.props;
+      const emblem = assetUrl(getAsset, value(entry, 'logo'));
       return h('article', { className: 'content-preview' },
         status(entry),
         h('p', { className: 'content-preview__meta' }, 'Collection'),
+        emblem ? h('img', {
+          className: 'content-preview__emblem',
+          src: emblem,
+          alt: value(entry, 'logoAlt') || `Emblème de ${value(entry, 'titre', 'la collection')}`
+        }) : null,
         h('h1', {}, value(entry, 'titre', 'Collection sans titre')),
         h('p', { className: 'content-preview__lead' }, value(entry, 'description'))
+      );
+    }
+  });
+
+  const ProjectPreview = createClass({
+    render() {
+      const { entry } = this.props;
+      const credits = [
+        [value(entry, 'auteurs', []), value(entry, 'auteursHorsFiche', []), 'Écrit par'],
+        [value(entry, 'illustrateurs', []), value(entry, 'illustrateursHorsFiche', []), 'Illustré par']
+      ]
+        .map(([fiches, libres, prefixe]) => {
+          const noms = [listeLisible(fiches), (libres?.join?.(', ') ?? '')].filter(Boolean).join(', ');
+          return noms ? `${prefixe} ${noms}` : '';
+        })
+        .filter(Boolean);
+      const sortie = value(entry, 'sortiePrevue');
+      return h('article', { className: 'content-preview' },
+        status(entry),
+        h('p', { className: 'content-preview__meta' }, 'Projet — livre à paraître'),
+        h('h1', {}, value(entry, 'titre', 'Projet sans titre')),
+        h('p', { className: 'content-preview__lead' }, value(entry, 'description')),
+        h('p', { className: 'content-preview__facts' }, credits.join(' · ')),
+        h('p', { className: 'content-preview__facts' },
+          [
+            lisible(value(entry, 'collection')) && `Collection ${lisible(value(entry, 'collection'))}`,
+            sortie ? `Sortie prévue ${sortie}` : ''
+          ].filter(Boolean).join(' · ')
+        )
       );
     }
   });
@@ -65,7 +151,8 @@
       return h('article', { className: 'content-preview' },
         status(entry),
         h('p', { className: 'content-preview__meta' },
-          `${value(entry, 'type')} · ${value(entry, 'datePublication')}`
+          [libelle('categorie', value(entry, 'type')), dateFr(value(entry, 'datePublication'))]
+            .filter(Boolean).join(' · ')
         ),
         h('h1', {}, value(entry, 'titre', 'Actualité sans titre')),
         image ? h('img', { src: image, alt: value(entry, 'imageAlt') }) : null,
@@ -108,6 +195,7 @@
   CMS.registerPreviewTemplate('personnes', PersonPreview);
   CMS.registerPreviewTemplate('collections', CollectionPreview);
   CMS.registerPreviewTemplate('actualites', NewsPreview);
+  CMS.registerPreviewTemplate('projets', ProjectPreview);
   CMS.registerPreviewTemplate('pages', PagePreview);
   CMS.registerPreviewTemplate('pages_fixes', PagePreview);
 })();

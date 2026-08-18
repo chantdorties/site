@@ -30,6 +30,9 @@ slug:
 collections:
   - name: reglages
     label: Réglages du site
+    description: >-
+      Les textes qui ne dépendent d’aucun contenu : identité, menu, pied de page, textes
+      de l’accueil, introductions des pages engendrées et mots du parcours d’achat.
     format: json
     delete: false
     # Les réglages ne correspondent à aucune page : sans cette ligne, Decap
@@ -88,27 +91,47 @@ collections:
           - {label: "Libellé Manuscrits", name: libelleManuscrits, widget: string}
           - {label: "Libellé Plan du site", name: libellePlan, widget: string}
           - {label: "Libellé Mentions légales", name: libelleMentions, widget: string}
+      # Les libellés suivent l’ordre où ils apparaissent en descendant la page d’accueil.
+      # « Rubrique » désigne partout la petite ligne en majuscules au-dessus d’un titre.
       - name: accueil
         label: Textes de l’accueil
         file: nouveau-site/content/reglages/accueil.json
         fields:
-          - {label: "Rubrique du bandeau", name: heroRubrique, widget: string}
-          - {label: "Titre principal", name: heroTitre, widget: string}
-          - {label: "Partie colorée du titre", name: heroAccent, widget: string}
-          - {label: "Accroche", name: heroAccroche, widget: text}
-          - {label: "Bouton Catalogue", name: boutonCatalogue, widget: string}
-          - {label: "Bouton Collections", name: boutonCollections, widget: string}
-          - {label: "Titre du bloc Information", name: titreInformation, widget: string}
-          - {label: "Rubrique Collections", name: collectionsRubrique, widget: string}
-          - {label: "Titre Collections", name: collectionsTitre, widget: string}
-          - {label: "Rubrique Suivre", name: suivreRubrique, widget: string}
-          - {label: "Titre Suivre", name: suivreTitre, widget: string}
-          - {label: "Rubrique Actualités", name: actualitesRubrique, widget: string}
-          - {label: "Titre Actualités", name: actualitesTitre, widget: string}
-          - {label: "Action Actualités", name: actualitesAction, widget: string}
-          - {label: "Rubrique Manuscrits", name: manuscritsRubrique, widget: string}
-          - {label: "Titre Manuscrits", name: manuscritsTitre, widget: string}
-          - {label: "Action Manuscrits", name: manuscritsAction, widget: string}
+          - label: 1. Bandeau — rubrique
+            name: heroRubrique
+            widget: string
+            hint: La petite ligne tout en haut, au-dessus du grand titre.
+          - label: 1. Bandeau — titre
+            name: heroTitre
+            widget: string
+            hint: Le grand titre d’ouverture, en noir.
+          - label: 1. Bandeau — suite du titre, en couleur
+            name: heroAccent
+            widget: string
+            hint: La fin du grand titre, affichée en rouge à la suite du précédent.
+          - label: 1. Bandeau — accroche
+            name: heroAccroche
+            widget: text
+            hint: La phrase sous le grand titre.
+          - {label: "1. Bandeau — bouton vers le catalogue", name: boutonCatalogue, widget: string}
+          - {label: "1. Bandeau — bouton vers les collections", name: boutonCollections, widget: string}
+          - label: 2. Bloc information — titre
+            name: titreInformation
+            widget: string
+            hint: Le bloc qui annonce la situation de la maison. Son texte, lui, s’écrit dans « Pages principales > Accueil ».
+          - {label: "3. Collections — rubrique", name: collectionsRubrique, widget: string}
+          - {label: "3. Collections — titre", name: collectionsTitre, widget: string}
+          - {label: "4. Suivre la maison — rubrique", name: suivreRubrique, widget: string}
+          - {label: "4. Suivre la maison — titre", name: suivreTitre, widget: string}
+          - {label: "4. Carte Actualités — rubrique", name: actualitesRubrique, widget: string}
+          - {label: "4. Carte Actualités — titre", name: actualitesTitre, widget: string}
+          - label: 4. Carte Actualités — lien
+            name: actualitesAction
+            widget: string
+            hint: Le texte cliquable au bas de la carte, par exemple « Lire les actualités ».
+          - {label: "4. Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
+          - {label: "4. Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
+          - {label: "4. Carte Manuscrits — lien", name: manuscritsAction, widget: string}
       - name: pages
         label: Introductions des pages
         file: nouveau-site/content/reglages/pages.json
@@ -117,10 +140,10 @@ collections:
             name: catalogue
             widget: object
             fields: &page_intro_fields
-              - {label: "Rubrique", name: rubrique, widget: string, hint: "Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
-              - {label: "Titre", name: titre, widget: string}
-              - {label: "Introduction", name: introduction, widget: text}
-              - {label: "Description SEO", name: descriptionSeo, widget: text, hint: "{nombre} est remplacé par le nombre réel de contenus. 160 caractères maximum."}
+              - {label: "Rubrique", name: rubrique, widget: string, hint: "La petite ligne au-dessus du titre. Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+              - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
+              - {label: "Introduction", name: introduction, widget: text, hint: "La phrase sous le titre."}
+              - {label: "Description SEO", name: descriptionSeo, widget: text, hint: "Affichée par les moteurs de recherche. {nombre} y est remplacé de la même façon. 160 caractères maximum."}
           - label: Auteurs et illustrateurs
             name: personnes
             widget: object
@@ -167,9 +190,15 @@ collections:
             hint: Il ouvre un courriel prérempli avec le titre du livre.
           - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
 
+  # L’ordre des champs suit la façon dont on décrit un livre : de quoi il s’agit, qui
+  # l’a fait, ce qu’il raconte, à quoi il ressemble, comment on l’achète, où il se
+  # range. Les réglages techniques ferment la marche.
   - name: livres
     label: Livres
     label_singular: Livre
+    description: >-
+      Les ouvrages publiés, un par fiche. La suppression est désactivée : pour retirer
+      un livre du site, passer son statut à « Archivé ».
     folder: nouveau-site/content/livres
     extension: json
     format: json
@@ -185,21 +214,21 @@ collections:
       - {label: "Archivés", field: statut, pattern: "archive"}
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - label: Adresse
+      - label: Adresse de la page
         name: slug
         widget: string
-        hint: Ne pas modifier après la première publication. Ajouter l’ancienne adresse plus bas si un changement est indispensable.
+        hint: "L’adresse du livre sur le site, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse tout en bas."
         pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - &publication
         label: Publication
         name: statut
         widget: select
         default: publie
+        hint: « Brouillon » n’apparaît que dans l’aperçu, « Archivé » disparaît du site sans être effacé.
         options:
           - {label: "Publié", value: publie}
           - {label: "Brouillon", value: brouillon}
           - {label: "Archivé", value: archive}
-      - &order {label: "Ordre d’affichage", name: ordre, widget: number, value_type: int, min: 0, default: 100}
       - label: Collection
         name: collection
         widget: relation
@@ -211,6 +240,7 @@ collections:
         name: typeOuvrage
         widget: select
         required: false
+        hint: Affiché sous le titre, avec l’âge.
         options:
           - {label: "Album", value: album}
           - {label: "Album jeunesse", value: album-jeunesse}
@@ -218,16 +248,27 @@ collections:
           - {label: "Mini roman jeunesse", value: mini-roman-jeunesse}
           - {label: "Nouvelles", value: nouvelles}
           - {label: "Recueil de nouvelles", value: recueil-de-nouvelles}
+          # Ces deux-là manquaient à la liste alors que deux livres les portaient : les
+          # ouvrir dans l’administration aurait effacé leur type sans prévenir.
+          - {label: "Recueil de récits", value: recueil-de-recits}
+          - {label: "Recueil de textes", value: recueil-de-textes}
           - {label: "Roman", value: roman}
           - {label: "Roman jeunesse", value: roman-jeunesse}
           - {label: "Texte illustré", value: texte-illustre}
-      - {label: "Âge minimum", name: ageMinimum, widget: number, value_type: int, min: 0, required: false}
+      - label: Âge minimum
+        name: ageMinimum
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        hint: Le site écrit « Dès 7 ans » à partir de ce nombre.
       - label: Auteurs
         name: auteurs
         widget: relation
         collection: personnes
         multiple: true
         min: 1
+        hint: Choisir dans les fiches existantes. Une personne absente de la liste doit d’abord être créée dans « Auteurs et illustrateurs », avec le rôle Auteur.
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
@@ -255,31 +296,29 @@ collections:
         value_field: slug
         filters:
           - {field: roles, values: [prefacier]}
-      - {label: "Présentation", name: description, widget: text, required: false}
-      - {label: "Prix en euros", name: prixEuros, widget: number, value_type: float, min: 0, step: 0.01, required: false}
-      - {label: "Disponible", name: disponible, widget: boolean, default: true}
-      - label: Identifiant du bouton PayPal
-        name: paypalHostedButtonId
+      - label: Présentation
+        name: description
+        widget: text
+        required: false
+        hint: Le texte de présentation, affiché sur la page du livre et repris comme description pour les moteurs de recherche.
+      - label: Couverture
+        name: couverture
+        widget: image
+        allow_multiple: false
+        hint: Obligatoire. Format portrait de préférence, 20 Mo maximum.
+        media_library: {config: {max_file_size: 20971520}}
+      - label: Texte alternatif de la couverture
+        name: couvertureAlt
         widget: string
         required: false
-        hint: Identifiant à 13 caractères fourni par PayPal. Obligatoire pour un livre disponible.
-        pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
-      - {label: "Nombre de pages", name: nombrePages, widget: number, value_type: int, min: 1, required: false}
-      - {label: "Format", name: format, widget: string, required: false}
-      - {label: "Reliure", name: reliure, widget: string, required: false}
-      - label: ISBN
-        name: isbn
-        widget: string
-        required: false
-        pattern: ['^(?:[0-9]{10}|[0-9]{13})$', "Saisir un ISBN à 10 ou 13 chiffres"]
-      - {label: "ISSN de la collection", name: issnCollection, widget: string, required: false}
-      - {label: "Couverture", name: couverture, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-      - {label: "Texte alternatif de la couverture", name: couvertureAlt, widget: string, required: false}
+        hint: Lu par les personnes qui n’ont pas accès à l’image. Laisser vide écrit « Couverture de <titre> ».
       - label: Illustrations
         name: illustrations
         widget: list
         required: false
+        collapsed: true
         summary: "{{fields.alt}}"
+        hint: Les images intérieures, affichées dans la galerie « Quelques illustrations ».
         fields:
           - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - {label: "Texte alternatif", name: alt, widget: string, required: false}
@@ -287,9 +326,72 @@ collections:
         name: extraits
         widget: list
         required: false
+        collapsed: true
+        hint: Les fichiers proposés au téléchargement sur la page du livre.
         field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-      - {label: "Mis en avant sur l’accueil", name: miseEnAvantAccueil, widget: boolean, default: false}
-      - {label: "Ordre sur l’accueil", name: ordreAccueil, widget: number, value_type: int, min: 0, default: 999}
+      - label: Prix en euros
+        name: prixEuros
+        widget: number
+        value_type: float
+        min: 0
+        step: 0.01
+        required: false
+        hint: Séparer les centimes par une virgule, par exemple 11,50.
+      - label: Disponible
+        name: disponible
+        widget: boolean
+        default: true
+        hint: Décoché, le livre affiche « Actuellement indisponible » et un bouton de contact au lieu du bouton d’achat.
+      - label: Identifiant du bouton PayPal
+        name: paypalHostedButtonId
+        widget: string
+        required: false
+        hint: "Identifiant à 13 caractères fourni par PayPal. Obligatoire pour un livre disponible : sans lui, la publication est refusée."
+        pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
+      - {label: "Nombre de pages", name: nombrePages, widget: number, value_type: int, min: 1, required: false}
+      - label: Format
+        name: format
+        widget: string
+        required: false
+        hint: Largeur puis hauteur en centimètres, par exemple « 18,5 x 18,5 ».
+      - label: Reliure
+        name: reliure
+        widget: select
+        required: false
+        options:
+          - {label: "Souple", value: souple}
+          - {label: "Cartonnée", value: cartonne}
+      - label: ISBN
+        name: isbn
+        widget: string
+        required: false
+        hint: 10 ou 13 chiffres, sans tiret. Un ISBN invalide bloque la publication.
+        pattern: ['^(?:[0-9]{10}|[0-9]{13})$', "Saisir un ISBN à 10 ou 13 chiffres"]
+      - label: ISSN de la collection
+        name: issnCollection
+        widget: string
+        required: false
+        hint: Conservé pour les démarches administratives. Il n’apparaît nulle part sur le site.
+      - &order
+        label: Ordre d’affichage
+        name: ordre
+        widget: number
+        value_type: int
+        min: 0
+        default: 100
+        hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
+      - label: Mis en avant sur l’accueil
+        name: miseEnAvantAccueil
+        widget: boolean
+        default: false
+        hint: Chaque collection met en avant exactement un livre disponible. En cocher un second dans la même collection bloque la publication.
+      - label: Ordre sur l’accueil
+        name: ordreAccueil
+        widget: number
+        value_type: int
+        min: 0
+        default: 999
+        hint: Ne sert que si le livre est mis en avant. Laisser 999 sinon.
       - label: À découvrir aussi
         name: aDecouvrir
         widget: relation
@@ -297,6 +399,7 @@ collections:
         multiple: true
         max: 4
         required: false
+        hint: Quatre livres au maximum, suggérés en bas de la page.
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
@@ -305,6 +408,8 @@ collections:
         name: anciensSlugs
         widget: list
         required: false
+        collapsed: true
+        hint: Les adresses de l’ancien site, redirigées vers celle-ci. À compléter si l’adresse ci-dessus change.
         field: {label: "Ancienne adresse", name: adresse, widget: string}
       - &seo
         label: Référencement SEO
@@ -312,14 +417,18 @@ collections:
         widget: object
         required: false
         collapsed: true
+        hint: "Facultatif : sans rien ici, le site reprend le titre et la présentation."
         fields:
           - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
           - {label: "Description SEO", name: description, widget: text, required: false, pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"], hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."}
-          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
 
   - name: personnes
     label: Auteurs et illustrateurs
     label_singular: Personne
+    description: >-
+      Une fiche par personne. Le rôle choisi ici décide dans quelles listes elle
+      apparaîtra au moment de renseigner un livre.
     folder: nouveau-site/content/personnes
     extension: json
     format: json
@@ -332,26 +441,41 @@ collections:
     view_filters: *status_filters
     fields:
       - {label: "Nom", name: nom, widget: string}
-      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: L’adresse de la fiche sur le site, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication.
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - *order
       - label: Rôles
         name: roles
         widget: select
         multiple: true
         min: 1
+        default: [auteur]
+        hint: Une personne peut cumuler plusieurs rôles. Elle n’est proposée que dans les champs correspondants d’un livre.
         options:
           - {label: "Auteur", value: auteur}
           - {label: "Illustrateur", value: illustrateur}
           - {label: "Préfacier", value: prefacier}
-      - {label: "Biographie", name: biographie, widget: text, required: false}
+      - label: Biographie
+        name: biographie
+        widget: text
+        required: false
+        hint: Affichée en tête de la fiche, au-dessus de ses livres.
       - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
-      - {label: "Texte alternatif du portrait", name: imagePrincipaleAlt, widget: string, required: false}
+      - label: Texte alternatif du portrait
+        name: imagePrincipaleAlt
+        widget: string
+        required: false
+        hint: Laisser vide écrit « Portrait de <nom> ».
       - label: Autres images
         name: images
         widget: list
         required: false
+        collapsed: true
         summary: "{{fields.alt}}"
+        hint: Affichées dans une galerie sous la biographie.
         fields:
           - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - {label: "Texte alternatif", name: alt, widget: string, required: false}
@@ -359,13 +483,19 @@ collections:
         name: liensExternes
         widget: list
         required: false
+        collapsed: true
+        hint: Site personnel, blog… Le premier devient le bouton « Site personnel ».
         field: {label: "Adresse web", name: url, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+      - *order
       - *old_slugs
       - *seo
 
   - name: collections
     label: Collections
     label_singular: Collection
+    description: >-
+      Les six collections de la maison. Une collection publiée doit contenir au moins un
+      livre publié, dont exactement un mis en avant sur l’accueil.
     folder: nouveau-site/content/collections
     extension: json
     format: json
@@ -378,24 +508,40 @@ collections:
     view_filters: *status_filters
     fields:
       - {label: "Nom", name: titre, widget: string}
-      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: L’adresse de la collection sur le site, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication.
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - *order
-      - {label: "Présentation", name: description, widget: text}
+      - label: Présentation
+        name: description
+        widget: text
+        required: true
+        hint: Une ou deux phrases, reprises sur l’accueil et sur la page Collections.
       - label: Emblème
         name: logo
         widget: image
         allow_multiple: false
         required: false
-        hint: Le petit dessin de la collection, sur fond transparent.
+        hint: Le petit dessin de la collection, sur fond transparent, repris de l’ancien site.
         media_library: {config: {max_file_size: 20971520}}
-      - {label: "Texte alternatif de l’emblème", name: logoAlt, widget: string, required: false}
+      - label: Texte alternatif de l’emblème
+        name: logoAlt
+        widget: string
+        required: false
+        hint: Obligatoire dès qu’un emblème est choisi, sinon la publication est refusée. Décrire le dessin, par exemple « Un chardon violet ».
+      - *order
       - *old_slugs
       - *seo
 
   - name: actualites
     label: Actualités
     label_singular: Actualité
+    description: >-
+      Les articles de la page Actualités, du plus récent au plus ancien. Le titre et
+      l’introduction de la page, eux, se règlent dans « Réglages du site > Introductions
+      des pages > Actualités ».
     folder: nouveau-site/content/actualites
     extension: json
     format: json
@@ -408,23 +554,55 @@ collections:
     view_filters: *status_filters
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - label: Identifiant
+        name: slug
+        widget: string
+        hint: "Sert à nommer le fichier et à classer l’article. Une actualité n’a pas de page à elle : elle s’affiche dans la liste."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - {label: "Date", name: datePublication, widget: datetime, date_format: "DD/MM/YYYY", time_format: false, format: "YYYY-MM-DD"}
+      - label: Date
+        name: datePublication
+        widget: datetime
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        format: "YYYY-MM-DD"
+        hint: "Elle décide de la place de l’article dans la liste : la plus récente en premier."
       - label: Catégorie
         name: type
         widget: select
+        hint: Affichée sur l’article, et reprise dans la liste des catégories en bas de page.
         options:
           - {label: "Salon", value: salon}
           - {label: "Parution", value: parution}
           - {label: "Rencontre", value: rencontre}
           - {label: "Vie de la maison", value: maison}
-      - {label: "Résumé", name: resume, widget: text}
-      - {label: "Contenu", name: contenu, widget: text}
+      - label: Résumé
+        name: resume
+        widget: text
+        hint: Une ou deux phrases, mises en avant au-dessus du texte.
+      - label: Contenu
+        name: contenu
+        widget: text
+        hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
       - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
-      - {label: "Texte alternatif de l’image", name: imageAlt, widget: string, required: false}
-      - {label: "Lien externe", name: lienExterne, widget: string, required: false, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
-      - {label: "Document PDF", name: document, widget: file, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+      - label: Texte alternatif de l’image
+        name: imageAlt
+        widget: string
+        required: false
+        hint: Obligatoire dès qu’une image est choisie, sinon la publication est refusée.
+      - label: Lien externe
+        name: lienExterne
+        widget: string
+        required: false
+        hint: Ajoute un bouton « En savoir plus » sous l’article.
+        pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]
+      - label: Document PDF
+        name: document
+        widget: file
+        allow_multiple: false
+        required: false
+        hint: Ajoute un bouton de téléchargement sous l’article.
+        media_library: {config: {max_file_size: 20971520}}
       - *old_slugs
       - *seo
 
@@ -435,6 +613,11 @@ collections:
   - name: projets
     label: Projets
     label_singular: Projet
+    description: >-
+      Les livres à paraître. Ils s’affichent sur la page Projets, sous son introduction —
+      laquelle s’écrit dans « Pages de la maison > Projets ». C’est la seule rubrique où
+      la suppression est possible : le jour de la parution, supprimer le projet et créer
+      le livre.
     folder: nouveau-site/content/projets
     extension: json
     format: json
@@ -442,14 +625,17 @@ collections:
     delete: true
     identifier_field: titre
     slug: "{{fields.slug}}"
-    summary: "{{titre}} — {{sortiePrevue}} — {{statut}}"
+    summary: "{{titre}} — sortie {{sortiePrevue}}"
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - label: Identifiant
+        name: slug
+        widget: string
+        hint: "Sert à nommer le fichier. Un projet n’a pas de page à lui : il s’affiche sur la page Projets."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - *order
       - label: Description
         name: description
         widget: string
@@ -469,14 +655,17 @@ collections:
         collection: personnes
         multiple: true
         required: false
+        hint: Ceux qui ont déjà une fiche. Leur nom deviendra un lien vers elle.
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
+        filters:
+          - {field: roles, values: [auteur]}
       - label: Auteurs sans fiche
         name: auteursHorsFiche
         widget: list
         required: false
-        hint: Pour un auteur qui n’a pas encore de fiche. Son nom s’affichera sans lien.
+        hint: Pour un auteur qui n’a pas encore de fiche — courant avant parution. Son nom s’affichera sans lien.
         field: {label: "Nom", name: nom, widget: string}
       - label: Illustrateurs
         name: illustrateurs
@@ -484,9 +673,12 @@ collections:
         collection: personnes
         multiple: true
         required: false
+        hint: Ceux qui ont déjà une fiche. Leur nom deviendra un lien vers elle.
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
+        filters:
+          - {field: roles, values: [illustrateur]}
       - label: Illustrateurs sans fiche
         name: illustrateursHorsFiche
         widget: list
@@ -498,6 +690,7 @@ collections:
         widget: string
         required: false
         hint: Écrire la période telle qu’elle doit paraître, par exemple « décembre 2026 ».
+      - *order
 
   - name: pages_fixes
     label: Pages principales
@@ -571,41 +764,78 @@ collections:
           - {label: "Publication", name: statut, widget: hidden, default: publie}
           - *order
           - {label: "Type", name: type, widget: hidden, default: legal}
-          - &page_eyebrow {label: "Rubrique de la carte", name: rubrique, widget: string, required: false}
-          - &page_action {label: "Action de la carte", name: libelleAction, widget: string, required: false}
+          - &page_eyebrow
+            label: Rubrique de la carte
+            name: rubrique
+            widget: string
+            required: false
+            hint: La petite ligne au-dessus du titre, sur la carte de la page « La maison ». Vide, le nom de la maison la remplace.
+          - &page_action
+            label: Libellé du lien de la carte
+            name: libelleAction
+            widget: string
+            required: false
+            hint: Le texte cliquable au bas de cette même carte, par exemple « Découvrir les projets ».
           - &page_sections
             label: Sections
             name: sections
             widget: list
             min: 1
             summary: "{{fields.titre}}"
+            hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
             fields:
               - {label: "Intertitre", name: titre, widget: string, required: false}
               - {label: "Texte", name: contenu, widget: text}
+          # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
+          # faut remplir, d’où les explications sur chacun.
           - &page_links
-            label: Liens
+            label: Liens et documents
             name: liens
             widget: list
             required: false
+            collapsed: true
+            summary: "{{fields.texte}}"
+            hint: Affichés dans l’encadré « Liens et documents », à droite de la page.
             fields:
-              - {label: "Type", name: type, widget: select, options: [externe, email, document, livre, page]}
-              - {label: "Libellé", name: texte, widget: string, required: false}
-              - {label: "Adresse ou document", name: href, widget: string, required: false}
-              - {label: "Livre ou page liée", name: slug, widget: string, required: false}
+              - label: Type de lien
+                name: type
+                widget: select
+                default: externe
+                options:
+                  - {label: "Vers un autre site", value: externe}
+                  - {label: "Vers une adresse courriel", value: email}
+                  - {label: "Vers un document PDF", value: document}
+                  - {label: "Vers un livre du catalogue", value: livre}
+                  - {label: "Vers une autre page du site", value: page}
+              - {label: "Libellé", name: texte, widget: string, required: false, hint: "Le texte cliquable. Vide, l’adresse s’affiche telle quelle."}
+              - label: Adresse ou fichier
+                name: href
+                widget: string
+                required: false
+                hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page.
+              - label: Livre ou page visée
+                name: slug
+                widget: string
+                required: false
+                hint: "Uniquement pour les deux derniers types : l’adresse du livre ou de la page, par exemple « ville-rouge »."
           - &page_images
             label: Images
             name: images
             widget: list
             required: false
+            collapsed: true
             summary: "{{fields.alt}}"
+            hint: Affichées dans une galerie « En images » au bas de la page.
             fields:
               - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
               - {label: "Texte alternatif", name: alt, widget: string, required: false}
           - &page_documents
-            label: Documents
+            label: Documents joints
             name: documents
             widget: list
             required: false
+            collapsed: true
+            hint: Fichiers déposés avec la page. Pour qu’un document soit cliquable, ajouter aussi un lien de type « document PDF » ci-dessus.
             field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
           - *old_slugs
           - *seo
@@ -613,6 +843,10 @@ collections:
   - name: pages
     label: Pages de la maison
     label_singular: Page
+    description: >-
+      Les pages libres — commandes, librairies, soutien, projets… Chacune apparaît sous
+      forme de carte sur la page « La maison ». La page Projets porte ici son
+      introduction ; la liste des projets, elle, vient de la rubrique Projets.
     folder: nouveau-site/content/pages
     extension: json
     format: json
@@ -625,15 +859,19 @@ collections:
     view_filters: *status_filters
     fields:
       - {label: "Titre", name: titre, widget: string}
-      - {label: "Adresse", name: slug, widget: string, pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]}
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: L’adresse de la page sur le site, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication.
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - *order
       - {label: "Type", name: type, widget: hidden, default: page}
+      - *page_sections
       - *page_eyebrow
       - *page_action
-      - *page_sections
       - *page_links
       - *page_images
       - *page_documents
+      - *order
       - *old_slugs
       - *seo

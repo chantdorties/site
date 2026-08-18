@@ -40,9 +40,16 @@ TYPE_LABELS = {
     "mini-roman-jeunesse": "Mini roman jeunesse",
     "nouvelles": "Nouvelles",
     "recueil-de-nouvelles": "Recueil de nouvelles",
+    "recueil-de-recits": "Recueil de récits",
+    "recueil-de-textes": "Recueil de textes",
     "roman": "Roman",
     "roman-jeunesse": "Roman jeunesse",
     "texte-illustre": "Texte illustré",
+}
+
+BINDING_LABELS = {
+    "souple": "Souple",
+    "cartonne": "Cartonnée",
 }
 
 NEWS_TYPE_LABELS = {
@@ -1088,7 +1095,8 @@ class SiteBuilder:
             if book["format"]:
                 facts.append(("Format", book["format"]))
             if book["reliure"]:
-                facts.append(("Reliure", book["reliure"]))
+                # La valeur enregistrée est un mot-clé : la page affichait « cartonne ».
+                facts.append(("Reliure", BINDING_LABELS.get(book["reliure"], book["reliure"])))
             if book["isbn"] and book["isbnValide"]:
                 facts.append(("ISBN", book["isbn"]))
             facts_html = "".join(f"<div><dt>{e(label)}</dt><dd>{e(value)}</dd></div>" for label, value in facts)

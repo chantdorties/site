@@ -299,6 +299,48 @@ class BuiltSiteTest(unittest.TestCase):
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
+    def test_every_editable_collection_has_a_preview_and_a_description(self):
+        """Sans aperçu déclaré, Decap affiche un empilement de champs bruts ; sans
+        description, rien ne dit à quoi sert la rubrique ni ce qu’elle interdit."""
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        registered = set(
+            re.findall(
+                r"registerPreviewTemplate\('([^']+)'",
+                (DIST / "admin" / "preview.js").read_text(encoding="utf-8"),
+            )
+        )
+        for collection in config["collections"]:
+            name = collection["name"]
+            self.assertTrue(str(collection.get("description", "")).strip(), name)
+            if collection.get("editor", {}).get("preview") is False:
+                continue
+            self.assertIn(name, registered, name)
+
+    def test_select_options_cover_every_stored_value(self):
+        """Une valeur absente de la liste déroulante disparaîtrait au premier
+        enregistrement de la fiche."""
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        folders = {
+            collection["name"]: collection
+            for collection in config["collections"]
+            if "folder" in collection
+        }
+        for name, collection in folders.items():
+            selects = {
+                field["name"]: {option["value"] for option in field["options"]}
+                for field in collection["fields"]
+                if field.get("widget") == "select" and isinstance(field.get("options"), list)
+                and all(isinstance(option, dict) for option in field["options"])
+            }
+            for path in (ROOT / "content" / collection["folder"].split("/")[-1]).glob("*.json"):
+                record = json.loads(path.read_text(encoding="utf-8"))
+                for field, allowed in selects.items():
+                    stored = record.get(field)
+                    for item in stored if isinstance(stored, list) else [stored]:
+                        if item is None:
+                            continue
+                        self.assertIn(item, allowed, f"{path.name} · {field}")
+
     def test_admin_config_satisfies_decap_required_properties(self):
         """Un YAML valide peut rester refusé par Decap et bloquer toute
         l’administration : ces clés obligatoires ne s’en déduisent pas."""
