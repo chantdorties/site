@@ -18,6 +18,8 @@ cd nouveau-site
 - `tools/` : validation, génération, serveur local et déploiement ;
 - `config/` : redirections des anciennes adresses ;
 - `dist/` : résultat généré, ignoré par Git et prêt à publier ;
+- `.cache-medias/` : images déjà optimisées, gardées d’une génération à l’autre ;
+  ignoré par Git, supprimable à tout moment sans risque ;
 - `.github/workflows/` : validation, publication et restauration automatiques.
 
 Ne pas modifier `dist/` directement : il est recréé à chaque génération.
