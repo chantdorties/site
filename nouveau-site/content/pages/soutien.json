@@ -6,7 +6,17 @@
   "sections": [
     {
       "titre": null,
-      "contenu": "Notre maison d’édition fonctionne en association. Il y a deux manières de nous soutenir et de nous aider à publier de nouveaux ouvrages. En adhérant à l’association, vous bénéficierez pendant un an d’une carte d’adhérent, de 10 % de remise sur nos publications commandées par courrier, des frais de port gratuits, d’un sachet de graines de fleurs des champs et, sur demande, d’un sachet de graines d’orties. Vous pourrez également vous investir dans le fonctionnement de l’association. Vous pouvez aussi faire un don d’un montant libre pour aider à promouvoir la littérature sociale. Imprimez le bulletin d’adhésion et de soutien, puis retournez-le avec votre chèque libellé à l’ordre de Chant d’orties à : Chant d’orties, 9 Chemin Serre de Cassagnes, 34600 Bédarieux. Pour toute question concernant une adhésion ou un don, contactez-nous à chantdorties@free.fr."
+      "contenu": "Notre maison d’édition fonctionne en association. Il y a deux manières de nous soutenir et de nous aider à publier de nouveaux ouvrages. En adhérant à l’association, vous bénéficierez pendant un an d’une carte d’adhérent, de 10 % de remise sur nos publications commandées par courrier, des frais de port gratuits, d’un sachet de graines de fleurs des champs et, sur demande, d’un sachet de graines d’orties. Vous pourrez également vous investir dans le fonctionnement de l’association. Vous pouvez aussi faire un don d’un montant libre pour aider à promouvoir la littérature sociale. Imprimez le bulletin d’adhésion et de soutien, puis retournez-le avec votre chèque libellé à l’ordre de Chant d’orties à : Chant d’orties, 9 Chemin Serre de Cassagnes, 34600 Bédarieux. Pour toute question concernant une adhésion ou un don, contactez-nous à chantdorties@free.fr.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Adhérer à l’association",
+          "hostedButtonId": "YQ6Y6STGJ85C4"
+        },
+        {
+          "libelle": "Faire un don",
+          "hostedButtonId": "9PZNKEXG6J4S4"
+        }
+      ]
     }
   ],
   "liens": [

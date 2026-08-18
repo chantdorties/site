@@ -6,6 +6,10 @@ la même mise en page : titre, colonne de texte en sections, et colonne de liens
 droite. La page Projets ajoute la grille des livres à paraître
 (composants/cartes_projets.py).
 
+Une section peut porter des boutons d'achat PayPal, saisis dans sa fiche : les offres
+groupées, l'adhésion et le don, les titres soldés. Comme pour les livres, leur
+identifiant vient toujours de la saisie et ne se fabrique jamais ici.
+
 Le style correspondant est dans frontend/assets/css/35-pages-de-texte.css ;
 la page Projets ajoute 37-projets.css.
 """
@@ -16,6 +20,7 @@ from typing import Any
 
 from content_data import media_alt, media_path
 
+from ..icones import icon
 from ..outils import e
 
 
@@ -35,7 +40,8 @@ class PagesEditoriales:
                 heading = f'<h2>{e(section["titre"])}</h2>' if section["titre"] else ""
                 rendered_sections.append(
                     f'<section class="editorial-section">{heading}'
-                    f'<p>{self.linkify_text(section["contenu"])}</p></section>'
+                    f'<p>{self.linkify_text(section["contenu"])}</p>'
+                    f'{self.render_paypal_buttons(section["boutonsPaypal"])}</section>'
                 )
             sections = "".join(rendered_sections)
             link_items = [self.editorial_link(link) for link in page_data["liens"]]
@@ -83,6 +89,28 @@ class PagesEditoriales:
             )
             self.write_route(f"/{page_data['slug']}/", page)
 
+
+    def render_paypal_buttons(self, buttons: list[dict[str, Any]]) -> str:
+        """Les boutons d’achat d’une section, au format exact des fiches livres.
+
+        Le balisage reprend celui de pages/livres.py : même adresse, même commande,
+        même classe. L’identifiant vient toujours de la saisie, jamais d’un calcul,
+        sous peine d’envoyer l’argent au mauvais article.
+        """
+        if not buttons:
+            return ""
+        # Pas de « voir mon panier » ici : il est dans le menu, donc à portée de
+        # toutes les pages. Le répéter sous chaque offre l'encombrerait.
+        forms = "".join(
+            f"""
+<form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+  <input type="hidden" name="cmd" value="_s-xclick">
+  <input type="hidden" name="hosted_button_id" value="{e(button['hostedButtonId'])}">
+  <button class="button" type="submit">{icon('shopping-cart')} {e(button['libelle'])}</button>
+</form>"""
+            for button in buttons
+        )
+        return f'<div class="section-actions">{forms}</div>'
 
     def published_editorial_pages(self) -> list[dict[str, Any]]:
         return [

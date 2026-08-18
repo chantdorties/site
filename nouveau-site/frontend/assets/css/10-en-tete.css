@@ -73,3 +73,24 @@
   color: var(--red-dark);
 }
 
+/* Le formulaire du panier ne porte que des champs cachés : les boutons qui le
+   commandent sont dans les menus, reliés par leur attribut « form ».
+   Voir composants/en_tete.py. */
+.nav-cart {
+  display: none;
+}
+
+/* Le panier du menu mobile est un bouton, non un lien : il faut donc lui retirer
+   le fond, les bordures et la police que le navigateur donne d'office, pour qu'il
+   se confonde avec les entrées voisines. */
+.mobile-nav button.nav-link {
+  width: 100%;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+

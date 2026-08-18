@@ -23,6 +23,16 @@
   margin-bottom: 0;
 }
 
+/* La rangée de boutons d'achat d'une section : les offres groupées, l'adhésion
+   et le don, les titres soldés. Voir tools/rendu/pages/editoriales.py. */
+.section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
 .editorial-aside {
   align-self: start;
   padding-left: 24px;

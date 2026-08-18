@@ -18,6 +18,7 @@ SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 URL_PATTERN = re.compile(r"^https?://", re.I)
 PAYPAL_BUTTON_PATTERN = re.compile(r"^[A-Z0-9]{13}$")
+PAYPAL_CART_PREFIX = "-----BEGIN PKCS7-----"
 MEDIA_SUFFIXES = {".bmp", ".gif", ".jpeg", ".jpg", ".pdf", ".png", ".tif", ".tiff", ".webp"}
 MAX_MEDIA_BYTES = 20 * 1024 * 1024
 SEO_TITLE_MAX = 60
@@ -301,10 +302,17 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     button_id = payment.get("donationHostedButtonId")
     if not isinstance(button_id, str) or not PAYPAL_BUTTON_PATTERN.fullmatch(button_id):
         raise ContentError("Réglage paiement: identifiant du bouton de don PayPal invalide")
+    cart = payment.get("panierEncrypted")
+    if not isinstance(cart, str) or not cart.strip().startswith(PAYPAL_CART_PREFIX):
+        raise ContentError(
+            "Réglage paiement: le bouton « voir mon panier » attend le bloc signé par PayPal, "
+            f"commençant par {PAYPAL_CART_PREFIX}"
+        )
     for field in (
         "libelleDon",
         "libelleOffres",
         "libellePanier",
+        "libelleVoirPanier",
         "libelleDisponible",
         "libelleIndisponible",
         "libelleContact",
@@ -377,6 +385,12 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
         for record in raw[kind]:
             for field, empty in defaults.items():
                 record.setdefault(field, deepcopy(empty))
+    # Les boutons PayPal se rattachent à une section de page, pas à sa racine :
+    # la table ci-dessus, plate par nature, ne peut pas les atteindre.
+    for page in raw["pages"]:
+        for section in page.get("sections") or []:
+            if isinstance(section, dict):
+                section.setdefault("boutonsPaypal", [])
 
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
@@ -517,6 +531,19 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         for section in sections:
             if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
                 raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")
+            buttons = section.get("boutonsPaypal", [])
+            if not isinstance(buttons, list):
+                raise ContentError(f"Page {page['slug']}: boutons PayPal de section invalides")
+            for button in buttons:
+                if not isinstance(button, dict):
+                    raise ContentError(f"Page {page['slug']}: bouton PayPal invalide")
+                if not isinstance(button.get("libelle"), str) or not button["libelle"].strip():
+                    raise ContentError(f"Page {page['slug']}: libellé de bouton PayPal obligatoire")
+                identifier = button.get("hostedButtonId")
+                if not isinstance(identifier, str) or not PAYPAL_BUTTON_PATTERN.fullmatch(identifier):
+                    raise ContentError(
+                        f"Page {page['slug']}: identifiant du bouton PayPal « {button['libelle']} » invalide"
+                    )
         for item in page.get("images", []):
             validate_media_item(root, item, f"Page {page['slug']}")
         for path in page.get("documents", []):
