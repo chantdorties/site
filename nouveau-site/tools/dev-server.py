@@ -33,6 +33,9 @@ def source_files(root: Path) -> list[Path]:
         root / "config",
         root / "content",
         root / "frontend",
+        # Le HTML des pages et des composants vit ici : sans cette ligne, la
+        # modification d'un composant ne déclencherait aucune régénération.
+        root / "tools" / "rendu",
     ]
     files = [
         root / "tools" / "build-site.py",

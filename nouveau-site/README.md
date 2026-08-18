@@ -13,7 +13,8 @@ cd nouveau-site
 ## Organisation
 
 - `content/` : livres, personnes, collections, pages, actualités, réglages et médias modifiables ;
-- `frontend/` : modèle HTML, styles, scripts et interface d’administration ;
+- `frontend/` : squelette HTML commun, styles, scripts et interface d’administration ;
+- `tools/rendu/` : le HTML du site, un fichier par page et par composant ;
 - `tools/` : validation, génération, serveur local et déploiement ;
 - `config/` : redirections des anciennes adresses ;
 - `dist/` : résultat généré, ignoré par Git et prêt à publier ;
@@ -75,7 +76,8 @@ Cette commande valide les JSON et médias, génère `dist/`, puis contrôle les 
 liens, scripts, images, PDF, brouillons et redirections.
 
 Le mode d’emploi destiné à la personne qui écrit les contenus est le
-[Guide de rédaction](docs/GUIDE-REDACTION.md) ; le fonctionnement, les règles et
+[Guide de rédaction](docs/GUIDE-REDACTION.md), celui destiné à la personne qui
+modifie le HTML et le CSS est le [Guide de l’apparence](docs/GUIDE-APPARENCE.md) ; le fonctionnement, les règles et
 l’hébergement de l’administration sont dans [Administration](docs/ADMINISTRATION.md),
 la mise en ligne dans [Déploiement](docs/DEPLOIEMENT.md). L’authentification de l’administration est décrite
 dans [Relais d’authentification](docs/RELAIS-AUTH.md). Les comptes dont dépend la
