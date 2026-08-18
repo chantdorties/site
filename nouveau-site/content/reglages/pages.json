@@ -1,6 +1,6 @@
 {
   "catalogue": {
-    "rubrique": "{2} ouvrages",
+    "rubrique": "{nombre} ouvrages",
     "titre": "Le catalogue",
     "introduction": "Romans, albums et nouvelles illustrées à parcourir par collection, âge ou disponibilité.",
     "descriptionSeo": "Découvrez les {nombre} livres publiés par les Éditions Chant d’orties."
