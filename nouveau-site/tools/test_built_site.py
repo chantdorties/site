@@ -438,7 +438,9 @@ class BuiltSiteTest(unittest.TestCase):
         for book in source_books:
             path = DIST / "livres" / book["slug"] / "index.html"
             soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
-            form = soup.select_one('form.paypal-form[action="https://www.paypal.com/cgi-bin/webscr"]')
+            form = soup.select_one(
+                '.purchase-line form.paypal-form[action="https://www.paypal.com/cgi-bin/webscr"]'
+            )
             if book["disponible"]:
                 self.assertIsNotNone(form, book["slug"])
                 self.assertEqual("_s-xclick", form.select_one('input[name="cmd"]')["value"])
@@ -467,21 +469,32 @@ class BuiltSiteTest(unittest.TestCase):
             ]
             self.assertEqual(expected, found, page["slug"])
 
-    def test_pages_that_sell_also_offer_the_cart(self):
+    def test_every_page_offers_the_cart_from_its_menu(self):
+        """Le panier est au menu, donc joignable de partout — y compris sur téléphone."""
         payment = settings("paiement")
+        for path in self.public_html_files:
+            soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+            forms = soup.select("form.nav-cart")
+            # Un seul formulaire par page : le bloc signé est trop lourd pour être répété.
+            self.assertEqual(1, len(forms), path)
+            self.assertEqual(
+                payment["panierEncrypted"],
+                forms[0].select_one('input[name="encrypted"]')["value"],
+                path,
+            )
+            # Deux boutons le commandent : celui du menu principal, celui du menu mobile.
+            buttons = soup.select(f'button[form="{forms[0]["id"]}"]')
+            self.assertEqual(2, len(buttons), path)
+
+    def test_selling_sections_do_not_repeat_the_cart(self):
         for path in (ROOT / "content" / "pages").glob("*.json"):
             page = load_json(path)
             if page["statut"] != "publie":
                 continue
-            if not any(section.get("boutonsPaypal") for section in page["sections"]):
-                continue
             soup = BeautifulSoup(
                 (DIST / page["slug"] / "index.html").read_text(encoding="utf-8"), "html.parser"
             )
-            carts = soup.select('.section-actions input[name="encrypted"]')
-            self.assertTrue(carts, page["slug"])
-            for cart in carts:
-                self.assertEqual(payment["panierEncrypted"], cart["value"], page["slug"])
+            self.assertEqual([], soup.select('.section-actions input[name="encrypted"]'), page["slug"])
 
     def test_validated_commercial_content_is_published(self):
         for slug in ("commandes", "offres-speciales", "soutien", "mentions-legales"):

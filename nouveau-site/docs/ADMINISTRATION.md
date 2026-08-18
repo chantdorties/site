@@ -38,7 +38,8 @@ L’administration permet de modifier :
   dans « Réglages du site > Paiement et dons » ;
 - les boutons d’achat propres à une page — offre groupée, adhésion, don, titre soldé —
   saisis section par section dans la page concernée. Un livre vendu à son prix normal
-  garde le sien dans sa fiche.
+  garde le sien dans sa fiche. Le bouton « voir mon panier », lui, est posé
+  automatiquement dans le menu de chaque page : seul son libellé se règle.
 
 Les pages engendrées se règlent ailleurs que là où elles s’affichent. Le titre,
 l’introduction et l’encart Facebook de la page **Actualités** viennent de « Réglages

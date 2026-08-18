@@ -63,10 +63,6 @@ class PagesEditoriales:
             # La page Projets porte son introduction dans ses sections ; la liste des
             # projets, elle, vient de leur propre rubrique.
             projects = self.render_projects() if page_data["slug"] == "projets" else ""
-            # La page Commandes explique au visiteur qu'il pourra vérifier son panier :
-            # autant le lui ouvrir depuis là, même si elle ne vend rien elle-même.
-            if page_data["slug"] == "commandes":
-                sections += f'<div class="section-actions">{self.render_cart_link()}</div>'
             description = page_data["sections"][0]["contenu"]
             active = "actualites" if page_data["slug"] == "actualites" else "maison"
             content = f"""
@@ -103,8 +99,8 @@ class PagesEditoriales:
         """
         if not buttons:
             return ""
-        # Qui peut mettre au panier doit pouvoir le consulter : l'ancien site plaçait
-        # le bouton « afficher le panier » à côté de chaque bouton d'achat.
+        # Pas de « voir mon panier » ici : il est dans le menu, donc à portée de
+        # toutes les pages. Le répéter sous chaque offre l'encombrerait.
         forms = "".join(
             f"""
 <form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
@@ -114,7 +110,7 @@ class PagesEditoriales:
 </form>"""
             for button in buttons
         )
-        return f'<div class="section-actions">{forms}{self.render_cart_link()}</div>'
+        return f'<div class="section-actions">{forms}</div>'
 
     def published_editorial_pages(self) -> list[dict[str, Any]]:
         return [

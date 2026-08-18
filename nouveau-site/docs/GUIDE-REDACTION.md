@@ -134,7 +134,10 @@ Deux précautions valent d’être répétées :
 - **Vérifier le bouton après publication** en cliquant dessus : PayPal affiche l’article et
   le montant réels. C’est la seule vérification qui compte.
 
-Le bouton « voir mon panier » s’ajoute tout seul à côté : rien à saisir.
+Le bouton « voir mon panier » n’est à saisir nulle part : il se tient en permanence
+dans le menu du site, et se répète sur la fiche d’un livre à côté de « Ajouter au
+panier », là où l’on veut vérifier sa commande. Seul son libellé se règle, dans
+« Réglages du site > Paiement et dons ».
 
 ## Créer une personne
 
