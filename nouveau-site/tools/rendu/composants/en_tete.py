@@ -1,0 +1,72 @@
+"""L'en-tête, présent en haut de chaque page.
+
+Il contient le logo suivi du nom de la maison, la navigation principale, le bouton
+loupe, et — sur téléphone — le bouton d'ouverture du menu puis le menu lui-même.
+
+Les entrées du menu ne sont pas écrites ici : elles viennent de
+content/reglages/navigation.json et se modifient depuis l'administration.
+
+Le style correspondant est dans frontend/assets/css/site.css :
+règles .site-header, .wordmark, .primary-nav, .nav-link, .menu-button, .mobile-nav
+"""
+
+from __future__ import annotations
+
+from ..icones import icon
+from ..outils import e
+
+
+class EnTete:
+    def render_nav(self, active: str, *, mobile: bool = False) -> str:
+        links = []
+        navigation = sorted(
+            (item for item in self.navigation_settings["liens"] if item["visible"]),
+            key=lambda item: (item["ordre"], item["id"]),
+        )
+        for item in navigation:
+            current = ' aria-current="page"' if item["id"] == active else ""
+            links.append(
+                f'<a class="nav-link" href="{e(item["url"])}"{current}>'
+                f'{e(item["libelle"])}</a>'
+            )
+        search_settings = self.navigation_settings["recherche"]
+        search = (
+            f'<a class="nav-link" href="{e(search_settings["url"])}">'
+            f'{e(search_settings["libelle"])}</a>'
+            if mobile
+            else (
+                f'<a class="icon-button" href="{e(search_settings["url"])}" '
+                f'title="{e(search_settings["libelle"])}" '
+                f'aria-label="{e(search_settings["libelle"])}">'
+                f'{icon("search")}</a>'
+            )
+        )
+        return "".join(links) + search
+
+    def render_header(self, active: str) -> str:
+        short_name = self.site_settings["nomCourt"]
+        if " " in short_name:
+            name_start, name_accent = short_name.rsplit(" ", 1)
+        else:
+            name_start, name_accent = short_name, ""
+        return f"""
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href="/" aria-label="{e(self.site_settings['nom'])}, accueil">
+      <img class="site-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241">
+      <span class="wordmark__text">{e(name_start)} <span class="wordmark__accent">{e(name_accent)}</span></span>
+    </a>
+    <nav class="primary-nav" aria-label="Navigation principale">
+      {self.render_nav(active)}
+    </nav>
+    <button class="icon-button menu-button" type="button" data-menu-button
+      aria-expanded="false" aria-controls="navigation-mobile" aria-label="Ouvrir le menu" title="Ouvrir le menu">
+      <span class="menu-button__open">{icon("menu")}</span>
+      <span class="menu-button__close">{icon("x")}</span>
+    </button>
+  </div>
+</header>
+<nav class="mobile-nav" id="navigation-mobile" data-mobile-nav aria-label="Navigation mobile" hidden>
+  {self.render_nav(active, mobile=True)}
+</nav>""".strip()
+

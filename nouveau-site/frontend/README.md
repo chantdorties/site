@@ -2,12 +2,16 @@
 
 Ce dossier contient les sources communes du site :
 
-- `templates/base.html` : structure commune des pages publiques ;
+- `templates/base.html` : le `<head>` et la carcasse des pages publiques ;
 - `assets/css/site.css` : mise en page et composants visuels ;
 - `assets/js/site.js` : menu mobile, retour en haut et galeries ;
 - `assets/js/catalogue.js` : recherche et filtres du catalogue ;
 - `assets/js/people.js` : recherche et filtres de l’annuaire ;
 - `admin/` : interface Decap CMS et formulaires de gestion des contenus.
+
+Le HTML des pages elles-mêmes n’est pas ici : il est dans `tools/rendu/`, un fichier
+par page dans `pages/` et un fichier par morceau réutilisé dans `composants/`. Pour
+savoir quel fichier ouvrir, voir le [Guide de l’apparence](../docs/GUIDE-APPARENCE.md).
 
 Les pages finales ne doivent pas être modifiées directement dans `dist/`.
 
