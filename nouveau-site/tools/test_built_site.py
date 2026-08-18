@@ -449,6 +449,40 @@ class BuiltSiteTest(unittest.TestCase):
             else:
                 self.assertIsNone(form, book["slug"])
 
+    def test_editorial_pages_carry_the_paypal_buttons_that_were_entered(self):
+        for path in (ROOT / "content" / "pages").glob("*.json"):
+            page = load_json(path)
+            if page["statut"] != "publie":
+                continue
+            expected = [
+                button["hostedButtonId"]
+                for section in page["sections"]
+                for button in section.get("boutonsPaypal", [])
+            ]
+            built = DIST / page["slug"] / "index.html"
+            soup = BeautifulSoup(built.read_text(encoding="utf-8"), "html.parser")
+            found = [
+                field["value"]
+                for field in soup.select('.section-actions input[name="hosted_button_id"]')
+            ]
+            self.assertEqual(expected, found, page["slug"])
+
+    def test_pages_that_sell_also_offer_the_cart(self):
+        payment = settings("paiement")
+        for path in (ROOT / "content" / "pages").glob("*.json"):
+            page = load_json(path)
+            if page["statut"] != "publie":
+                continue
+            if not any(section.get("boutonsPaypal") for section in page["sections"]):
+                continue
+            soup = BeautifulSoup(
+                (DIST / page["slug"] / "index.html").read_text(encoding="utf-8"), "html.parser"
+            )
+            carts = soup.select('.section-actions input[name="encrypted"]')
+            self.assertTrue(carts, page["slug"])
+            for cart in carts:
+                self.assertEqual(payment["panierEncrypted"], cart["value"], page["slug"])
+
     def test_validated_commercial_content_is_published(self):
         for slug in ("commandes", "offres-speciales", "soutien", "mentions-legales"):
             path = DIST / slug / "index.html"
@@ -491,8 +525,11 @@ class BuiltSiteTest(unittest.TestCase):
             (record, f"/livres/{record['slug']}/")
             for record in (load_json(path) for path in (ROOT / "content" / "livres").glob("*.json"))
         ]
+        # Une page encore en brouillon n'a pas d'adresse publique : son ancienne
+        # adresse mène à « La maison », d'où le visiteur retrouvera son chemin.
+        # Voir tools/rendu/technique.py.
         source_records += [
-            (record, f"/{record['slug']}/")
+            (record, f"/{record['slug']}/" if record["statut"] == "publie" else "/la-maison/")
             for folder in ("pages", "pages-fixes")
             for record in (load_json(path) for path in (ROOT / "content" / folder).glob("*.json"))
             if record["slug"] not in {"accueil"}

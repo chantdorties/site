@@ -6,7 +6,8 @@ la ligne d'achat avec le bouton PayPal d'origine, les extraits en PDF, les liens
 la galerie d'illustrations.
 
 Le bouton PayPal de chaque livre est celui saisi dans sa fiche : il ne doit jamais
-être fabriqué ici, sous peine d'envoyer l'argent au mauvais endroit.
+être fabriqué ici, sous peine d'envoyer l'argent au mauvais endroit. Le bouton
+« voir mon panier » qui l'accompagne vient de composants/panier.py.
 
 Le style correspondant est dans frontend/assets/css/32-page-livre.css ;
 la galerie d'illustrations suit 33-galerie.css.
@@ -66,7 +67,7 @@ class PagesLivres:
   <input type="hidden" name="cmd" value="_s-xclick">
   <input type="hidden" name="hosted_button_id" value="{e(book['paypalHostedButtonId'])}">
   <button class="button" type="submit">{icon('shopping-cart')} {e(self.payment_settings['libellePanier'])}</button>
-</form>"""
+</form>{self.render_cart_link()}"""
             else:
                 purchase_action = f'<a class="button" href="mailto:{e(self.site_settings["courriel"])}?subject={subject}">{icon("mail")} {e(self.payment_settings["libelleContact"])}</a>'
             purchase = f"""

@@ -19,6 +19,7 @@ from .composants.cartes_projets import CartesProjets
 from .composants.en_tete import EnTete
 from .composants.fil_ariane import FilAriane
 from .composants.galerie import Galerie
+from .composants.panier import Panier
 from .composants.pied_de_page import PiedDePage
 from .composants.vitrine_collections import VitrineCollections
 from .feuille_de_style import assembler_css
@@ -54,6 +55,7 @@ class SiteBuilder(
     VitrineCollections,
     Galerie,
     CartesProjets,
+    Panier,
     # Une page du site par classe.
     PageAccueil,
     PageCatalogue,

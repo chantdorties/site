@@ -114,6 +114,28 @@ C’est la seule rubrique où la **suppression** est possible : un projet n’a 
 propre, donc rien à rediriger. Le jour de la parution, supprimer le projet et créer le
 livre.
 
+## Vendre depuis une page
+
+Un livre se vend depuis sa fiche : c’est là que se saisit son bouton PayPal, et nulle part
+ailleurs. Mais certaines ventes n’appartiennent à aucun livre — une offre groupée à deux
+tomes, une adhésion, un don, un titre soldé. Pour celles-là, chaque **section** d’une page
+de la maison peut porter ses propres **boutons d’achat PayPal**.
+
+Un bouton demande deux choses : le texte que lira le visiteur, et l’**identifiant à
+13 caractères** fourni par PayPal au moment où le bouton y a été créé — par exemple
+`6A3X7AW598RVA`, et non l’adresse complète. C’est cet identifiant, et lui seul, qui décide
+de l’article et du montant facturés.
+
+Deux précautions valent d’être répétées :
+
+- **Ne jamais recopier l’identifiant de la fiche d’un livre** dans une page qui annonce un
+  prix réduit. La page afficherait la remise, et PayPal ferait payer le plein tarif. Un
+  prix soldé ou groupé exige son propre bouton, créé pour lui dans PayPal.
+- **Vérifier le bouton après publication** en cliquant dessus : PayPal affiche l’article et
+  le montant réels. C’est la seule vérification qui compte.
+
+Le bouton « voir mon panier » s’ajoute tout seul à côté : rien à saisir.
+
 ## Créer une personne
 
 Une fiche par auteur, illustrateur ou préfacier. Le **rôle** coché décide des champs de
@@ -143,6 +165,8 @@ Le message dit ce qui coince et sur quelle fiche. Les cas les plus fréquents :
 |---|---|
 | *ordre … utilisé deux fois* | Deux contenus se disputent le même rang : en changer un |
 | *bouton PayPal obligatoire si disponible* | Renseigner l’identifiant, ou décocher « Disponible » |
+| *identifiant du bouton PayPal « … » invalide* | Coller les 13 caractères fournis par PayPal, sans l’adresse autour |
+| *le bouton « voir mon panier » attend le bloc signé par PayPal* | Le bloc technique des réglages de paiement a été modifié : y remettre celui d’origine |
 | *texte alternatif … obligatoire* | Décrire l’image ajoutée |
 | *sélectionner exactement un livre disponible pour l’accueil* | Une collection a zéro ou deux livres mis en avant |
 | *personne en brouillon* / *livre lié non publié* | Un contenu publié pointe vers un contenu qui ne l’est pas : publier l’autre, ou retirer le lien |
