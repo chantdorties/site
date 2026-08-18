@@ -74,8 +74,10 @@ make validate
 Cette commande valide les JSON et médias, génère `dist/`, puis contrôle les pages,
 liens, scripts, images, PDF, brouillons et redirections.
 
-Les modes d’emploi complets sont dans [Administration](docs/ADMINISTRATION.md) et
-[Déploiement](docs/DEPLOIEMENT.md). L’authentification de l’administration est décrite
+Le mode d’emploi destiné à la personne qui écrit les contenus est le
+[Guide de rédaction](docs/GUIDE-REDACTION.md) ; le fonctionnement, les règles et
+l’hébergement de l’administration sont dans [Administration](docs/ADMINISTRATION.md),
+la mise en ligne dans [Déploiement](docs/DEPLOIEMENT.md). L’authentification de l’administration est décrite
 dans [Relais d’authentification](docs/RELAIS-AUTH.md). Les comptes dont dépend la
 publication, et la marche à suivre si l’un d’eux est perdu, sont recensés dans
 [Passation](docs/PASSATION.md).

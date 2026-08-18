@@ -1,5 +1,9 @@
 # Administration des contenus
 
+Ce document décrit le fonctionnement, les règles et l’hébergement de l’administration.
+Pour la personne qui saisit les contenus, le mode d’emploi est
+[GUIDE-REDACTION.md](GUIDE-REDACTION.md).
+
 ## Fonctionnement
 
 L’interface Decap CMS modifie les fichiers JSON et les médias du dépôt privé
@@ -40,14 +44,17 @@ principales ne porte que son référencement. Il en va de même du catalogue, de
 auteurs, des collections et de la maison. Les catégories annoncées en bas de la page
 Actualités ne s’écrivent pas : ce sont celles des articles réellement publiés.
 
-De nouvelles pages de la maison peuvent être créées. La suppression reste
-désactivée partout sauf dans la rubrique **Projets** : un projet n’a pas d’adresse
-à lui, donc rien à rediriger, et un livre paru n’a plus à encombrer la liste — le
-dépôt en garde de toute façon l’historique. Ailleurs, utiliser le statut `Archivé`
-pour retirer un contenu sans perdre son historique. Un contenu archivé disparaît du site mais **conserve ses anciennes
-adresses**, qui renvoient alors vers sa rubrique parente plutôt que vers une page
-inexistante. Les pages Accueil, Actualités et Mentions légales doivent toujours
-rester publiées : leur adresse et leur statut ne sont pas modifiables.
+De nouvelles pages de la maison peuvent être créées.
+
+La suppression est désactivée partout sauf dans la rubrique **Projets** : un projet
+n’a pas d’adresse à lui, donc rien à rediriger, et un livre paru n’a plus à encombrer
+la liste — le dépôt en garde de toute façon l’historique. Ailleurs, le statut
+`Archivé` retire un contenu du site sans l’effacer. Un contenu archivé **conserve ses
+anciennes adresses**, qui renvoient alors vers sa rubrique parente plutôt que vers une
+page inexistante.
+
+Les pages Accueil, Actualités et Mentions légales doivent toujours rester publiées :
+leur adresse et leur statut ne sont pas modifiables.
 
 Une adresse (`slug`) ne doit plus être changée après la première publication. Si
 un changement est indispensable, ajouter l’adresse précédente dans « Anciennes
