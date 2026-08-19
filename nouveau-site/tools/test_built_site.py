@@ -11,6 +11,8 @@ from urllib.parse import urlsplit
 import yaml
 from bs4 import BeautifulSoup
 
+from tools.content_data import inline_media_paths, load_settings
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
@@ -144,6 +146,22 @@ class BuiltSiteTest(unittest.TestCase):
             for item in [*source_books, *source_people, *source_pages, *source_news, *source_collections]
             if item.get("seo", {}).get("image")
         }
+        # Le même recensement que la génération, pris à sa source : recopier la règle
+        # ici la laisserait diverger au premier champ passé en markdown.
+        inline_images = inline_media_paths(
+            {
+                "books": source_books,
+                "people": source_people,
+                "collections": source_collections,
+                "news": source_news,
+                "pages": [
+                    page
+                    for page in source_pages
+                    if page["slug"] != "actualites" and not page.get("aVerifier")
+                ],
+                "settings": load_settings(ROOT / "content"),
+            }
+        )
         expected = (
             2 * len(source_books)
             + sum(len(book["illustrations"]) for book in source_books)
@@ -153,6 +171,7 @@ class BuiltSiteTest(unittest.TestCase):
             + sum(bool(item.get("image")) for item in source_news)
             + sum(bool(item.get("logo")) for item in source_collections)
             + len(seo_images)
+            + len(inline_images)
         )
         self.assertEqual(expected, self.report["medias"]["images"])
 

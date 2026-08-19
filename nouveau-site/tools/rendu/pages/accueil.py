@@ -60,7 +60,7 @@ class PageAccueil:
     <div class="hero-copy">
       <p class="eyebrow">{e(labels['heroRubrique'])}</p>
       <h1>{e(labels['heroTitre'])} <span>{e(labels['heroAccent'])}</span></h1>
-      <p class="lead">{e(labels['heroAccroche'])}</p>
+      <p class="lead">{self.markdown_inline(labels['heroAccroche'], owner="accueil")}</p>
       <div class="hero-actions">
         <a class="button" href="/catalogue/">{e(labels['boutonCatalogue'])} <span aria-hidden="true">→</span></a>
         <a class="button button--secondary" href="/collections/">{e(labels['boutonCollections'])}</a>
@@ -74,22 +74,22 @@ class PageAccueil:
     <div>
       <p class="eyebrow">{e(house_update['titre'])}</p>
       <h2>{e(labels['titreInformation'])}</h2>
-      <p class="lead">{e(house_update['contenu'])}</p>
+      <div class="lead rich-text">{self.markdown_html(house_update['contenu'], owner="accueil")}</div>
     </div>
     <div class="home-commercial__details">
       <h3>{e(commercial_info['titre'])}</h3>
-      <p>{self.linkify_text(commercial_info['contenu'])}</p>
+      <div class="rich-text">{self.markdown_html(commercial_info['contenu'], owner="accueil")}</div>
       <div class="commercial-audiences">
         <section class="commercial-audience">
           <h4>{e(booksellers_info['titre'])}</h4>
-          <p>{self.linkify_text(booksellers_info['contenu'])}</p>
+          <div class="rich-text">{self.markdown_html(booksellers_info['contenu'], owner="accueil")}</div>
         </section>
         <section class="commercial-audience">
           <h4>{e(individuals_info['titre'])}</h4>
-          <p>{self.linkify_text(individuals_info['contenu'])}</p>
+          <div class="rich-text">{self.markdown_html(individuals_info['contenu'], owner="accueil")}</div>
         </section>
       </div>
-      <p class="commercial-support">{self.linkify_text(support_info['contenu'], internal_links={'page de soutien': '/soutien/'})}</p>
+      <div class="commercial-support rich-text">{self.markdown_html(support_info['contenu'], internal_links={'page de soutien': '/soutien/'}, owner="accueil")}</div>
       <div class="hero-actions">
         <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
           <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
@@ -104,7 +104,7 @@ class PageAccueil:
   <div class="container">
     <div class="section-heading">
       <div><p class="eyebrow">{e(labels['collectionsRubrique'])}</p><h2>{e(labels['collectionsTitre'])}</h2></div>
-      <p>{e(intro)}</p>
+      <div class="rich-text">{self.markdown_html(intro, owner="accueil")}</div>
     </div>
     {self.render_collection_showcase(heading_level=3)}
   </div>

@@ -11,7 +11,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.content_data import ContentError, load_content, media_path, valid_isbn
+from tools.content_data import (
+    ContentError,
+    inline_media_paths,
+    load_content,
+    media_path,
+    valid_isbn,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -99,6 +105,9 @@ def referenced_media(raw):
             for item in raw[kind]
             if item.get("seo", {}).get("image")
         )
+    # Les images déposées au fil d'un texte ne figurent dans aucun champ : sans cette
+    # ligne, la première que la rédaction insère est vue comme un fichier orphelin.
+    paths.update(inline_media_paths(raw))
     return paths
 
 

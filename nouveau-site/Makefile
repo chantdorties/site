@@ -37,6 +37,6 @@ preview:
 	$(PYTHON) -m http.server $(PREVIEW_PORT) --directory dist-preview
 
 test:
-	$(PYTHON) -m unittest tools/test_content_data.py tools/test_built_site.py tools/test_deploy.py -v
+	$(PYTHON) -m unittest tools/test_texte.py tools/test_content_data.py tools/test_built_site.py tools/test_deploy.py -v
 
 validate: build test

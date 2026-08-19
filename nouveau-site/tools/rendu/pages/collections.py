@@ -23,7 +23,7 @@ class PagesCollections:
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Collections', None)])}
   <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <p class="lead">{e(labels['introduction'])}</p>
+  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="collections")}</div>
 </div></header>
 <section class="section"><div class="container">{self.render_collection_showcase()}</div></section>"""
         page = self.render_page(
@@ -52,7 +52,7 @@ class PagesCollections:
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Collections', '/collections/'), (collection['titre'], None)])}
   {logo}
-  <p class="eyebrow">{collection['nombreLivres']} {'livres' if collection['nombreLivres'] > 1 else 'livre'}</p><h1>{e(collection['titre'])}</h1><p class="lead">{e(collection['description'])}</p>
+  <p class="eyebrow">{collection['nombreLivres']} {'livres' if collection['nombreLivres'] > 1 else 'livre'}</p><h1>{e(collection['titre'])}</h1><div class="lead rich-text">{self.markdown_html(collection['description'], owner=collection['slug'])}</div>
 </div></header>
 <section class="section"><div class="container"><div class="book-grid">{cards}</div></div></section>"""
             seo_title, seo_description, seo_image = self.seo_values(

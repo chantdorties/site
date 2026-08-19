@@ -10,7 +10,6 @@ cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.
 
 from __future__ import annotations
 
-import re
 from datetime import datetime
 from typing import Any
 
@@ -31,11 +30,7 @@ class PageActualites:
                     f'alt="{e(item.get("imageAlt") or item["titre"])}" loading="lazy" width="1200" height="900">'
                 )
             date = datetime.strptime(item["datePublication"], "%Y-%m-%d")
-            body = "".join(
-                f"<p>{self.linkify_text(paragraph)}</p>"
-                for paragraph in re.split(r"\n\s*\n", item["contenu"].strip())
-                if paragraph.strip()
-            )
+            body = self.markdown_html(item["contenu"], owner=item["slug"])
             actions = []
             if item.get("lienExterne"):
                 actions.append(
@@ -55,8 +50,8 @@ class PageActualites:
   <div class="news-card__content">
     <p class="news-card__meta"><span>{e(NEWS_TYPE_LABELS[item['type']])}</span><time datetime="{item['datePublication']}">{date.strftime('%d/%m/%Y')}</time></p>
     <h2>{e(item['titre'])}</h2>
-    <p class="news-card__summary">{e(item['resume'])}</p>
-    <div class="news-card__body">{body}</div>
+    <p class="news-card__summary">{self.markdown_inline(item['resume'], owner=item['slug'])}</p>
+    <div class="news-card__body rich-text">{body}</div>
     {actions_html}
   </div>
 </article>""".strip()
@@ -85,14 +80,14 @@ class PageActualites:
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('Actualités', None)])}
   <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <p class="lead">{e(labels['introduction'])}</p>
+  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="actualites")}</div>
 </div></header>
 {news_listing}
 <section class="section news-section"><div class="container">
   <div class="news-callout">
     <p class="eyebrow">{e(labels['appelRubrique'])}</p>
     <h2>{e(labels['appelTitre'])}</h2>
-    <p class="lead">{e(labels['appelTexte'])}</p>
+    <div class="lead rich-text">{self.markdown_html(labels['appelTexte'], owner="actualites")}</div>
     {topics}
     <a class="button" href="{e(self.site_settings['facebook'])}" target="_blank" rel="noopener noreferrer">{e(labels['boutonFacebook'])} {icon('external')}</a>
   </div>

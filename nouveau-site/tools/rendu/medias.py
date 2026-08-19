@@ -17,11 +17,12 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from typing import Any
 
 import PIL
 from PIL import Image, ImageFile, ImageOps
 
-from content_data import media_path
+from content_data import inline_media_paths, media_path
 
 from .outils import slugify
 
@@ -57,7 +58,15 @@ class Medias:
         empreinte.update(recette.encode("utf-8"))
         return self.cache_medias / f"{empreinte.hexdigest()}.webp"
 
-    def save_webp(self, source: Path, destination: Path, max_size: tuple[int, int]) -> None:
+    def save_webp(
+        self, source: Path, destination: Path, max_size: tuple[int, int]
+    ) -> tuple[int, int]:
+        """Fabrique l'image et rend ses dimensions finales.
+
+        Les dimensions servent aux images déposées au fil d'un texte, qui n'ont pas de
+        gabarit connu d'avance : sans elles, la page se décale au chargement. Les autres
+        appelants ignorent la valeur rendue.
+        """
         destination.parent.mkdir(parents=True, exist_ok=True)
         cache = self.empreinte_image(source, max_size)
 
@@ -65,7 +74,8 @@ class Medias:
             shutil.copyfile(cache, destination)
             self.media_stats["images"] += 1
             self.media_stats["imagesReprises"] += 1
-            return
+            with Image.open(destination) as image:
+                return image.size
 
         with Image.open(source) as raw_image:
             raw_image.seek(0)
@@ -74,6 +84,7 @@ class Medias:
             if image.mode not in {"RGB", "RGBA"}:
                 image = image.convert("RGBA" if "transparency" in image.info else "RGB")
             image.save(destination, "WEBP", quality=QUALITE_WEBP, method=METHODE_WEBP)
+            dimensions = image.size
         self.media_stats["images"] += 1
 
         # Dépôt en deux temps : une génération interrompue ne doit pas laisser dans le
@@ -82,6 +93,7 @@ class Medias:
         provisoire = cache.with_name(f"{cache.name}.{os.getpid()}.partiel")
         shutil.copyfile(destination, provisoire)
         provisoire.replace(cache)
+        return dimensions
 
     def optimize_images(self) -> None:
         for book in self.books:
@@ -196,6 +208,40 @@ class Medias:
             destination = self.temp_output / "assets" / "media" / "social" / f"{item['slug']}-{digest}.webp"
             self.save_webp(source, destination, (1200, 630))
             self.seo_image_media[source_path] = f"/assets/media/social/{destination.name}"
+
+    def contenu_rendu(self) -> dict[str, Any]:
+        """Le contenu réellement publié, dans la forme qu'attend `iter_markdown_texts`.
+
+        Les mêmes filtres que `optimize_images` : une page en attente de vérification
+        n'est pas engendrée, ses images n'ont donc pas à être fabriquées.
+        """
+        return {
+            "books": self.books,
+            "people": self.people,
+            "collections": self.collections,
+            "news": self.news,
+            "pages": [
+                page
+                for page in self.pages
+                if page["slug"] != "actualites" and not (page["aVerifier"] and not self.include_drafts)
+            ],
+            "settings": self.settings,
+        }
+
+    def optimize_inline_images(self) -> None:
+        """Les images déposées au fil d'un texte, qui ne viennent d'aucun champ déclaré.
+
+        Elles passent par le même encodage et le même cache que les autres : c'est la
+        seule façon qu'une image posée depuis l'administration ne parte pas en ligne
+        dans sa taille d'origine.
+        """
+        for path in sorted(inline_media_paths(self.contenu_rendu())):
+            source = self.root / path
+            empreinte = hashlib.sha256(path.encode("utf-8")).hexdigest()[:10]
+            nom = f"{slugify(Path(path).stem)[:58]}-{empreinte}.webp"
+            destination = self.temp_output / "assets" / "media" / "texte" / nom
+            self.inline_media_dimensions[path] = self.save_webp(source, destination, (1400, 1400))
+            self.inline_media[path] = f"/assets/media/texte/{nom}"
 
     def copy_pdf(self, relative_path: str) -> str | None:
         if relative_path in self.document_media:

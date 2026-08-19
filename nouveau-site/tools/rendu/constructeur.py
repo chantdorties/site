@@ -127,6 +127,12 @@ class SiteBuilder(
         self.page_image_media: dict[str, str] = {}
         self.news_image_media: dict[str, str] = {}
         self.seo_image_media: dict[str, str] = {}
+        # Les images déposées au fil d'un texte : leur adresse, et leurs dimensions,
+        # que rien d'autre ne connaît puisqu'elles ne viennent d'aucun champ déclaré.
+        self.inline_media: dict[str, str] = {}
+        self.inline_media_dimensions: dict[str, tuple[int, int]] = {}
+        # Les liens dont le schéma a été refusé, laissés en texte et signalés au rapport.
+        self.liens_refuses: list[tuple[str, str]] = []
         self.document_media: dict[str, str] = {}
         self.pdf_hashes: dict[str, str] = {}
         self.skipped_documents: list[str] = []
@@ -172,6 +178,7 @@ class SiteBuilder(
     def build_output(self) -> None:
         self.prepare_output()
         self.optimize_images()
+        self.optimize_inline_images()
         self.prepare_documents()
         self.write_public_data()
         self.build_home()

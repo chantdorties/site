@@ -122,7 +122,7 @@ class Sortie:
             {
                 "slug": item["slug"],
                 "titre": item["titre"],
-                "description": item["description"],
+                "description": item["description"] and self.texte_brut(item["description"]),
                 "nombreLivres": item["nombreLivres"],
             }
             for item in self.collections

@@ -1,0 +1,123 @@
+/* La mise en forme saisie depuis l'administration : gras, italique, listes,
+   intertitres, citations, images au fil du texte.
+
+   Tout est porté par la classe .rich-text, posée sur le conteneur du texte. Les
+   règles y sont volontairement un peu plus spécifiques que d'ordinaire — d'où les
+   :not(:last-child) et les > — parce que ce fichier est recollé AVANT ceux des
+   pages : sans cela, un « .section-heading p » écrit plus loin l'emporterait.
+
+   Les titres saisis commencent à h3 sur le site (le convertisseur décale d’office) :
+   ils s’insèrent sous le h1 de la page et le h2 de la section, jamais au-dessus. */
+
+.rich-text p:not(:last-child),
+.rich-text ul:not(:last-child),
+.rich-text ol:not(:last-child),
+.rich-text blockquote:not(:last-child),
+.rich-text pre:not(:last-child),
+.rich-text figure:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.rich-text > :last-child {
+  margin-bottom: 0;
+}
+
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.rich-text h3 { font-size: 1.35rem; }
+.rich-text h4 { font-size: 1.15rem; }
+.rich-text h5,
+.rich-text h6 { font-size: 1rem; }
+
+.rich-text > :first-child {
+  margin-top: 0;
+}
+
+.rich-text ul,
+.rich-text ol {
+  margin-top: 0;
+  padding-left: 1.4em;
+}
+
+.rich-text li + li {
+  margin-top: 0.35em;
+}
+
+/* Une sous-liste appartient à l'entrée qui la porte : elle se resserre contre elle. */
+.rich-text li > ul,
+.rich-text li > ol {
+  margin-top: 0.35em;
+  margin-bottom: 0;
+}
+
+.rich-text blockquote {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 18px;
+  border-left: 3px solid var(--green);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.rich-text code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--green-pale);
+  font-size: 0.92em;
+}
+
+.rich-text pre {
+  overflow-x: auto;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--green-pale);
+}
+
+.rich-text pre code {
+  padding: 0;
+  background: none;
+}
+
+.rich-text hr {
+  height: 0;
+  margin: 1.6em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.rich-text__figure {
+  margin: 0;
+}
+
+.rich-text__figure img,
+.rich-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.rich-text__figure figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Sur fond sombre — le pied de page — la citation et le code reprennent la couleur
+   du texte qui les entoure, sinon ils disparaissent. */
+.site-footer .rich-text blockquote {
+  border-left-color: #b9c0ba;
+  color: inherit;
+}
+
+.site-footer .rich-text code {
+  background: rgba(255, 255, 255, 0.12);
+}

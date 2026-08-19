@@ -62,3 +62,83 @@ body {
   height: 96px;
   margin: 18px 0 0;
 }
+
+/* Depuis le passage des textes en markdown, l’aperçu ne reçoit plus une chaîne mais
+   le HTML déjà mis en forme par le widget. Le conteneur est donc un <div> qui porte
+   des <p>, des listes, des intertitres : il faut les habiller ici comme le site le
+   fait dans frontend/assets/css/17-texte-riche.css. */
+
+.content-preview__lead p,
+.content-preview__corps p {
+  margin: 0 0 0.8em;
+}
+
+.content-preview__lead > :last-child,
+.content-preview__corps > :last-child {
+  margin-bottom: 0;
+}
+
+.content-preview__corps h1,
+.content-preview__corps h2,
+.content-preview__corps h3,
+.content-preview__corps h4,
+.content-preview__corps h5,
+.content-preview__corps h6 {
+  margin: 1.4em 0 0.5em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.content-preview__lead ul,
+.content-preview__lead ol,
+.content-preview__corps ul,
+.content-preview__corps ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.4em;
+}
+
+.content-preview__lead blockquote,
+.content-preview__corps blockquote {
+  margin: 0 0 0.8em;
+  padding-left: 18px;
+  border-left: 3px solid #3e6b50;
+  color: #626862;
+  font-style: italic;
+}
+
+.content-preview__lead code,
+.content-preview__corps code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: #dfe9e2;
+  font-size: 0.92em;
+}
+
+.content-preview__corps pre {
+  overflow-x: auto;
+  padding: 14px 16px;
+  border-radius: 6px;
+  background: #dfe9e2;
+}
+
+.content-preview__corps pre code {
+  padding: 0;
+  background: none;
+}
+
+.content-preview__corps hr {
+  height: 0;
+  margin: 1.6em 0;
+  border: 0;
+  border-top: 1px solid #d8dcd6;
+}
+
+/* Une image posée au fil du texte n’est ni une couverture ni un portrait : la règle
+   générale .content-preview img la rétrécirait à 360 pixels. */
+.content-preview__corps img {
+  width: auto;
+  max-width: 100%;
+  max-height: none;
+  margin: 0 0 0.8em;
+}

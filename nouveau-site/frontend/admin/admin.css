@@ -1,9 +1,41 @@
+/* L’habillage de l’administration aux couleurs du site.
+
+   Decap n’expose aucune variable de thème : ses styles sont fabriqués à l’exécution
+   par emotion, qui engendre des classes de la forme « css-1a2b3c-AppHeaderContent ».
+   Le libellé final est stable — il vient du code source de Decap, pas du hachage — et
+   c’est lui qu’on vise, d’où les sélecteurs en [class*="…"]. Vérifié dans le
+   navigateur sur cette version : toutes les classes engendrées portent leur libellé.
+
+   Toutes les règles sont préfixées par #nc-root, le conteneur dans lequel Decap monte
+   son application. Cet identifiant leur donne une spécificité supérieure à celle des
+   classes d’emotion : aucun !important n’est nécessaire, alors même que cette feuille
+   est chargée avant que Decap n’injecte les siennes.
+
+   La mise à jour de Decap se fait en remplaçant le fichier de vendor/ : c’est le seul
+   moment où ces sélecteurs peuvent cesser de correspondre. Le cas échéant, se rabattre
+   sur les classes stables .cms-editor-visual, .cms-editor-raw et .nc-widgetPreview,
+   qui ne dépendent pas d’emotion. Ne jamais modifier le fichier de vendor/. */
+
+:root {
+  --paper: #f7f7f4;
+  --surface: #ffffff;
+  --ink: #171a18;
+  --muted: #626862;
+  --line: #d8dcd6;
+  --red: #c63f32;
+  --red-dark: #963128;
+  --green: #3e6b50;
+  --green-pale: #dfe9e2;
+  --blue: #275c7a;
+  --radius: 6px;
+}
+
 html,
 body {
   min-height: 100%;
   margin: 0;
-  background: #f7f7f4;
-  color: #171a18;
+  background: var(--paper);
+  color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -12,6 +44,141 @@ noscript {
   max-width: 680px;
   margin: 80px auto;
   padding: 24px;
-  border-left: 4px solid #c63f32;
-  background: #fff;
+  border-left: 4px solid var(--red);
+  background: var(--surface);
+}
+
+/* ---- Le bandeau supérieur ------------------------------------------------ */
+
+#nc-root [class*="AppHeader"] {
+  background: var(--green);
+  box-shadow: none;
+}
+
+#nc-root [class*="AppHeaderNavLink"],
+#nc-root [class*="AppHeaderSiteLink"],
+#nc-root [class*="AppHeaderButton"] {
+  color: #ffffff;
+}
+
+#nc-root [class*="AppHeaderNavLink"]:hover,
+#nc-root [class*="AppHeaderButton"]:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Le bouton « Nouveau » est l’action principale : il porte le rouge de la maison. */
+#nc-root [class*="AppHeaderQuickNewButton"] {
+  background: var(--red);
+  color: #ffffff;
+}
+
+#nc-root [class*="AppHeaderQuickNewButton"]:hover {
+  background: var(--red-dark);
+}
+
+/* ---- Le fond et les listes ----------------------------------------------- */
+
+#nc-root [class*="AppMainContainer"] {
+  background: var(--paper);
+}
+
+#nc-root [class*="CardHeading"] {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#nc-root [class*="ColumnHeader"] {
+  color: var(--green);
+}
+
+/* ---- Le formulaire d’une fiche ------------------------------------------- */
+
+#nc-root [class*="FieldLabel"] {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* L’explication sous un champ guide la saisie : elle doit rester lisible. */
+#nc-root [class*="ControlHint"] {
+  color: var(--muted);
+}
+
+#nc-root [class*="ControlErrorsList"] {
+  color: var(--red-dark);
+}
+
+/* ---- L’éditeur de texte enrichi ------------------------------------------ */
+
+/* Classes stables, écrites en clair par Decap : elles ne dépendent pas d’emotion. */
+#nc-root .cms-editor-visual,
+#nc-root .cms-editor-raw {
+  background: var(--surface);
+}
+
+#nc-root .cms-editor-visual blockquote {
+  padding-left: 14px;
+  border-left: 3px solid var(--green);
+  color: var(--muted);
+}
+
+#nc-root .cms-editor-visual code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--green-pale);
+}
+
+#nc-root [class*="ToolbarButton"][class*="active"],
+#nc-root [class*="StyledToolbarButton"]:hover {
+  color: var(--green);
+}
+
+/* ---- Le flux éditorial : brouillon, en relecture, prêt ------------------- */
+
+#nc-root [class*="WorkflowTopHeading"] {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#nc-root [class*="PublishButton"] {
+  background: var(--green);
+}
+
+#nc-root [class*="WorkflowLink"]:hover [class*="CardHeading"] {
+  color: var(--green);
+}
+
+/* ---- L’écran de connexion ------------------------------------------------ */
+
+#nc-root [class*="StyledAuthenticationPage"] {
+  background: var(--paper);
+}
+
+/* logo_url pose une simple <img> sans classe, rendue à sa taille naturelle : celle du
+   logo de la maison fait 245 pixels et mange tout l'écran de connexion. */
+#nc-root [class*="StyledAuthenticationPage"] img {
+  width: auto;
+  max-width: 130px;
+  height: auto;
+}
+
+#nc-root [class*="LoginButton"] {
+  border-radius: var(--radius);
+  background: var(--green);
+}
+
+#nc-root [class*="LoginButton"]:hover {
+  background: #325a42;
+}
+
+/* ---- Le compteur des descriptions de référencement ----------------------- */
+
+#nc-root .compteur__ligne {
+  margin: 4px 0 0;
+  padding: 0 12px 8px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+#nc-root .compteur__ligne--trop {
+  color: var(--red-dark);
+  font-weight: 700;
 }

@@ -32,7 +32,7 @@ class PagesPersonnes:
     {self.render_breadcrumbs([('Accueil', '/'), ('Auteurs & illustrateurs', None)])}
     <p class="eyebrow">{e(labels['rubrique'])}</p>
     <h1>{e(labels['titre'])}</h1>
-    <p class="lead">{e(labels['introduction'])}</p>
+    <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="personnes")}</div>
   </div>
 </header>
 <section class="filter-panel" id="recherche" aria-label="Filtres de l’annuaire">
@@ -104,7 +104,7 @@ class PagesPersonnes:
   {self.render_breadcrumbs([('Accueil', '/'), ('Auteurs & illustrateurs', '/personnes/'), (person['nom'], None)])}
   <article class="person-detail">
     <div class="person-detail__visual">{visual}</div>
-    <div><p class="eyebrow">{e(roles)}</p><h1>{e(person['nom'])}</h1><p class="lead">{e(biography)}</p>{external}</div>
+    <div><p class="eyebrow">{e(roles)}</p><h1>{e(person['nom'])}</h1><div class="lead rich-text">{self.markdown_html(biography, owner=person['slug'])}</div>{external}</div>
   </article>
 </div></section>
 {gallery}
@@ -113,7 +113,7 @@ class PagesPersonnes:
                 "@context": "https://schema.org",
                 "@type": "Person",
                 "name": person["nom"],
-                "description": person["biographie"],
+                "description": person["biographie"] and self.texte_brut(person["biographie"]),
                 "url": absolute_url(self.base_url, f"/personnes/{person['slug']}/"),
             }
             seo_title, seo_description, seo_image = self.seo_values(

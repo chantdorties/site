@@ -25,7 +25,7 @@ class PageMaison:
 <a class="house-card house-card--{e(page['slug'])}" href="/{e(page['slug'])}/">
   <span class="house-card__eyebrow">{e(eyebrow)}</span>
   <h2>{e(page['titre'])}</h2>
-  <span class="house-card__summary">{e(truncate(page['sections'][0]['contenu'], 120))}</span>
+  <span class="house-card__summary">{e(truncate(self.texte_brut(page['sections'][0]['contenu']), 120))}</span>
   <span class="house-card__action">{e(action)} {icon('arrow-right')}</span>
 </a>""".strip()
             )
@@ -33,7 +33,7 @@ class PageMaison:
 <header class="page-heading"><div class="container">
   {self.render_breadcrumbs([('Accueil', '/'), ('La maison', None)])}
   <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <p class="lead">{e(labels['introduction'])}</p>
+  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="maison")}</div>
 </div></header>
 <section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>"""
         page = self.render_page(

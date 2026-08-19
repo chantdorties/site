@@ -44,7 +44,7 @@ class PiedDePage:
         <img class="footer-logo" src="/assets/images/chantdorties-logo.webp" alt="" width="245" height="241" loading="lazy">
         <div>
           <p class="footer-brand">{e(self.site_settings['nom'])}</p>
-          <p class="footer-intro">{e(self.footer_settings['presentation'])}</p>
+          <p class="footer-intro">{self.markdown_inline(self.footer_settings['presentation'], owner="pied de page")}</p>
         </div>
       </div>
       <div>

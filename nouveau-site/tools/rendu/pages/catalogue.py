@@ -24,7 +24,7 @@ class PageCatalogue:
     {self.render_breadcrumbs([('Accueil', '/'), ('Catalogue', None)])}
     <p class="eyebrow">{e(labels['rubrique'])}</p>
     <h1>{e(labels['titre'])}</h1>
-    <p class="lead">{e(labels['introduction'])}</p>
+    <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="catalogue")}</div>
   </div>
 </header>
 <section class="filter-panel" id="recherche" aria-label="Filtres du catalogue">

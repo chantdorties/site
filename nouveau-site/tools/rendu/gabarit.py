@@ -59,7 +59,7 @@ class Gabarit:
 
         replacements = {
             "{{page_title}}": e(page_title),
-            "{{description}}": e(truncate(description)),
+            "{{description}}": e(truncate(self.texte_brut(description))),
             "{{robots}}": robots,
             "{{canonical}}": canonical,
             "{{og_type}}": e(og_type),

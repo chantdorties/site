@@ -4,6 +4,7 @@ locale: fr
 # ligne — voir docs/DEPLOIEMENT.md, section « Aperçu client (OVH) ».
 site_url: https://orties.varascundo.com
 display_url: https://orties.varascundo.com
+logo_url: logo.webp
 
 backend:
   name: github
@@ -49,7 +50,13 @@ collections:
           - {label: "Adresse courriel", name: courriel, widget: string}
           - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
           - {label: "Domaine public", name: domaine, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
-          - {label: "Description générale", name: description, widget: text}
+          - label: Description générale
+            name: description
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: &boutons_courts [bold, italic, code, link, bulleted-list, numbered-list, quote]
+            editor_components: []
       - name: navigation
         label: Menu principal
         file: nouveau-site/content/reglages/navigation.json
@@ -75,7 +82,13 @@ collections:
         label: Pied de page
         file: nouveau-site/content/reglages/footer.json
         fields:
-          - {label: "Présentation", name: presentation, widget: text}
+          - label: Présentation
+            name: presentation
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
           - {label: "Titre de la navigation", name: titreNavigation, widget: string}
           - label: Liens de navigation
             name: liensNavigation
@@ -111,7 +124,11 @@ collections:
             hint: La fin du grand titre, affichée en rouge à la suite du précédent.
           - label: 1. Bandeau — accroche
             name: heroAccroche
-            widget: text
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
             hint: La phrase sous le grand titre.
           - {label: "1. Bandeau — bouton vers le catalogue", name: boutonCatalogue, widget: string}
           - {label: "1. Bandeau — bouton vers les collections", name: boutonCollections, widget: string}
@@ -142,8 +159,22 @@ collections:
             fields: &page_intro_fields
               - {label: "Rubrique", name: rubrique, widget: string, hint: "La petite ligne au-dessus du titre. Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
               - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
-              - {label: "Introduction", name: introduction, widget: text, hint: "La phrase sous le titre."}
-              - {label: "Description SEO", name: descriptionSeo, widget: text, hint: "Affichée par les moteurs de recherche. {nombre} y est remplacé de la même façon. 160 caractères maximum."}
+              - label: Introduction
+                name: introduction
+                hint: "La phrase sous le titre."
+                widget: markdown
+                modes: [rich_text]
+                minimal: true
+                buttons: *boutons_courts
+                editor_components: []
+              - label: Description SEO
+                name: descriptionSeo
+                hint: "Affichée par les moteurs de recherche. {nombre} y est remplacé de la même façon. 160 caractères maximum."
+                widget: description-seo
+                modes: [rich_text]
+                minimal: true
+                buttons: []
+                editor_components: []
           - label: Auteurs et illustrateurs
             name: personnes
             widget: object
@@ -158,11 +189,29 @@ collections:
             fields:
               - {label: "Rubrique", name: rubrique, widget: string}
               - {label: "Titre", name: titre, widget: string}
-              - {label: "Introduction", name: introduction, widget: text}
-              - {label: "Description SEO", name: descriptionSeo, widget: text}
+              - label: Introduction
+                name: introduction
+                widget: markdown
+                modes: [rich_text]
+                minimal: true
+                buttons: *boutons_courts
+                editor_components: []
+              - label: Description SEO
+                name: descriptionSeo
+                widget: description-seo
+                modes: [rich_text]
+                minimal: true
+                buttons: []
+                editor_components: []
               - {label: "Rubrique du bloc Facebook", name: appelRubrique, widget: string}
               - {label: "Titre du bloc Facebook", name: appelTitre, widget: string}
-              - {label: "Texte du bloc Facebook", name: appelTexte, widget: text}
+              - label: Texte du bloc Facebook
+                name: appelTexte
+                widget: markdown
+                modes: [rich_text]
+                minimal: true
+                buttons: *boutons_courts
+                editor_components: []
               - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
           - label: La maison
             name: maison
@@ -207,6 +256,10 @@ collections:
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
+    preview_path: "livres/{{slug}}/"
+    view_groups:
+      - {label: "Collection", field: collection}
+      - {label: "Publication", field: statut}
     sortable_fields: [titre, collection, ordre, statut]
     view_filters: &status_filters
       - {label: "Publiés", field: statut, pattern: "publie"}
@@ -298,7 +351,11 @@ collections:
           - {field: roles, values: [prefacier]}
       - label: Présentation
         name: description
-        widget: text
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
         required: false
         hint: Le texte de présentation, affiché sur la page du livre et repris comme description pour les moteurs de recherche.
       - label: Couverture
@@ -420,7 +477,16 @@ collections:
         hint: "Facultatif : sans rien ici, le site reprend le titre et la présentation."
         fields:
           - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
-          - {label: "Description SEO", name: description, widget: text, required: false, pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"], hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."}
+          - label: Description SEO
+            name: description
+            required: false
+            pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"]
+            hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."
+            widget: description-seo
+            modes: [rich_text]
+            minimal: true
+            buttons: []
+            editor_components: []
           - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
 
   - name: personnes
@@ -437,6 +503,10 @@ collections:
     identifier_field: nom
     slug: "{{fields.slug}}"
     summary: "{{nom}} — {{statut}}"
+    preview_path: "personnes/{{slug}}/"
+    view_groups:
+      - {label: "Initiale du nom", field: nom, pattern: "^."}
+      - {label: "Publication", field: statut}
     sortable_fields: [nom, ordre, statut]
     view_filters: *status_filters
     fields:
@@ -460,7 +530,11 @@ collections:
           - {label: "Préfacier", value: prefacier}
       - label: Biographie
         name: biographie
-        widget: text
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
         required: false
         hint: Affichée en tête de la fiche, au-dessus de ses livres.
       - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
@@ -504,6 +578,7 @@ collections:
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
+    preview_path: "collections/{{slug}}/"
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
@@ -516,7 +591,11 @@ collections:
       - *publication
       - label: Présentation
         name: description
-        widget: text
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
         required: true
         hint: Une ou deux phrases, reprises sur l’accueil et sur la page Collections.
       - label: Emblème
@@ -550,6 +629,10 @@ collections:
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{datePublication}} — {{titre}} — {{statut}}"
+    preview_path: "actualites/"
+    view_groups:
+      - {label: "Catégorie", field: type}
+      - {label: "Année", field: datePublication, pattern: "^\\d{4}"}
     sortable_fields: [datePublication, titre, statut]
     view_filters: *status_filters
     fields:
@@ -578,11 +661,21 @@ collections:
           - {label: "Vie de la maison", value: maison}
       - label: Résumé
         name: resume
-        widget: text
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
         hint: Une ou deux phrases, mises en avant au-dessus du texte.
       - label: Contenu
         name: contenu
-        widget: text
+        widget: markdown
+        modes: [rich_text]
+        buttons: &boutons_corps [bold, italic, strikethrough, code, link,
+                  heading-one, heading-two, heading-three,
+                  heading-four, heading-five, heading-six,
+                  quote, bulleted-list, numbered-list]
+        editor_components: [image, code-block]
         hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
       - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
       - label: Texte alternatif de l’image
@@ -626,6 +719,9 @@ collections:
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — sortie {{sortiePrevue}}"
+    preview_path: "projets/"
+    view_groups:
+      - {label: "Publication", field: statut}
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
@@ -704,6 +800,7 @@ collections:
       - name: page_accueil
         label: Accueil
         file: nouveau-site/content/pages-fixes/accueil.json
+        preview_path: "index.html"
         fields:
           - {label: "Titre", name: titre, widget: string}
           - {label: "Adresse", name: slug, widget: hidden, default: accueil}
@@ -719,7 +816,12 @@ collections:
             fields:
               - {label: "Identifiant", name: id, widget: hidden}
               - {label: "Titre", name: titre, widget: string}
-              - {label: "Texte", name: contenu, widget: text}
+              - label: Texte
+                name: contenu
+                widget: markdown
+                modes: [rich_text]
+                buttons: *boutons_corps
+                editor_components: [image, code-block]
           - {label: "Liens", name: liens, widget: hidden, default: []}
           - {label: "Images", name: images, widget: hidden, default: []}
           - {label: "Documents", name: documents, widget: hidden, default: []}
@@ -733,6 +835,7 @@ collections:
       - name: page_actualites
         label: Actualités — référencement seulement
         file: nouveau-site/content/pages-fixes/actualites.json
+        preview_path: "actualites/"
         fields:
           - {label: "Titre", name: titre, widget: hidden, default: Actualités}
           - {label: "Adresse", name: slug, widget: hidden, default: actualites}
@@ -756,6 +859,7 @@ collections:
       - name: page_mentions_legales
         label: Mentions légales
         file: nouveau-site/content/pages-fixes/mentions-legales.json
+        preview_path: "mentions-legales/"
         fields:
           # Page légale obligatoire : son adresse et son statut restent figés,
           # comme pour l’accueil et les actualités.
@@ -785,7 +889,12 @@ collections:
             hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
             fields:
               - {label: "Intertitre", name: titre, widget: string, required: false}
-              - {label: "Texte", name: contenu, widget: text}
+              - label: Texte
+                name: contenu
+                widget: markdown
+                modes: [rich_text]
+                buttons: *boutons_corps
+                editor_components: [image, code-block]
           # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
           # faut remplir, d’où les explications sur chacun.
           - &page_links
@@ -855,6 +964,9 @@ collections:
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
+    preview_path: "{{slug}}/"
+    view_groups:
+      - {label: "Publication", field: statut}
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:

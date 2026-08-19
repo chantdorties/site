@@ -38,7 +38,7 @@ class VitrineCollections:
     {logo}
     <span class="collection-showcase__number">Collection {index:02d}</span>
     <h{heading_level}>{e(item['titre'])}</h{heading_level}>
-    <span class="collection-showcase__description">{e(item['description'])}</span>
+    <span class="collection-showcase__description">{e(self.texte_brut(item['description']))}</span>
     <span class="collection-showcase__link">Découvrir {e(count)} {icon('arrow-right')}</span>
   </span>
   <span class="collection-showcase__covers" aria-hidden="true">{covers}</span>

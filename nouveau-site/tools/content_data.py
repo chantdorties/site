@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterator
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
@@ -141,6 +142,94 @@ def validate_media(root: Path, value: str | None, owner: str) -> None:
         raise ContentError(f"{owner}: format média non autorisé: {value}")
     if path.stat().st_size > MAX_MEDIA_BYTES:
         raise ContentError(f"{owner}: média supérieur à 20 Mo: {value}")
+
+
+# Une image déposée au fil d'un texte : « ![texte alternatif](chemin "légende") ».
+INLINE_IMAGE_PATTERN = re.compile(r"!\[([^\]]*)\]\(([^)\s]+)(?:[ \t]+\"[^\"]*\")?\)")
+
+
+def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
+    """(propriétaire, texte) pour chaque champ saisi en markdown.
+
+    Une seule source de vérité : la validation, la fabrication des images et les tests
+    lisent tous cette liste. Y ajouter un champ passé en markdown dans config.yml, sinon
+    les images qu'il porte ne seront ni vérifiées ni préparées.
+    """
+    settings = raw["settings"]
+    for bloc, champs in (
+        ("site", ("description",)),
+        ("footer", ("presentation",)),
+        ("accueil", ("heroAccroche",)),
+    ):
+        for champ in champs:
+            valeur = settings.get(bloc, {}).get(champ)
+            if isinstance(valeur, str):
+                yield f"Réglages {bloc}.{champ}", valeur
+    for rubrique, libelles in settings.get("pages", {}).items():
+        if not isinstance(libelles, dict):
+            continue
+        for champ in ("introduction", "descriptionSeo", "appelTexte"):
+            valeur = libelles.get(champ)
+            if isinstance(valeur, str):
+                yield f"Réglages pages.{rubrique}.{champ}", valeur
+
+    for kind, etiquette, champs in (
+        ("books", "Livre", ("description",)),
+        ("people", "Personne", ("biographie",)),
+        ("collections", "Collection", ("description",)),
+        ("news", "Actualité", ("resume", "contenu")),
+    ):
+        for record in raw[kind]:
+            proprietaire = f"{etiquette} {record.get('slug')}"
+            for champ in champs:
+                valeur = record.get(champ)
+                if isinstance(valeur, str):
+                    yield f"{proprietaire} ({champ})", valeur
+            yield from _seo_markdown(record, proprietaire)
+
+    for page in raw["pages"]:
+        proprietaire = f"Page {page.get('slug')}"
+        for rang, section in enumerate(page.get("sections", []), start=1):
+            valeur = section.get("contenu") if isinstance(section, dict) else None
+            if isinstance(valeur, str):
+                yield f"{proprietaire} (section {rang})", valeur
+        yield from _seo_markdown(page, proprietaire)
+
+
+def _seo_markdown(record: dict[str, Any], proprietaire: str) -> Iterator[tuple[str, str]]:
+    valeur = (record.get("seo") or {}).get("description")
+    if isinstance(valeur, str):
+        yield f"{proprietaire} (description SEO)", valeur
+
+
+def inline_media_paths(raw: dict[str, Any]) -> set[str]:
+    """Les chemins des images citées au fil des textes."""
+    return {
+        match.group(2)
+        for _, texte in iter_markdown_texts(raw)
+        for match in INLINE_IMAGE_PATTERN.finditer(texte)
+    }
+
+
+def validate_inline_images(root: Path, raw: dict[str, Any]) -> None:
+    """Vérifie les images déposées au fil d'un texte.
+
+    Le texte alternatif y est obligatoire, sans le repli toléré pour les galeries : une
+    image posée au milieu d'une phrase n'a pas de titre de fiche dont on pourrait se
+    servir pour la décrire.
+    """
+    for proprietaire, texte in iter_markdown_texts(raw):
+        for match in INLINE_IMAGE_PATTERN.finditer(texte):
+            alt, chemin = match.group(1).strip(), match.group(2)
+            if not alt:
+                raise ContentError(
+                    f"{proprietaire}: texte alternatif obligatoire pour l'image {chemin}"
+                )
+            validate_media(root, chemin, proprietaire)
+            if (root / chemin).suffix.lower() == ".pdf":
+                raise ContentError(
+                    f"{proprietaire}: un document ne s'insère pas dans un texte: {chemin}"
+                )
 
 
 def media_path(value: Any) -> str | None:
@@ -380,6 +469,7 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
 
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
+    validate_inline_images(root, raw)
     books = raw["books"]
     people = raw["people"]
     collections = raw["collections"]

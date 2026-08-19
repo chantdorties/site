@@ -114,7 +114,7 @@ class PagesLivres:
         <p class="eyebrow"><a href="/collections/{e(collection['slug'])}/">{e(collection['titre'])}</a></p>
         <h1>{e(book['titre'])}</h1>
         <p class="contributors">{'<br>'.join(contributors)}</p>
-        <p class="book-description">{e(book['description'] or 'Description à venir.')}</p>
+        <div class="book-description rich-text">{self.markdown_html(book['description'] or 'Description à venir.', owner=book['slug'])}</div>
         <dl class="book-facts">{facts_html}</dl>
         {excerpts}
         {purchase}
@@ -134,7 +134,7 @@ class PagesLivres:
                     for slug in book["auteurs"]
                 ],
                 "image": absolute_url(self.base_url, self.cover_media[book["slug"]]["large"]),
-                "description": book["description"],
+                "description": book["description"] and self.texte_brut(book["description"]),
             }
             if book["isbn"] and book["isbnValide"]:
                 structured["isbn"] = book["isbn"]

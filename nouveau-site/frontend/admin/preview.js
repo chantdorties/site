@@ -47,7 +47,7 @@
 
   const BookPreview = createClass({
     render() {
-      const { entry, getAsset } = this.props;
+      const { entry, getAsset, widgetFor } = this.props;
       const cover = assetUrl(getAsset, value(entry, 'couverture'));
       const price = value(entry, 'prixEuros', null);
       const age = value(entry, 'ageMinimum', null);
@@ -59,7 +59,7 @@
           src: cover,
           alt: value(entry, 'couvertureAlt') || `Couverture de ${value(entry, 'titre', 'ce livre')}`
         }) : null,
-        h('p', { className: 'content-preview__lead' }, value(entry, 'description')),
+        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'description')),
         h('p', { className: 'content-preview__facts' },
           [
             libelle('ouvrage', value(entry, 'typeOuvrage')),
@@ -80,7 +80,7 @@
 
   const PersonPreview = createClass({
     render() {
-      const { entry, getAsset } = this.props;
+      const { entry, getAsset, widgetFor } = this.props;
       const portrait = assetUrl(getAsset, value(entry, 'imagePrincipale'));
       const roles = value(entry, 'roles');
       return h('article', { className: 'content-preview' },
@@ -92,14 +92,14 @@
           src: portrait,
           alt: value(entry, 'imagePrincipaleAlt') || `Portrait de ${value(entry, 'nom', 'cette personne')}`
         }) : null,
-        h('p', { className: 'content-preview__lead' }, value(entry, 'biographie'))
+        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'biographie'))
       );
     }
   });
 
   const CollectionPreview = createClass({
     render() {
-      const { entry, getAsset } = this.props;
+      const { entry, getAsset, widgetFor } = this.props;
       const emblem = assetUrl(getAsset, value(entry, 'logo'));
       return h('article', { className: 'content-preview' },
         status(entry),
@@ -110,7 +110,7 @@
           alt: value(entry, 'logoAlt') || `Emblème de ${value(entry, 'titre', 'la collection')}`
         }) : null,
         h('h1', {}, value(entry, 'titre', 'Collection sans titre')),
-        h('p', { className: 'content-preview__lead' }, value(entry, 'description'))
+        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'description'))
       );
     }
   });
@@ -146,7 +146,7 @@
 
   const NewsPreview = createClass({
     render() {
-      const { entry, getAsset } = this.props;
+      const { entry, getAsset, widgetFor } = this.props;
       const image = assetUrl(getAsset, value(entry, 'image'));
       return h('article', { className: 'content-preview' },
         status(entry),
@@ -156,8 +156,8 @@
         ),
         h('h1', {}, value(entry, 'titre', 'Actualité sans titre')),
         image ? h('img', { src: image, alt: value(entry, 'imageAlt') }) : null,
-        h('p', { className: 'content-preview__lead' }, value(entry, 'resume')),
-        h('p', {}, value(entry, 'contenu'))
+        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'resume')),
+        h('div', { className: 'content-preview__corps' }, safeWidgetFor(widgetFor, 'contenu'))
       );
     }
   });
@@ -172,6 +172,16 @@
     }
   };
 
+  // Même précaution pour widgetFor, qui rend un champ markdown déjà mis en forme :
+  // c’est ce qui montre le gras et les listes dans l’aperçu, sans convertisseur ici.
+  const safeWidgetFor = (widgetFor, name) => {
+    try {
+      return widgetFor(name);
+    } catch (error) {
+      return null;
+    }
+  };
+
   const PagePreview = createClass({
     render() {
       const { entry, widgetsFor } = this.props;
@@ -181,11 +191,37 @@
         h('h1', {}, value(entry, 'titre', 'Page sans titre')),
         sections?.map?.((section, index) => h('section', { key: index },
           h('h2', {}, section.getIn(['data', 'titre'])),
-          h('p', {}, section.getIn(['data', 'contenu']))
+          h('div', { className: 'content-preview__corps' }, section.getIn(['widgets', 'contenu']))
         ))
       );
     }
   });
+
+  // La description de référencement doit tenir en 160 caractères. La limite est déjà
+  // vérifiée par le motif déclaré dans config.yml, mais elle ne se manifestait qu’au
+  // moment d’enregistrer : ce compteur la rend visible pendant la frappe.
+  //
+  // Le champ garde le comportement du markdown ordinaire : on enveloppe le contrôle
+  // natif sans toucher à sa validation. Volontairement, isValid n’est PAS redirigé vers
+  // le contrôle interne : « required » et le motif sont vérifiés par Decap au-dessus du
+  // contrôle, pas par lui, et une redirection par ref serait fragile pour rien.
+  const LIMITE_SEO = 160;
+  const widgetMarkdown = CMS.getWidget('markdown');
+  const DescriptionSeo = createClass({
+    render() {
+      const texte = this.props.value || '';
+      const reste = LIMITE_SEO - texte.length;
+      return h('div', { className: 'compteur' },
+        h(widgetMarkdown.control, this.props),
+        h('p', {
+          className: reste < 0 ? 'compteur__ligne compteur__ligne--trop' : 'compteur__ligne'
+        }, reste < 0
+          ? `${texte.length} caractères — ${-reste} de trop, la publication sera refusée`
+          : `${texte.length} / ${LIMITE_SEO} caractères`)
+      );
+    }
+  });
+  CMS.registerWidget('description-seo', DescriptionSeo, widgetMarkdown.preview, widgetMarkdown.schema);
 
   // La feuille est injectée dans le cadre d’aperçu, dont l’adresse de base n’est pas
   // celle de cette page : l’URL est donc résolue ici, à partir de l’administration

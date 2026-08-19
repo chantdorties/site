@@ -35,7 +35,7 @@ class PagesEditoriales:
                 heading = f'<h2>{e(section["titre"])}</h2>' if section["titre"] else ""
                 rendered_sections.append(
                     f'<section class="editorial-section">{heading}'
-                    f'<p>{self.linkify_text(section["contenu"])}</p></section>'
+                    f'<div class="rich-text">{self.markdown_html(section["contenu"], owner=page_data["slug"])}</div></section>'
                 )
             sections = "".join(rendered_sections)
             link_items = [self.editorial_link(link) for link in page_data["liens"]]

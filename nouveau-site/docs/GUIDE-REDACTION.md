@@ -124,6 +124,34 @@ Une fiche publiée apparaît sur la page Auteurs & illustrateurs même sans livr
 elle y affiche alors « 0 livre ». Mieux vaut donc la garder en *Brouillon* tant que son
 premier ouvrage n’est pas publié.
 
+## Mettre en forme un texte
+
+Les zones de texte ne sont plus de simples cadres gris : une petite barre d’outils
+apparaît au-dessus quand on clique dedans. Elle sert à **mettre en gras**, en *italique*,
+à poser un lien, à faire une liste à puces ou numérotée, un intertitre, une citation.
+
+Rien n’oblige à s’en servir. Un texte tapé au fil de la plume s’affiche exactement comme
+avant.
+
+**Ce qu’il faut savoir :**
+
+- **Une ligne vide sépare deux paragraphes.** C’était déjà la règle pour le corps d’une
+  actualité ; elle vaut maintenant partout, y compris dans les sections des pages de la
+  maison, où les lignes vides étaient jusqu’ici ignorées à l’affichage.
+- **Les liens** — sélectionner les mots, puis le bouton lien. Une adresse écrite en
+  entier (`https://…`) ou un courriel deviennent cliquables tout seuls, sans rien faire.
+- **Les intertitres** s’insèrent sous le titre de la page : ils ne peuvent pas le
+  concurrencer, le site s’en assure.
+- **Les images au fil du texte** — le bouton image du corps d’un article ou d’une section
+  de page. Seule dans son paragraphe, l’image s’affiche en grand avec sa légende ; au
+  milieu d’une phrase, elle reste petite. **Le texte alternatif y est obligatoire**, sans
+  exception : sans lui la publication est refusée.
+- **Les descriptions de référencement** n’ont pas de barre d’outils, et c’est voulu :
+  elles ne servent qu’aux moteurs de recherche, qui n’affichent ni gras ni lien. Un
+  compteur sous le champ indique où l’on en est des 160 caractères.
+- **Voir le résultat** — le volet de droite montre le texte mis en forme pendant la
+  frappe. Le bouton « Voir sur le site » ouvre la vraie page.
+
 ## Les images
 
 - 20 Mo maximum par fichier ; le site les convertit et les allège tout seul.
@@ -147,6 +175,9 @@ Le message dit ce qui coince et sur quelle fiche. Les cas les plus fréquents :
 | *sélectionner exactement un livre disponible pour l’accueil* | Une collection a zéro ou deux livres mis en avant |
 | *personne en brouillon* / *livre lié non publié* | Un contenu publié pointe vers un contenu qui ne l’est pas : publier l’autre, ou retirer le lien |
 | *titre SEO trop long* | 60 caractères pour le titre, 160 pour la description |
+| *texte alternatif obligatoire pour l’image* | Une image posée au fil d’un texte n’a pas été décrite |
+| *média introuvable* | Une image citée dans un texte a été retirée de la médiathèque |
+| *lien introuvable* | Un lien interne écrit à la main mène à une page qui n’existe pas |
 
 Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce qu’elle passe.
 
