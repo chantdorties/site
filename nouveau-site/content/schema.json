@@ -28,6 +28,18 @@
         "fallback": "Couverture de {titre}"
       }
     },
+    "sectionDePage": {
+      "boutonsPaypal": {
+        "type": "array",
+        "champs": {
+          "libelle": "string",
+          "hostedButtonId": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]{13}$"
+          }
+        }
+      }
+    },
     "mediaAvecAlt": {
       "type": "object",
       "champs": {

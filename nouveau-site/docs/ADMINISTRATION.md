@@ -33,9 +33,13 @@ L’administration permet de modifier :
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
 - les textes alternatifs, les titres SEO, les descriptions SEO et les images sociales ;
 - les anciennes adresses à rediriger, le bouton PayPal général de don et les mots du
-  parcours d’achat — « Ajouter au panier », « Actuellement indisponible », « Nous
-  contacter », « Voir les offres », « Lire l’extrait », réunis dans « Réglages du
-  site > Paiement et dons ».
+  parcours d’achat — « Ajouter au panier », « Voir mon panier », « Actuellement
+  indisponible », « Nous contacter », « Voir les offres », « Lire l’extrait », réunis
+  dans « Réglages du site > Paiement et dons » ;
+- les boutons d’achat propres à une page — offre groupée, adhésion, don, titre soldé —
+  saisis section par section dans la page concernée. Un livre vendu à son prix normal
+  garde le sien dans sa fiche. Le bouton « voir mon panier », lui, est posé
+  automatiquement dans le menu de chaque page : seul son libellé se règle.
 
 Les pages engendrées se règlent ailleurs que là où elles s’affichent. Le titre,
 l’introduction et l’encart Facebook de la page **Actualités** viennent de « Réglages
@@ -85,7 +89,9 @@ La génération refuse un contenu qui casserait le site, avec un message explici
 - un titre SEO de plus de 60 caractères ou une description SEO de plus de 160 ;
 - une relation vers un contenu inexistant, en brouillon ou archivé ;
 - plus de quatre suggestions « À découvrir aussi » ;
-- un identifiant de bouton PayPal mal formé, ou absent sur un livre disponible ;
+- un identifiant de bouton PayPal mal formé, ou absent sur un livre disponible, que le
+  bouton soit celui d’une fiche ou celui d’une section de page ;
+- le bloc signé du bouton « voir mon panier » modifié ou effacé ;
 - une adresse (`slug`) invalide, ou une ancienne adresse déclarée deux fois.
 
 Les champs laissés vides dans l’administration ne bloquent jamais la génération :

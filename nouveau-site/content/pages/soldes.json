@@ -1,0 +1,183 @@
+{
+  "slug": "soldes",
+  "statut": "brouillon",
+  "titre": "Opération spéciale",
+  "type": "page",
+  "sections": [
+    {
+      "titre": null,
+      "contenu": "Découvrez une sélection de livres à -50 %. Voici la liste des titres, classés par âge de lecteur, qui bénéficient de cette offre exceptionnelle. N’hésitez pas à la partager autour de vous ! Attention : pour bénéficier du prix réduit, vous devez impérativement passer commande sur cette page et non sur la page du titre. Cette offre n’est valable que via le site internet.",
+      "boutonsPaypal": []
+    },
+    {
+      "titre": "Tais-toi ! — album jeunesse",
+      "contenu": "6 € au lieu de 12 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 6 €",
+          "hostedButtonId": "WGUHU3P2KRZJ6"
+        }
+      ]
+    },
+    {
+      "titre": "Ailes d’arc-en-ciel — album jeunesse",
+      "contenu": "5,50 € au lieu de 11 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 5,50 €",
+          "hostedButtonId": "SQJGQQ32HG78A"
+        }
+      ]
+    },
+    {
+      "titre": "Dent de Lion — album jeunesse",
+      "contenu": "7,50 € au lieu de 15 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 7,50 €",
+          "hostedButtonId": "VR8MQWBNGBHCN"
+        }
+      ]
+    },
+    {
+      "titre": "La valse des pantins — roman jeunesse",
+      "contenu": "5 € au lieu de 10 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 5 €",
+          "hostedButtonId": "SMDL6HUSHSQVU"
+        }
+      ]
+    },
+    {
+      "titre": "Mémoires d’un nouveau-né — roman ados",
+      "contenu": "5 € au lieu de 10 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 5 €",
+          "hostedButtonId": "KM9KG8K9KKSRQ"
+        }
+      ]
+    },
+    {
+      "titre": "Ruptures d’enfance — nouvelles grands ados-adultes",
+      "contenu": "6 € au lieu de 12 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 6 €",
+          "hostedButtonId": "RKVMF7FGL5XJN"
+        }
+      ]
+    },
+    {
+      "titre": "La malédiction du béton — roman grands ados-adultes",
+      "contenu": "6,50 € au lieu de 13 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 6,50 €",
+          "hostedButtonId": "RJPK3B2PXATS4"
+        }
+      ]
+    },
+    {
+      "titre": "Marius Gardebois — nouvelles grands ados-adultes",
+      "contenu": "3,50 € au lieu de 7 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 3,50 €",
+          "hostedButtonId": "LDKTNMP5VH8GY"
+        }
+      ]
+    },
+    {
+      "titre": "À quelques pas de l’usine — nouvelles grands ados-adultes",
+      "contenu": "5,50 € au lieu de 11 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 5,50 €",
+          "hostedButtonId": "XHWS77KNSHHGL"
+        }
+      ]
+    },
+    {
+      "titre": "Le cœur à l’ouvrage — roman grands ados-adultes",
+      "contenu": "6,50 € au lieu de 13 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander — 6,50 €",
+          "hostedButtonId": "F8N4F52EN85M4"
+        }
+      ]
+    },
+    {
+      "titre": "Les dix ouvrages",
+      "contenu": "L’ensemble des dix titres soldés, avec une remise supplémentaire : 50,50 €.",
+      "boutonsPaypal": [
+        {
+          "libelle": "Commander les dix ouvrages — 50,50 €",
+          "hostedButtonId": "J9VC6JCW3AKBN"
+        }
+      ]
+    }
+  ],
+  "liens": [
+    {
+      "type": "livre",
+      "slug": "tais-toi",
+      "texte": "Tais-toi !"
+    },
+    {
+      "type": "livre",
+      "slug": "ailes-d-arc-en-ciel",
+      "texte": "Ailes d’arc-en-ciel"
+    },
+    {
+      "type": "livre",
+      "slug": "dent-de-lion",
+      "texte": "Dent de Lion"
+    },
+    {
+      "type": "livre",
+      "slug": "la-valse-des-pantins",
+      "texte": "La valse des pantins"
+    },
+    {
+      "type": "livre",
+      "slug": "memoires-d-un-nouveau-ne",
+      "texte": "Mémoires d’un nouveau-né"
+    },
+    {
+      "type": "livre",
+      "slug": "ruptures-d-enfance",
+      "texte": "Ruptures d’enfance"
+    },
+    {
+      "type": "livre",
+      "slug": "la-malediction-du-beton",
+      "texte": "La malédiction du béton"
+    },
+    {
+      "type": "livre",
+      "slug": "marius-gardebois",
+      "texte": "Marius Gardebois"
+    },
+    {
+      "type": "livre",
+      "slug": "a-quelques-pas-de-l-usine",
+      "texte": "À quelques pas de l’usine"
+    },
+    {
+      "type": "livre",
+      "slug": "le-coeur-a-l-ouvrage",
+      "texte": "Le cœur à l’ouvrage"
+    }
+  ],
+  "images": [],
+  "documents": [],
+  "ordre": 85,
+  "rubrique": "Opération spéciale",
+  "libelleAction": "Voir les soldes",
+  "anciensSlugs": [
+    "Soldes Chant dorties.html"
+  ]
+}

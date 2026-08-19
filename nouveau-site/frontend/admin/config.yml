@@ -231,6 +231,7 @@ collections:
           # mode de vente, pas avec le catalogue.
           - {label: "Bouton « voir les offres » (accueil)", name: libelleOffres, widget: string}
           - {label: "Bouton d’achat d’un livre", name: libellePanier, widget: string}
+          - {label: "Bouton « voir mon panier »", name: libelleVoirPanier, widget: string}
           - {label: "Mention « disponible »", name: libelleDisponible, widget: string}
           - {label: "Mention « indisponible »", name: libelleIndisponible, widget: string}
           - label: Bouton de contact d’un livre indisponible
@@ -238,6 +239,16 @@ collections:
             widget: string
             hint: Il ouvre un courriel prérempli avec le titre du livre.
           - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
+          # Ce bloc doit rester dans le formulaire : ce qui n’y figure pas est effacé
+          # du fichier au premier enregistrement, et le site ne se génèrerait plus.
+          - label: Bloc technique du bouton « voir mon panier »
+            name: panierEncrypted
+            widget: text
+            hint: >-
+              Code signé par PayPal, recopié de l’ancien site. À ne pas modifier ni
+              effacer : sans lui, le site refuse de se générer. Il ne se remplace que
+              par un nouveau bloc fourni par PayPal.
+            pattern: ['^-----BEGIN PKCS7-----', "Le bloc doit commencer par -----BEGIN PKCS7-----"]
 
   # L’ordre des champs suit la façon dont on décrit un livre : de quoi il s’agit, qui
   # l’a fait, ce qu’il raconte, à quoi il ressemble, comment on l’achète, où il se
@@ -895,6 +906,27 @@ collections:
                 modes: [rich_text]
                 buttons: *boutons_corps
                 editor_components: [image, code-block]
+              - label: Boutons d’achat PayPal
+                name: boutonsPaypal
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.libelle}}"
+                hint: >-
+                  À n’utiliser que pour vendre depuis cette page : une offre groupée, une
+                  adhésion, un don, un titre soldé. Pour vendre un livre à son prix normal,
+                  le bouton se saisit dans sa fiche, pas ici.
+                fields:
+                  - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
+                  - label: Identifiant du bouton
+                    name: hostedButtonId
+                    widget: string
+                    hint: >-
+                      Les 13 caractères fournis par PayPal lors de la création du bouton
+                      (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui
+                      décide de l’article et du montant facturés : une erreur ici fait payer
+                      autre chose que ce qu’annonce la page.
+                    pattern: ['^[A-Z0-9]{13}$', "Treize caractères, en majuscules et chiffres uniquement"]
           # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
           # faut remplir, d’où les explications sur chacun.
           - &page_links

@@ -489,6 +489,36 @@ class ContentDataTest(unittest.TestCase):
             if book["disponible"]:
                 self.assertRegex(button_id or "", r"^[A-Z0-9]{13}$", book["slug"])
 
+    def test_page_paypal_buttons_are_well_formed(self):
+        for page in self.pages:
+            for section in page["sections"]:
+                for button in section["boutonsPaypal"]:
+                    self.assertTrue(button["libelle"].strip(), page["slug"])
+                    self.assertRegex(button["hostedButtonId"], r"^[A-Z0-9]{13}$", page["slug"])
+
+    def test_discounted_buttons_never_reuse_a_full_price_one(self):
+        """Un bouton de page soldée doit facturer le prix réduit, jamais celui de la fiche.
+
+        L'ancienne page prévenait : « pour bénéficier du prix réduit, vous devez
+        impérativement passer commande sur cette page de solde et non sur la page du
+        titre. » Confondre les deux ferait payer le plein tarif.
+        """
+        book_buttons = {
+            book["paypalHostedButtonId"]
+            for book in self.books
+            if book.get("paypalHostedButtonId")
+        }
+        for page in self.pages:
+            for section in page["sections"]:
+                for button in section["boutonsPaypal"]:
+                    self.assertNotIn(button["hostedButtonId"], book_buttons, page["slug"])
+
+    def test_the_cart_button_carries_its_signed_block(self):
+        payment = self.raw["settings"]["paiement"]
+        self.assertTrue(payment["libelleVoirPanier"].strip())
+        self.assertTrue(payment["panierEncrypted"].startswith("-----BEGIN PKCS7-----"))
+        self.assertTrue(payment["panierEncrypted"].endswith("-----END PKCS7-----"))
+
     def test_all_and_only_referenced_media_are_kept(self):
         referenced = referenced_media(self.raw)
         assets = {
