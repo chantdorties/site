@@ -449,6 +449,9 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         "manuscritsAction",
     ):
         require_text(home, field, "Réglage accueil")
+    covers = home.get("nombreCouvertures")
+    if isinstance(covers, bool) or not isinstance(covers, int) or covers < 1:
+        raise ContentError("Réglage accueil: nombreCouvertures doit être un nombre entier, 1 au moins")
     validate_seo(root, home, "Réglage accueil")
     validate_old_slugs(home, "Réglage accueil")
 

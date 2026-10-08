@@ -34,9 +34,14 @@ class PageAccueil:
         ]
         return sorted(selected, key=lambda book: (book["ordreAccueil"], book["ordre"], book["slug"]))
 
+    def home_cover_books(self) -> list[dict[str, Any]]:
+        """Les couvertures du bandeau : les premiers livres mis en avant, autant que
+        le réglage « nombreCouvertures » en demande. Les autres restent cochés."""
+        return self.featured_books()[: self.home_settings["nombreCouvertures"]]
+
     def build_home(self) -> None:
         labels = self.home_settings
-        featured = self.featured_books()
+        featured = self.home_cover_books()
         covers = "".join(
             f"""
 <a href="/livres/{e(book['slug'])}/" aria-label="Découvrir {e(book['titre'])}">
