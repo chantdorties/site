@@ -622,6 +622,40 @@ class BuiltSiteTest(unittest.TestCase):
         menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
         self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
 
+    def test_previews_only_use_classes_the_site_still_produces(self):
+        # Les aperçus recopient le HTML du site pour en reprendre la feuille de style.
+        # Une classe renommée dans le générateur laisserait l’aperçu sans style, sans
+        # erreur visible : chaque classe doit exister dans les pages produites, sauf
+        # celles propres à l’administration, définies dans preview.css ou admin.css.
+        script = (ROOT / "frontend" / "admin" / "preview.js").read_text(encoding="utf-8")
+        own_styles = "".join(
+            (ROOT / "frontend" / "admin" / name).read_text(encoding="utf-8")
+            for name in ("preview.css", "admin.css")
+        )
+        used = {
+            name
+            for match in re.finditer(r"className:\s*(['`])(.*?)\1", script)
+            for name in match.group(2).split()
+            if not re.search(r"[${}]", name)
+        }
+        produced = {
+            name
+            for path in self.public_html_files
+            for value in re.findall(r'class="([^"]*)"', path.read_text(encoding="utf-8"))
+            for name in value.split()
+        }
+        # Le bandeau des brouillons n’apparaît que dans « make preview » ; « compteur »
+        # n’est qu’une enveloppe, seules ses lignes ont un style.
+        known_exceptions = {"draft-notice", "compteur"}
+        self.assertIn('class="draft-notice"', (ROOT / "tools" / "rendu" / "gabarit.py").read_text(encoding="utf-8"))
+        self.assertGreater(len(used), 50)
+        missing = sorted(
+            name
+            for name in used - produced - known_exceptions
+            if not re.search(rf"\.{re.escape(name)}(?![\w-])", own_styles)
+        )
+        self.assertEqual([], missing)
+
     def test_shared_form_components_are_defined_once(self):
         # Un composant recopié finit par diverger : son motif et son plafond ne
         # s’écrivent qu’une fois, les autres champs y renvoient par une ancre YAML.

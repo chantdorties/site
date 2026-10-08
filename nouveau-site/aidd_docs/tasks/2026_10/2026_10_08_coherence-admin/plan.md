@@ -57,7 +57,7 @@ status: in-progress
 | 5 | Page Actualités en un seul écran (B) | Référencement complet et anciennes adresses dans « Introductions › Actualités » ; une seule description SEO, valeur actuelle conservée selon la règle d’aujourd’hui (celle de la page l’emporte) ; « Pages principales › Actualités » retiré | Comparaison `dist/` : identique | done |
 | 6 | Mentions légales dans « Pages de la maison » (C) | Fichier déplacé dans `content/pages/`, adresse et suppression protégées par la validation ; collection « Pages principales » supprimée | Comparaison `dist/` : identique ; test de protection | done |
 | 7 | Libellés et intertitres restants (D, E, K) | Intertitres pour Menu, Pied de page, Introductions ; libellés et aides des deux présentations ; décision Projets appliquée | Relecture des écrans, captures après | done |
-| 8 | Aperçus sous contrôle (O) | Test : classes des aperçus présentes dans le HTML généré ; aperçu « Page d’accueil » complété avec les textes déplacés | Test vert, captures | pending |
+| 8 | Aperçus sous contrôle (O) | Test : classes des aperçus présentes dans le HTML généré ; aperçu « Page d’accueil » complété avec les textes déplacés | Test vert, captures | done |
 | 9 | Documentation et essai | `GUIDE-REDACTION.md` (« Où se règle quel texte » réécrit), `ADMINISTRATION.md`, tâches types rejouées | Guide à jour, rapport `reports/admin-ux/coherence-apres/` | pending |
 
 ## Decisions
