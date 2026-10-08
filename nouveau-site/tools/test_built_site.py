@@ -341,6 +341,28 @@ class BuiltSiteTest(unittest.TestCase):
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
+    def test_admin_protects_itself_where_no_header_can_be_set(self):
+        """Chez Free, l’administration n’a ni en-tête de sécurité ni .htaccess : la page
+        porte elle-même la politique d’OVH, et garde.js passe avant Decap."""
+        soup = BeautifulSoup((DIST / "admin" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        meta = soup.select_one('meta[http-equiv="Content-Security-Policy"]')["content"]
+        htaccess = (ROOT / "frontend" / "admin-serveur" / "htaccess.conf").read_text(encoding="utf-8")
+        header = re.search(r'Content-Security-Policy "([^"]+)"', htaccess).group(1)
+        self.assertEqual(header, meta.replace(" http://127.0.0.1:8082", ""))
+        scripts = [script["src"] for script in soup.find_all("script")]
+        self.assertEqual("garde.js", scripts[0])
+        self.assertTrue((DIST / "admin" / "garde.js").is_file())
+        self.assertIn("https://chantdorties.pages-perso.free.fr", (DIST / "admin" / "garde.js").read_text(encoding="utf-8"))
+
+    def test_auth_relay_hands_the_token_to_named_origins_only(self):
+        relay = ROOT / "frontend" / "admin-serveur"
+        php = (relay / "callback.php").read_text(encoding="utf-8")
+        script = (relay / "callback.js").read_text(encoding="utf-8")
+        self.assertIn("ORIGINES_ADMINISTRATION = ['https://chantdorties.pages-perso.free.fr']", php)
+        self.assertNotRegex(script, r"postMessage\([^)]*'\*'")
+        self.assertIn("origines.indexOf(evenement.origin) === -1", script)
+        self.assertIn("window.opener.postMessage(message, evenement.origin)", script)
+
     def test_every_editable_collection_has_a_preview_and_a_description(self):
         """Sans aperçu déclaré, Decap affiche un empilement de champs bruts ; sans
         description, rien ne dit à quoi sert la rubrique ni ce qu’elle interdit."""

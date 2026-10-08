@@ -22,7 +22,11 @@ page permettant de l’installer a déjà disparu de plusieurs interfaces.
 | `~/orties-admin-secret.php` **sur le serveur** | Client ID et Client Secret, hors du dossier publié, jamais versionné |
 
 En ligne : `https://orties-admin.varascundo.com/`, servi par le dossier `orties-admin`
-du compte OVH. Le déploiement est assuré par `.github/workflows/admin.yml`, déclenché
+du compte OVH. L’interface est aussi publiée chez Free, à
+`https://chantdorties.pages-perso.free.fr/admin/`, avec le site ; elle se connecte par ce
+même relais. `callback.php` ne remet le jeton qu’aux origines nommées : celle du relais
+et celles de `ORIGINES_ADMINISTRATION`. Ajouter une adresse d’administration, c’est
+l’ajouter à cette liste — jamais `'*'`. Le déploiement est assuré par `.github/workflows/admin.yml`, déclenché
 seulement quand `frontend/admin/` ou `frontend/admin-serveur/` changent.
 
 ## Déposer ou renouveler le Client Secret
@@ -143,7 +147,9 @@ racine du sous-domaine puisque le listing est désactivé.
 sous-dossier. Une règle globale y coupe l’aperçu du site en même temps que le reste ; la
 restreindre par `<If "%{HTTP_HOST} == '…'">`.
 
-**L’origine du `postMessage` doit être nommée**, jamais `'*'`. Avec `'*'`, n’importe
+**Les origines du `postMessage` doivent être nommées**, jamais `'*'`. La fenêtre annonce
+sa présence à chaque origine de la liste, mais ne transmet le jeton qu’à celle qui lui
+répond, si elle y figure. Avec `'*'`, n’importe
 quelle page ouvrant le relais repart avec un jeton autorisant l’écriture dans le dépôt.
 
 **Aucun script écrit à même `callback.php`.** La politique de sécurité du sous-domaine

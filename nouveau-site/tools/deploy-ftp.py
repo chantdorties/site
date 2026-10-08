@@ -25,6 +25,11 @@ MANIFEST_NAME = ".chantdorties-deploy.json"
 # publie l'administration, qui vit sur son propre sous-domaine.
 DEFAULT_HOSTS = {"free": "ftpperso.free.fr", "ovh": None, "ovh-admin": None}
 
+# L'interface d'administration (dist/admin) n'est publiée que chez Free, sous /admin/ ;
+# son relais de connexion reste chez OVH, seul à pouvoir joindre GitHub. L'aperçu OVH
+# ne l'expose jamais.
+TARGETS_WITH_ADMIN = {"free"}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -65,13 +70,13 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def local_files(dist: Path) -> dict[str, Path]:
+def local_files(dist: Path, include_admin: bool = False) -> dict[str, Path]:
     files = {}
     for path in sorted(dist.rglob("*")):
         if not path.is_file():
             continue
         relative = path.relative_to(dist)
-        if relative.parts[0] == "admin":
+        if relative.parts[0] == "admin" and not include_admin:
             continue
         files[relative.as_posix()] = path
     return files
@@ -160,10 +165,12 @@ def main() -> None:
     if not (dist / "index.html").is_file():
         raise SystemExit(f"Site généré introuvable : {dist}")
 
-    files = local_files(dist)
+    include_admin = args.target in TARGETS_WITH_ADMIN
+    files = local_files(dist, include_admin)
     hashes = {relative: sha256(path) for relative, path in files.items()}
     if args.dry_run:
-        print(f"Déploiement simulé : {len(files)} fichiers publics, administration exclue.")
+        admin = "administration comprise" if include_admin else "administration exclue"
+        print(f"Déploiement simulé : {len(files)} fichiers publics, {admin}.")
         return
 
     settings = connection_settings(args.target)

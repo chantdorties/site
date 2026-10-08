@@ -56,6 +56,18 @@ class DeployTest(unittest.TestCase):
             (dist / "index.html").write_text("site", encoding="utf-8")
             self.assertEqual(["index.html"], list(deploy.local_files(dist)))
 
+    def test_admin_is_published_on_free_only(self):
+        self.assertEqual({"free"}, deploy.TARGETS_WITH_ADMIN)
+        with tempfile.TemporaryDirectory() as directory:
+            dist = Path(directory)
+            (dist / "admin").mkdir()
+            (dist / "admin" / "index.html").write_text("admin", encoding="utf-8")
+            (dist / "index.html").write_text("site", encoding="utf-8")
+            self.assertEqual(
+                ["admin/index.html", "index.html"],
+                list(deploy.local_files(dist, include_admin=True)),
+            )
+
     def test_publication_order_puts_pages_after_assets(self):
         paths = ["index.html", "assets/site.css", "robots.txt", "assets/cover.webp"]
         self.assertEqual(
