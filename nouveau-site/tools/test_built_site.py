@@ -383,6 +383,32 @@ class BuiltSiteTest(unittest.TestCase):
                     self.assertIn("name", field, f"{collection['name']}/{entry.get('name')}")
                     self.assertIn("widget", field, f"{collection['name']}/{field.get('name')}")
 
+    def test_relation_filters_never_target_a_multiple_value_field(self):
+        """Decap compare la valeur filtrée par values.includes(valeur) : sur un champ
+        à plusieurs valeurs (roles), aucune fiche ne passe et la liste reste vide."""
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        collections = {item["name"]: item for item in config["collections"]}
+
+        def fields_of(container):
+            for field in container.get("fields", []):
+                yield field
+                yield from fields_of(field)
+                if "field" in field:
+                    yield field["field"]
+
+        for collection in config["collections"]:
+            for entry in collection.get("files") or [collection]:
+                for field in fields_of(entry):
+                    if field.get("widget") != "relation":
+                        continue
+                    target = {item["name"]: item for item in collections[field["collection"]]["fields"]}
+                    for rule in field.get("filters", []):
+                        filtered = target[rule["field"].split(".")[0]]
+                        self.assertFalse(
+                            filtered.get("widget") == "list" or filtered.get("multiple"),
+                            f"{collection['name']}/{field['name']} filtre sur {rule['field']}",
+                        )
+
     def test_no_preview_template_can_be_applied_to_the_wrong_entry(self):
         """Decap retrouve un aperçu par nom de rubrique ET par nom de fichier.
 

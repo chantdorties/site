@@ -332,12 +332,12 @@ collections:
         collection: personnes
         multiple: true
         min: 1
+        # Pas de filtre par rôle : roles est une liste, et le filtre de Decap compare
+        # la valeur entière (values.includes(liste)) — aucune fiche ne passerait.
         hint: Choisir dans les fiches existantes. Une personne absente de la liste doit d’abord être créée dans « Auteurs et illustrateurs », avec le rôle Auteur.
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-        filters:
-          - {field: roles, values: [auteur]}
       - label: Illustrateurs
         name: illustrateurs
         widget: relation
@@ -347,8 +347,6 @@ collections:
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-        filters:
-          - {field: roles, values: [illustrateur]}
       - label: Préfaciers
         name: prefaciers
         widget: relation
@@ -358,8 +356,6 @@ collections:
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-        filters:
-          - {field: roles, values: [prefacier]}
       - label: Présentation
         name: description
         widget: markdown
@@ -534,7 +530,7 @@ collections:
         multiple: true
         min: 1
         default: [auteur]
-        hint: Une personne peut cumuler plusieurs rôles. Elle n’est proposée que dans les champs correspondants d’un livre.
+        hint: Une personne peut cumuler plusieurs rôles. Le rôle classe la personne sur le site ; dans un livre, toutes les fiches sont proposées.
         options:
           - {label: "Auteur", value: auteur}
           - {label: "Illustrateur", value: illustrateur}
@@ -766,8 +762,6 @@ collections:
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-        filters:
-          - {field: roles, values: [auteur]}
       - label: Auteurs sans fiche
         name: auteursHorsFiche
         widget: list
@@ -784,8 +778,6 @@ collections:
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-        filters:
-          - {field: roles, values: [illustrateur]}
       - label: Illustrateurs sans fiche
         name: illustrateursHorsFiche
         widget: list
