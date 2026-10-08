@@ -36,7 +36,8 @@ L’administration permet de modifier :
 - les livres, personnes, collections, actualités et projets ;
 - la page d’accueil, en un seul écran, et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;
-- les livres mis en avant sur l’accueil et les suggestions « À découvrir aussi » ;
+- les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Page d’accueil » fixe
+  combien de couvertures s’affichent) et les suggestions « À découvrir aussi » ;
 - l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
 - les textes alternatifs, les titres SEO, les descriptions SEO et les images sociales ;

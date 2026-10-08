@@ -189,6 +189,13 @@ collections:
             hint: La phrase sous le grand titre.
           - {label: "Bouton vers le catalogue", name: boutonCatalogue, widget: string}
           - {label: "Bouton vers les collections", name: boutonCollections, widget: string}
+          - label: Nombre de couvertures affichées
+            name: nombreCouvertures
+            widget: number
+            value_type: int
+            min: 1
+            default: 6
+            hint: "Les couvertures à côté du grand titre : ce sont les livres mis en avant, dans leur « Ordre sur l’accueil ». Il y en a un par collection ; avec un nombre plus petit, seuls les premiers s’affichent."
           - label: "2. Le bloc d’information"
             name: groupeInformation
             widget: groupe

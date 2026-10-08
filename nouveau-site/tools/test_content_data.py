@@ -273,6 +273,20 @@ class ContentDataTest(unittest.TestCase):
             footer = builder.render_footer()
             self.assertLess(footer.index('href="/actualites/"'), footer.index('href="/catalogue/"'))
 
+    def test_home_shows_as_many_covers_as_asked(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            edit(root, "content/reglages/accueil.json", nombreCouvertures=3)
+            builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            self.assertEqual(builder.featured_books()[:3], builder.home_cover_books())
+            self.assertGreater(len(builder.featured_books()), 3)
+        for value in (0, "6", True):
+            with self.subTest(value), content_sandbox() as root:
+                edit(root, "content/reglages/accueil.json", nombreCouvertures=value)
+                with self.assertRaisesRegex(ContentError, "nombreCouvertures"):
+                    load_content(root, include_drafts=True)
+
     def test_orders_and_home_selections_are_explicit(self):
         for records in (self.books, self.people, self.collections, self.pages):
             for record in records:

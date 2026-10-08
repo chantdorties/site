@@ -827,7 +827,7 @@ class BuiltSiteTest(unittest.TestCase):
         )
         home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
         self.assertEqual(
-            [f"/livres/{book['slug']}/" for book in selected],
+            [f"/livres/{book['slug']}/" for book in selected[: settings("accueil")["nombreCouvertures"]]],
             [link["href"] for link in home.select(".cover-ribbon > a")],
         )
         for book in source_books:
