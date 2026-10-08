@@ -166,7 +166,7 @@ collections:
             name: groupeBandeau
             widget: groupe
             required: false
-            hint: "Tout en haut de l’accueil : le grand titre, son accroche et deux boutons."
+            hint: "Tout en haut de l’accueil : le grand titre, son accroche et deux boutons. Les couvertures à côté se choisissent dans chaque fiche livre (case « Mis en avant sur l’accueil ») ; dans la liste des livres, le filtre « ★ Mis en avant sur l’accueil » les réunit."
           - label: Rubrique
             name: heroRubrique
             widget: string
@@ -545,13 +545,22 @@ collections:
     delete: false
     identifier_field: titre
     slug: "{{fields.slug}}"
-    summary: "{{titre}} — {{statut}}"
+    # L’étoile signale dans la liste les livres en couverture de l’accueil ; le filtre
+    # « Mis en avant sur l’accueil » les réunit, pour changer de livre sans chercher.
+    summary: "{{miseEnAvantAccueil | ternary('★ ', '')}}{{titre}} — {{statut}}"
     preview_path: "livres/{{slug}}/"
     view_groups:
       - {label: "Collection", field: collection}
       - {label: "Publication", field: statut}
-    sortable_fields: [titre, collection, ordre, statut]
-    view_filters: &status_filters
+    # Par défaut, les livres en couverture de l’accueil ouvrent la liste.
+    sortable_fields:
+      - {field: miseEnAvantAccueil, label: "Mis en avant sur l’accueil", default_sort: desc}
+      - titre
+      - collection
+      - ordre
+      - statut
+    view_filters:
+      - {label: "★ Mis en avant sur l’accueil", field: miseEnAvantAccueil, pattern: true}
       - {label: "Publiés", field: statut, pattern: "publie"}
       - {label: "Brouillons", field: statut, pattern: "brouillon"}
       - {label: "Archivés", field: statut, pattern: "archive"}
@@ -739,7 +748,7 @@ collections:
         name: miseEnAvantAccueil
         widget: boolean
         default: false
-        hint: Chaque collection met en avant exactement un livre disponible. En cocher un second dans la même collection bloque la publication.
+        hint: "Chaque collection met en avant exactement un livre disponible. Pour en changer, décocher d’abord l’ancien : le filtre « ★ Mis en avant sur l’accueil » de la liste des livres les montre tous."
       - label: Ordre sur l’accueil
         name: ordreAccueil
         widget: number
@@ -792,7 +801,12 @@ collections:
       - {label: "Initiale du nom", field: nom, pattern: "^."}
       - {label: "Publication", field: statut}
     sortable_fields: [nom, ordre, statut]
-    view_filters: *status_filters
+    # Les filtres de publication, repris par les rubriques suivantes. Les livres ont
+    # les mêmes, plus celui des livres mis en avant.
+    view_filters: &status_filters
+      - {label: "Publiés", field: statut, pattern: "publie"}
+      - {label: "Brouillons", field: statut, pattern: "brouillon"}
+      - {label: "Archivés", field: statut, pattern: "archive"}
     fields:
       - label: "L’essentiel"
         name: groupe1
