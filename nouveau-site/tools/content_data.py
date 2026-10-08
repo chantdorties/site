@@ -8,6 +8,7 @@ from collections.abc import Iterator
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
+from types import MappingProxyType
 from typing import Any
 
 
@@ -27,6 +28,32 @@ SEO_DESCRIPTION_MAX = 160
 # Valeur neutre de ordreAccueil : les livres non mis en avant la partagent tous.
 HOME_ORDER_UNSET = 999
 SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
+
+# Le réglage Apparence, tel que le fixe docs/CONTRAT-APPARENCE.md. L’administration
+# choisit des valeurs ; le code décide où elles s’appliquent. Une couleur n’est
+# acceptée qu’au format #RRGGBB (fullmatch : pas d’alpha, de fonction, de « ; »),
+# une police que par son identifiant : la pile CSS ne vient jamais du JSON.
+APPEARANCE_COLOR_PATTERN = re.compile(r"#[0-9A-Fa-f]{6}")
+APPEARANCE_COLOR_FIELDS = (
+    "couleurFond",
+    "couleurSurface",
+    "couleurTexte",
+    "couleurTexteSecondaire",
+    "couleurPrincipale",
+    "couleurPrincipaleFoncee",
+    "couleurSecondaire",
+    "couleurLiens",
+    "couleurBoutons",
+)
+APPEARANCE_FONT_FIELDS = ("policeTitres", "policeTexte")
+APPEARANCE_FONTS = MappingProxyType({
+    "serif-classique": 'Georgia, "Times New Roman", serif',
+    "serif-livre": '"Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif',
+    "sans-serif-moderne": (
+        'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+    ),
+    "sans-serif-humaniste": 'Optima, Candara, "Gill Sans", "Trebuchet MS", ui-sans-serif, sans-serif',
+})
 
 # Champs facultatifs dans l’administration : Decap ne les écrit pas quand ils
 # restent vides. Le générateur les lit en accès direct, donc un contenu créé
@@ -300,7 +327,33 @@ def validate_old_slugs(record: dict[str, Any], kind: str) -> None:
             raise ContentError(f"{kind} {record.get('slug')}: ancienne adresse invalide {value!r}")
 
 
+def validate_appearance_settings(appearance: Any) -> None:
+    if not isinstance(appearance, dict):
+        raise ContentError("Réglage apparence: content/reglages/apparence.json doit contenir un objet JSON")
+    expected = set(APPEARANCE_COLOR_FIELDS) | set(APPEARANCE_FONT_FIELDS)
+    missing = sorted(expected - set(appearance))
+    if missing:
+        raise ContentError(f"Réglage apparence: champs manquants {', '.join(missing)}")
+    unknown = sorted(set(appearance) - expected)
+    if unknown:
+        raise ContentError(f"Réglage apparence: champs inconnus {', '.join(unknown)}")
+    for field in APPEARANCE_COLOR_FIELDS:
+        value = appearance[field]
+        if not isinstance(value, str) or not APPEARANCE_COLOR_PATTERN.fullmatch(value):
+            raise ContentError(
+                f"Réglage apparence: {field} doit être une couleur #RRGGBB, reçu {value!r}"
+            )
+    for field in APPEARANCE_FONT_FIELDS:
+        value = appearance[field]
+        if not isinstance(value, str) or value not in APPEARANCE_FONTS:
+            raise ContentError(
+                f"Réglage apparence: {field} doit valoir l’un de {', '.join(APPEARANCE_FONTS)}, "
+                f"reçu {value!r}"
+            )
+
+
 def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
+    validate_appearance_settings(settings.get("apparence"))
     for name in SETTING_FILES:
         if not isinstance(settings.get(name), dict):
             raise ContentError(f"Réglage content/reglages/{name}.json invalide")

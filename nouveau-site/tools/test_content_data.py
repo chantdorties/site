@@ -12,11 +12,13 @@ import unittest
 from pathlib import Path
 
 from tools.content_data import (
+    APPEARANCE_FONTS,
     ContentError,
     inline_media_paths,
     load_content,
     media_path,
     valid_isbn,
+    validate_appearance_settings,
 )
 
 
@@ -174,6 +176,56 @@ class ContentDataTest(unittest.TestCase):
         with content_sandbox() as root:
             (root / "content" / "reglages" / "apparence.json").unlink()
             with self.assertRaisesRegex(ContentError, r"JSON invalide : .*reglages/apparence\.json"):
+                load_content(root, include_drafts=True)
+
+    def test_real_appearance_setting_is_accepted(self):
+        validate_appearance_settings(self.raw["settings"]["apparence"])
+        for field in ("policeTitres", "policeTexte"):
+            self.assertIn(self.raw["settings"]["apparence"][field], APPEARANCE_FONTS)
+
+    def test_appearance_colors_outside_the_contract_are_refused(self):
+        refused = {
+            "chaîne vide": "",
+            "hexadécimal court": "#fff",
+            "transparence": "#c63f32cc",
+            "nom de couleur": "red",
+            "fonction CSS": "rgb(198, 63, 50)",
+            "variable CSS": "var(--color-text)",
+            "point-virgule": "#c63f32; display: none",
+            "accolade": "#c63f32}",
+            "saut de ligne final": "#c63f32\n",
+            "valeur non chaîne": 12,
+        }
+        for case, value in refused.items():
+            with self.subTest(case), content_sandbox() as root:
+                edit(root, "content/reglages/apparence.json", couleurPrincipale=value)
+                with self.assertRaisesRegex(ContentError, "Réglage apparence: couleurPrincipale"):
+                    load_content(root, include_drafts=True)
+
+    def test_appearance_fonts_outside_the_list_are_refused(self):
+        for value in ("comic-sans", 'Georgia, serif', "", None):
+            with self.subTest(value), content_sandbox() as root:
+                edit(root, "content/reglages/apparence.json", policeTitres=value)
+                with self.assertRaisesRegex(ContentError, "Réglage apparence: policeTitres.*serif-classique"):
+                    load_content(root, include_drafts=True)
+
+    def test_appearance_keys_must_match_the_contract(self):
+        with content_sandbox() as root:
+            path = root / "content" / "reglages" / "apparence.json"
+            appearance = json.loads(path.read_text(encoding="utf-8"))
+            del appearance["couleurLiens"]
+            path.write_text(json.dumps(appearance), encoding="utf-8")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: champs manquants couleurLiens"):
+                load_content(root, include_drafts=True)
+        with content_sandbox() as root:
+            edit(root, "content/reglages/apparence.json", css="body { display: none }")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: champs inconnus css"):
+                load_content(root, include_drafts=True)
+
+    def test_appearance_setting_must_be_an_object(self):
+        with content_sandbox() as root:
+            (root / "content" / "reglages" / "apparence.json").write_text("[]", encoding="utf-8")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: .*objet JSON"):
                 load_content(root, include_drafts=True)
 
     def test_orders_and_home_selections_are_explicit(self):
