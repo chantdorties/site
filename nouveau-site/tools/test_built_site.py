@@ -635,6 +635,42 @@ class BuiltSiteTest(unittest.TestCase):
         menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
         self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
 
+    def test_shared_form_components_are_defined_once(self):
+        # Un composant recopié finit par diverger : son motif et son plafond ne
+        # s’écrivent qu’une fois, les autres champs y renvoient par une ancre YAML.
+        source = (DIST / "admin" / "config.yml").read_text(encoding="utf-8")
+        for motif in ("max_file_size", "^[A-Z0-9]{13}$", "^[a-z0-9]+(?:-[a-z0-9]+)*$"):
+            self.assertEqual(1, source.count(motif), motif)
+        self.assertEqual(1, source.count('name: alt, widget: string'))
+
+        config = yaml.safe_load(source)
+
+        def fields_of(fields):
+            for field in fields:
+                yield field
+                yield from fields_of(field.get("fields", []))
+                if "field" in field:
+                    yield field["field"]
+
+        every_field = []
+        for collection in config["collections"]:
+            every_field += list(fields_of(collection.get("fields", [])))
+            for entry in collection.get("files", []):
+                every_field += list(fields_of(entry["fields"]))
+        # Un champ repris par une ancre est le même objet : on ne le compte qu’une fois.
+        every_field = list({id(field): field for field in every_field}.values())
+        slugs = [field for field in every_field if field["name"] == "slug" and field["widget"] == "string"]
+        self.assertEqual(6, len(slugs))
+        # « Identifiant » pour les actualités et les projets, qui n’ont pas de page.
+        self.assertEqual({"Adresse de la page", "Identifiant"}, {field["label"] for field in slugs})
+        paypal = [field for field in every_field if field["name"].lower().endswith("hostedbuttonid")]
+        self.assertEqual(3, len(paypal))
+        for field in paypal:
+            self.assertIn("Les 13 caractères fournis par PayPal", field["hint"], field["name"])
+        for field in every_field:
+            if field["name"].endswith("Alt") or field["name"] == "alt":
+                self.assertIn("lue par les personnes qui ne la voient pas", field["hint"], field["name"])
+
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
             content = path.read_text(encoding="utf-8").lower()

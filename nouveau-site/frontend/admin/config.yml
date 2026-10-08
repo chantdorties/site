@@ -56,6 +56,10 @@ collections:
             hint: La description de l’accueil pour les moteurs de recherche, quand l’accueil n’a pas la sienne.
             modes: [rich_text]
             minimal: true
+            # Deux barres d’outils, et une règle : un texte court (accroche, introduction,
+            # présentation, biographie, résumé) prend *boutons_courts, sans intertitres ;
+            # un texte long découpé en parties (section d’une page, article) prend
+            # *boutons_corps, défini plus bas avec le contenu des actualités.
             buttons: &boutons_courts [bold, italic, link, bulleted-list, numbered-list, quote]
             editor_components: []
           - {label: "Adresse courriel", name: courriel, widget: string, hint: "L’adresse de contact affichée dans le pied de page et utilisée par les boutons « Nous contacter »."}
@@ -83,8 +87,9 @@ collections:
             hint: Glisser un lien par sa poignée pour changer sa place dans le menu. Décocher « Visible » le retire du menu sans l’effacer.
             fields:
               - {label: "Identifiant technique", name: id, widget: hidden}
-              - {label: "Libellé", name: libelle, widget: string, hint: "Le mot affiché dans le menu."}
-              - {label: "Adresse", name: url, widget: string, hint: "Une page du site, par exemple /catalogue/."}
+              # Le libellé et l’adresse d’un lien, partagés par la recherche et le pied de page.
+              - &lien_libelle {label: "Libellé", name: libelle, widget: string, hint: "Le texte cliquable."}
+              - &lien_adresse {label: "Adresse", name: url, widget: string, hint: "Une page du site, par exemple /catalogue/, ou une adresse complète commençant par https://."}
               - {label: "Visible", name: visible, widget: boolean, default: true}
           - label: Recherche
             name: recherche
@@ -93,8 +98,8 @@ collections:
             summary: "{{fields.libelle}} — {{fields.url}}"
             hint: La loupe de l’en-tête, et le lien « Rechercher » du menu sur téléphone.
             fields:
-              - {label: "Libellé", name: libelle, widget: string}
-              - {label: "Adresse", name: url, widget: string}
+              - *lien_libelle
+              - *lien_adresse
       - name: footer
         label: Pied de page
         file: nouveau-site/content/reglages/footer.json
@@ -116,8 +121,8 @@ collections:
             summary: "{{fields.libelle}} — {{fields.url}}"
             hint: Glisser un lien par sa poignée pour changer sa place dans la colonne.
             fields:
-              - {label: "Libellé", name: libelle, widget: string}
-              - {label: "Adresse", name: url, widget: string}
+              - *lien_libelle
+              - *lien_adresse
           - {label: "Titre des informations", name: titreInformations, widget: string}
           - {label: "Libellé Facebook", name: libelleFacebook, widget: string}
           - {label: "Libellé Manuscrits", name: libelleManuscrits, widget: string}
@@ -300,8 +305,9 @@ collections:
           - label: Identifiant du bouton PayPal de don
             name: donationHostedButtonId
             widget: string
-            hint: Réglage avancé à 13 caractères fourni par PayPal.
-            pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
+            hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page. Celui-ci reçoit les dons."
+            # Le motif des identifiants PayPal, repris par les livres et les sections.
+            pattern: &motif_paypal ['^[A-Z0-9]{13}$', "Treize caractères, en majuscules et chiffres uniquement"]
           - label: Bloc technique du bouton « voir mon panier »
             name: panierEncrypted
             widget: text
@@ -393,6 +399,7 @@ collections:
         name: collection
         widget: relation
         collection: collections
+        hint: La collection où le livre est rangé sur le site.
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
@@ -404,16 +411,20 @@ collections:
         min: 1
         # Pas de filtre par rôle : roles est une liste, et le filtre de Decap compare
         # la valeur entière (values.includes(liste)) — aucune fiche ne passerait.
-        hint: Choisir dans les fiches existantes. Une personne absente de la liste doit d’abord être créée dans « Auteurs et illustrateurs », avec le rôle Auteur.
+        hint: "Choisir dans les fiches « Auteurs et illustrateurs ». Une personne absente de la liste doit d’abord y être créée."
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-      - label: Illustrateurs
+      # Les illustrateurs sont facultatifs dans un livre comme dans un projet : un seul
+      # champ pour les deux. Les auteurs, eux, sont obligatoires dans un livre seulement.
+      - &illustrateurs
+        label: Illustrateurs
         name: illustrateurs
         widget: relation
         collection: personnes
         multiple: true
         required: false
+        hint: "Choisir dans les fiches « Auteurs et illustrateurs ». Une personne absente de la liste doit d’abord y être créée."
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
@@ -423,6 +434,7 @@ collections:
         collection: personnes
         multiple: true
         required: false
+        hint: "Choisir dans les fiches « Auteurs et illustrateurs ». Une personne absente de la liste doit d’abord y être créée."
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
@@ -431,12 +443,12 @@ collections:
         widget: image
         allow_multiple: false
         hint: Obligatoire. Format portrait de préférence, 20 Mo maximum.
-        media_library: {config: {max_file_size: 20971520}}
+        media_library: &media_20_mo {config: {max_file_size: 20971520}}
       - label: Texte alternatif de la couverture
         name: couvertureAlt
         widget: string
         required: false
-        hint: Lu par les personnes qui n’ont pas accès à l’image. Laisser vide écrit « Couverture de <titre> ».
+        hint: Une courte description de l’image, lue par les personnes qui ne la voient pas. Laisser vide écrit « Couverture de <titre> ».
       - label: Présentation
         name: description
         widget: markdown
@@ -468,8 +480,8 @@ collections:
         name: paypalHostedButtonId
         widget: string
         required: false
-        hint: "Identifiant à 13 caractères fourni par PayPal. Obligatoire pour un livre disponible : sans lui, la publication est refusée."
-        pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
+        hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page. Obligatoire pour un livre disponible : sans lui, la publication est refusée."
+        pattern: *motif_paypal
       - label: "Caractéristiques du livre"
         name: groupe3
         widget: groupe
@@ -538,9 +550,10 @@ collections:
         collapsed: true
         summary: "{{fields.alt}}"
         hint: Les images intérieures, affichées dans la galerie « Quelques illustrations ».
-        fields:
-          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-          - {label: "Texte alternatif", name: alt, widget: string, required: false}
+        # Une image et son texte alternatif : les mêmes champs dans toutes les galeries.
+        fields: &image_et_alt
+          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: *media_20_mo}
+          - {label: "Texte alternatif", name: alt, widget: string, required: false, hint: "Une courte description de l’image, lue par les personnes qui ne la voient pas."}
       - label: Extraits PDF
         name: extraits
         label_singular: "extrait PDF"
@@ -548,7 +561,7 @@ collections:
         required: false
         collapsed: true
         hint: Les fichiers proposés au téléchargement sur la page du livre.
-        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: *media_20_mo}
       - label: "Mise en avant"
         name: groupe5
         widget: groupe
@@ -585,8 +598,9 @@ collections:
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: "L’adresse du livre sur le site, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse tout en bas."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "La fin de l’adresse de la page, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        # Le motif des adresses, repris par toutes les rubriques.
+        pattern: &motif_adresse ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Minuscules, chiffres et tirets uniquement, sans espace ni accent"]
       - &order
         label: Ordre d’affichage
         name: ordre
@@ -623,7 +637,7 @@ collections:
             minimal: true
             buttons: []
             editor_components: []
-          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
+          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
 
   - name: personnes
     label: Auteurs et illustrateurs
@@ -664,12 +678,12 @@ collections:
           - {label: "Auteur", value: auteur}
           - {label: "Illustrateur", value: illustrateur}
           - {label: "Préfacier", value: prefacier}
-      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo}
       - label: Texte alternatif du portrait
         name: imagePrincipaleAlt
         widget: string
         required: false
-        hint: Laisser vide écrit « Portrait de <nom> ».
+        hint: Une courte description de l’image, lue par les personnes qui ne la voient pas. Laisser vide écrit « Portrait de <nom> ».
       - label: Biographie
         name: biographie
         widget: markdown
@@ -692,9 +706,7 @@ collections:
         collapsed: true
         summary: "{{fields.alt}}"
         hint: Affichées dans une galerie sous la biographie.
-        fields:
-          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-          - {label: "Texte alternatif", name: alt, widget: string, required: false}
+        fields: *image_et_alt
       - label: Liens externes
         name: liensExternes
         label_singular: "lien"
@@ -711,8 +723,8 @@ collections:
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: L’adresse de la fiche sur le site, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication.
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "La fin de l’adresse de la page, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        pattern: *motif_adresse
       - *order
       - *old_slugs
       - *seo
@@ -748,12 +760,12 @@ collections:
         allow_multiple: false
         required: false
         hint: Le petit dessin de la collection, sur fond transparent, repris de l’ancien site.
-        media_library: {config: {max_file_size: 20971520}}
+        media_library: *media_20_mo
       - label: Texte alternatif de l’emblème
         name: logoAlt
         widget: string
         required: false
-        hint: Obligatoire dès qu’un emblème est choisi, sinon la publication est refusée. Décrire le dessin, par exemple « Un chardon violet ».
+        hint: Une courte description de l’image, lue par les personnes qui ne la voient pas. Obligatoire dès qu’un emblème est choisi, sinon la publication est refusée. Par exemple « Un chardon violet ».
       - label: Présentation
         name: description
         widget: markdown
@@ -771,8 +783,8 @@ collections:
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: L’adresse de la collection sur le site, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication.
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "La fin de l’adresse de la page, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        pattern: *motif_adresse
       - *order
       - *old_slugs
       - *seo
@@ -822,12 +834,12 @@ collections:
           - {label: "Parution", value: parution}
           - {label: "Rencontre", value: rencontre}
           - {label: "Vie de la maison", value: maison}
-      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo}
       - label: Texte alternatif de l’image
         name: imageAlt
         widget: string
         required: false
-        hint: Obligatoire dès qu’une image est choisie, sinon la publication est refusée.
+        hint: Une courte description de l’image, lue par les personnes qui ne la voient pas. Obligatoire dès qu’une image est choisie, sinon la publication est refusée.
       - label: Résumé
         name: resume
         widget: markdown
@@ -863,7 +875,7 @@ collections:
         allow_multiple: false
         required: false
         hint: Ajoute un bouton de téléchargement sous l’article.
-        media_library: {config: {max_file_size: 20971520}}
+        media_library: *media_20_mo
       - label: "Réglages techniques"
         name: groupe3
         widget: groupe
@@ -872,8 +884,8 @@ collections:
       - label: Identifiant
         name: slug
         widget: string
-        hint: "Sert à nommer le fichier et à classer l’article. Une actualité n’a pas de page à elle : elle s’affiche dans la liste."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "Le nom du fichier, en minuscules et tirets. Une actualité n’a pas de page à elle : elle s’affiche dans la liste des actualités."
+        pattern: *motif_adresse
       - *old_slugs
       - *seo
 
@@ -920,6 +932,7 @@ collections:
         widget: relation
         required: false
         collection: collections
+        hint: Facultative tant que le projet n’est pas rattaché à une collection.
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
@@ -932,14 +945,14 @@ collections:
         name: groupe2
         widget: groupe
         required: false
-        hint: "Choisir dans les fiches existantes, ou écrire le nom d’une personne qui n’a pas encore de fiche."
+        hint: "Choisir dans les fiches existantes ; le nom deviendra un lien vers la fiche. Une personne qui n’en a pas encore s’écrit dans « … sans fiche »."
       - label: Auteurs
         name: auteurs
         widget: relation
         collection: personnes
         multiple: true
         required: false
-        hint: Ceux qui ont déjà une fiche. Leur nom deviendra un lien vers elle.
+        hint: "Choisir dans les fiches « Auteurs et illustrateurs ». Une personne absente de la liste doit d’abord y être créée. Sinon, l’écrire dans « Auteurs sans fiche »."
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
@@ -950,16 +963,7 @@ collections:
         required: false
         hint: Pour un auteur qui n’a pas encore de fiche — courant avant parution. Son nom s’affichera sans lien.
         field: {label: "Nom", name: nom, widget: string}
-      - label: Illustrateurs
-        name: illustrateurs
-        widget: relation
-        collection: personnes
-        multiple: true
-        required: false
-        hint: Ceux qui ont déjà une fiche. Leur nom deviendra un lien vers elle.
-        search_fields: [nom]
-        display_fields: [nom]
-        value_field: slug
+      - *illustrateurs
       - label: Illustrateurs sans fiche
         name: illustrateursHorsFiche
         label_singular: "illustrateur sans fiche"
@@ -975,8 +979,8 @@ collections:
       - label: Identifiant
         name: slug
         widget: string
-        hint: "Sert à nommer le fichier. Un projet n’a pas de page à lui : il s’affiche sur la page Projets."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "Le nom du fichier, en minuscules et tirets. Un projet n’a pas de page à lui : il s’affiche sur la page Projets."
+        pattern: *motif_adresse
       - *order
 
   - name: pages_fixes
@@ -1114,15 +1118,11 @@ collections:
                   le bouton se saisit dans sa fiche, pas ici.
                 fields:
                   - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
-                  - label: Identifiant du bouton
+                  - label: Identifiant du bouton PayPal
                     name: hostedButtonId
                     widget: string
-                    hint: >-
-                      Les 13 caractères fournis par PayPal lors de la création du bouton
-                      (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui
-                      décide de l’article et du montant facturés : une erreur ici fait payer
-                      autre chose que ce qu’annonce la page.
-                    pattern: ['^[A-Z0-9]{13}$', "Treize caractères, en majuscules et chiffres uniquement"]
+                    hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
+                    pattern: *motif_paypal
           # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
           # faut remplir, d’où les explications sur chacun.
           - &page_links
@@ -1180,9 +1180,7 @@ collections:
             collapsed: true
             summary: "{{fields.alt}}"
             hint: Affichées dans une galerie « En images » au bas de la page.
-            fields:
-              - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-              - {label: "Texte alternatif", name: alt, widget: string, required: false}
+            fields: *image_et_alt
           - &page_documents
             label: Documents joints
             name: documents
@@ -1191,7 +1189,7 @@ collections:
             required: false
             collapsed: true
             hint: Fichiers déposés avec la page. Pour qu’un document soit cliquable, ajouter aussi un lien de type « document PDF » ci-dessus.
-            field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
+            field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: *media_20_mo}
           - *old_slugs
           - *seo
 
@@ -1247,8 +1245,8 @@ collections:
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: L’adresse de la page sur le site, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication.
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+        hint: "La fin de l’adresse de la page, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        pattern: *motif_adresse
       - {label: "Type", name: type, widget: hidden, default: page}
       - *order
       - *old_slugs
