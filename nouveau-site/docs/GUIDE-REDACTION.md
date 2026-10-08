@@ -4,9 +4,25 @@ Ce document s’adresse à la personne qui écrit les contenus. Il ne demande au
 connaissance technique. Pour le fonctionnement interne — dépôt, génération, déploiement —
 voir [ADMINISTRATION.md](ADMINISTRATION.md).
 
+## Comment se lit un formulaire
+
+Chaque fiche se lit de haut en bas, découpée par de grands intertitres :
+
+- **L’essentiel** ouvre toujours le formulaire : le titre, la publication, le texte et
+  l’image principale. C’est souvent tout ce qu’il y a à remplir.
+- Viennent ensuite les blocs propres à la rubrique — **Vente**, **Caractéristiques du
+  livre**, **Images, liens et documents**…
+- **Réglages techniques** ferme le formulaire : l’adresse de la page, son rang dans les
+  listes, les anciennes adresses et le référencement. On n’y touche qu’en cas de besoin.
+
+Le volet de droite montre la page **telle qu’elle apparaîtra sur le site**, avec sa mise
+en page, ses couvertures et ses prix, et change pendant la frappe. Les noms, couvertures
+et prix des autres fiches y sont ceux de la dernière publication : un livre créé depuis
+apparaît sous son adresse jusqu’à la publication suivante.
+
 ## Se connecter
 
-Ouvrir <https://orties-admin.varascundo.com/>, puis **Se connecter avec GitHub**. Une
+Ouvrir <https://chantdorties.pages-perso.free.fr/admin/>, puis **Se connecter avec GitHub**. Une
 fenêtre s’ouvre, demande l’autorisation une première fois, puis se referme seule.
 
 Il faut un compte GitHub ayant accès au dépôt. Si la fenêtre reste sur « Connexion en
@@ -185,6 +201,12 @@ Deux précautions valent d’être répétées :
 - **Vérifier le bouton après publication** en cliquant dessus : PayPal affiche l’article et
   le montant réels. C’est la seule vérification qui compte.
 
+**Montrer les livres d’une offre.** Une section a aussi un champ **Livres de cette
+section** : on y choisit les livres dans une liste. Ils s’affichent sous le texte avec leur
+couverture, leurs auteurs et leur prix, tirés de leur fiche — rien à recopier, rien à
+mettre à jour deux fois. C’est ainsi qu’est faite la page Offres spéciales : une section
+par offre, ses deux livres, son bouton.
+
 Le bouton « voir mon panier » n’est à saisir nulle part : il se tient en permanence
 dans le menu du site, et se répète sur la fiche d’un livre à côté de « Ajouter au
 panier », là où l’on veut vérifier sa commande. Seul son libellé se règle, dans
@@ -214,6 +236,9 @@ avant.
 - **Une ligne vide sépare deux paragraphes.** C’était déjà la règle pour le corps d’une
   actualité ; elle vaut maintenant partout, y compris dans les sections des pages de la
   maison, où les lignes vides étaient jusqu’ici ignorées à l’affichage.
+- **Passer à la ligne sans changer de paragraphe** — **Maj + Entrée**. Utile pour une
+  adresse postale, une ligne par information :
+  « Publico ⏎ 145 rue Amelot ⏎ 75011 Paris ».
 - **Les liens** — sélectionner les mots, puis le bouton lien. Une adresse écrite en
   entier (`https://…`) ou un courriel deviennent cliquables tout seuls, sans rien faire.
 - **Les intertitres** s’insèrent sous le titre de la page : ils ne peuvent pas le

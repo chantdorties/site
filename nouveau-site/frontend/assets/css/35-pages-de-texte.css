@@ -33,6 +33,15 @@
   margin-top: 20px;
 }
 
+/* Les livres choisis dans une section (offre groupée, sélection) : trois cartes par
+   rangée dans la colonne de texte. Les règles de .book-grid des fichiers 90 à 92,
+   placées après, les resserrent sur tablette et téléphone. */
+.book-grid--section {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 20px;
+  margin-top: 24px;
+}
+
 .editorial-aside {
   align-self: start;
   padding-left: 24px;

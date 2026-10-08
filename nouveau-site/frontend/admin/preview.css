@@ -588,3 +588,16 @@ body {
   color: var(--color-secondary);
   font-size: 0.9rem;
 }
+
+/* Aperçu d'une fiche sans image : un emplacement clair plutôt qu'un vide. */
+.apercu-manque {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 2 / 3;
+  max-width: 320px;
+  margin: 0;
+  border: 2px dashed var(--color-border, #d8dcd6);
+  border-radius: 6px;
+  color: var(--color-muted, #626862);
+  font-size: 15px;
+}

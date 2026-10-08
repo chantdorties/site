@@ -6,93 +6,49 @@
   "sections": [
     {
       "titre": "Les deux tomes de Gaïa",
-      "contenu": "conte rebelle pour toute la famille Tome 1 - Conte de la Montagne Bleue Tome 2 - Sur le chemin de la Montagne Bleue Romans jeunesse d'Amanda Belassami-Sideris illustrés par Pavlos Habidis 16€ pièce / offre spéciale 25€ les deux.",
+      "contenu": "conte rebelle pour toute la famille\n\nTome 1 - Conte de la Montagne Bleue\n\nTome 2 - Sur le chemin de la Montagne Bleue\n\nRomans jeunesse d'Amanda Belassami-Sideris\\\nillustrés par Pavlos Habidis\n\n16€ pièce / offre spéciale 25€ les deux.",
       "boutonsPaypal": [
         {
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "6A3X7AW598RVA"
         }
+      ],
+      "livres": [
+        "gaia-conte-de-la-montagne-bleue",
+        "gaia-sur-le-chemin-de-la-montagne-bleue"
       ]
     },
     {
       "titre": "Les enquêtes de Théo",
-      "contenu": "pour les 10-14 ans Tome 1 - Les disparus de la Cité Fleurie Tome 2 - Les sources d'or de la Cité Fleurie Romans jeunesse de Fred Morisse illustrés par l'auteur 16€ pièce / offre spéciale 25€ les deux.",
+      "contenu": "pour les 10-14 ans\n\nTome 1 - Les disparus de la Cité Fleurie\n\nTome 2 - Les sources d'or de la Cité Fleurie\n\n**Romans jeunesse de Fred Morisse illustrés par l'auteur**\n\n**16€ pièce / offre spéciale 25€ les deux.**",
       "boutonsPaypal": [
         {
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "LBU4LQJL8M4M8"
         }
+      ],
+      "livres": [
+        "les-disparus-de-la-cite-fleurie",
+        "les-sources-d-or-de-la-cite-fleurie"
       ]
     },
     {
       "titre": "D'un voyage à travers le temps",
-      "contenu": "aux sources d'une société plus égalitaire, deux romans haletants pour un même idéal Tome 1 - Un air de liberté Tome 2 - L'ombre de la lune Romans jeunesse d'Hellena Cavendi illustrés par Julie Grugeaux T.1 et l'autrice T.2 15€ T.1 et 18€ T.2 séparément Offre spéciale 25€ les deux tomes.",
+      "contenu": "aux sources d'une société plus égalitaire, deux romans haletants pour un même idéal\n\nTome 1 - Un air de liberté\n\nTome 2 - L'ombre de la lune\n\nRomans jeunesse d'Hellena Cavendi\\\nillustrés par Julie Grugeaux T.1 et l'autrice T.2\n\n**15€ T.1 et 18€ T.2 séparément**\\\n**Offre spéciale 25€ les deux tomes.**",
       "boutonsPaypal": [
         {
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "8MU2P9U6XVXNC"
         }
+      ],
+      "livres": [
+        "un-air-de-liberte",
+        "l-ombre-de-la-lune"
       ]
     }
   ],
-  "liens": [
-    {
-      "type": "livre",
-      "slug": "gaia-conte-de-la-montagne-bleue",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
-      "texte": "Tome 2"
-    },
-    {
-      "type": "livre",
-      "slug": "les-disparus-de-la-cite-fleurie",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "les-sources-d-or-de-la-cite-fleurie",
-      "texte": "Tome 2"
-    },
-    {
-      "type": "livre",
-      "slug": "un-air-de-liberte",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "l-ombre-de-la-lune",
-      "texte": "Tome 2"
-    }
-  ],
-  "images": [
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-01-livres-couv-gaia.jpg",
-      "alt": "Offres spéciales — image 1"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-02-livres-couv-gaia2.jpg",
-      "alt": "Offres spéciales — image 2"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-03-livres-couvdisparuscitefleurie.jpg",
-      "alt": "Offres spéciales — image 3"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-04-livres-couv-sources-d-or-cite-fleurie.jpg",
-      "alt": "Offres spéciales — image 4"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-05-livres-couvunairdeliberte.jpg",
-      "alt": "Offres spéciales — image 5"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-06-livres-couvombrelune.jpg",
-      "alt": "Offres spéciales — image 6"
-    }
-  ],
+  "liens": [],
+  "images": [],
   "documents": [],
   "ordre": 80,
   "rubrique": "Sélection",

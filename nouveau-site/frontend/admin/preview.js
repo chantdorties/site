@@ -45,76 +45,6 @@
   const status = (entry) =>
     h('p', { className: 'content-preview__status' }, libelle('statut', value(entry, 'statut')));
 
-  const BookPreview = createClass({
-    render() {
-      const { entry, getAsset, widgetFor } = this.props;
-      const cover = assetUrl(getAsset, value(entry, 'couverture'));
-      const price = value(entry, 'prixEuros', null);
-      const age = value(entry, 'ageMinimum', null);
-      return h('article', { className: 'content-preview' },
-        status(entry),
-        h('p', { className: 'content-preview__meta' }, lisible(value(entry, 'collection'))),
-        h('h1', {}, value(entry, 'titre', 'Livre sans titre')),
-        cover ? h('img', {
-          src: cover,
-          alt: value(entry, 'couvertureAlt') || `Couverture de ${value(entry, 'titre', 'ce livre')}`
-        }) : null,
-        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'description')),
-        h('p', { className: 'content-preview__facts' },
-          [
-            libelle('ouvrage', value(entry, 'typeOuvrage')),
-            age === null || age === '' ? '' : `Dès ${age} ans`,
-            price === null || price === '' ? '' : `${price} €`,
-            value(entry, 'disponible') === false ? 'Actuellement indisponible' : ''
-          ].filter(Boolean).join(' · ')
-        ),
-        h('p', { className: 'content-preview__facts' },
-          [
-            listeLisible(value(entry, 'auteurs', [])) && `Écrit par ${listeLisible(value(entry, 'auteurs', []))}`,
-            listeLisible(value(entry, 'illustrateurs', [])) && `Illustré par ${listeLisible(value(entry, 'illustrateurs', []))}`
-          ].filter(Boolean).join(' · ')
-        )
-      );
-    }
-  });
-
-  const PersonPreview = createClass({
-    render() {
-      const { entry, getAsset, widgetFor } = this.props;
-      const portrait = assetUrl(getAsset, value(entry, 'imagePrincipale'));
-      const roles = value(entry, 'roles');
-      return h('article', { className: 'content-preview' },
-        status(entry),
-        h('p', { className: 'content-preview__meta' },
-          (roles?.map?.((role) => libelle('role', role)) ?? []).join(' · ')),
-        h('h1', {}, value(entry, 'nom', 'Personne sans nom')),
-        portrait ? h('img', {
-          src: portrait,
-          alt: value(entry, 'imagePrincipaleAlt') || `Portrait de ${value(entry, 'nom', 'cette personne')}`
-        }) : null,
-        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'biographie'))
-      );
-    }
-  });
-
-  const CollectionPreview = createClass({
-    render() {
-      const { entry, getAsset, widgetFor } = this.props;
-      const emblem = assetUrl(getAsset, value(entry, 'logo'));
-      return h('article', { className: 'content-preview' },
-        status(entry),
-        h('p', { className: 'content-preview__meta' }, 'Collection'),
-        emblem ? h('img', {
-          className: 'content-preview__emblem',
-          src: emblem,
-          alt: value(entry, 'logoAlt') || `Emblème de ${value(entry, 'titre', 'la collection')}`
-        }) : null,
-        h('h1', {}, value(entry, 'titre', 'Collection sans titre')),
-        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'description'))
-      );
-    }
-  });
-
   const ProjectPreview = createClass({
     render() {
       const { entry } = this.props;
@@ -144,24 +74,6 @@
     }
   });
 
-  const NewsPreview = createClass({
-    render() {
-      const { entry, getAsset, widgetFor } = this.props;
-      const image = assetUrl(getAsset, value(entry, 'image'));
-      return h('article', { className: 'content-preview' },
-        status(entry),
-        h('p', { className: 'content-preview__meta' },
-          [libelle('categorie', value(entry, 'type')), dateFr(value(entry, 'datePublication'))]
-            .filter(Boolean).join(' · ')
-        ),
-        h('h1', {}, value(entry, 'titre', 'Actualité sans titre')),
-        image ? h('img', { src: image, alt: value(entry, 'imageAlt') }) : null,
-        h('div', { className: 'content-preview__lead' }, safeWidgetFor(widgetFor, 'resume')),
-        h('div', { className: 'content-preview__corps' }, safeWidgetFor(widgetFor, 'contenu'))
-      );
-    }
-  });
-
   // widgetsFor lève une exception quand le champ n’existe pas sur l’entrée,
   // ce qui vide tout le volet d’aperçu au lieu du seul bloc concerné.
   const safeWidgetsFor = (widgetsFor, name) => {
@@ -182,20 +94,257 @@
     }
   };
 
-  const PagePreview = createClass({
+  // ---- Aperçus fidèles au site ----------------------------------------------
+  //
+  // Ces aperçus reproduisent le HTML des pages générées (tools/rendu/) et sont mis en
+  // forme par la feuille du site elle-même, /assets/css/site.css, injectée dans le
+  // cadre d’aperçu : ce que l’on voit à droite est ce que le visiteur verra. Une
+  // classe renommée côté site doit l’être ici aussi.
+  //
+  // Une fiche ne connaît que les adresses des fiches liées (« ricardo-montserra »).
+  // Les noms, couvertures et prix viennent des fichiers publics du site,
+  // /data/livres.json, personnes.json et collections.json — ceux de la dernière
+  // publication. Tant qu’ils chargent, ou s’ils manquent, l’adresse reste lisible.
+  const DONNEES = { livres: null, personnes: null, collections: null };
+  const abonnes = new Set();
+  let chargement = null;
+  const chargerDonnees = () => {
+    if (chargement) return chargement;
+    chargement = Promise.all(Object.keys(DONNEES).map((nom) =>
+      fetch(`/data/${nom}.json`, { cache: 'no-cache' })
+        .then((reponse) => (reponse.ok ? reponse.json() : []))
+        .catch(() => [])
+        .then((liste) => {
+          DONNEES[nom] = new Map(liste.map((item) => [item.slug, item]));
+        })
+    )).then(() => abonnes.forEach((rafraichir) => rafraichir()));
+    return chargement;
+  };
+  // Une liste Immutable, un tableau, ou rien : `value` rend '' pour un champ absent.
+  const enTableau = (valeur) => {
+    const brut = valeur?.toJS?.() ?? valeur;
+    return Array.isArray(brut) ? brut : [];
+  };
+  const fiche = (nom, slug) => DONNEES[nom]?.get(slug) || null;
+  const nomDe = (slug) => fiche('personnes', slug)?.nom || lisible(slug);
+  const nomsDe = (slugs) => enTableau(slugs).map(nomDe).filter(Boolean);
+  const titreCollection = (slug) => fiche('collections', slug)?.titre || lisible(slug);
+  const prix = (euros) => (euros === null || euros === undefined || euros === '' ? '' : `${String(euros).replace('.', ',')} €`);
+  const prixCentimes = (centimes) => (centimes ? prix(centimes / 100) : '');
+
+  // Un aperçu qui dépend des fichiers publics se redessine une fois ceux-ci chargés.
+  const avecDonnees = (spec) => createClass(Object.assign({}, spec, {
+    componentDidMount() {
+      this.rafraichir = () => this.forceUpdate();
+      abonnes.add(this.rafraichir);
+      chargerDonnees();
+    },
+    componentWillUnmount() {
+      abonnes.delete(this.rafraichir);
+    }
+  }));
+
+  // Brouillon ou archivé : le même bandeau que l’aperçu du site.
+  const bandeauStatut = (entry) => {
+    const statut = value(entry, 'statut');
+    if (!statut || statut === 'publie') return null;
+    return h('div', { className: 'draft-notice' }, h('div', { className: 'container' },
+      statut === 'archive'
+        ? 'Archivé : ce contenu n’apparaît plus sur le site.'
+        : 'Brouillon : ce contenu n’apparaîtra sur le site qu’une fois publié.'));
+  };
+
+  const ariane = (...etapes) => h('nav', { className: 'breadcrumbs', 'aria-label': 'Fil d’Ariane' },
+    etapes.flatMap((etape, rang) => [
+      rang ? h('span', { key: `s${rang}`, 'aria-hidden': 'true' }, '/') : null,
+      rang === etapes.length - 1
+        ? h('span', { key: rang, 'aria-current': 'page' }, etape)
+        : h('a', { key: rang, href: '#' }, etape)
+    ]));
+
+  const boutonAchat = (libelleBouton, cle) => h('span', { key: cle, className: 'button' }, libelleBouton);
+
+  const carteLivre = (livre) => {
+    const details = [
+      libelle('ouvrage', livre.typeOuvrage),
+      livre.ageMinimum ? `Dès ${livre.ageMinimum} ans` : '',
+      prixCentimes(livre.prixCentimes)
+    ].filter(Boolean);
+    return h('article', { key: livre.slug, className: 'book-card' },
+      h('a', { className: 'book-card__cover-link', href: '#' },
+        livre.couverture ? h('img', { className: 'book-card__cover', src: livre.couverture, alt: livre.couvertureAlt || '' }) : null),
+      h('p', { className: 'book-card__collection' }, titreCollection(livre.collection)),
+      h('h3', {}, h('a', { href: '#' }, livre.titre)),
+      h('p', { className: 'book-card__meta' }, details.join(' · ')));
+  };
+  // Un livre choisi mais absent des fichiers publics (créé depuis la dernière
+  // publication) : une carte réduite à son adresse plutôt qu’un trou.
+  const carteOuAdresse = (slug) => {
+    const livre = fiche('livres', slug);
+    return livre ? carteLivre(livre) : h('article', { key: slug, className: 'book-card' },
+      h('p', { className: 'book-card__collection' }, 'Nouveau livre'), h('h3', {}, lisible(slug)));
+  };
+
+  const BookPreview = avecDonnees({
     render() {
-      const { entry, widgetsFor } = this.props;
-      const sections = safeWidgetsFor(widgetsFor, 'sections');
-      return h('article', { className: 'content-preview' },
-        status(entry),
-        h('h1', {}, value(entry, 'titre', 'Page sans titre')),
-        sections?.map?.((section, index) => h('section', { key: index },
-          h('h2', {}, section.getIn(['data', 'titre'])),
-          h('div', { className: 'content-preview__corps' }, section.getIn(['widgets', 'contenu']))
-        ))
-      );
+      const { entry, getAsset, widgetFor } = this.props;
+      const titre = value(entry, 'titre', 'Livre sans titre');
+      const couverture = assetUrl(getAsset, value(entry, 'couverture'));
+      const auteurs = nomsDe(value(entry, 'auteurs'));
+      const illustrateurs = nomsDe(value(entry, 'illustrateurs'));
+      const prefaciers = nomsDe(value(entry, 'prefaciers'));
+      const credits = [
+        auteurs.length && `Écrit par ${auteurs.join(', ')}`,
+        illustrateurs.length && `Illustré par ${illustrateurs.join(', ')}`,
+        prefaciers.length && `Préface de ${prefaciers.join(', ')}`
+      ].filter(Boolean);
+      const age = value(entry, 'ageMinimum', null);
+      const faits = [
+        ['Type', libelle('ouvrage', value(entry, 'typeOuvrage'))],
+        ['Âge', age ? `À partir de ${age} ans` : ''],
+        ['Pages', value(entry, 'nombrePages', '')],
+        ['Format', value(entry, 'format', '')],
+        ['Reliure', libelle('reliure', value(entry, 'reliure'))],
+        ['ISBN', value(entry, 'isbn', '')]
+      ].filter(([, texte]) => texte !== '' && texte !== null && texte !== undefined);
+      const disponible = value(entry, 'disponible') !== false;
+      return h('div', {},
+        bandeauStatut(entry),
+        h('section', { className: 'section section--white' }, h('div', { className: 'container' },
+          ariane('Accueil', 'Catalogue', titreCollection(value(entry, 'collection')), titre),
+          h('article', { className: 'book-detail' },
+            h('div', {}, couverture
+              ? h('img', { className: 'book-detail__cover', src: couverture, alt: value(entry, 'couvertureAlt') || `Couverture de ${titre}` })
+              : h('p', { className: 'apercu-manque' }, 'Pas encore de couverture')),
+            h('div', { className: 'book-detail__content' },
+              h('p', { className: 'eyebrow' }, titreCollection(value(entry, 'collection'))),
+              h('h1', {}, titre),
+              credits.length ? h('p', { className: 'contributors' },
+                credits.flatMap((ligne, rang) => (rang ? [h('br', { key: rang }), ligne] : [ligne]))) : null,
+              h('div', { className: 'book-description rich-text' }, safeWidgetFor(widgetFor, 'description')),
+              faits.length ? h('dl', { className: 'book-facts' }, faits.map(([nom, texte]) =>
+                h('div', { key: nom }, h('dt', {}, nom), h('dd', {}, String(texte))))) : null,
+              h('div', { className: 'purchase-line' },
+                h('span', { className: 'price' }, prix(value(entry, 'prixEuros', ''))),
+                h('span', { className: 'availability' }, disponible ? 'Disponible' : 'Actuellement indisponible'),
+                disponible && value(entry, 'paypalHostedButtonId') ? boutonAchat('Ajouter au panier avec PayPal') : null)))
+        )));
     }
   });
+
+  const PersonPreview = avecDonnees({
+    render() {
+      const { entry, getAsset, widgetFor } = this.props;
+      const nom = value(entry, 'nom', 'Personne sans nom');
+      const portrait = assetUrl(getAsset, value(entry, 'imagePrincipale'));
+      const roles = enTableau(value(entry, 'roles')).map((role) => libelle('role', role));
+      const initiales = nom.split(/\s+/).map((mot) => mot[0] || '').join('').slice(0, 2).toUpperCase();
+      const livres = DONNEES.livres ? [...DONNEES.livres.values()].filter((livre) =>
+        [...(livre.auteurNoms || []), ...(livre.illustrateurNoms || [])].includes(nom)) : [];
+      return h('div', {},
+        bandeauStatut(entry),
+        h('section', { className: 'section section--white' }, h('div', { className: 'container' },
+          ariane('Accueil', 'Auteurs & illustrateurs', nom),
+          h('article', { className: 'person-detail' },
+            h('div', { className: 'person-detail__visual' }, portrait
+              ? h('img', { src: portrait, alt: value(entry, 'imagePrincipaleAlt') || `Portrait de ${nom}` })
+              : h('span', { className: 'monogram' }, initiales)),
+            h('div', {},
+              h('p', { className: 'eyebrow' }, roles.join(' · ')),
+              h('h1', {}, nom),
+              h('div', { className: 'lead rich-text' }, safeWidgetFor(widgetFor, 'biographie')))))),
+        livres.length ? h('section', { className: 'section' }, h('div', { className: 'container' },
+          h('div', { className: 'section-heading' }, h('div', {},
+            h('p', { className: 'eyebrow' }, 'Bibliographie'),
+            h('h2', {}, livres.length > 1 ? `${livres.length} livres associés` : '1 livre associé'))),
+          h('div', { className: 'book-grid' }, livres.map(carteLivre)))) : null);
+    }
+  });
+
+  const CollectionPreview = avecDonnees({
+    render() {
+      const { entry, getAsset, widgetFor } = this.props;
+      const titre = value(entry, 'titre', 'Collection sans titre');
+      const embleme = assetUrl(getAsset, value(entry, 'logo'));
+      const slug = value(entry, 'slug');
+      const livres = DONNEES.livres ? [...DONNEES.livres.values()].filter((livre) => livre.collection === slug) : [];
+      return h('div', {},
+        bandeauStatut(entry),
+        h('header', { className: 'page-heading' }, h('div', { className: 'container' },
+          ariane('Accueil', 'Collections', titre),
+          embleme ? h('img', { className: 'collection-emblem', src: embleme, alt: value(entry, 'logoAlt') || '' }) : null,
+          h('p', { className: 'eyebrow' }, livres.length > 1 ? `${livres.length} livres` : livres.length ? '1 livre' : 'Collection'),
+          h('h1', {}, titre),
+          h('div', { className: 'lead rich-text' }, safeWidgetFor(widgetFor, 'description')))),
+        livres.length ? h('section', { className: 'section' }, h('div', { className: 'container' },
+          h('div', { className: 'book-grid' }, livres.map(carteLivre)))) : null);
+    }
+  });
+
+  const NewsPreview = createClass({
+    render() {
+      const { entry, getAsset, widgetFor } = this.props;
+      const image = assetUrl(getAsset, value(entry, 'image'));
+      const actions = [
+        value(entry, 'lienExterne') ? h('a', { key: 'lien', href: '#' }, 'Voir le lien') : null,
+        value(entry, 'document') ? h('a', { key: 'doc', href: '#' }, 'Télécharger le document') : null
+      ].filter(Boolean);
+      return h('div', {},
+        bandeauStatut(entry),
+        h('section', { className: 'section' }, h('div', { className: 'container' },
+          h('div', { className: 'news-grid' },
+            h('article', { className: 'news-card' },
+              image ? h('img', { src: image, alt: value(entry, 'imageAlt') || '' }) : null,
+              h('div', { className: 'news-card__content' },
+                h('p', { className: 'news-card__meta' },
+                  h('span', {}, libelle('categorie', value(entry, 'type'))),
+                  h('time', {}, dateFr(value(entry, 'datePublication')))),
+                h('h2', {}, value(entry, 'titre', 'Actualité sans titre')),
+                h('div', { className: 'news-card__summary' }, safeWidgetFor(widgetFor, 'resume')),
+                h('div', { className: 'news-card__body rich-text' }, safeWidgetFor(widgetFor, 'contenu')),
+                actions.length ? h('div', { className: 'news-card__actions' }, actions) : null))))));
+    }
+  });
+
+  const PagePreview = avecDonnees({
+    render() {
+      const { entry, getAsset, widgetsFor } = this.props;
+      const titre = value(entry, 'titre', 'Page sans titre');
+      const sections = safeWidgetsFor(widgetsFor, 'sections');
+      const liens = enTableau(value(entry, 'liens')).map((lien, rang) => {
+        const cible = lien.type === 'livre' ? fiche('livres', lien.slug)?.titre : '';
+        return h('li', { key: rang }, h('a', { href: '#' },
+          lien.texte || cible || lisible(lien.slug) || String(lien.href || '').replace(/^https?:\/\/(www\.)?/, '')));
+      });
+      const images = enTableau(value(entry, 'images'))
+        .map((item) => ({ src: assetUrl(getAsset, item?.image ?? item), alt: item?.alt || '' }))
+        .filter((item) => item.src);
+      return h('div', {},
+        bandeauStatut(entry),
+        h('header', { className: 'page-heading' }, h('div', { className: 'container' },
+          ariane('Accueil', titre),
+          h('p', { className: 'eyebrow' }, value(entry, 'rubrique') || 'Éditions Chant d’orties'),
+          h('h1', {}, titre))),
+        h('section', { className: 'section' }, h('div', { className: 'container editorial-layout' },
+          h('article', {}, sections?.map?.((section, rang) => {
+            const livres = enTableau(section.getIn(['data', 'livres']));
+            const boutons = enTableau(section.getIn(['data', 'boutonsPaypal']));
+            return h('section', { key: rang, className: 'editorial-section' },
+              section.getIn(['data', 'titre']) ? h('h2', {}, section.getIn(['data', 'titre'])) : null,
+              h('div', { className: 'rich-text' }, section.getIn(['widgets', 'contenu'])),
+              livres.length ? h('div', { className: 'book-grid book-grid--section' }, livres.map(carteOuAdresse)) : null,
+              boutons.length ? h('div', { className: 'section-actions' },
+                boutons.map((bouton, n) => boutonAchat(bouton.libelle || 'Bouton sans texte', n))) : null);
+          })),
+          liens.length ? h('aside', { className: 'editorial-aside' }, h('h2', {}, 'Liens et documents'), h('ul', {}, liens)) : null)),
+        images.length ? h('section', { className: 'section section--white' }, h('div', { className: 'container' },
+          h('h2', {}, 'En images'),
+          h('div', { className: 'gallery-grid' }, images.map((image, rang) =>
+            h('span', { key: rang, className: 'gallery-item' }, h('img', { src: image.src, alt: image.alt })))))) : null);
+    }
+  });
+
+
 
   // L’aperçu du réglage Apparence : une miniature de site qui suit les valeurs en
   // cours de saisie, avant tout enregistrement. Il reprend le contrat de
@@ -492,9 +641,29 @@
   });
   CMS.registerWidget('description-seo', DescriptionSeo, widgetMarkdown.preview, widgetMarkdown.schema);
 
+  // Un intertitre dans le formulaire : « L’essentiel », « Vente », « Réglages
+  // techniques »… Decap ne sait pas regrouper des champs sans changer la forme des
+  // données ; ce faux champ n’appelle jamais onChange, il n’écrit donc rien dans le
+  // fichier. Déclaré « required: false » dans config.yml, sans quoi Decap refuserait
+  // d’enregistrer une fiche où il est vide. admin.css masque l’étiquette et l’aide
+  // ordinaires autour de lui : c’est ce rendu qui les remplace.
+  const Groupe = createClass({
+    render() {
+      const { field, forID } = this.props;
+      return h('div', { id: forID, className: 'groupe-champ' },
+        h('h2', { className: 'groupe-champ__titre' }, field.get('label')),
+        field.get('hint') ? h('p', { className: 'groupe-champ__aide' }, field.get('hint')) : null
+      );
+    }
+  });
+  CMS.registerWidget('groupe', Groupe, () => null);
+
   // La feuille est injectée dans le cadre d’aperçu, dont l’adresse de base n’est pas
   // celle de cette page : l’URL est donc résolue ici, à partir de l’administration
   // elle-même. Servie à la racine du sous-domaine chez OVH, sous /admin/ en local.
+  // La feuille du site d’abord, à son adresse publique : les aperçus des fiches en
+  // reprennent le HTML. preview.css vient ensuite, pour les aperçus des réglages.
+  CMS.registerPreviewStyle(new URL('/assets/css/site.css', document.baseURI).href);
   CMS.registerPreviewStyle(new URL('preview.css', document.baseURI).href);
   CMS.registerPreviewTemplate('livres', BookPreview);
   CMS.registerPreviewTemplate('personnes', PersonPreview);

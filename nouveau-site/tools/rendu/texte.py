@@ -255,7 +255,7 @@ class OutilsTexte:
         seraient imbriqués dans un élément qui ne les admet pas, et le navigateur
         réécrirait la page en silence.
         """
-        texte = re.sub(r"\s*\n\s*", " ", _normaliser(str(value or ""))).strip()
+        texte = re.sub(r"\\?\s*\n\s*", " ", _normaliser(str(value or ""))).strip()
         return self._inline(texte, internal_links=internal_links, owner=owner)
 
     def texte_brut(self, value: Any) -> str:
@@ -265,6 +265,7 @@ class OutilsTexte:
         fonction s'insère avant eux, elle ne les remplace pas.
         """
         texte = _normaliser(str(value or ""))
+        texte = re.sub(r"\\\n", "\n", texte)
         texte = re.sub(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*>[ \t]?", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*#{1,6}[ \t]+", "", texte, flags=re.MULTILINE)
@@ -299,7 +300,7 @@ class OutilsTexte:
             seule = _RE_IMAGE_SEULE.match(charge.strip())
             if seule:
                 return self._figure_html(seule.group(1), seule.group(2), seule.group(3), owner)
-            rendu = enligne(charge)
+            rendu = self._lignes_du_paragraphe(charge, enligne)
             return f"<p>{rendu}</p>" if rendu else ""
         if espece == "titre":
             niveau, texte = charge
@@ -337,6 +338,25 @@ class OutilsTexte:
                     entrees.append(f"<li>{''.join(morceaux)}</li>")
             return f"<{balise}>{''.join(entrees)}</{balise}>" if entrees else ""
         raise ValueError(f"espèce de bloc inconnue : {espece}")
+
+    @staticmethod
+    def _lignes_du_paragraphe(charge: str, enligne) -> str:
+        """Les lignes d'un paragraphe, avec leurs retours à la ligne forcés.
+
+        Une ligne qui finit par une barre oblique inverse — ce qu'écrit l'éditeur de Decap
+        pour Maj+Entrée — ou par deux espaces passe à la ligne sans ouvrir de nouveau
+        paragraphe : une adresse postale garde ainsi une ligne par information. Les
+        autres retours de ligne restent de simples espaces, comme en Markdown.
+        """
+        lignes = charge.split("\n")
+        morceaux = []
+        for rang, ligne in enumerate(lignes):
+            forcee = ligne.endswith("\\") or ligne.endswith("  ")
+            texte = ligne[:-1] if ligne.endswith("\\") else ligne
+            morceaux.append(enligne(texte.rstrip()))
+            if rang < len(lignes) - 1:
+                morceaux.append("<br>" if forcee else "\n")
+        return "".join(morceaux).strip()
 
     def _inline(
         self,
@@ -455,7 +475,10 @@ class OutilsTexte:
         if link_type == "livre":
             return f'<a href="/livres/{e(link["slug"])}/">{e(label)}</a>'
         if link_type == "page":
-            href = "/" if link["slug"] == "accueil" else f'/{link["slug"]}/'
+            # « pageCible » est choisi dans une liste par l’administration ; « slug » est
+            # l’ancienne forme, tapée à la main, encore acceptée.
+            cible = link.get("pageCible") or link.get("slug")
+            href = "/" if cible == "accueil" else f'/{cible}/'
             return f'<a href="{href}">{e(label)}</a>'
         href = link.get("href")
         if not href:
