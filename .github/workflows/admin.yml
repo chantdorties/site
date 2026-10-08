@@ -1,15 +1,14 @@
-name: Publish the administration
+name: Publish the auth relay
 
-# L'administration et son relais d'authentification vivent sur l'hébergement OVH du
-# prestataire, sur leur propre sous-domaine. Ce workflow ne se déclenche que si l'un
-# des deux a réellement changé : un contenu enregistré par un rédacteur ne provoque
-# aucune publication ici.
+# L'interface d'administration est publiée chez Free avec le site (site.yml). Seul son
+# relais de connexion GitHub vit chez OVH, sur son propre sous-domaine : PHP chez Free
+# ne peut joindre aucun serveur extérieur. Ce workflow ne se déclenche que si le relais
+# a réellement changé.
 
 on:
   push:
     branches: [main]
     paths:
-      - 'nouveau-site/frontend/admin/**'
       - 'nouveau-site/frontend/admin-serveur/**'
       - '.github/workflows/admin.yml'
   workflow_dispatch:
@@ -25,7 +24,7 @@ jobs:
   administration:
     runs-on: ubuntu-latest
     # Les identifiants FTP du compte OVH sont rangés dans cet environnement ; ils
-    # servent aussi bien à l'aperçu qu'à l'administration, seul le chemin diffère.
+    # servent aussi bien à l'aperçu qu'au relais, seul le chemin diffère.
     environment: Apercu
     defaults:
       run:
@@ -35,19 +34,21 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      # Le dossier publié réunit l'interface et le relais ; le fichier de secrets, lui,
-      # reste sur le serveur, hors de ce dossier. Le .js du relais compte autant que ses
-      # .php : la politique de sécurité interdit les scripts inline, la fenêtre de
-      # connexion resterait muette sans lui.
+      # Le dossier publié ne contient que le relais ; le fichier de secrets, lui, reste
+      # sur le serveur, hors de ce dossier. Le .js du relais compte autant que ses .php :
+      # la politique de sécurité interdit les scripts inline, la fenêtre de connexion
+      # resterait muette sans lui. Le script de publication exige un index.html : une
+      # page minimale renvoie vers l'administration chez Free. Les fichiers de l'ancienne
+      # interface, inscrits au manifeste distant, sont retirés au premier passage.
       - name: Assemble the published folder
         run: |
           rm -rf .admin-publication
           mkdir -p .admin-publication
-          cp -r frontend/admin/. .admin-publication/
           cp frontend/admin-serveur/*.php frontend/admin-serveur/*.js .admin-publication/
+          cp frontend/admin-serveur/index.html .admin-publication/
           cp frontend/admin-serveur/htaccess.conf .admin-publication/.htaccess
           ls -a .admin-publication
-      - name: Deploy the administration to OVH
+      - name: Deploy the auth relay to OVH
         env:
           OVH_ADMIN_FTP_HOST: ${{ secrets.OVH_FTP_HOST }}
           OVH_ADMIN_FTP_USER: ${{ secrets.OVH_FTP_USER }}
@@ -55,4 +56,4 @@ jobs:
           OVH_ADMIN_FTP_PATH: /orties-admin
         run: python3 tools/deploy-ftp.py --target ovh-admin --dist .admin-publication
       - name: Summary
-        run: echo "Administration publiée sur https://orties-admin.varascundo.com/" >> "$GITHUB_STEP_SUMMARY"
+        run: echo "Relais publié sur https://orties-admin.varascundo.com/" >> "$GITHUB_STEP_SUMMARY"

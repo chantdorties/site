@@ -73,7 +73,8 @@ Free lit bien le `.htaccess`, mais n’accepte qu’une partie des directives Ap
 `RewriteRule`. Sont acceptés `Options`, `ErrorDocument`, `Redirect` et `RedirectMatch`,
 `AddType`, `Order/Allow/Deny`, un seul bloc `<Files>` par fichier.
 
-Le fichier est produit à chaque génération par `tools/build-site.py` : il désactive le
+Le fichier est produit à chaque génération par `tools/build-site.py` : il garde PHP 5.6
+pour l’ancien site (bloc `<IfDefine Free>`, repris de l’ancien `.htaccess`), désactive le
 listing des répertoires, déclare la page 404 du site, fixe les types MIME du WebP, du
 JSON, du PDF et du JavaScript, puis liste les redirections 301 des anciennes adresses.
 Il est indispensable : les anciennes pages `.html` restent présentes sur le serveur
@@ -86,6 +87,9 @@ Après le premier transfert, vérifier en ligne :
 curl -sI http://chantdorties.free.fr/monhlm.html    # 301 vers /livres/mon-hlm/
 curl -s http://chantdorties.free.fr/page-absente    # la page 404 du site, pas celle de Free
 ```
+
+Essayé chez Free le 8 octobre 2026 dans un dossier isolé : redirections 301, page 404
+du site et types MIME acceptés ; PHP s’exécute toujours malgré `-ExecCGI`.
 
 Si la page 404 affichée reste celle de Free, remplacer le chemin relatif par l’adresse
 complète : `ErrorDocument 404 http://chantdorties.free.fr/404.html`.
@@ -150,21 +154,12 @@ curl -s https://orties.varascundo.com/ | grep canonical   # l’adresse de l’a
 curl -sI http://chantdorties.free.fr/                # le site du client n’a pas bougé
 ```
 
-### Administration pendant l’aperçu
+### Fin de l’aperçu
 
-L’administration a son propre sous-domaine OVH, `orties-admin.varascundo.com`, publié par
-`.github/workflows/admin.yml` : elle n’est jamais transférée avec le site, et le dossier
-d’aperçu ne la contient pas. Seules les clés `site_url` et `display_url` de
-`frontend/admin/config.yml` pointent vers l’aperçu, pour que les liens « voir le site »
-n’envoient pas le client sur l’ancien site. Les modifications continuent de passer par le
-flux éditorial : rien n’est publié sans validation.
-
-### Retour en arrière, le jour de la mise en ligne
-
-1. Remettre `site_url` et `display_url` sur `http://chantdorties.free.fr` dans
-   `frontend/admin/config.yml`.
-2. Passer la variable `APERCU_ENABLED` à `false`.
-3. Supprimer le dossier d’aperçu chez OVH et son sous-domaine.
+Le site est en ligne chez Free depuis le 8 octobre 2026 : les liens « voir le site » de
+l’administration (`site_url`, `display_url`) pointent vers lui. L’aperçu OVH n’a plus
+lieu d’être : passer la variable `APERCU_ENABLED` à `false`, puis, quand on le souhaite,
+supprimer le dossier d’aperçu chez OVH et son sous-domaine.
 
 ## Restauration
 

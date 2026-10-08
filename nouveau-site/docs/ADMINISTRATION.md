@@ -126,19 +126,18 @@ Ouvrir <http://127.0.0.1:8766/admin/>. Le proxy Decap local écrit directement d
 
 ## Accès en ligne sécurisé
 
-L’hébergement Free ne propose pas HTTPS pour ce site. L’administration est donc
-servie séparément en HTTPS, afin de ne pas exposer le jeton GitHub.
+L’administration est servie en HTTPS, afin de ne pas exposer le jeton GitHub :
+<https://chantdorties.pages-perso.free.fr/admin/>, chez Free, avec le site. Elle est
+publiée avec lui par `.github/workflows/site.yml`. L’ancienne adresse
+`http://chantdorties.free.fr/admin/` y renvoie d’office.
 
-Elle vit sur <https://orties-admin.varascundo.com/>, sur l’hébergement OVH du
-prestataire. Le workflow `.github/workflows/admin.yml` l’y publie à chaque
-modification de `frontend/admin/` ou `frontend/admin-serveur/` — un contenu
-enregistré par un rédacteur ne déclenche donc rien ici.
-
-La connexion passe par un relais d’authentification maison, deux fichiers PHP
-servis sur ce même domaine, qui échangent le code d’autorisation GitHub contre un
-jeton. L’OAuth App du compte `chantdorties` porte pour cela l’URL de rappel
-`https://orties-admin.varascundo.com/callback.php`, et le Client Secret reste sur
-le serveur, hors du dossier publié. Tout est décrit dans
+La connexion passe par un relais d’authentification maison, deux fichiers PHP chez OVH
+(`https://orties-admin.varascundo.com/`) : PHP chez Free ne peut joindre aucun serveur
+extérieur, donc pas GitHub. Le relais échange le code d’autorisation GitHub contre un
+jeton ; l’OAuth App du compte `chantdorties` porte pour cela l’URL de rappel
+`https://orties-admin.varascundo.com/callback.php`, et le Client Secret reste sur le
+serveur, hors du dossier publié. `.github/workflows/admin.yml` publie le relais, et lui
+seul, quand `frontend/admin-serveur/` change. Tout est décrit dans
 [RELAIS-AUTH.md](RELAIS-AUTH.md) : dépôt du secret, vérifications, reconstruction
 ailleurs.
 
