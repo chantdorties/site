@@ -1,6 +1,6 @@
 ---
 objective: "Chaque partie du site se règle à un seul endroit de l’administration, avec les mêmes composants d’une rubrique à l’autre, sans changement visible sur le site."
-status: in-progress
+status: implemented
 ---
 
 # Plan : Cohérence de l’administration et composants communs
@@ -58,7 +58,7 @@ status: in-progress
 | 6 | Mentions légales dans « Pages de la maison » (C) | Fichier déplacé dans `content/pages/`, adresse et suppression protégées par la validation ; collection « Pages principales » supprimée | Comparaison `dist/` : identique ; test de protection | done |
 | 7 | Libellés et intertitres restants (D, E, K) | Intertitres pour Menu, Pied de page, Introductions ; libellés et aides des deux présentations ; décision Projets appliquée | Relecture des écrans, captures après | done |
 | 8 | Aperçus sous contrôle (O) | Test : classes des aperçus présentes dans le HTML généré ; aperçu « Page d’accueil » complété avec les textes déplacés | Test vert, captures | done |
-| 9 | Documentation et essai | `GUIDE-REDACTION.md` (« Où se règle quel texte » réécrit), `ADMINISTRATION.md`, tâches types rejouées | Guide à jour, rapport `reports/admin-ux/coherence-apres/` | pending |
+| 9 | Documentation et essai | `GUIDE-REDACTION.md` (« Où se règle quel texte » réécrit), `ADMINISTRATION.md`, tâches types rejouées | Guide à jour, rapport `reports/admin-ux/coherence-apres/` | done |
 
 ## Decisions
 
@@ -78,3 +78,11 @@ status: in-progress
 2. L’introduction de la page Projets remonte dans « Introductions des pages ».
 3. Les mentions légales rejoignent « Pages de la maison », protégées.
 4. Branche `feat/coherence-admin`, partie de `main` après la fusion de la PR #22.
+
+## Écarts constatés à l’exécution
+
+- Le site généré est identique à celui de `main` (comparaison `tools/compare-dist.py`) ; seuls `admin/config.yml` et `admin/preview.js` changent.
+- Les intitulés « Présentation » et « Soutien » des anciennes sections de l’accueil ne s’affichaient nulle part : ils n’ont pas été repris.
+- Le texte d’information de l’accueil se termine par « lllll » sur le site en ligne : conservé tel quel, à corriger par la rédaction.
+- La page Projets n’a plus de fichier : `projects_page` la rebâtit depuis `reglages/pages.json`, et la validation refuse un `content/pages/projets.json`.
+- `README.md` mentionne encore `content/pages-fixes/` (ligne 27) : non modifié, le fichier portant des changements en cours hors de ce plan.

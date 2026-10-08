@@ -57,23 +57,30 @@ Le champ **Publication** offre trois choix :
 
 ## Où se règle quel texte
 
-C’est la question qui revient le plus souvent. Les pages qui rassemblent des contenus
-sont fabriquées automatiquement : leur texte d’en-tête ne se modifie pas sur la page
-elle-même.
+C’est la question qui revient le plus souvent. La règle : **chaque partie du site se
+règle à un seul endroit**. Les pages qui rassemblent des contenus (catalogue, auteurs,
+collections, actualités, projets) sont fabriquées automatiquement : leur texte
+d’en-tête ne se modifie pas sur la page elle-même, mais dans les Réglages du site.
 
 | Ce que vous voulez changer | Où aller |
 |---|---|
 | Un livre, une personne, une collection, un projet | La rubrique du même nom |
 | Un article d’actualité | Rubrique **Actualités** |
-| Le titre et l’introduction de la page Actualités, du catalogue, des auteurs, des collections, de la maison | **Réglages du site › Introductions des pages** |
-| Les textes de la page d’accueil (grand titre, accroche, boutons, intertitres) | **Réglages du site › Textes de l’accueil** |
-| Le texte des blocs de l’accueil (situation de la maison, soutien, commandes) | **Pages principales › Accueil** |
+| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Réglages du site › Page d’accueil**, de haut en bas dans l’ordre de la page |
+| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Réglages du site › Introductions des pages** |
+| Le référencement et les anciennes adresses de l’accueil, des actualités ou des projets | Le même écran, dans ses réglages techniques |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
 | Les couleurs et les polices du site | **Réglages du site › Apparence** |
-| L’introduction de la page Projets | **Pages de la maison › Projets** |
-| Les pages Commandes, Librairies, Soutien, Amis… | **Pages de la maison** |
-| Les mentions légales | **Pages principales › Mentions légales** |
+| Les pages Commandes, Librairies, Soutien, Amis… et les mentions légales | **Pages de la maison** |
+
+La maison a deux textes de présentation, qui ne servent pas au même endroit :
+**Identité et contact › Description pour les moteurs de recherche** n’est lu que par
+Google et les réseaux sociaux ; **Pied de page › Présentation de la maison** s’affiche
+en bas de chaque page.
+
+Les mentions légales se modifient comme les autres pages de la maison, mais elles sont
+obligatoires : elles ne peuvent être ni dépubliées ni changer d’adresse.
 
 Chaque entrée des **Réglages du site** montre à droite un aperçu : une maquette de la
 zone du site où ses textes apparaissent (en-tête, pied de page, accueil, en-têtes des
