@@ -1,6 +1,6 @@
 ---
 objective: "Béatrice peut modifier des couleurs et des polices sûres depuis Decap CMS, avec un aperçu fidèle, sans CSS libre et sans régression visuelle du site actuel."
-status: in-progress
+status: implemented
 ---
 
 # Plan: Personnalisation de l’apparence depuis l’administration
