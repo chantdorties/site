@@ -572,9 +572,14 @@ class BuiltSiteTest(unittest.TestCase):
             for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
+            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier.
             self.assertEqual(
                 set(load_json(path)),
-                {field["name"] for field in settings_files[path.stem]["fields"]},
+                {
+                    field["name"]
+                    for field in settings_files[path.stem]["fields"]
+                    if field.get("widget") != "groupe"
+                },
                 path.name,
             )
 

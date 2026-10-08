@@ -1,6 +1,6 @@
 ---
 objective: "Une éditrice non technicienne modifie n’importe quel contenu du site sans hésiter : des textes lisibles, des formulaires courts dans l’ordre où l’on pense, et un aperçu qui ressemble au site."
-status: in-progress
+status: implemented
 ---
 
 # Plan : Refonte de l’ergonomie de l’administration

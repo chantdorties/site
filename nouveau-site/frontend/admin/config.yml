@@ -43,19 +43,29 @@ collections:
         label: Identité et contact
         file: nouveau-site/content/reglages/site.json
         fields:
+          - label: "L’identité de la maison"
+            name: groupeIdentite
+            widget: groupe
+            required: false
+            hint: "Le nom, le contact et la présentation repris partout sur le site."
           - {label: "Nom complet", name: nom, widget: string, hint: "Repris dans le pied de page, le titre des onglets et le titre de l’accueil pour les moteurs de recherche."}
           - {label: "Nom court", name: nomCourt, widget: string, hint: "Le nom affiché dans l’en-tête, à côté du logo. Son dernier mot s’affiche en couleur."}
-          - {label: "Adresse courriel", name: courriel, widget: string, hint: "L’adresse de contact affichée dans le pied de page et utilisée par les boutons « Nous contacter »."}
-          - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
-          - {label: "Domaine public", name: domaine, widget: string, hint: "L’adresse du site en ligne. Réglage technique : ne le changer qu’en cas de changement d’hébergement.", pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
           - label: Description générale
             name: description
             widget: markdown
             hint: La description de l’accueil pour les moteurs de recherche, quand l’accueil n’a pas la sienne.
             modes: [rich_text]
             minimal: true
-            buttons: &boutons_courts [bold, italic, code, link, bulleted-list, numbered-list, quote]
+            buttons: &boutons_courts [bold, italic, link, bulleted-list, numbered-list, quote]
             editor_components: []
+          - {label: "Adresse courriel", name: courriel, widget: string, hint: "L’adresse de contact affichée dans le pied de page et utilisée par les boutons « Nous contacter »."}
+          - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            hint: "À ne modifier qu’en cas de changement d’hébergement."
+          - {label: "Domaine public", name: domaine, widget: string, hint: "L’adresse du site en ligne. Réglage technique : ne le changer qu’en cas de changement d’hébergement.", pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
       - name: navigation
         label: Menu principal
         file: nouveau-site/content/reglages/navigation.json
@@ -119,19 +129,24 @@ collections:
         label: Textes de l’accueil
         file: nouveau-site/content/reglages/accueil.json
         fields:
-          - label: 1. Bandeau — rubrique
+          - label: "1. Le bandeau d’ouverture"
+            name: groupeBandeau
+            widget: groupe
+            required: false
+            hint: "Tout en haut de l’accueil : le grand titre, son accroche et deux boutons."
+          - label: Rubrique
             name: heroRubrique
             widget: string
             hint: La petite ligne tout en haut, au-dessus du grand titre.
-          - label: 1. Bandeau — titre
+          - label: Titre
             name: heroTitre
             widget: string
             hint: Le grand titre d’ouverture, en noir.
-          - label: 1. Bandeau — suite du titre, en couleur
+          - label: Suite du titre, en couleur
             name: heroAccent
             widget: string
             hint: La fin du grand titre, affichée en rouge à la suite du précédent.
-          - label: 1. Bandeau — accroche
+          - label: Accroche
             name: heroAccroche
             widget: markdown
             modes: [rich_text]
@@ -139,25 +154,40 @@ collections:
             buttons: *boutons_courts
             editor_components: []
             hint: La phrase sous le grand titre.
-          - {label: "1. Bandeau — bouton vers le catalogue", name: boutonCatalogue, widget: string}
-          - {label: "1. Bandeau — bouton vers les collections", name: boutonCollections, widget: string}
-          - label: 2. Bloc information — titre
+          - {label: "Bouton vers le catalogue", name: boutonCatalogue, widget: string}
+          - {label: "Bouton vers les collections", name: boutonCollections, widget: string}
+          - label: "2. Le bloc d’information"
+            name: groupeInformation
+            widget: groupe
+            required: false
+            hint: "L’encadré qui suit le bandeau ; son texte se modifie dans « Pages principales › Accueil »."
+          - label: Titre
             name: titreInformation
             widget: string
             hint: Le bloc qui annonce la situation de la maison. Son texte, lui, s’écrit dans « Pages principales > Accueil ».
-          - {label: "3. Collections — rubrique", name: collectionsRubrique, widget: string}
-          - {label: "3. Collections — titre", name: collectionsTitre, widget: string}
-          - {label: "4. Suivre la maison — rubrique", name: suivreRubrique, widget: string}
-          - {label: "4. Suivre la maison — titre", name: suivreTitre, widget: string}
-          - {label: "4. Carte Actualités — rubrique", name: actualitesRubrique, widget: string}
-          - {label: "4. Carte Actualités — titre", name: actualitesTitre, widget: string}
-          - label: 4. Carte Actualités — lien
+          - label: "3. Les collections"
+            name: groupeCollections
+            widget: groupe
+            required: false
+            hint: "La rangée des collections."
+          - {label: "Rubrique", name: collectionsRubrique, widget: string}
+          - {label: "Titre", name: collectionsTitre, widget: string}
+          - label: "4. Suivre la maison"
+            name: groupeSuivre
+            widget: groupe
+            required: false
+            hint: "Le bandeau sombre du bas de l’accueil et ses deux cartes, Actualités et Manuscrits."
+          - {label: "Rubrique", name: suivreRubrique, widget: string}
+          - {label: "Titre", name: suivreTitre, widget: string}
+          - {label: "Carte Actualités — rubrique", name: actualitesRubrique, widget: string}
+          - {label: "Carte Actualités — titre", name: actualitesTitre, widget: string}
+          - label: Carte Actualités — lien
             name: actualitesAction
             widget: string
             hint: Le texte cliquable au bas de la carte, par exemple « Lire les actualités ».
-          - {label: "4. Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
-          - {label: "4. Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
-          - {label: "4. Carte Manuscrits — lien", name: manuscritsAction, widget: string}
+          - {label: "Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
+          - {label: "Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
+          - {label: "Carte Manuscrits — lien", name: manuscritsAction, widget: string}
       # Le nom d’entrée n’est pas « pages » : l’aperçu de la rubrique Pages de la
       # maison s’appliquerait. Le fichier, lui, reste pages.json.
       - name: introductions
@@ -242,15 +272,11 @@ collections:
         label: Paiement et dons
         file: nouveau-site/content/reglages/paiement.json
         fields:
-          - label: Identifiant du bouton PayPal de don
-            name: donationHostedButtonId
-            widget: string
-            hint: Réglage avancé à 13 caractères fourni par PayPal.
-            pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
-          - {label: "Libellé du bouton de don", name: libelleDon, widget: string}
-          # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
-          # mode de vente, pas avec le catalogue.
-          - {label: "Bouton « voir les offres » (accueil)", name: libelleOffres, widget: string}
+          - label: "Les textes des boutons"
+            name: groupeTextes
+            widget: groupe
+            required: false
+            hint: "Ce que lit le visiteur sur les boutons et mentions d’achat."
           - {label: "Bouton d’achat d’un livre", name: libellePanier, widget: string}
           - {label: "Bouton « voir mon panier »", name: libelleVoirPanier, widget: string}
           - {label: "Mention « disponible »", name: libelleDisponible, widget: string}
@@ -262,6 +288,20 @@ collections:
           - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
           # Ce bloc doit rester dans le formulaire : ce qui n’y figure pas est effacé
           # du fichier au premier enregistrement, et le site ne se génèrerait plus.
+          - {label: "Bouton « voir les offres » (accueil)", name: libelleOffres, widget: string}
+          - {label: "Libellé du bouton de don", name: libelleDon, widget: string}
+          # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
+          # mode de vente, pas avec le catalogue.
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            hint: "Fournis par PayPal : à ne modifier qu’en recopiant exactement ce que donne PayPal."
+          - label: Identifiant du bouton PayPal de don
+            name: donationHostedButtonId
+            widget: string
+            hint: Réglage avancé à 13 caractères fourni par PayPal.
+            pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
           - label: Bloc technique du bouton « voir mon panier »
             name: panierEncrypted
             widget: text
@@ -751,7 +791,7 @@ collections:
     delete: false
     identifier_field: titre
     slug: "{{fields.slug}}"
-    summary: "{{datePublication}} — {{titre}} — {{statut}}"
+    summary: "{{datePublication | date('DD/MM/YYYY')}} — {{titre}} — {{statut}}"
     preview_path: "actualites/"
     view_groups:
       - {label: "Catégorie", field: type}
@@ -809,7 +849,7 @@ collections:
         # titre déroutaient plus qu'ils ne servaient. Le texte déjà saisi n'est pas touché.
         buttons: &boutons_corps [bold, italic, link, heading-two, heading-three,
                   bulleted-list, numbered-list, quote]
-        editor_components: [image, code-block]
+        editor_components: [image]
         hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
       - label: Lien externe
         name: lienExterne
@@ -973,7 +1013,7 @@ collections:
                 widget: markdown
                 modes: [rich_text]
                 buttons: *boutons_corps
-                editor_components: [image, code-block]
+                editor_components: [image]
           - {label: "Liens", name: liens, widget: hidden, default: []}
           - {label: "Images", name: images, widget: hidden, default: []}
           - {label: "Documents", name: documents, widget: hidden, default: []}
