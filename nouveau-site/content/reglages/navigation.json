@@ -4,43 +4,37 @@
       "id": "home",
       "libelle": "Accueil",
       "url": "/",
-      "visible": true,
-      "ordre": 10
+      "visible": true
     },
     {
       "id": "catalogue",
       "libelle": "Catalogue",
       "url": "/catalogue/",
-      "visible": true,
-      "ordre": 20
+      "visible": true
     },
     {
       "id": "collections",
       "libelle": "Collections",
       "url": "/collections/",
-      "visible": true,
-      "ordre": 30
+      "visible": true
     },
     {
       "id": "people",
       "libelle": "Auteurs & illustrateurs",
       "url": "/personnes/",
-      "visible": true,
-      "ordre": 40
+      "visible": true
     },
     {
       "id": "actualites",
       "libelle": "Actualités",
       "url": "/actualites/",
-      "visible": true,
-      "ordre": 50
+      "visible": true
     },
     {
       "id": "maison",
       "libelle": "La maison",
       "url": "/la-maison/",
-      "visible": true,
-      "ordre": 60
+      "visible": true
     }
   ],
   "recherche": {

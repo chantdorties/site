@@ -62,20 +62,28 @@ collections:
         label: Menu principal
         file: nouveau-site/content/reglages/navigation.json
         fields:
+          # L’ordre du menu est celui de la liste : on le change par glisser-déposer.
+          # L’identifiant reste dans le fichier (il surligne l’onglet de la page en
+          # cours) mais n’est pas montré ; un nouveau lien le reçoit de son adresse.
           - label: Liens
+            label_singular: lien
             name: liens
             widget: list
             min: 1
-            summary: "{{fields.libelle}}"
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: Glisser un lien par sa poignée pour changer sa place dans le menu. Décocher « Visible » le retire du menu sans l’effacer.
             fields:
-              - {label: "Identifiant technique", name: id, widget: string, hint: "Ne pas modifier l’identifiant d’un lien existant."}
-              - {label: "Libellé", name: libelle, widget: string}
-              - {label: "Adresse", name: url, widget: string}
+              - {label: "Identifiant technique", name: id, widget: hidden}
+              - {label: "Libellé", name: libelle, widget: string, hint: "Le mot affiché dans le menu."}
+              - {label: "Adresse", name: url, widget: string, hint: "Une page du site, par exemple /catalogue/."}
               - {label: "Visible", name: visible, widget: boolean, default: true}
-              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
           - label: Recherche
             name: recherche
             widget: object
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: La loupe de l’en-tête, et le lien « Rechercher » du menu sur téléphone.
             fields:
               - {label: "Libellé", name: libelle, widget: string}
               - {label: "Adresse", name: url, widget: string}
@@ -92,14 +100,16 @@ collections:
             editor_components: []
           - {label: "Titre de la navigation", name: titreNavigation, widget: string}
           - label: Liens de navigation
+            label_singular: lien
             name: liensNavigation
             widget: list
             min: 1
-            summary: "{{fields.libelle}}"
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: Glisser un lien par sa poignée pour changer sa place dans la colonne.
             fields:
               - {label: "Libellé", name: libelle, widget: string}
               - {label: "Adresse", name: url, widget: string}
-              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
           - {label: "Titre des informations", name: titreInformations, widget: string}
           - {label: "Libellé Facebook", name: libelleFacebook, widget: string}
           - {label: "Libellé Manuscrits", name: libelleManuscrits, widget: string}

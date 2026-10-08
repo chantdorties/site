@@ -376,7 +376,6 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
             raise ContentError("Réglage navigation: lien invalide")
         for field in ("id", "libelle", "url"):
             require_text(item, field, "Lien de navigation")
-        validate_order(item, "Lien de navigation")
         if item["id"] in seen_ids:
             raise ContentError(f"Réglage navigation: identifiant dupliqué {item['id']}")
         seen_ids.add(item["id"])
@@ -405,7 +404,6 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     for item in links:
         for field in ("libelle", "url"):
             require_text(item, field, "Lien du pied de page")
-        validate_order(item, "Lien du pied de page")
 
     home = settings["accueil"]
     for field in (
@@ -533,6 +531,20 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
         for section in page.get("sections") or []:
             if isinstance(section, dict):
                 section.setdefault("boutonsPaypal", [])
+    # L’identifiant d’un lien du menu est caché dans l’administration : un lien créé
+    # là n’en a pas. On le déduit de l’adresse (« /agenda/ » → « agenda »). Les
+    # identifiants existants, que les pages utilisent pour surligner l’onglet actif,
+    # ne sont jamais recalculés.
+    navigation = raw["settings"].get("navigation")
+    for item in navigation.get("liens") or [] if isinstance(navigation, dict) else []:
+        if isinstance(item, dict) and not item.get("id") and isinstance(item.get("url"), str):
+            item["id"] = navigation_id(item["url"])
+
+
+def navigation_id(url: str) -> str:
+    """L’identifiant déduit d’une adresse de menu : son premier segment, ou « home »."""
+    segment = url.split("#", 1)[0].split("?", 1)[0].strip("/").split("/", 1)[0]
+    return re.sub(r"[^a-z0-9]+", "-", segment.lower()).strip("-") or "home"
 
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:

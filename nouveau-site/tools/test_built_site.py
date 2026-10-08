@@ -521,6 +521,20 @@ class BuiltSiteTest(unittest.TestCase):
         for name in fields:
             self.assertNotRegex(name, forbidden)
 
+    def test_menu_and_footer_links_hide_technical_fields(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        files = {item["name"]: item for item in reglages["files"]}
+        for entry, list_name in (("navigation", "liens"), ("footer", "liensNavigation")):
+            links = next(field for field in files[entry]["fields"] if field["name"] == list_name)
+            subfields = {field["name"]: field for field in links["fields"]}
+            # L’ordre est celui de la liste : aucun numéro à saisir.
+            self.assertNotIn("ordre", subfields, entry)
+            self.assertTrue(links.get("collapsed"), entry)
+            self.assertIn("{{fields.url}}", links["summary"], entry)
+        menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
+        self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
+
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
             content = path.read_text(encoding="utf-8").lower()
