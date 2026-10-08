@@ -265,5 +265,19 @@ class TexteBrutTest(unittest.TestCase):
         self.assertEqual(self.t.texte_brut("2 * 3 = 6"), "2 * 3 = 6")
 
 
+
+class LienEditorialTest(unittest.TestCase):
+    def setUp(self):
+        self.t = Convertisseur()
+
+    def test_la_page_choisie_dans_la_liste_fait_le_lien(self):
+        lien = {"type": "page", "pageCible": "soutien", "texte": "Nous soutenir"}
+        self.assertEqual(self.t.editorial_link(lien), '<a href="/soutien/">Nous soutenir</a>')
+
+    def test_l_ancienne_forme_tapee_reste_acceptee(self):
+        lien = {"type": "page", "slug": "accueil", "texte": "Accueil"}
+        self.assertEqual(self.t.editorial_link(lien), '<a href="/">Accueil</a>')
+
+
 if __name__ == "__main__":
     unittest.main()

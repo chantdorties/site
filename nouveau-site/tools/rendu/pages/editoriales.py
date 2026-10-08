@@ -6,7 +6,8 @@ la même mise en page : titre, colonne de texte en sections, et colonne de liens
 droite. La page Projets ajoute la grille des livres à paraître
 (composants/cartes_projets.py).
 
-Une section peut porter des boutons d'achat PayPal, saisis dans sa fiche : les offres
+Une section peut désigner des livres du catalogue, affichés en cartes sous son texte,
+et porter des boutons d'achat PayPal, saisis dans sa fiche : les offres
 groupées, l'adhésion et le don, les titres soldés. Comme pour les livres, leur
 identifiant vient toujours de la saisie et ne se fabrique jamais ici.
 
@@ -41,6 +42,7 @@ class PagesEditoriales:
                 rendered_sections.append(
                     f'<section class="editorial-section">{heading}'
                     f'<div class="rich-text">{self.markdown_html(section["contenu"], owner=page_data["slug"])}</div>'
+                    f'{self.render_section_books(section["livres"])}'
                     f'{self.render_paypal_buttons(section["boutonsPaypal"])}</section>'
                 )
             sections = "".join(rendered_sections)
@@ -89,6 +91,18 @@ class PagesEditoriales:
             )
             self.write_route(f"/{page_data['slug']}/", page)
 
+
+    def render_section_books(self, slugs: list[str]) -> str:
+        """Les livres choisis dans une section, en cartes comme dans le catalogue.
+
+        Une offre groupée montre ainsi les couvertures, les auteurs et les prix tirés
+        des fiches : rien n'est à recopier dans la page, ni à mettre à jour deux fois.
+        """
+        books = [self.books_by_slug[slug] for slug in slugs if slug in self.books_by_slug]
+        if not books:
+            return ""
+        cards = "".join(self.render_book_card(book) for book in books)
+        return f'<div class="book-grid book-grid--section">{cards}</div>'
 
     def render_paypal_buttons(self, buttons: list[dict[str, Any]]) -> str:
         """Les boutons d’achat d’une section, au format exact des fiches livres.

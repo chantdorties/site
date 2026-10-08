@@ -12,6 +12,10 @@
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "6A3X7AW598RVA"
         }
+      ],
+      "livres": [
+        "gaia-conte-de-la-montagne-bleue",
+        "gaia-sur-le-chemin-de-la-montagne-bleue"
       ]
     },
     {
@@ -22,6 +26,10 @@
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "LBU4LQJL8M4M8"
         }
+      ],
+      "livres": [
+        "les-disparus-de-la-cite-fleurie",
+        "les-sources-d-or-de-la-cite-fleurie"
       ]
     },
     {
@@ -32,67 +40,15 @@
           "libelle": "Commander les deux tomes — 25 €",
           "hostedButtonId": "8MU2P9U6XVXNC"
         }
+      ],
+      "livres": [
+        "un-air-de-liberte",
+        "l-ombre-de-la-lune"
       ]
     }
   ],
-  "liens": [
-    {
-      "type": "livre",
-      "slug": "gaia-conte-de-la-montagne-bleue",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "gaia-sur-le-chemin-de-la-montagne-bleue",
-      "texte": "Tome 2"
-    },
-    {
-      "type": "livre",
-      "slug": "les-disparus-de-la-cite-fleurie",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "les-sources-d-or-de-la-cite-fleurie",
-      "texte": "Tome 2"
-    },
-    {
-      "type": "livre",
-      "slug": "un-air-de-liberte",
-      "texte": "Tome 1"
-    },
-    {
-      "type": "livre",
-      "slug": "l-ombre-de-la-lune",
-      "texte": "Tome 2"
-    }
-  ],
-  "images": [
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-01-livres-couv-gaia.jpg",
-      "alt": "Offres spéciales — image 1"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-02-livres-couv-gaia2.jpg",
-      "alt": "Offres spéciales — image 2"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-03-livres-couvdisparuscitefleurie.jpg",
-      "alt": "Offres spéciales — image 3"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-04-livres-couv-sources-d-or-cite-fleurie.jpg",
-      "alt": "Offres spéciales — image 4"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-05-livres-couvunairdeliberte.jpg",
-      "alt": "Offres spéciales — image 5"
-    },
-    {
-      "image": "content/media/uploads/pages-offres-speciales-images-06-livres-couvombrelune.jpg",
-      "alt": "Offres spéciales — image 6"
-    }
-  ],
+  "liens": [],
+  "images": [],
   "documents": [],
   "ordre": 80,
   "rubrique": "Sélection",

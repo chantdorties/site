@@ -93,18 +93,136 @@ noscript {
 
 /* ---- Le formulaire d’une fiche ------------------------------------------- */
 
+/* Pensé pour une personne qui n’écrit pas de code : un libellé se lit comme une
+   question, en clair, au-dessus de son champ — pas comme une petite étiquette grise
+   en majuscules collée à la bordure. Le texte saisi est à 16 pixels, l’aide à 14. */
+
+#nc-root [class*="ControlPaneContainer"] {
+  max-width: 820px;
+  padding: 8px 40px 120px;
+}
+
+#nc-root [class*="ControlContainer"] {
+  margin: 0 0 30px;
+}
+
 #nc-root [class*="FieldLabel"] {
-  color: var(--green);
+  display: block;
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  font-size: 15px;
   font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-transform: none;
 }
 
 /* L’explication sous un champ guide la saisie : elle doit rester lisible. */
 #nc-root [class*="ControlHint"] {
+  max-width: 68ch;
+  padding-top: 8px;
   color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 #nc-root [class*="ControlErrorsList"] {
   color: var(--red-dark);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Les champs eux-mêmes : bordure fine, coins arrondis, texte confortable. Decap ne
+   nomme pas ses <input> : on les atteint depuis le conteneur du champ. */
+#nc-root [class*="ControlContainer"] > input,
+#nc-root [class*="ControlContainer"] > textarea,
+#nc-root [class*="ControlContainer"] > div > input:not([type="checkbox"]) {
+  border: 1px solid #c9cec7;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 12px 14px;
+}
+
+#nc-root [class*="ControlContainer"] > input:focus,
+#nc-root [class*="ControlContainer"] > textarea:focus,
+#nc-root [class*="ControlContainer"] > div > input:not([type="checkbox"]):focus {
+  border-color: var(--green);
+  outline: 3px solid var(--green-pale);
+}
+
+/* ---- Les intertitres du formulaire (widget « groupe », preview.js) ---------- */
+
+/* Le faux champ porte déjà son titre et son aide : on masque ceux que Decap pose
+   autour de tout champ, pour ne pas les afficher deux fois. */
+#nc-root [class*="ControlContainer"]:has(.groupe-champ) {
+  margin: 44px 0 22px;
+}
+
+#nc-root [class*="ControlContainer"]:has(.groupe-champ) > [class*="ControlTopbar"],
+#nc-root [class*="ControlContainer"]:has(.groupe-champ) > [class*="ControlHint"] {
+  display: none;
+}
+
+#nc-root .groupe-champ {
+  padding: 0 0 10px;
+  border-bottom: 2px solid var(--ink);
+}
+
+#nc-root .groupe-champ__titre {
+  margin: 0;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#nc-root .groupe-champ__aide {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Le premier intertitre ouvre le formulaire : pas de grand blanc au-dessus. */
+#nc-root [class*="ControlPaneContainer"] [class*="ControlContainer"]:first-child:has(.groupe-champ) {
+  margin-top: 16px;
+}
+
+/* ---- Les listes : en-tête et bouton d’ajout -------------------------------- */
+
+#nc-root [class*="TopBarContainer"] {
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: #eef0ec;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+#nc-root [class*="AddButton"] {
+  padding: 6px 14px;
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#nc-root [class*="AddButton"]:hover {
+  background: var(--green);
+  color: #ffffff;
+}
+
+#nc-root [class*="SortableListItem"] > [class*="StyledListItemTopBar"] {
+  border-radius: var(--radius);
+  background: #eef0ec;
 }
 
 /* ---- Les éléments d’une liste (liens, illustrations, sections…) ------------- */

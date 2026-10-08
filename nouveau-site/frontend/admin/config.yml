@@ -333,12 +333,12 @@ collections:
       - {label: "Brouillons", field: statut, pattern: "brouillon"}
       - {label: "Archivés", field: statut, pattern: "archive"}
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "Ce que le lecteur voit en premier sur la fiche du livre."
       - {label: "Titre", name: titre, widget: string}
-      - label: Adresse de la page
-        name: slug
-        widget: string
-        hint: "L’adresse du livre sur le site, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse tout en bas."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - &publication
         label: Publication
         name: statut
@@ -356,32 +356,6 @@ collections:
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
-      - label: Type d’ouvrage
-        name: typeOuvrage
-        widget: select
-        required: false
-        hint: Affiché sous le titre, avec l’âge.
-        options:
-          - {label: "Album", value: album}
-          - {label: "Album jeunesse", value: album-jeunesse}
-          - {label: "Mini roman", value: mini-roman}
-          - {label: "Mini roman jeunesse", value: mini-roman-jeunesse}
-          - {label: "Nouvelles", value: nouvelles}
-          - {label: "Recueil de nouvelles", value: recueil-de-nouvelles}
-          # Ces deux-là manquaient à la liste alors que deux livres les portaient : les
-          # ouvrir dans l’administration aurait effacé leur type sans prévenir.
-          - {label: "Recueil de récits", value: recueil-de-recits}
-          - {label: "Recueil de textes", value: recueil-de-textes}
-          - {label: "Roman", value: roman}
-          - {label: "Roman jeunesse", value: roman-jeunesse}
-          - {label: "Texte illustré", value: texte-illustre}
-      - label: Âge minimum
-        name: ageMinimum
-        widget: number
-        value_type: int
-        min: 0
-        required: false
-        hint: Le site écrit « Dès 7 ans » à partir de ce nombre.
       - label: Auteurs
         name: auteurs
         widget: relation
@@ -412,15 +386,6 @@ collections:
         search_fields: [nom]
         display_fields: [nom]
         value_field: slug
-      - label: Présentation
-        name: description
-        widget: markdown
-        modes: [rich_text]
-        minimal: true
-        buttons: *boutons_courts
-        editor_components: []
-        required: false
-        hint: Le texte de présentation, affiché sur la page du livre et repris comme description pour les moteurs de recherche.
       - label: Couverture
         name: couverture
         widget: image
@@ -432,23 +397,20 @@ collections:
         widget: string
         required: false
         hint: Lu par les personnes qui n’ont pas accès à l’image. Laisser vide écrit « Couverture de <titre> ».
-      - label: Illustrations
-        name: illustrations
-        widget: list
+      - label: Présentation
+        name: description
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
         required: false
-        collapsed: true
-        summary: "{{fields.alt}}"
-        hint: Les images intérieures, affichées dans la galerie « Quelques illustrations ».
-        fields:
-          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
-          - {label: "Texte alternatif", name: alt, widget: string, required: false}
-      - label: Extraits PDF
-        name: extraits
-        widget: list
+        hint: Le texte de présentation, affiché sur la page du livre et repris comme description pour les moteurs de recherche.
+      - label: "Vente"
+        name: groupe2
+        widget: groupe
         required: false
-        collapsed: true
-        hint: Les fichiers proposés au téléchargement sur la page du livre.
-        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
+        hint: "Le prix et le bouton d’achat."
       - label: Prix en euros
         name: prixEuros
         widget: number
@@ -468,6 +430,37 @@ collections:
         required: false
         hint: "Identifiant à 13 caractères fourni par PayPal. Obligatoire pour un livre disponible : sans lui, la publication est refusée."
         pattern: ['^[A-Z0-9]{13}$', "Saisir l’identifiant PayPal à 13 caractères"]
+      - label: "Caractéristiques du livre"
+        name: groupe3
+        widget: groupe
+        required: false
+        hint: "Affichées dans l’encadré de la fiche."
+      - label: Type d’ouvrage
+        name: typeOuvrage
+        widget: select
+        required: false
+        hint: Affiché sous le titre, avec l’âge.
+        options:
+          - {label: "Album", value: album}
+          - {label: "Album jeunesse", value: album-jeunesse}
+          - {label: "Mini roman", value: mini-roman}
+          - {label: "Mini roman jeunesse", value: mini-roman-jeunesse}
+          - {label: "Nouvelles", value: nouvelles}
+          - {label: "Recueil de nouvelles", value: recueil-de-nouvelles}
+          # Ces deux-là manquaient à la liste alors que deux livres les portaient : les
+          # ouvrir dans l’administration aurait effacé leur type sans prévenir.
+          - {label: "Recueil de récits", value: recueil-de-recits}
+          - {label: "Recueil de textes", value: recueil-de-textes}
+          - {label: "Roman", value: roman}
+          - {label: "Roman jeunesse", value: roman-jeunesse}
+          - {label: "Texte illustré", value: texte-illustre}
+      - label: Âge minimum
+        name: ageMinimum
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        hint: Le site écrit « Dès 7 ans » à partir de ce nombre.
       - {label: "Nombre de pages", name: nombrePages, widget: number, value_type: int, min: 1, required: false}
       - label: Format
         name: format
@@ -492,14 +485,35 @@ collections:
         widget: string
         required: false
         hint: Conservé pour les démarches administratives. Il n’apparaît nulle part sur le site.
-      - &order
-        label: Ordre d’affichage
-        name: ordre
-        widget: number
-        value_type: int
-        min: 0
-        default: 100
-        hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
+      - label: "Images et extraits"
+        name: groupe4
+        widget: groupe
+        required: false
+        hint: "Pages intérieures et extraits à télécharger."
+      - label: Illustrations
+        name: illustrations
+        label_singular: "illustration"
+        widget: list
+        required: false
+        collapsed: true
+        summary: "{{fields.alt}}"
+        hint: Les images intérieures, affichées dans la galerie « Quelques illustrations ».
+        fields:
+          - {label: "Image", name: image, widget: image, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
+          - {label: "Texte alternatif", name: alt, widget: string, required: false}
+      - label: Extraits PDF
+        name: extraits
+        label_singular: "extrait PDF"
+        widget: list
+        required: false
+        collapsed: true
+        hint: Les fichiers proposés au téléchargement sur la page du livre.
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: {config: {max_file_size: 20971520}}}
+      - label: "Mise en avant"
+        name: groupe5
+        widget: groupe
+        required: false
+        hint: "Pour faire apparaître le livre sur l’accueil et proposer des lectures voisines."
       - label: Mis en avant sur l’accueil
         name: miseEnAvantAccueil
         widget: boolean
@@ -523,9 +537,28 @@ collections:
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
+      - label: "Réglages techniques"
+        name: groupe6
+        widget: groupe
+        required: false
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: "L’adresse du livre sur le site, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse tout en bas."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
+      - &order
+        label: Ordre d’affichage
+        name: ordre
+        widget: number
+        value_type: int
+        min: 0
+        default: 100
+        hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
       - &old_slugs
         label: Anciennes adresses
         name: anciensSlugs
+        label_singular: "ancienne adresse"
         widget: list
         required: false
         collapsed: true
@@ -573,12 +606,12 @@ collections:
     sortable_fields: [nom, ordre, statut]
     view_filters: *status_filters
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "La fiche de l’auteur ou de l’illustrateur."
       - {label: "Nom", name: nom, widget: string}
-      - label: Adresse de la page
-        name: slug
-        widget: string
-        hint: L’adresse de la fiche sur le site, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication.
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
       - label: Rôles
         name: roles
@@ -591,6 +624,12 @@ collections:
           - {label: "Auteur", value: auteur}
           - {label: "Illustrateur", value: illustrateur}
           - {label: "Préfacier", value: prefacier}
+      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+      - label: Texte alternatif du portrait
+        name: imagePrincipaleAlt
+        widget: string
+        required: false
+        hint: Laisser vide écrit « Portrait de <nom> ».
       - label: Biographie
         name: biographie
         widget: markdown
@@ -600,14 +639,14 @@ collections:
         editor_components: []
         required: false
         hint: Affichée en tête de la fiche, au-dessus de ses livres.
-      - {label: "Portrait principal", name: imagePrincipale, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
-      - label: Texte alternatif du portrait
-        name: imagePrincipaleAlt
-        widget: string
+      - label: "Images et liens"
+        name: groupe2
+        widget: groupe
         required: false
-        hint: Laisser vide écrit « Portrait de <nom> ».
+        hint: "Autres images et sites de la personne."
       - label: Autres images
         name: images
+        label_singular: "image"
         widget: list
         required: false
         collapsed: true
@@ -618,11 +657,22 @@ collections:
           - {label: "Texte alternatif", name: alt, widget: string, required: false}
       - label: Liens externes
         name: liensExternes
+        label_singular: "lien"
         widget: list
         required: false
         collapsed: true
         hint: Site personnel, blog… Le premier devient le bouton « Site personnel ».
         field: {label: "Adresse web", name: url, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+      - label: "Réglages techniques"
+        name: groupe3
+        widget: groupe
+        required: false
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: L’adresse de la fiche sur le site, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication.
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *order
       - *old_slugs
       - *seo
@@ -645,22 +695,13 @@ collections:
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "La page de la collection."
       - {label: "Nom", name: titre, widget: string}
-      - label: Adresse de la page
-        name: slug
-        widget: string
-        hint: L’adresse de la collection sur le site, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication.
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
-      - label: Présentation
-        name: description
-        widget: markdown
-        modes: [rich_text]
-        minimal: true
-        buttons: *boutons_courts
-        editor_components: []
-        required: true
-        hint: Une ou deux phrases, reprises sur l’accueil et sur la page Collections.
       - label: Emblème
         name: logo
         widget: image
@@ -673,6 +714,25 @@ collections:
         widget: string
         required: false
         hint: Obligatoire dès qu’un emblème est choisi, sinon la publication est refusée. Décrire le dessin, par exemple « Un chardon violet ».
+      - label: Présentation
+        name: description
+        widget: markdown
+        modes: [rich_text]
+        minimal: true
+        buttons: *boutons_courts
+        editor_components: []
+        required: true
+        hint: Une ou deux phrases, reprises sur l’accueil et sur la page Collections.
+      - label: "Réglages techniques"
+        name: groupe2
+        widget: groupe
+        required: false
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+      - label: Adresse de la page
+        name: slug
+        widget: string
+        hint: L’adresse de la collection sur le site, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication.
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *order
       - *old_slugs
       - *seo
@@ -699,12 +759,12 @@ collections:
     sortable_fields: [datePublication, titre, statut]
     view_filters: *status_filters
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "Ce qui s’affiche dans la liste des actualités et sur l’accueil."
       - {label: "Titre", name: titre, widget: string}
-      - label: Identifiant
-        name: slug
-        widget: string
-        hint: "Sert à nommer le fichier et à classer l’article. Une actualité n’a pas de page à elle : elle s’affiche dans la liste."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
       - label: Date
         name: datePublication
@@ -722,6 +782,12 @@ collections:
           - {label: "Parution", value: parution}
           - {label: "Rencontre", value: rencontre}
           - {label: "Vie de la maison", value: maison}
+      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
+      - label: Texte alternatif de l’image
+        name: imageAlt
+        widget: string
+        required: false
+        hint: Obligatoire dès qu’une image est choisie, sinon la publication est refusée.
       - label: Résumé
         name: resume
         widget: markdown
@@ -730,22 +796,21 @@ collections:
         buttons: *boutons_courts
         editor_components: []
         hint: Une ou deux phrases, mises en avant au-dessus du texte.
+      - label: "Article complet"
+        name: groupe2
+        widget: groupe
+        required: false
+        hint: "Le texte de la page de l’actualité, et ses compléments."
       - label: Contenu
         name: contenu
         widget: markdown
         modes: [rich_text]
-        buttons: &boutons_corps [bold, italic, strikethrough, code, link,
-                  heading-one, heading-two, heading-three,
-                  heading-four, heading-five, heading-six,
-                  quote, bulleted-list, numbered-list]
+        # Les seuls outils utiles à la rédaction : le barré, le code et six niveaux de
+        # titre déroutaient plus qu'ils ne servaient. Le texte déjà saisi n'est pas touché.
+        buttons: &boutons_corps [bold, italic, link, heading-two, heading-three,
+                  bulleted-list, numbered-list, quote]
         editor_components: [image, code-block]
         hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
-      - {label: "Image", name: image, widget: image, allow_multiple: false, required: false, media_library: {config: {max_file_size: 20971520}}}
-      - label: Texte alternatif de l’image
-        name: imageAlt
-        widget: string
-        required: false
-        hint: Obligatoire dès qu’une image est choisie, sinon la publication est refusée.
       - label: Lien externe
         name: lienExterne
         widget: string
@@ -759,6 +824,16 @@ collections:
         required: false
         hint: Ajoute un bouton de téléchargement sous l’article.
         media_library: {config: {max_file_size: 20971520}}
+      - label: "Réglages techniques"
+        name: groupe3
+        widget: groupe
+        required: false
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+      - label: Identifiant
+        name: slug
+        widget: string
+        hint: "Sert à nommer le fichier et à classer l’article. Une actualité n’a pas de page à elle : elle s’affiche dans la liste."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *old_slugs
       - *seo
 
@@ -788,12 +863,12 @@ collections:
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "Un livre en préparation, présenté sur la page Projets."
       - {label: "Titre", name: titre, widget: string}
-      - label: Identifiant
-        name: slug
-        widget: string
-        hint: "Sert à nommer le fichier. Un projet n’a pas de page à lui : il s’affiche sur la page Projets."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *publication
       - label: Description
         name: description
@@ -808,6 +883,16 @@ collections:
         search_fields: [titre]
         display_fields: [titre]
         value_field: slug
+      - label: Sortie prévue
+        name: sortiePrevue
+        widget: string
+        required: false
+        hint: Écrire la période telle qu’elle doit paraître, par exemple « décembre 2026 ».
+      - label: "Auteurs et illustrateurs"
+        name: groupe2
+        widget: groupe
+        required: false
+        hint: "Choisir dans les fiches existantes, ou écrire le nom d’une personne qui n’a pas encore de fiche."
       - label: Auteurs
         name: auteurs
         widget: relation
@@ -820,6 +905,7 @@ collections:
         value_field: slug
       - label: Auteurs sans fiche
         name: auteursHorsFiche
+        label_singular: "auteur sans fiche"
         widget: list
         required: false
         hint: Pour un auteur qui n’a pas encore de fiche — courant avant parution. Son nom s’affichera sans lien.
@@ -836,15 +922,21 @@ collections:
         value_field: slug
       - label: Illustrateurs sans fiche
         name: illustrateursHorsFiche
+        label_singular: "illustrateur sans fiche"
         widget: list
         required: false
         hint: Pour un illustrateur qui n’a pas encore de fiche. Son nom s’affichera sans lien.
         field: {label: "Nom", name: nom, widget: string}
-      - label: Sortie prévue
-        name: sortiePrevue
-        widget: string
+      - label: "Réglages techniques"
+        name: groupe3
+        widget: groupe
         required: false
-        hint: Écrire la période telle qu’elle doit paraître, par exemple « décembre 2026 ».
+        hint: "À ne modifier qu’en cas de besoin."
+      - label: Identifiant
+        name: slug
+        widget: string
+        hint: "Sert à nommer le fichier. Un projet n’a pas de page à lui : il s’affiche sur la page Projets."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
       - *order
 
   - name: pages_fixes
@@ -868,10 +960,11 @@ collections:
           - {label: "Ordre", name: ordre, widget: hidden, default: 0}
           - label: Sections de l’accueil
             name: sections
+            label_singular: "section"
             widget: list
             min: 6
             max: 6
-            summary: "{{fields.titre}}"
+            summary: "{{fields.titre | default('Section sans intertitre')}}"
             fields:
               - {label: "Identifiant", name: id, widget: hidden}
               - {label: "Titre", name: titre, widget: string}
@@ -942,9 +1035,10 @@ collections:
           - &page_sections
             label: Sections
             name: sections
+            label_singular: "section"
             widget: list
             min: 1
-            summary: "{{fields.titre}}"
+            summary: "{{fields.titre | default('Section sans intertitre')}}"
             hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
             fields:
               - {label: "Intertitre", name: titre, widget: string, required: false}
@@ -953,9 +1047,23 @@ collections:
                 widget: markdown
                 modes: [rich_text]
                 buttons: *boutons_corps
-                editor_components: [image, code-block]
+                editor_components: [image]
+              - label: Livres de cette section
+                name: livres
+                widget: relation
+                collection: livres
+                multiple: true
+                required: false
+                search_fields: [titre]
+                display_fields: [titre]
+                value_field: slug
+                hint: >-
+                  Facultatif. Les livres choisis s’affichent sous le texte, avec leur
+                  couverture, leurs auteurs et leur prix tirés de leur fiche : rien à
+                  recopier. Pratique pour une offre groupée ou une sélection.
               - label: Boutons d’achat PayPal
                 name: boutonsPaypal
+                label_singular: "bouton PayPal"
                 widget: list
                 required: false
                 collapsed: true
@@ -980,6 +1088,7 @@ collections:
           - &page_links
             label: Liens et documents
             name: liens
+            label_singular: "lien"
             widget: list
             required: false
             collapsed: true
@@ -1001,15 +1110,31 @@ collections:
                 name: href
                 widget: string
                 required: false
-                hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page.
-              - label: Livre ou page visée
+                hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page, choisis plus bas.
+              # Choisis dans une liste plutôt que tapés : une faute de frappe dans une
+              # adresse ne se voyait qu’au moment de publier.
+              - label: Livre visé
                 name: slug
-                widget: string
+                widget: relation
+                collection: livres
                 required: false
-                hint: "Uniquement pour les deux derniers types : l’adresse du livre ou de la page, par exemple « ville-rouge »."
+                search_fields: [titre]
+                display_fields: [titre]
+                value_field: slug
+                hint: Uniquement pour un lien « Vers un livre du catalogue ».
+              - label: Page visée
+                name: pageCible
+                widget: relation
+                collection: pages
+                required: false
+                search_fields: [titre]
+                display_fields: [titre]
+                value_field: slug
+                hint: Uniquement pour un lien « Vers une autre page du site ».
           - &page_images
             label: Images
             name: images
+            label_singular: "image"
             widget: list
             required: false
             collapsed: true
@@ -1021,6 +1146,7 @@ collections:
           - &page_documents
             label: Documents joints
             name: documents
+            label_singular: "document"
             widget: list
             required: false
             collapsed: true
@@ -1050,20 +1176,40 @@ collections:
     sortable_fields: [ordre, titre, statut]
     view_filters: *status_filters
     fields:
+      - label: "L’essentiel"
+        name: groupe1
+        widget: groupe
+        required: false
+        hint: "Le titre et le texte de la page, découpé en sections."
       - {label: "Titre", name: titre, widget: string}
+      - *publication
+      - *page_sections
+      - label: "Images, liens et documents"
+        name: groupe2
+        widget: groupe
+        required: false
+        hint: "Affichés à côté et au bas du texte."
+      - *page_images
+      - *page_links
+      - *page_documents
+      - label: "Carte sur la page « La maison »"
+        name: groupe3
+        widget: groupe
+        required: false
+        hint: "Chaque page y apparaît sous forme de carte."
+      - *page_eyebrow
+      - *page_action
+      - label: "Réglages techniques"
+        name: groupe4
+        widget: groupe
+        required: false
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
       - label: Adresse de la page
         name: slug
         widget: string
         hint: L’adresse de la page sur le site, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication.
         pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Utiliser uniquement des minuscules, chiffres et tirets"]
-      - *publication
       - {label: "Type", name: type, widget: hidden, default: page}
-      - *page_sections
-      - *page_eyebrow
-      - *page_action
-      - *page_links
-      - *page_images
-      - *page_documents
       - *order
       - *old_slugs
       - *seo

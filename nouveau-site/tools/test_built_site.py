@@ -522,6 +522,32 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIn(f"  {token}: {default};", variables, token)
             self.assertIn(f"  {token}: {default};", stylesheet, token)
 
+    def test_an_offer_shows_its_books_as_catalogue_cards(self):
+        soup = BeautifulSoup((DIST / "offres-speciales" / "index.html").read_text(encoding="utf-8"), "html.parser")
+        sections = soup.select(".editorial-section")
+        self.assertEqual(3, len(sections))
+        for section in sections:
+            cards = section.select(".book-grid--section .book-card")
+            self.assertEqual(2, len(cards))
+            self.assertTrue(all(card.select_one("img.book-card__cover") for card in cards))
+            self.assertRegex(section.select_one(".book-card__meta").get_text(), r"\d+ €")
+
+    def test_admin_forms_put_the_essentials_first(self):
+        """Chaque rubrique s’ouvre sur « L’essentiel » ; l’adresse de la page et les
+        autres réglages techniques viennent en dernier, sous leur propre intertitre.
+        Un intertitre n’est jamais obligatoire : Decap refuserait d’enregistrer."""
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        collections = {item["name"]: item for item in config["collections"]}
+        for name in ("livres", "personnes", "collections", "actualites", "projets", "pages"):
+            fields = collections[name]["fields"]
+            groups = [field for field in fields if field.get("widget") == "groupe"]
+            self.assertEqual("L’essentiel", fields[0]["label"], name)
+            self.assertTrue(all(group.get("required") is False for group in groups), name)
+            names = [field["name"] for field in fields]
+            technique = max(i for i, field in enumerate(fields) if field.get("widget") == "groupe")
+            self.assertEqual("Réglages techniques", fields[technique]["label"], name)
+            self.assertGreater(names.index("slug"), technique, name)
+
     def test_admin_exposes_every_editable_json_field(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
         collections = {item["name"]: item for item in config["collections"]}

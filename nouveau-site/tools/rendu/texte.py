@@ -475,7 +475,10 @@ class OutilsTexte:
         if link_type == "livre":
             return f'<a href="/livres/{e(link["slug"])}/">{e(label)}</a>'
         if link_type == "page":
-            href = "/" if link["slug"] == "accueil" else f'/{link["slug"]}/'
+            # « pageCible » est choisi dans une liste par l’administration ; « slug » est
+            # l’ancienne forme, tapée à la main, encore acceptée.
+            cible = link.get("pageCible") or link.get("slug")
+            href = "/" if cible == "accueil" else f'/{cible}/'
             return f'<a href="{href}">{e(label)}</a>'
         href = link.get("href")
         if not href:

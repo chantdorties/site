@@ -531,6 +531,7 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
         for section in page.get("sections") or []:
             if isinstance(section, dict):
                 section.setdefault("boutonsPaypal", [])
+                section.setdefault("livres", [])
     # L’identifiant d’un lien du menu est caché dans l’administration : un lien créé
     # là n’en a pas. On le déduit de l’adresse (« /agenda/ » → « agenda »). Les
     # identifiants existants, que les pages utilisent pour surligner l’onglet actif,
@@ -686,6 +687,15 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         for section in sections:
             if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
                 raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")
+            # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
+            # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
+            section_books = section.get("livres", [])
+            if not isinstance(section_books, list):
+                raise ContentError(f"Page {page['slug']}: livres de section invalides")
+            for book_slug in section_books:
+                target = books_by_slug.get(book_slug) if isinstance(book_slug, str) else None
+                if not target or (page["statut"] == "publie" and target["statut"] != "publie"):
+                    raise ContentError(f"Page {page['slug']}: livre de section indisponible ({book_slug})")
             buttons = section.get("boutonsPaypal", [])
             if not isinstance(buttons, list):
                 raise ContentError(f"Page {page['slug']}: boutons PayPal de section invalides")
@@ -718,7 +728,7 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
                 if not target or (page["statut"] == "publie" and target["statut"] != "publie"):
                     raise ContentError(f"Page {page['slug']}: livre lié indisponible")
             elif link_type == "page":
-                target = pages_by_slug.get(link.get("slug"))
+                target = pages_by_slug.get(link.get("pageCible") or link.get("slug"))
                 if not target or (page["statut"] == "publie" and target["statut"] != "publie"):
                     raise ContentError(f"Page {page['slug']}: page liée indisponible")
         validate_seo(root, page, "Page")
