@@ -293,6 +293,23 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIsNotNone(card.select_one(".house-card__action"))
             self.assertIsNotNone(card.select_one("h2"))
 
+    def test_published_stylesheet_carries_the_saved_theme(self):
+        css = (DIST / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        appearance = settings("apparence")
+        theme = css[css.index(":root {", css.index("content/reglages/apparence.json")):]
+        theme = theme[: theme.index("}")]
+        for key, token in (
+            ("couleurFond", "--color-background"),
+            ("couleurTexte", "--color-text"),
+            ("couleurPrincipale", "--color-primary"),
+            ("couleurBoutons", "--color-button"),
+        ):
+            self.assertIn(f"  {token}: {appearance[key].lower()};", theme, key)
+        self.assertNotRegex(theme, r"couleur|police")
+        # La feuille est appelée avec l’empreinte qui tient compte du thème.
+        home = (DIST / "index.html").read_text(encoding="utf-8")
+        self.assertRegex(home, r"/assets/css/site\.css\?v=[0-9a-f]{12}")
+
     def test_admin_is_present_but_not_indexed(self):
         index = DIST / "admin" / "index.html"
         config_path = DIST / "admin" / "config.yml"

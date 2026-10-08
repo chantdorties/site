@@ -520,6 +520,64 @@ class ContentDataTest(unittest.TestCase):
             finally:
                 production.release_lock()
 
+    def test_theme_block_declares_only_known_tokens_in_a_stable_order(self):
+        load_site_builder()
+        feuille = sys.modules["rendu.feuille_de_style"]
+        appearance = dict(self.raw["settings"]["apparence"], couleurPrincipale="#0A7A5B", policeTexte="serif-livre")
+        self.assertEqual(
+            "/* Le thème choisi dans l'administration : content/reglages/apparence.json */\n"
+            ":root {\n"
+            "  --color-background: #f7f7f4;\n"
+            "  --color-surface: #ffffff;\n"
+            "  --color-text: #171a18;\n"
+            "  --color-muted: #626862;\n"
+            "  --color-primary: #0a7a5b;\n"
+            "  --color-primary-dark: #963128;\n"
+            "  --color-secondary: #3e6b50;\n"
+            "  --color-link: #275c7a;\n"
+            "  --color-button: #171a18;\n"
+            '  --font-heading: Georgia, "Times New Roman", serif;\n'
+            '  --font-body: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;\n'
+            "}\n\n",
+            feuille.bloc_du_theme(appearance),
+        )
+
+    def test_theme_settings_reach_site_css_and_the_asset_version(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            default = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            again = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            self.assertEqual(default.asset_version, again.asset_version, "même thème, même empreinte")
+
+            edit(
+                root, "content/reglages/apparence.json",
+                couleurPrincipale="#0a7a5b", policeTitres="sans-serif-humaniste",
+            )
+            themed = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            themed.prepare_output()
+            css = (themed.temp_output / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+
+            self.assertEqual(themed.site_css, css, "l’empreinte et le fichier publié ont la même source")
+            self.assertNotEqual(default.asset_version, themed.asset_version)
+            self.assertIn("  --color-primary: #0a7a5b;\n", css)
+            self.assertIn("  --font-heading: Optima, Candara,", css)
+            self.assertNotIn("couleurPrincipale", css)
+            self.assertNotIn("policeTitres", css)
+            # Le thème suit les valeurs par défaut des tokens et précède les règles.
+            self.assertLess(css.index("--color-primary: #c63f32;"), css.index("--color-primary: #0a7a5b;"))
+            self.assertLess(css.index("--color-primary: #0a7a5b;"), css.index("box-sizing: border-box;"))
+
+    def test_a_refused_theme_stops_before_anything_is_written(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            edit(root, "content/reglages/apparence.json", couleurFond="#fff} body { display: none")
+            with self.assertRaisesRegex(ValueError, "Réglage apparence: couleurFond"):
+                build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            self.assertFalse((root / "dist").exists())
+            self.assertFalse((root / ".dist-build").exists())
+
     def test_special_contributor_relations(self):
         aquarium = self.books_by_slug["debout-dans-l-aquarium"]
         self.assertEqual(["eric-lemaire"], aquarium["auteurs"])

@@ -22,7 +22,7 @@ from .composants.galerie import Galerie
 from .composants.panier import Panier
 from .composants.pied_de_page import PiedDePage
 from .composants.vitrine_collections import VitrineCollections
-from .feuille_de_style import assembler_css
+from .feuille_de_style import feuille_de_style_complete
 from .gabarit import Gabarit
 from .medias import Medias
 from .pages.accueil import PageAccueil
@@ -89,14 +89,6 @@ class SiteBuilder(
         report_name = "site-build-preview.json" if include_drafts else "site-build.json"
         self.report_path = self.root / "reports" / report_name
         self.template = (self.frontend_dir / "templates" / "base.html").read_text(encoding="utf-8")
-        # L'empreinte force le navigateur à recharger le style et le script après une
-        # modification. Le CSS n'existe plus comme fichier unique : c'est le résultat
-        # du recollage qui est pris en compte, sinon retoucher un morceau passerait
-        # inaperçu et les visiteurs garderaient l'ancienne feuille en cache.
-        asset_digest = hashlib.sha256()
-        asset_digest.update(assembler_css(self.frontend_dir).encode("utf-8"))
-        asset_digest.update((self.frontend_dir / "assets/js/site.js").read_bytes())
-        self.asset_version = asset_digest.hexdigest()[:12]
 
         content = load_content(self.root, include_drafts=include_drafts)
         self.books = content["books"]
@@ -114,6 +106,19 @@ class SiteBuilder(
         self.home_settings = self.settings["accueil"]
         self.page_settings = self.settings["pages"]
         self.payment_settings = self.settings["paiement"]
+        # La feuille de style finale, thème compris, calculée une seule fois : c'est
+        # cette même chaîne qui est écrite dans dist/ (sortie.py) et qui sert à
+        # l'empreinte ci-dessous. Elle n'existe qu'une fois le réglage Apparence chargé
+        # et validé.
+        self.site_css = feuille_de_style_complete(self.frontend_dir, self.settings["apparence"])
+        # L'empreinte force le navigateur à recharger le style et le script après une
+        # modification. Le CSS n'existe plus comme fichier unique : c'est le résultat
+        # du recollage qui est pris en compte, sinon retoucher un morceau — ou le
+        # thème — passerait inaperçu et les visiteurs garderaient l'ancienne feuille.
+        asset_digest = hashlib.sha256()
+        asset_digest.update(self.site_css.encode("utf-8"))
+        asset_digest.update((self.frontend_dir / "assets/js/site.js").read_bytes())
+        self.asset_version = asset_digest.hexdigest()[:12]
         self.resolve_page_counts()
         self.base_url = (base_url or self.site_settings["domaine"]).rstrip("/")
         self.books_by_slug = {book["slug"]: book for book in self.books}
