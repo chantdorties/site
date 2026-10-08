@@ -542,6 +542,18 @@ class ContentDataTest(unittest.TestCase):
             feuille.bloc_du_theme(appearance),
         )
 
+    def test_every_allowed_font_is_accepted_and_resolved_by_the_code(self):
+        load_site_builder()
+        feuille = sys.modules["rendu.feuille_de_style"]
+        for font, stack in APPEARANCE_FONTS.items():
+            with self.subTest(font):
+                appearance = dict(self.raw["settings"]["apparence"], policeTitres=font, policeTexte=font)
+                validate_appearance_settings(appearance)
+                block = feuille.bloc_du_theme(appearance)
+                self.assertIn(f"  --font-heading: {stack};\n", block)
+                self.assertIn(f"  --font-body: {stack};\n", block)
+                self.assertNotIn(font, block)
+
     def test_theme_settings_reach_site_css_and_the_asset_version(self):
         build_site = load_site_builder()
         with content_sandbox() as root:
