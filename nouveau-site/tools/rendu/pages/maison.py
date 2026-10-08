@@ -30,11 +30,12 @@ class PageMaison:
 </a>""".strip()
             )
         content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), ('La maison', None)])}
-  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="maison")}</div>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('La maison', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="maison"),
+)}
 <section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>"""
         page = self.render_page(
             title=labels["titre"],

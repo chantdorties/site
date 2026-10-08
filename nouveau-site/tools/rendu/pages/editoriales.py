@@ -21,7 +21,6 @@ from typing import Any
 
 from content_data import media_alt, media_path
 
-from ..icones import icon
 from ..outils import e
 
 
@@ -68,10 +67,11 @@ class PagesEditoriales:
             description = page_data["sections"][0]["contenu"]
             active = "actualites" if page_data["slug"] == "actualites" else "maison"
             content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), (page_data['titre'], None)])}
-  <p class="eyebrow">{e(page_data.get('rubrique') or self.site_settings['nom'])}</p><h1>{e(page_data['titre'])}</h1>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), (page_data['titre'], None)],
+    page_data['titre'],
+    eyebrow=page_data.get('rubrique') or self.site_settings['nom'],
+)}
 <section class="section"><div class="container editorial-layout"><article>{sections}</article>{aside}</div></section>
 {projects}
 {gallery}"""
@@ -107,8 +107,8 @@ class PagesEditoriales:
     def render_paypal_buttons(self, buttons: list[dict[str, Any]]) -> str:
         """Les boutons d’achat d’une section, au format exact des fiches livres.
 
-        Le balisage reprend celui de pages/livres.py : même adresse, même commande,
-        même classe. L’identifiant vient toujours de la saisie, jamais d’un calcul,
+        Le formulaire est celui des fiches livres (composants/panier.py).
+        L’identifiant vient toujours de la saisie, jamais d’un calcul,
         sous peine d’envoyer l’argent au mauvais article.
         """
         if not buttons:
@@ -116,12 +116,7 @@ class PagesEditoriales:
         # Pas de « voir mon panier » ici : il est dans le menu, donc à portée de
         # toutes les pages. Le répéter sous chaque offre l'encombrerait.
         forms = "".join(
-            f"""
-<form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="{e(button['hostedButtonId'])}">
-  <button class="button" type="submit">{icon('shopping-cart')} {e(button['libelle'])}</button>
-</form>"""
+            self.render_paypal_form(hosted_button_id=button["hostedButtonId"], label=button["libelle"])
             for button in buttons
         )
         return f'<div class="section-actions">{forms}</div>'

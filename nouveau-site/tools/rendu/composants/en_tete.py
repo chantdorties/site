@@ -69,11 +69,11 @@ class EnTete:
 
         Les boutons du menu s'y rattachent par leur attribut « form ».
         """
-        return f"""
-<form class="nav-cart" id="{self.CART_FORM_ID}" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="encrypted" value="{e(self.payment_settings['panierEncrypted'])}">
-</form>"""
+        return self.render_paypal_form(
+            encrypted=self.payment_settings["panierEncrypted"],
+            form_class="nav-cart",
+            form_id=self.CART_FORM_ID,
+        )
 
     def render_header(self, active: str) -> str:
         short_name = self.site_settings["nomCourt"]

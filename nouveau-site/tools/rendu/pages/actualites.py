@@ -77,11 +77,12 @@ class PageActualites:
                 '<div class="news-grid">' + "".join(news_items) + "</div></div></section>"
             )
         content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), ('Actualités', None)])}
-  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="actualites")}</div>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Actualités', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="actualites"),
+)}
 {news_listing}
 <section class="section news-section"><div class="container">
   <div class="news-callout">

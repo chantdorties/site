@@ -20,11 +20,12 @@ class PagesCollections:
     def build_collections_index(self) -> None:
         labels = self.page_settings["collections"]
         content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), ('Collections', None)])}
-  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="collections")}</div>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Collections', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="collections"),
+)}
 <section class="section"><div class="container">{self.render_collection_showcase()}</div></section>"""
         page = self.render_page(
             title=labels["titre"],
@@ -49,11 +50,13 @@ class PagesCollections:
                     f'alt="{e(logo_alt)}" width="180" height="180">'
                 )
             content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), ('Collections', '/collections/'), (collection['titre'], None)])}
-  {logo}
-  <p class="eyebrow">{collection['nombreLivres']} {'livres' if collection['nombreLivres'] > 1 else 'livre'}</p><h1>{e(collection['titre'])}</h1><div class="lead rich-text">{self.markdown_html(collection['description'], owner=collection['slug'])}</div>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Collections', '/collections/'), (collection['titre'], None)],
+    collection['titre'],
+    eyebrow=f"{collection['nombreLivres']} {'livres' if collection['nombreLivres'] > 1 else 'livre'}",
+    introduction=self.markdown_html(collection['description'], owner=collection['slug']),
+    before_title=logo,
+)}
 <section class="section"><div class="container"><div class="book-grid">{cards}</div></div></section>"""
             seo_title, seo_description, seo_image = self.seo_values(
                 collection,
