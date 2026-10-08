@@ -37,6 +37,7 @@ HOME_MARKDOWN_FIELDS = (
     "soutienTexte",
     "collectionsTexte",
 )
+SECTION_TYPES = {"texte", "livres", "offre"}
 SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
 
 # Le réglage Apparence, tel que le fixe docs/CONTRAT-APPARENCE.md. L’administration
@@ -128,13 +129,23 @@ def read_json(path: Path) -> Any:
         raise ContentError(f"JSON invalide : {path}: {error}") from error
 
 
-def load_folder(content_dir: Path, folder: str) -> list[dict[str, Any]]:
+def load_folder(
+    content_dir: Path, folder: str, *, slug_from_filename: bool = False
+) -> list[dict[str, Any]]:
+    """Les fiches d’un dossier, une par fichier JSON.
+
+    Avec `slug_from_filename`, une fiche sans adresse prend celle de son fichier : c’est
+    le cas d’une page créée dans l’administration, dont Decap tire le nom de fichier du
+    titre (« Atelier dessin » → atelier-dessin.json).
+    """
     records = []
     seen: set[str] = set()
     for path in sorted((content_dir / folder).glob("*.json")):
         record = read_json(path)
         if not isinstance(record, dict):
             raise ContentError(f"{path} doit contenir un objet JSON")
+        if slug_from_filename and not record.get("slug"):
+            record["slug"] = path.stem
         slug = record.get("slug")
         if not isinstance(slug, str) or not SLUG_PATTERN.fullmatch(slug):
             raise ContentError(f"Slug invalide dans {path}: {slug!r}")
@@ -570,6 +581,29 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
             if isinstance(section, dict):
                 section.setdefault("boutonsPaypal", [])
                 section.setdefault("livres", [])
+    # Une page créée sans ordre se range après les autres, dans l’ordre alphabétique
+    # de leurs adresses si plusieurs attendent : rien à numéroter pour la rédaction.
+    unordered = sorted(
+        (page for page in raw["pages"] if page.get("ordre") in (None, "")),
+        key=lambda page: str(page.get("slug")),
+    )
+    if unordered:
+        last = max(
+            (page["ordre"] for page in raw["pages"] if isinstance(page.get("ordre"), int)),
+            default=0,
+        )
+        for rank, page in enumerate(unordered, start=1):
+            page["ordre"] = last + 10 * rank
+    # Un lien courriel se saisit comme une adresse : « mailto: » s’ajoute ici.
+    for page in raw["pages"]:
+        for link in page.get("liens") or []:
+            if (
+                isinstance(link, dict)
+                and link.get("type") == "email"
+                and isinstance(link.get("href"), str)
+                and not link["href"].startswith("mailto:")
+            ):
+                link["href"] = "mailto:" + link["href"].strip()
     # L’identifiant d’un lien du menu est caché dans l’administration : un lien créé
     # là n’en a pas. On le déduit de l’adresse (« /agenda/ » → « agenda »). Les
     # identifiants existants, que les pages utilisent pour surligner l’onglet actif,
@@ -725,6 +759,17 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         for section in sections:
             if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
                 raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")
+            # Le type choisi dans « Ajouter section » : un texte seul, un texte et des
+            # livres du catalogue, ou une offre avec ses boutons d’achat.
+            section_type = section.get("type")
+            if section_type not in SECTION_TYPES:
+                raise ContentError(
+                    f"Page {page['slug']}: type de section attendu parmi {sorted(SECTION_TYPES)}"
+                )
+            if section_type == "texte" and (section["livres"] or section["boutonsPaypal"]):
+                raise ContentError(f"Page {page['slug']}: une section « texte » ne porte ni livre ni bouton")
+            if section_type == "livres" and section["boutonsPaypal"]:
+                raise ContentError(f"Page {page['slug']}: une section « livres » ne porte pas de bouton d’achat")
             # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
             # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
             section_books = section.get("livres", [])
@@ -879,7 +924,7 @@ def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
         "statut": intro.get("statut"),
         "titre": intro.get("titre"),
         "type": "page",
-        "sections": [{"titre": None, "contenu": intro.get("introduction")}],
+        "sections": [{"type": "texte", "titre": None, "contenu": intro.get("introduction")}],
         "liens": [],
         "images": [],
         "documents": [],
@@ -899,7 +944,7 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         "books": load_folder(content_dir, "livres"),
         "people": load_folder(content_dir, "personnes"),
         "collections": load_folder(content_dir, "collections"),
-        "pages": load_folder(content_dir, "pages"),
+        "pages": load_folder(content_dir, "pages", slug_from_filename=True),
         "news": load_folder(content_dir, "actualites"),
         "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),

@@ -326,7 +326,10 @@ class Medias:
         for page in self.pages:
             if page["aVerifier"] and not self.include_drafts:
                 continue
-            for path in page["documents"]:
+            # Un PDF se dépose dans un lien « Document PDF » ; « documents » est l’ancienne
+            # liste à part, encore lue pour les fichiers qui la portent.
+            linked = [link["href"] for link in page["liens"] if link["type"] == "document"]
+            for path in dict.fromkeys([*page["documents"], *linked]):
                 self.copy_pdf(path)
         for item in self.news:
             if item.get("document"):

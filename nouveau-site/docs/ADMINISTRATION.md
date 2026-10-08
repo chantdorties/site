@@ -64,7 +64,13 @@ pour le reste du site, c’est une page de la maison ordinaire. Le dossier
 validation. Les catégories annoncées en bas de la page Actualités ne s’écrivent pas :
 ce sont celles des articles réellement publiés.
 
-De nouvelles pages de la maison peuvent être créées.
+De nouvelles pages de la maison peuvent être créées avec un titre et un texte seulement.
+Decap tire le nom du fichier du titre (`slug: "{{slug}}"`) ; le chargeur en fait l’adresse
+de la page quand le champ `slug` manque (`load_folder(..., slug_from_filename=True)`), et
+range après les autres une page sans `ordre`. Sections et liens sont des listes à types
+(`type` : `texte`, `livres`, `offre` ; `externe`, `email`, `document`, `livre`, `page`) ;
+la validation refuse une section sans type. Un PDF se dépose dans son lien
+« Document PDF » : `documents` n’est plus proposé, mais encore lu s’il existe.
 
 La suppression est désactivée partout sauf dans la rubrique **Projets** : un projet
 n’a pas d’adresse à lui, donc rien à rediriger, et un livre paru n’a plus à encombrer

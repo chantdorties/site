@@ -347,7 +347,7 @@ class ContentDataTest(unittest.TestCase):
                 "ordre": 999,
                 "rubrique": "À découvrir",
                 "libelleAction": "Lire la page",
-                "sections": [{"titre": None, "contenu": "Un contenu éditorial suffisamment complet pour être validé."}],
+                "sections": [{"type": "texte", "titre": None, "contenu": "Un contenu éditorial suffisamment complet pour être validé."}],
                 "liens": [],
                 "images": [],
                 "documents": [],
@@ -401,24 +401,41 @@ class ContentDataTest(unittest.TestCase):
                 self.assertEqual([], missing, f"{kind}/{record['slug']}")
 
     def test_a_page_created_with_only_required_fields_can_be_generated(self):
+        # Ce qu’écrit l’administration pour « titre, texte, Publier » : ni adresse ni
+        # ordre. L’adresse vient du nom de fichier, l’ordre range la page en dernier.
         with content_sandbox() as root:
             page = {
-                "slug": "page-minimale",
                 "titre": "Page minimale",
                 "statut": "publie",
-                "ordre": 500,
-                "sections": [{"contenu": "Le contenu minimal saisi depuis l’administration."}],
+                "type": "page",
+                "sections": [{"type": "texte", "titre": "", "contenu": "Le contenu minimal saisi depuis l’administration."}],
             }
             (root / "content" / "pages" / "page-minimale.json").write_text(
                 json.dumps(page, ensure_ascii=False, indent=2), encoding="utf-8"
             )
             bundle = load_content(root, include_drafts=False)
             created = next(item for item in bundle["pages"] if item["slug"] == "page-minimale")
+            others = [item["ordre"] for item in bundle["pages"] if item["slug"] != "page-minimale"]
+            self.assertGreater(created["ordre"], max(others))
             for field in GENERATOR_REQUIRED_FIELDS["pages"]:
                 self.assertIn(field, created)
             self.assertEqual([], created["images"])
             self.assertEqual([], created["liens"])
             self.assertEqual([], created["documents"])
+
+    def test_page_sections_and_links_follow_their_type(self):
+        with content_sandbox() as root:
+            edit(root, "content/pages/soutien.json", liens=[{"type": "email", "texte": "Écrire", "href": "contact@exemple.fr"}])
+            page = next(item for item in load_content(root, include_drafts=True)["pages"] if item["slug"] == "soutien")
+            self.assertEqual("mailto:contact@exemple.fr", page["liens"][0]["href"])
+        for sections, message in (
+            ([{"contenu": "Sans type"}], "type de section attendu"),
+            ([{"type": "texte", "contenu": "Texte", "livres": ["ville-rouge"]}], "ne porte ni livre ni bouton"),
+        ):
+            with self.subTest(message), content_sandbox() as root:
+                edit(root, "content/pages/amis.json", sections=sections)
+                with self.assertRaisesRegex(ContentError, message):
+                    load_content(root, include_drafts=True)
 
     def test_duplicate_order_is_refused_inside_a_collection(self):
         with content_sandbox() as root:

@@ -5,11 +5,13 @@
   "type": "page",
   "sections": [
     {
+      "type": "texte",
       "titre": null,
       "contenu": "Découvrez une sélection de livres à -50 %**.**\n\nVoici la liste des titres, classés par âge de lecteur, qui bénéficient de cette offre exceptionnelle. N’hésitez pas à la partager autour de vous !\\\nAttention : pour bénéficier du prix réduit, vous devez impérativement passer commande sur cette page et non sur la page du titre.\n\n**Cette offre n’est valable que via le site internet.**",
       "boutonsPaypal": []
     },
     {
+      "type": "offre",
       "titre": "Tais-toi ! — album jeunesse",
       "contenu": "6 € au lieu de 12 €.",
       "boutonsPaypal": [
@@ -20,6 +22,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Ailes d’arc-en-ciel — album jeunesse",
       "contenu": "5,50 € au lieu de 11 €.",
       "boutonsPaypal": [
@@ -30,6 +33,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Dent de Lion — album jeunesse",
       "contenu": "7,50 € au lieu de 15 €.",
       "boutonsPaypal": [
@@ -40,6 +44,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "La valse des pantins — roman jeunesse",
       "contenu": "5 € au lieu de 10 €.",
       "boutonsPaypal": [
@@ -50,6 +55,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Mémoires d’un nouveau-né — roman ados",
       "contenu": "5 € au lieu de 10 €.",
       "boutonsPaypal": [
@@ -60,6 +66,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Ruptures d’enfance — nouvelles grands ados-adultes",
       "contenu": "6 € au lieu de 12 €.",
       "boutonsPaypal": [
@@ -70,6 +77,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "La malédiction du béton — roman grands ados-adultes",
       "contenu": "6,50 € au lieu de 13 €.",
       "boutonsPaypal": [
@@ -80,6 +88,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Marius Gardebois — nouvelles grands ados-adultes",
       "contenu": "3,50 € au lieu de 7 €.",
       "boutonsPaypal": [
@@ -90,6 +99,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "À quelques pas de l’usine — nouvelles grands ados-adultes",
       "contenu": "5,50 € au lieu de 11 €.",
       "boutonsPaypal": [
@@ -100,6 +110,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Le cœur à l’ouvrage — roman grands ados-adultes",
       "contenu": "6,50 € au lieu de 13 €.",
       "boutonsPaypal": [
@@ -110,6 +121,7 @@
       ]
     },
     {
+      "type": "offre",
       "titre": "Les dix ouvrages",
       "contenu": "L’ensemble des dix titres soldés, avec une remise supplémentaire : 50,50 €.",
       "boutonsPaypal": [
@@ -173,7 +185,6 @@
     }
   ],
   "images": [],
-  "documents": [],
   "ordre": 85,
   "rubrique": "Opération spéciale",
   "libelleAction": "Voir les soldes",

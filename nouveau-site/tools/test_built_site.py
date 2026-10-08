@@ -543,7 +543,7 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertTrue(all(group.get("required") is False for group in groups), name)
             names = [field["name"] for field in fields]
             technique = max(i for i, field in enumerate(fields) if field.get("widget") == "groupe")
-            self.assertEqual("Réglages techniques", fields[technique]["label"], name)
+            self.assertTrue(fields[technique]["label"].startswith("Réglages techniques"), name)
             self.assertGreater(names.index("slug"), technique, name)
 
     def test_admin_exposes_every_editable_json_field(self):
@@ -670,6 +670,9 @@ class BuiltSiteTest(unittest.TestCase):
             for field in fields:
                 yield field
                 yield from fields_of(field.get("fields", []))
+                # Une liste à types (sections, liens) : chaque type a ses champs.
+                for variant in field.get("types", []):
+                    yield from fields_of(variant.get("fields", []))
                 if "field" in field:
                     yield field["field"]
 
@@ -681,7 +684,8 @@ class BuiltSiteTest(unittest.TestCase):
         # Un champ repris par une ancre est le même objet : on ne le compte qu’une fois.
         every_field = list({id(field): field for field in every_field}.values())
         slugs = [field for field in every_field if field["name"] == "slug" and field["widget"] == "string"]
-        self.assertEqual(6, len(slugs))
+        # Celle des pages de la maison vient du titre : son champ est caché.
+        self.assertEqual(5, len(slugs))
         # « Identifiant » pour les actualités et les projets, qui n’ont pas de page.
         self.assertEqual({"Adresse de la page", "Identifiant"}, {field["label"] for field in slugs})
         paypal = [field for field in every_field if field["name"].lower().endswith("hostedbuttonid")]

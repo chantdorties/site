@@ -188,12 +188,38 @@ C’est la seule rubrique où la **suppression** est possible : un projet n’a 
 propre, donc rien à rediriger. Le jour de la parution, supprimer le projet et créer le
 livre.
 
+## Créer une page
+
+1. **Pages de la maison › + Page**.
+2. Écrire le **titre**, puis le **texte** dans la section déjà ouverte.
+3. **Publier › Publier maintenant**.
+
+C’est tout. L’adresse de la page vient du titre (« Atelier dessin » devient
+`/atelier-dessin/`) et ne change plus ensuite, même si le titre est modifié. La page
+prend place à la fin de « La maison » et entre dans le plan du site. Pour l’ajouter au
+menu du haut : **Réglages du site › Menu principal**.
+
+Tout le reste du formulaire est facultatif :
+
+- **Une autre section** : le bouton « Ajouter une entrée de type section » propose trois
+  sortes de section — un **texte**, un **texte et des livres du catalogue** (montrés en
+  cartes sous le texte), ou une **offre à vendre** avec ses boutons PayPal (voir
+  ci-dessous). Chacune ne montre que ses propres champs.
+- **Des liens** : le bouton « Ajouter une entrée de type lien » propose un site web, une
+  adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
+  directement dans son lien.
+- **Des images** : une galerie au bas de la page.
+- **La carte sur « La maison »** : sa petite ligne et le texte de son lien.
+- **L’ordre** : pour placer la carte ailleurs qu’à la fin, donner un nombre plus petit
+  que celui des pages qui doivent la suivre.
+
 ## Vendre depuis une page
 
 Un livre se vend depuis sa fiche : c’est là que se saisit son bouton PayPal, et nulle part
 ailleurs. Mais certaines ventes n’appartiennent à aucun livre — une offre groupée à deux
-tomes, une adhésion, un don, un titre soldé. Pour celles-là, chaque **section** d’une page
-de la maison peut porter ses propres **boutons d’achat PayPal**.
+tomes, une adhésion, un don, un titre soldé. Pour celles-là, ajouter à la page une section
+de sorte **« Offre à vendre (bouton PayPal) »** : elle porte ses propres **boutons d’achat
+PayPal**.
 
 Un bouton demande deux choses : le texte que lira le visiteur, et l’**identifiant à
 13 caractères** fourni par PayPal au moment où le bouton y a été créé — par exemple
@@ -208,8 +234,8 @@ Deux précautions valent d’être répétées :
 - **Vérifier le bouton après publication** en cliquant dessus : PayPal affiche l’article et
   le montant réels. C’est la seule vérification qui compte.
 
-**Montrer les livres d’une offre.** Une section a aussi un champ **Livres de cette
-section** : on y choisit les livres dans une liste. Ils s’affichent sous le texte avec leur
+**Montrer les livres d’une offre.** Une section « Offre à vendre » ou « Texte et livres
+du catalogue » a un champ **Livres à montrer** : on y choisit les livres dans une liste. Ils s’affichent sous le texte avec leur
 couverture, leurs auteurs et leur prix, tirés de leur fiche — rien à recopier, rien à
 mettre à jour deux fois. C’est ainsi qu’est faite la page Offres spéciales : une section
 par offre, ses deux livres, son bouton.

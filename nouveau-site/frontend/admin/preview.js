@@ -312,9 +312,13 @@
       const titre = value(entry, 'titre', 'Page sans titre');
       const sections = safeWidgetsFor(widgetsFor, 'sections');
       const liens = enTableau(value(entry, 'liens')).map((lien, rang) => {
-        const cible = lien.type === 'livre' ? fiche('livres', lien.slug)?.titre : '';
-        return h('li', { key: rang }, h('a', { href: '#' },
-          lien.texte || cible || lisible(lien.slug) || String(lien.href || '').replace(/^https?:\/\/(www\.)?/, '')));
+        const cible = {
+          livre: () => fiche('livres', lien.slug)?.titre || lisible(lien.slug),
+          page: () => lisible(lien.pageCible || lien.slug),
+          document: () => 'Document PDF',
+          email: () => String(lien.href || '').replace(/^mailto:/, '')
+        }[lien.type]?.() || String(lien.href || '').replace(/^https?:\/\/(www\.)?/, '');
+        return h('li', { key: rang }, h('a', { href: '#' }, lien.texte || cible));
       });
       const images = enTableau(value(entry, 'images'))
         .map((item) => ({ src: assetUrl(getAsset, item?.image ?? item), alt: item?.alt || '' }))
