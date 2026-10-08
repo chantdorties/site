@@ -6,15 +6,21 @@
  *
  * Le jeton est ensuite remis à Decap par « postMessage », suivant le protocole qu’il
  * attend : la fenêtre surgissante annonce sa présence, l’administration répond, la
- * fenêtre transmet alors la charge utile. L’origine est toujours nommée explicitement —
- * avec « * », n’importe quelle page ouvrant ce relais repartirait avec un jeton
- * autorisant l’écriture dans le dépôt.
+ * fenêtre transmet alors la charge utile. Les origines sont toujours nommées
+ * explicitement — avec « * », n’importe quelle page ouvrant ce relais repartirait avec
+ * un jeton autorisant l’écriture dans le dépôt.
+ *
+ * L’interface peut vivre ailleurs que ce relais : chez Free, qui sert les fichiers
+ * statiques mais interdit à PHP toute sortie réseau. Seules les origines ci-dessous
+ * reçoivent le jeton ; celle du relais reste acceptée pour l’interface hébergée chez OVH.
  */
 
 declare(strict_types=1);
 
 require __DIR__ . '/../orties-admin-secret.php';
 $reglages = reglages_relais();
+
+const ORIGINES_ADMINISTRATION = ['https://chantdorties.pages-perso.free.fr'];
 
 if (($_SERVER['HTTPS'] ?? '') !== 'on' && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') !== 'https') {
     http_response_code(400);
@@ -29,36 +35,37 @@ if (($_SERVER['HTTPS'] ?? '') !== 'on' && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ??
  * navigateur — la fenêtre resterait alors sur « Connexion en cours… », quel que soit le
  * résultat de l’échange. Le message voyage donc par des attributs « data- ».
  */
-function repondre_a_decap(string $type, string $charge, string $origine): never
+function repondre_a_decap(string $type, string $charge, array $origines): never
 {
     $message = 'authorization:github:' . $type . ':' . $charge;
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');
     $message_html = htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $origine_html = htmlspecialchars($origine, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $origines_html = htmlspecialchars(implode(' ', $origines), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     echo <<<HTML
     <!doctype html>
     <html lang="fr"><head><meta charset="utf-8"><title>Connexion</title></head>
     <body><p id="etat">Connexion en cours…</p>
-    <script src="callback.js" data-origine="{$origine_html}" data-message="{$message_html}"></script>
+    <script src="callback.js" data-origines="{$origines_html}" data-message="{$message_html}"></script>
     </body></html>
     HTML;
     exit;
 }
 
 $origine = $reglages['origine'];
+$origines = array_values(array_unique([$origine, ...ORIGINES_ADMINISTRATION]));
 
 $attendu = $_COOKIE['relais_etat'] ?? '';
 $recu = $_GET['state'] ?? '';
 setcookie('relais_etat', '', ['expires' => time() - 3600, 'path' => '/', 'secure' => true, 'httponly' => true]);
 
 if ($attendu === '' || $recu === '' || !hash_equals($attendu, $recu)) {
-    repondre_a_decap('error', json_encode(['message' => 'Jeton anti-rejeu invalide'], JSON_THROW_ON_ERROR), $origine);
+    repondre_a_decap('error', json_encode(['message' => 'Jeton anti-rejeu invalide'], JSON_THROW_ON_ERROR), $origines);
 }
 
 $code = $_GET['code'] ?? '';
 if ($code === '') {
-    repondre_a_decap('error', json_encode(['message' => 'Code d’autorisation absent'], JSON_THROW_ON_ERROR), $origine);
+    repondre_a_decap('error', json_encode(['message' => 'Code d’autorisation absent'], JSON_THROW_ON_ERROR), $origines);
 }
 
 $requete = curl_init('https://github.com/login/oauth/access_token');
@@ -80,16 +87,16 @@ $erreur = curl_error($requete);
 curl_close($requete);
 
 if ($reponse === false) {
-    repondre_a_decap('error', json_encode(['message' => 'GitHub injoignable : ' . $erreur], JSON_THROW_ON_ERROR), $origine);
+    repondre_a_decap('error', json_encode(['message' => 'GitHub injoignable : ' . $erreur], JSON_THROW_ON_ERROR), $origines);
 }
 
 $donnees = json_decode((string) $reponse, true);
 if (!is_array($donnees) || empty($donnees['access_token'])) {
     $motif = is_array($donnees) ? ($donnees['error_description'] ?? $donnees['error'] ?? 'réponse inattendue') : 'réponse illisible';
-    repondre_a_decap('error', json_encode(['message' => 'Échange refusé : ' . $motif], JSON_THROW_ON_ERROR), $origine);
+    repondre_a_decap('error', json_encode(['message' => 'Échange refusé : ' . $motif], JSON_THROW_ON_ERROR), $origines);
 }
 
 repondre_a_decap('success', json_encode([
     'token' => $donnees['access_token'],
     'provider' => 'github',
-], JSON_THROW_ON_ERROR), $origine);
+], JSON_THROW_ON_ERROR), $origines);

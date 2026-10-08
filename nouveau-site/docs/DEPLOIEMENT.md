@@ -31,10 +31,27 @@ Dans `Settings > Secrets and variables > Actions`, configurer :
 Créer aussi l’environnement GitHub `production`. Une approbation obligatoire peut
 y être activée avant chaque transfert.
 
-Le script `tools/deploy-ftp.py --target free` utilise le FTP passif. Il exclut `/admin/`,
-envoie les médias avant les pages, remplace chaque fichier par renommage et conserve un
+Le script `tools/deploy-ftp.py --target free` utilise le FTP passif. Il publie aussi
+l’administration sous `/admin/` (voir « Administration chez Free » ci-dessous), envoie
+les médias avant les pages, remplace chaque fichier par renommage et conserve un
 manifeste distant. Seuls les anciens fichiers enregistrés dans ce manifeste peuvent
 être supprimés.
+
+## Administration chez Free
+
+L’interface d’administration (`frontend/admin/`, Decap compris) est publiée chez Free avec
+le site, à l’adresse <https://chantdorties.pages-perso.free.fr/admin/>. Seul le relais de
+connexion reste chez OVH (`orties-admin.varascundo.com`) : PHP chez Free ne peut joindre
+aucun serveur extérieur, donc pas GitHub — voir `docs/RELAIS-AUTH.md`.
+
+- **Toujours l’adresse en `https://chantdorties.pages-perso.free.fr`.** Le relais ne remet
+  le jeton qu’à cette origine ; `admin/garde.js` y renvoie d’office qui arrive par
+  `http://chantdorties.free.fr/admin/`.
+- **Aucun en-tête de sécurité n’est réglable chez Free.** La politique de sécurité est
+  donc écrite dans `admin/index.html` (balise `meta`), copie de celle de
+  `frontend/admin-serveur/htaccess.conf`, et `garde.js` empêche l’affichage dans un cadre.
+  Changer l’une sans l’autre fait échouer les tests.
+- L’aperçu OVH ne publie jamais `/admin/`.
 
 ## Le fichier `.htaccess`
 

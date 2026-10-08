@@ -16,16 +16,17 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 
+# Servi comme un fichier à part, jamais écrit dans la page : la politique de sécurité de
+# l'administration (script-src 'self') refuse tout script inline.
 RELOAD_SCRIPT = """
-<script>
 (() => {
   const events = new EventSource('/_dev/events');
   events.onmessage = (event) => {
     if (event.data === 'reload') window.location.reload();
   };
 })();
-</script>
-""".strip()
+""".lstrip()
+RELOAD_TAG = '<script src="/_dev/reload.js"></script>'
 
 
 def source_files(root: Path) -> list[Path]:
@@ -140,6 +141,9 @@ class DevHandler(SimpleHTTPRequestHandler):
         if urlsplit(self.path).path == "/_dev/events":
             self.serve_events()
             return
+        if urlsplit(self.path).path == "/_dev/reload.js":
+            self.serve_reload_script()
+            return
         requested = Path(self.translate_path(urlsplit(self.path).path))
         if requested.is_dir():
             requested /= "index.html"
@@ -150,11 +154,20 @@ class DevHandler(SimpleHTTPRequestHandler):
 
     def serve_html(self, path: Path) -> None:
         content = path.read_text(encoding="utf-8")
-        content = content.replace("</body>", f"  {RELOAD_SCRIPT}\n</body>")
+        content = content.replace("</body>", f"  {RELOAD_TAG}\n</body>")
         payload = content.encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def serve_reload_script(self) -> None:
+        payload = RELOAD_SCRIPT.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/javascript; charset=utf-8")
+        self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(payload)
 
