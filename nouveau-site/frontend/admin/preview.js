@@ -197,6 +197,88 @@
     }
   });
 
+  // L’aperçu du réglage Apparence : une miniature de site qui suit les valeurs en
+  // cours de saisie, avant tout enregistrement. Il reprend le contrat de
+  // docs/CONTRAT-APPARENCE.md : mêmes clés, mêmes tokens, même table de polices que
+  // tools/content_data.py (APPEARANCE_FONTS) et tools/rendu/feuille_de_style.py.
+  // Une valeur hors contrat — champ vidé, saisie en cours — retombe sur la valeur
+  // par défaut : la miniature ne reçoit jamais de CSS arbitraire.
+  //
+  // Les aperçus des autres fiches ne lisent pas ce réglage (Decap ne donne pas accès
+  // à une autre entrée depuis un aperçu) : ils montrent le thème par défaut de
+  // preview.css. Seul cet aperçu-ci montre les changements en cours.
+  const COULEURS_DU_THEME = [
+    ['couleurFond', '--color-background', '#f7f7f4'],
+    ['couleurSurface', '--color-surface', '#ffffff'],
+    ['couleurTexte', '--color-text', '#171a18'],
+    ['couleurTexteSecondaire', '--color-muted', '#626862'],
+    ['couleurPrincipale', '--color-primary', '#c63f32'],
+    ['couleurPrincipaleFoncee', '--color-primary-dark', '#963128'],
+    ['couleurSecondaire', '--color-secondary', '#3e6b50'],
+    ['couleurLiens', '--color-link', '#275c7a'],
+    ['couleurBoutons', '--color-button', '#171a18']
+  ];
+  const POLICES_DU_THEME = [
+    ['policeTitres', '--font-heading', 'serif-classique'],
+    ['policeTexte', '--font-body', 'sans-serif-moderne']
+  ];
+  const POLICES = {
+    'serif-classique': 'Georgia, "Times New Roman", serif',
+    'serif-livre': '"Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif',
+    'sans-serif-moderne': 'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    'sans-serif-humaniste': 'Optima, Candara, "Gill Sans", "Trebuchet MS", ui-sans-serif, sans-serif'
+  };
+  const COULEUR = /^#[0-9A-Fa-f]{6}$/;
+
+  const variablesDuTheme = (entry) => {
+    const style = {};
+    COULEURS_DU_THEME.forEach(([cle, token, defaut]) => {
+      const choix = value(entry, cle);
+      style[token] = typeof choix === 'string' && COULEUR.test(choix) ? choix : defaut;
+    });
+    POLICES_DU_THEME.forEach(([cle, token, defaut]) => {
+      const choix = value(entry, cle);
+      style[token] = Object.prototype.hasOwnProperty.call(POLICES, choix) ? POLICES[choix] : POLICES[defaut];
+    });
+    return style;
+  };
+
+  const AppearancePreview = createClass({
+    render() {
+      const { entry } = this.props;
+      return h('div', { className: 'appearance-preview', style: variablesDuTheme(entry) },
+        h('p', { className: 'appearance-preview__caption' }, 'Aperçu du thème'),
+        h('header', { className: 'appearance-preview__header' },
+          h('span', { className: 'appearance-preview__wordmark' },
+            'Chant ', h('span', { className: 'appearance-preview__accent' }, 'd’orties')),
+          h('nav', { className: 'appearance-preview__nav' },
+            h('span', { className: 'appearance-preview__nav-active' }, 'Catalogue'),
+            h('span', {}, 'Collections'),
+            h('a', { href: '#', onClick: (event) => event.preventDefault() }, 'Actualités'))
+        ),
+        h('section', { className: 'appearance-preview__hero' },
+          h('p', { className: 'appearance-preview__eyebrow' }, 'Maison d’édition jeunesse'),
+          h('h1', {}, 'Des histoires qui grattent'),
+          h('p', {}, 'Le texte courant s’affiche dans la police des textes, avec ',
+            h('a', { href: '#', onClick: (event) => event.preventDefault() }, 'un lien'),
+            ' au fil de la phrase.'),
+          h('p', { className: 'appearance-preview__actions' },
+            h('span', { className: 'appearance-preview__button' }, 'Explorer le catalogue'),
+            h('span', { className: 'appearance-preview__button appearance-preview__button--secondary' }, 'Voir les collections'))
+        ),
+        h('div', { className: 'appearance-preview__grid' },
+          h('article', { className: 'appearance-preview__card' },
+            h('h2', {}, 'Une carte'),
+            h('p', { className: 'appearance-preview__muted' }, 'Texte secondaire · Dès 9 ans'),
+            h('p', { className: 'appearance-preview__available' }, 'Disponible')),
+          h('article', { className: 'appearance-preview__card appearance-preview__card--secondary' },
+            h('h2', {}, 'Bloc secondaire'),
+            h('blockquote', {}, 'Une citation bordée de la couleur secondaire.'))
+        )
+      );
+    }
+  });
+
   // La description de référencement doit tenir en 160 caractères. La limite est déjà
   // vérifiée par le motif déclaré dans config.yml, mais elle ne se manifestait qu’au
   // moment d’enregistrer : ce compteur la rend visible pendant la frappe.
@@ -234,4 +316,6 @@
   CMS.registerPreviewTemplate('projets', ProjectPreview);
   CMS.registerPreviewTemplate('pages', PagePreview);
   CMS.registerPreviewTemplate('pages_fixes', PagePreview);
+  // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
+  CMS.registerPreviewTemplate('apparence', AppearancePreview);
 })();

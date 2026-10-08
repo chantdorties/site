@@ -256,8 +256,10 @@ collections:
       - name: apparence
         label: Apparence
         file: nouveau-site/content/reglages/apparence.json
+        # Seule entrée des réglages à montrer un aperçu : sa miniature de site
+        # (AppearancePreview, preview.js) suit les couleurs et polices en cours.
         editor:
-          preview: false
+          preview: true
         fields:
           - label: Fond du site
             name: couleurFond

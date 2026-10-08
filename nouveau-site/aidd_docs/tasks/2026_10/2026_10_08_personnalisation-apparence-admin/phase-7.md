@@ -1,5 +1,5 @@
 ---
-status: pending
+status: done
 ---
 
 # Instruction: Synchroniser l’aperçu Apparence de l’administration

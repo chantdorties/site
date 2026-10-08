@@ -420,15 +420,39 @@ class BuiltSiteTest(unittest.TestCase):
             )
         )
         self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
+        # Le seul gabarit attaché à un fichier de réglages, et à lui seul.
+        self.assertIn("apparence", registered)
+        owned = {("reglages", "apparence"): "apparence"}
         for collection in config["collections"]:
-            if (collection.get("editor") or {}).get("preview") is False:
-                continue
+            collection_preview = (collection.get("editor") or {}).get("preview")
             for entry in collection.get("files") or []:
+                entry_preview = (entry.get("editor") or {}).get("preview")
+                preview = collection_preview if entry_preview is None else entry_preview
+                if preview is False:
+                    continue
+                allowed = {collection["name"], owned.get((collection["name"], entry["name"]))}
                 self.assertNotIn(
                     entry["name"],
-                    registered - {collection["name"]},
+                    registered - allowed,
                     f"{collection['name']}/{entry['name']} recevrait un aperçu étranger",
                 )
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        for entry in reglages["files"]:
+            expected = entry["name"] == "apparence"
+            self.assertEqual(expected, (entry.get("editor") or {}).get("preview", False), entry["name"])
+
+    def test_appearance_preview_follows_the_python_contract(self):
+        script = (DIST / "admin" / "preview.js").read_text(encoding="utf-8")
+        fonts = dict(re.findall(r"^    '([a-z-]+)': '([^']+)',?$", script, re.M))
+        self.assertEqual(dict(APPEARANCE_FONTS), fonts)
+        colors = re.findall(r"\['(couleur\w+)', '(--color-[\w-]+)', '(#[0-9a-f]{6})'\]", script)
+        self.assertEqual(list(APPEARANCE_COLOR_FIELDS), [key for key, _, _ in colors])
+        variables = (ROOT / "frontend" / "assets" / "css" / "00-variables.css").read_text(encoding="utf-8")
+        stylesheet = (DIST / "admin" / "preview.css").read_text(encoding="utf-8")
+        for _, token, default in colors:
+            # Même valeur par défaut dans le site, l’aperçu Apparence et les autres aperçus.
+            self.assertIn(f"  {token}: {default};", variables, token)
+            self.assertIn(f"  {token}: {default};", stylesheet, token)
 
     def test_admin_exposes_every_editable_json_field(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
