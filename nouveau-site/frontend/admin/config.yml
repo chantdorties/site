@@ -1,9 +1,7 @@
 locale: fr
-# Phase d’aperçu : les liens « voir le site » mènent à la version montrée au client,
-# hébergée chez OVH. À remettre sur http://chantdorties.free.fr le jour de la mise en
-# ligne — voir docs/DEPLOIEMENT.md, section « Aperçu client (OVH) ».
-site_url: https://orties.varascundo.com
-display_url: https://orties.varascundo.com
+# Les liens « voir le site » mènent au site en ligne chez Free, à son adresse HTTPS.
+site_url: https://chantdorties.pages-perso.free.fr
+display_url: https://chantdorties.pages-perso.free.fr
 logo_url: logo.webp
 
 backend:

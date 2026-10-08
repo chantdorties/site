@@ -14,7 +14,8 @@ page permettant de l’installer a déjà disparu de plusieurs interfaces.
 
 | Fichier | Rôle |
 |---|---|
-| `frontend/admin/` | l’interface, script Decap embarqué compris |
+| `frontend/admin/` | l’interface, script Decap embarqué compris — publiée chez Free avec le site |
+| `frontend/admin-serveur/index.html` | page d’accueil du sous-domaine OVH, renvoie vers l’interface chez Free |
 | `frontend/admin-serveur/auth.php` | redirige vers GitHub avec un jeton anti-rejeu |
 | `frontend/admin-serveur/callback.php` | échange le code contre un jeton, le remet à Decap |
 | `frontend/admin-serveur/callback.js` | parle à Decap depuis la fenêtre surgissante ; séparé du PHP à cause de la politique de sécurité |
@@ -22,12 +23,12 @@ page permettant de l’installer a déjà disparu de plusieurs interfaces.
 | `~/orties-admin-secret.php` **sur le serveur** | Client ID et Client Secret, hors du dossier publié, jamais versionné |
 
 En ligne : `https://orties-admin.varascundo.com/`, servi par le dossier `orties-admin`
-du compte OVH. L’interface est aussi publiée chez Free, à
-`https://chantdorties.pages-perso.free.fr/admin/`, avec le site ; elle se connecte par ce
-même relais. `callback.php` ne remet le jeton qu’aux origines nommées : celle du relais
+du compte OVH, qui ne contient plus que le relais et une page renvoyant vers
+l’interface. Celle-ci est publiée chez Free, à
+`https://chantdorties.pages-perso.free.fr/admin/`, avec le site. `callback.php` ne remet le jeton qu’aux origines nommées : celle du relais
 et celles de `ORIGINES_ADMINISTRATION`. Ajouter une adresse d’administration, c’est
-l’ajouter à cette liste — jamais `'*'`. Le déploiement est assuré par `.github/workflows/admin.yml`, déclenché
-seulement quand `frontend/admin/` ou `frontend/admin-serveur/` changent.
+l’ajouter à cette liste — jamais `'*'`. Le relais est publié par `.github/workflows/admin.yml`, déclenché
+seulement quand `frontend/admin-serveur/` change.
 
 ## Déposer ou renouveler le Client Secret
 

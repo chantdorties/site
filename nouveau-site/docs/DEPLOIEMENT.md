@@ -154,21 +154,12 @@ curl -s https://orties.varascundo.com/ | grep canonical   # l’adresse de l’a
 curl -sI http://chantdorties.free.fr/                # le site du client n’a pas bougé
 ```
 
-### Administration pendant l’aperçu
+### Fin de l’aperçu
 
-L’administration a son propre sous-domaine OVH, `orties-admin.varascundo.com`, publié par
-`.github/workflows/admin.yml` : elle n’est jamais transférée avec le site, et le dossier
-d’aperçu ne la contient pas. Seules les clés `site_url` et `display_url` de
-`frontend/admin/config.yml` pointent vers l’aperçu, pour que les liens « voir le site »
-n’envoient pas le client sur l’ancien site. Les modifications continuent de passer par le
-flux éditorial : rien n’est publié sans validation.
-
-### Retour en arrière, le jour de la mise en ligne
-
-1. Remettre `site_url` et `display_url` sur `http://chantdorties.free.fr` dans
-   `frontend/admin/config.yml`.
-2. Passer la variable `APERCU_ENABLED` à `false`.
-3. Supprimer le dossier d’aperçu chez OVH et son sous-domaine.
+Le site est en ligne chez Free depuis le 8 octobre 2026 : les liens « voir le site » de
+l’administration (`site_url`, `display_url`) pointent vers lui. L’aperçu OVH n’a plus
+lieu d’être : passer la variable `APERCU_ENABLED` à `false`, puis, quand on le souhaite,
+supprimer le dossier d’aperçu chez OVH et son sous-domaine.
 
 ## Restauration
 
