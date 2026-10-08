@@ -34,27 +34,34 @@ L’administration permet de modifier :
   miniature d’aperçu, qui suit la couleur et la police en cours ; les autres aperçus
   gardent le thème par défaut ;
 - les livres, personnes, collections, actualités et projets ;
-- les trois pages principales et les pages de la maison ;
+- la page d’accueil, en un seul écran, et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;
 - les livres mis en avant sur l’accueil et les suggestions « À découvrir aussi » ;
 - l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
 - les textes alternatifs, les titres SEO, les descriptions SEO et les images sociales ;
-- les anciennes adresses à rediriger, le bouton PayPal général de don et les mots du
+- les anciennes adresses à rediriger, l’identifiant PayPal du don et les mots du
   parcours d’achat — « Ajouter au panier », « Voir mon panier », « Actuellement
-  indisponible », « Nous contacter », « Voir les offres », « Lire l’extrait », réunis
-  dans « Réglages du site > Paiement et dons » ;
+  indisponible », « Nous contacter », « Lire l’extrait », réunis dans « Réglages du
+  site > Paiement et dons ». Les boutons « Faire un don » et « Voir les offres »,
+  affichés sur l’accueil seulement, se libellent dans « Réglages du site > Page
+  d’accueil » ;
 - les boutons d’achat propres à une page — offre groupée, adhésion, don, titre soldé —
   saisis section par section dans la page concernée. Un livre vendu à son prix normal
   garde le sien dans sa fiche. Le bouton « voir mon panier », lui, est posé
   automatiquement dans le menu de chaque page : seul son libellé se règle.
 
-Les pages engendrées se règlent ailleurs que là où elles s’affichent. Le titre,
-l’introduction et l’encart Facebook de la page **Actualités** viennent de « Réglages
-du site > Introductions des pages > Actualités » — l’entrée « Actualités » des Pages
-principales ne porte que son référencement. Il en va de même du catalogue, des
-auteurs, des collections et de la maison. Les catégories annoncées en bas de la page
-Actualités ne s’écrivent pas : ce sont celles des articles réellement publiés.
+Chaque partie du site se règle à un seul endroit. L’accueil se règle entièrement
+dans « Réglages du site > Page d’accueil » (`content/reglages/accueil.json`), son
+référencement et ses anciennes adresses compris. Les pages engendrées — catalogue,
+auteurs, collections, actualités, maison et projets — se règlent dans « Réglages du
+site > Introductions des pages » (`content/reglages/pages.json`) ; pour les
+actualités et les projets, référencement et anciennes adresses y sont aussi. La page
+Projets est rebâtie depuis son bloc par `projects_page` (`tools/content_data.py`) :
+pour le reste du site, c’est une page de la maison ordinaire. Le dossier
+`content/pages-fixes/` n’existe plus, et sa réapparition est refusée par la
+validation. Les catégories annoncées en bas de la page Actualités ne s’écrivent pas :
+ce sont celles des articles réellement publiés.
 
 De nouvelles pages de la maison peuvent être créées.
 
@@ -65,8 +72,9 @@ la liste — le dépôt en garde de toute façon l’historique. Ailleurs, le st
 anciennes adresses**, qui renvoient alors vers sa rubrique parente plutôt que vers une
 page inexistante.
 
-Les pages Accueil, Actualités et Mentions légales doivent toujours rester publiées :
-leur adresse et leur statut ne sont pas modifiables.
+Les mentions légales, rangées parmi les pages de la maison, doivent toujours rester
+publiées à l’adresse `/mentions-legales/` : la validation refuse tout autre statut et
+tout changement d’adresse.
 
 Une adresse (`slug`) ne doit plus être changée après la première publication. Si
 un changement est indispensable, ajouter l’adresse précédente dans « Anciennes
@@ -76,7 +84,7 @@ adresses » afin que le générateur crée la redirection.
 
 La rubrique **Projets** tient les livres à paraître. Ils n’ont pas de page à eux :
 ils s’affichent sur la page Projets, sous son introduction, du plus petit rang au
-plus grand. L’introduction, elle, s’écrit dans « Pages de la maison > Projets ».
+plus grand. L’introduction, elle, s’écrit dans « Réglages du site > Introductions des pages > Projets ».
 
 Un auteur ou un illustrateur qui possède déjà une fiche se choisit dans « Auteurs »
 ou « Illustrateurs », et son nom devient un lien vers elle. Celui qui n’en a pas
@@ -159,3 +167,31 @@ un texte alternatif. Les PDF sont
 contrôlés avant publication.
 
 Les identifiants FTP ne sont jamais accessibles depuis l’administration ou le site.
+
+## Modifier le formulaire sans changer le site
+
+Les champs qui reviennent d’une rubrique à l’autre sont écrits une seule fois dans
+`frontend/admin/config.yml`, à leur première apparition, puis repris par une ancre
+YAML : le motif des adresses (`&motif_adresse`), l’identifiant PayPal
+(`&motif_paypal`), le plafond de 20 Mo (`&media_20_mo`), les galeries
+(`&image_et_alt`), le libellé et l’adresse d’un lien, la publication, l’ordre, les
+anciennes adresses et le référencement. Un test vérifie qu’aucun n’est recopié. Les
+barres d’outils suivent une règle écrite au même endroit : un texte court prend
+`*boutons_courts`, un texte long découpé en parties `*boutons_corps`.
+
+Les aperçus (`preview.js`) recopient le HTML du site pour en reprendre la feuille de
+style ; un test vérifie que chacune de leurs classes existe encore dans les pages
+produites. Côté générateur, le titre des pages intérieures et le formulaire PayPal
+n’existent qu’en un exemplaire (`render_page_heading`, `render_paypal_form`).
+
+Pour ranger le formulaire ou le générateur sans toucher au site, comparer deux
+générations :
+
+```sh
+cp -a dist /tmp/dist-avant
+# … modifications, puis nouvelle génération …
+python3 tools/compare-dist.py /tmp/dist-avant dist
+```
+
+Le script n’ignore que les retours à la ligne entre deux balises ; toute autre
+différence est listée.

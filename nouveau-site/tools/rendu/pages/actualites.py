@@ -4,6 +4,9 @@ Les entrées sont regroupées par catégorie (salon, parution, rencontre, vie de
 maison). Chaque entrée porte sa date, son titre, son texte, éventuellement une image
 et un lien.
 
+Elle n'est pas une page de texte : tous ses réglages, référencement et anciennes
+adresses compris, sont dans le bloc « actualites » de content/reglages/pages.json.
+
 Le style correspondant est dans frontend/assets/css/36-actualites.css pour les
 cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.
 """
@@ -11,7 +14,6 @@ cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
 
 from ..icones import icon
 from ..libelles import NEWS_TYPE_LABELS
@@ -19,8 +21,9 @@ from ..outils import e
 
 
 class PageActualites:
-    def build_news_page(self, page_data: dict[str, Any]) -> None:
+    def build_news_page(self) -> None:
         labels = self.page_settings["actualites"]
+        seo = labels.get("seo") or {}
         news_items = []
         for item in self.news:
             image_html = ""
@@ -77,11 +80,12 @@ class PageActualites:
                 '<div class="news-grid">' + "".join(news_items) + "</div></div></section>"
             )
         content = f"""
-<header class="page-heading"><div class="container">
-  {self.render_breadcrumbs([('Accueil', '/'), ('Actualités', None)])}
-  <p class="eyebrow">{e(labels['rubrique'])}</p><h1>{e(labels['titre'])}</h1>
-  <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="actualites")}</div>
-</div></header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Actualités', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="actualites"),
+)}
 {news_listing}
 <section class="section news-section"><div class="container">
   <div class="news-callout">
@@ -93,12 +97,12 @@ class PageActualites:
   </div>
 </div></section>"""
         page = self.render_page(
-            title=(page_data.get("seo") or {}).get("titre") or labels["titre"],
-            description=(page_data.get("seo") or {}).get("description") or labels["descriptionSeo"],
+            title=seo.get("titre") or labels["titre"],
+            description=labels["descriptionSeo"],
             route="/actualites/",
             content=content,
             active="actualites",
-            og_image=self.seo_image_media.get((page_data.get("seo") or {}).get("image")),
+            og_image=self.seo_image_media.get(seo.get("image")),
         )
         self.write_route("/actualites/", page)
 

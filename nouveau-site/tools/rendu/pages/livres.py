@@ -62,12 +62,10 @@ class PagesLivres:
             )
             subject = quote(f"Question — {book['titre']}")
             if book["disponible"]:
-                purchase_action = f"""
-<form class="paypal-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="hosted_button_id" value="{e(book['paypalHostedButtonId'])}">
-  <button class="button" type="submit">{icon('shopping-cart')} {e(self.payment_settings['libellePanier'])}</button>
-</form>{self.render_cart_link()}"""
+                purchase_action = self.render_paypal_form(
+                    hosted_button_id=book["paypalHostedButtonId"],
+                    label=self.payment_settings["libellePanier"],
+                ) + self.render_cart_link()
             else:
                 purchase_action = f'<a class="button" href="mailto:{e(self.site_settings["courriel"])}?subject={subject}">{icon("mail")} {e(self.payment_settings["libelleContact"])}</a>'
             purchase = f"""

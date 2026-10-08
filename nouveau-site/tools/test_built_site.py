@@ -78,7 +78,7 @@ class BuiltSiteTest(unittest.TestCase):
     def test_draft_pages_are_not_published(self):
         source_pages = [
             load_json(path)
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for path in (ROOT / "content" / folder).glob("*.json")
         ]
         sitemap = (DIST / "sitemap.xml").read_text(encoding="utf-8")
@@ -142,7 +142,7 @@ class BuiltSiteTest(unittest.TestCase):
         source_people = [load_json(path) for path in (ROOT / "content" / "personnes").glob("*.json")]
         source_pages = [
             load_json(path)
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for path in (ROOT / "content" / folder).glob("*.json")
         ]
         source_news = [load_json(path) for path in (ROOT / "content" / "actualites").glob("*.json")]
@@ -228,7 +228,7 @@ class BuiltSiteTest(unittest.TestCase):
             for label in expected:
                 self.assertIn(label, text, slug)
         home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
-        self.assertIn(payment["libelleOffres"], home.get_text(" ", strip=True))
+        self.assertIn(settings("accueil")["libelleOffres"], home.get_text(" ", strip=True))
 
     def test_every_collection_shows_its_emblem(self):
         """Les emblèmes viennent de l’ancien site : leur perte passerait inaperçue."""
@@ -342,7 +342,9 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("http://127.0.0.1:8082/api/v1", config["local_backend"]["url"])
         collections = {item["name"]: item for item in config["collections"]}
         self.assertIn("reglages", collections)
-        self.assertIn("pages_fixes", collections)
+        # L’accueil et les actualités sont dans les réglages, les mentions légales
+        # parmi les pages : plus de rubrique « Pages principales ».
+        self.assertNotIn("pages_fixes", collections)
         self.assertTrue(collections["pages"]["create"])
         self.assertFalse(collections["pages"]["delete"])
         # Seuls les projets s’effacent vraiment : ils n’ont pas d’adresse à rediriger.
@@ -350,10 +352,6 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertTrue(collections["projets"]["delete"])
         self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
-        self.assertEqual(
-            {"page_accueil", "page_actualites", "page_mentions_legales"},
-            {item["name"] for item in collections["pages_fixes"]["files"]},
-        )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
     def test_admin_protects_itself_where_no_header_can_be_set(self):
@@ -572,26 +570,15 @@ class BuiltSiteTest(unittest.TestCase):
             for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
-            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier.
-            self.assertEqual(
-                set(load_json(path)),
-                {
-                    field["name"]
-                    for field in settings_files[path.stem]["fields"]
-                    if field.get("widget") != "groupe"
-                },
-                path.name,
-            )
-
-        fixed_files = {
-            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
-            for item in collections["pages_fixes"]["files"]
-        }
-        for path in (ROOT / "content" / "pages-fixes").glob("*.json"):
+            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier ; un
+            # champ facultatif (référencement, anciennes adresses) peut y manquer.
+            fields = [
+                field for field in settings_files[path.stem]["fields"] if field.get("widget") != "groupe"
+            ]
+            stored = set(load_json(path))
+            self.assertLessEqual(stored, {field["name"] for field in fields}, path.name)
             self.assertLessEqual(
-                set(load_json(path)),
-                {field["name"] for field in fixed_files[path.stem]["fields"]},
-                path.name,
+                {field["name"] for field in fields if field.get("required", True)}, stored, path.name
             )
 
     def test_admin_appearance_entry_only_offers_contract_values(self):
@@ -634,6 +621,76 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIn("{{fields.url}}", links["summary"], entry)
         menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
         self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
+
+    def test_previews_only_use_classes_the_site_still_produces(self):
+        # Les aperçus recopient le HTML du site pour en reprendre la feuille de style.
+        # Une classe renommée dans le générateur laisserait l’aperçu sans style, sans
+        # erreur visible : chaque classe doit exister dans les pages produites, sauf
+        # celles propres à l’administration, définies dans preview.css ou admin.css.
+        script = (ROOT / "frontend" / "admin" / "preview.js").read_text(encoding="utf-8")
+        own_styles = "".join(
+            (ROOT / "frontend" / "admin" / name).read_text(encoding="utf-8")
+            for name in ("preview.css", "admin.css")
+        )
+        used = {
+            name
+            for match in re.finditer(r"className:\s*(['`])(.*?)\1", script)
+            for name in match.group(2).split()
+            if not re.search(r"[${}]", name)
+        }
+        produced = {
+            name
+            for path in self.public_html_files
+            for value in re.findall(r'class="([^"]*)"', path.read_text(encoding="utf-8"))
+            for name in value.split()
+        }
+        # Le bandeau des brouillons n’apparaît que dans « make preview » ; « compteur »
+        # n’est qu’une enveloppe, seules ses lignes ont un style.
+        known_exceptions = {"draft-notice", "compteur"}
+        self.assertIn('class="draft-notice"', (ROOT / "tools" / "rendu" / "gabarit.py").read_text(encoding="utf-8"))
+        self.assertGreater(len(used), 50)
+        missing = sorted(
+            name
+            for name in used - produced - known_exceptions
+            if not re.search(rf"\.{re.escape(name)}(?![\w-])", own_styles)
+        )
+        self.assertEqual([], missing)
+
+    def test_shared_form_components_are_defined_once(self):
+        # Un composant recopié finit par diverger : son motif et son plafond ne
+        # s’écrivent qu’une fois, les autres champs y renvoient par une ancre YAML.
+        source = (DIST / "admin" / "config.yml").read_text(encoding="utf-8")
+        for motif in ("max_file_size", "^[A-Z0-9]{13}$", "^[a-z0-9]+(?:-[a-z0-9]+)*$"):
+            self.assertEqual(1, source.count(motif), motif)
+        self.assertEqual(1, source.count('name: alt, widget: string'))
+
+        config = yaml.safe_load(source)
+
+        def fields_of(fields):
+            for field in fields:
+                yield field
+                yield from fields_of(field.get("fields", []))
+                if "field" in field:
+                    yield field["field"]
+
+        every_field = []
+        for collection in config["collections"]:
+            every_field += list(fields_of(collection.get("fields", [])))
+            for entry in collection.get("files", []):
+                every_field += list(fields_of(entry["fields"]))
+        # Un champ repris par une ancre est le même objet : on ne le compte qu’une fois.
+        every_field = list({id(field): field for field in every_field}.values())
+        slugs = [field for field in every_field if field["name"] == "slug" and field["widget"] == "string"]
+        self.assertEqual(6, len(slugs))
+        # « Identifiant » pour les actualités et les projets, qui n’ont pas de page.
+        self.assertEqual({"Adresse de la page", "Identifiant"}, {field["label"] for field in slugs})
+        paypal = [field for field in every_field if field["name"].lower().endswith("hostedbuttonid")]
+        self.assertEqual(3, len(paypal))
+        for field in paypal:
+            self.assertIn("Les 13 caractères fournis par PayPal", field["hint"], field["name"])
+        for field in every_field:
+            if field["name"].endswith("Alt") or field["name"] == "alt":
+                self.assertIn("lue par les personnes qui ne la voient pas", field["hint"], field["name"])
 
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
@@ -731,7 +788,7 @@ class BuiltSiteTest(unittest.TestCase):
             donation_form.select_one('input[name="hosted_button_id"]')["value"],
         )
         self.assertEqual(
-            payment["libelleDon"],
+            settings("accueil")["libelleDon"],
             donation_form.select_one("button").get_text(" ", strip=True),
         )
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
@@ -750,9 +807,13 @@ class BuiltSiteTest(unittest.TestCase):
         # Voir tools/rendu/technique.py.
         source_records += [
             (record, f"/{record['slug']}/" if record["statut"] == "publie" else "/la-maison/")
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for record in (load_json(path) for path in (ROOT / "content" / folder).glob("*.json"))
-            if record["slug"] not in {"accueil"}
+        ]
+        # L’accueil et les actualités gardent leurs anciennes adresses dans les réglages.
+        source_records += [
+            (settings("accueil"), "/"),
+            (settings("pages")["actualites"], "/actualites/"),
         ]
         for record, target in source_records:
             for source in record["anciensSlugs"]:

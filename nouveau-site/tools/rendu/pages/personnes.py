@@ -27,14 +27,12 @@ class PagesPersonnes:
     def build_people_index(self) -> None:
         labels = self.page_settings["personnes"]
         content = f"""
-<header class="page-heading">
-  <div class="container">
-    {self.render_breadcrumbs([('Accueil', '/'), ('Auteurs & illustrateurs', None)])}
-    <p class="eyebrow">{e(labels['rubrique'])}</p>
-    <h1>{e(labels['titre'])}</h1>
-    <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="personnes")}</div>
-  </div>
-</header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Auteurs & illustrateurs', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="personnes"),
+)}
 <section class="filter-panel" id="recherche" aria-label="Filtres de l’annuaire">
   <div class="container filter-grid filter-grid--people">
     <div class="field"><label for="person-search">Rechercher un nom</label><input id="person-search" type="search" placeholder="Rechercher…" autocomplete="off"></div>

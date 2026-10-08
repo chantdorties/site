@@ -12,21 +12,17 @@ le titre de la page suit 15-titre-de-page.css et les cartes
 
 from __future__ import annotations
 
-from ..outils import e
-
 
 class PageCatalogue:
     def build_catalogue(self) -> None:
         labels = self.page_settings["catalogue"]
         content = f"""
-<header class="page-heading">
-  <div class="container">
-    {self.render_breadcrumbs([('Accueil', '/'), ('Catalogue', None)])}
-    <p class="eyebrow">{e(labels['rubrique'])}</p>
-    <h1>{e(labels['titre'])}</h1>
-    <div class="lead rich-text">{self.markdown_html(labels['introduction'], owner="catalogue")}</div>
-  </div>
-</header>
+{self.render_page_heading(
+    [('Accueil', '/'), ('Catalogue', None)],
+    labels['titre'],
+    eyebrow=labels['rubrique'],
+    introduction=self.markdown_html(labels['introduction'], owner="catalogue"),
+)}
 <section class="filter-panel" id="recherche" aria-label="Filtres du catalogue">
   <div class="container filter-grid">
     <div class="field"><label for="book-search">Titre, auteur ou illustrateur</label><input id="book-search" type="search" placeholder="Rechercher…" autocomplete="off"></div>

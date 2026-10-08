@@ -15,9 +15,6 @@ from .outils import monogram, write_json, write_text
 
 class Sortie:
     def validate_source(self) -> None:
-        for required_page in ("accueil", "actualites"):
-            if required_page not in self.pages_by_slug:
-                raise ValueError(f"Page obligatoire absente : {required_page}")
         for book in self.books:
             if not (self.root / book["couverture"]).is_file():
                 raise FileNotFoundError(book["couverture"])

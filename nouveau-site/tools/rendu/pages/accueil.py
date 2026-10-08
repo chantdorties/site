@@ -8,8 +8,9 @@ Quatre bandeaux, dans l'ordre :
   3. les collections, via la vitrine partagée (composants/vitrine_collections.py) ;
   4. le bandeau sombre « Nous suivre » : actualités et manuscrits.
 
-Les textes viennent de content/reglages/accueil.json et de la page « accueil » ;
-les livres mis en avant sont cochés dans chaque fiche livre.
+Tous les textes viennent de content/reglages/accueil.json, rangés dans l'ordre des
+bandeaux ; seul l'identifiant du bouton de don reste dans les réglages de paiement.
+Les livres mis en avant sont cochés dans chaque fiche livre.
 
 Le style correspondant est réparti en trois fichiers, dans l'ordre des bandeaux :
 frontend/assets/css/20-accueil-banniere.css, 22-accueil-commercial.css et
@@ -34,14 +35,6 @@ class PageAccueil:
         return sorted(selected, key=lambda book: (book["ordreAccueil"], book["ordre"], book["slug"]))
 
     def build_home(self) -> None:
-        home_sections = self.pages_by_slug["accueil"]["sections"]
-        sections_by_id = {section.get("id"): section for section in home_sections}
-        intro = sections_by_id["presentation"]["contenu"]
-        house_update = sections_by_id["information"]
-        commercial_info = sections_by_id["soutien-commandes"]
-        booksellers_info = sections_by_id["libraires"]
-        individuals_info = sections_by_id["particuliers"]
-        support_info = sections_by_id["soutien"]
         labels = self.home_settings
         featured = self.featured_books()
         covers = "".join(
@@ -72,30 +65,30 @@ class PageAccueil:
 <section class="section home-commercial">
   <div class="container home-commercial__layout">
     <div>
-      <p class="eyebrow">{e(house_update['titre'])}</p>
+      <p class="eyebrow">{e(labels['informationRubrique'])}</p>
       <h2>{e(labels['titreInformation'])}</h2>
-      <div class="lead rich-text">{self.markdown_html(house_update['contenu'], owner="accueil")}</div>
+      <div class="lead rich-text">{self.markdown_html(labels['informationTexte'], owner="accueil")}</div>
     </div>
     <div class="home-commercial__details">
-      <h3>{e(commercial_info['titre'])}</h3>
-      <div class="rich-text">{self.markdown_html(commercial_info['contenu'], owner="accueil")}</div>
+      <h3>{e(labels['commandesTitre'])}</h3>
+      <div class="rich-text">{self.markdown_html(labels['commandesTexte'], owner="accueil")}</div>
       <div class="commercial-audiences">
         <section class="commercial-audience">
-          <h4>{e(booksellers_info['titre'])}</h4>
-          <div class="rich-text">{self.markdown_html(booksellers_info['contenu'], owner="accueil")}</div>
+          <h4>{e(labels['librairesTitre'])}</h4>
+          <div class="rich-text">{self.markdown_html(labels['librairesTexte'], owner="accueil")}</div>
         </section>
         <section class="commercial-audience">
-          <h4>{e(individuals_info['titre'])}</h4>
-          <div class="rich-text">{self.markdown_html(individuals_info['contenu'], owner="accueil")}</div>
+          <h4>{e(labels['particuliersTitre'])}</h4>
+          <div class="rich-text">{self.markdown_html(labels['particuliersTexte'], owner="accueil")}</div>
         </section>
       </div>
-      <div class="commercial-support rich-text">{self.markdown_html(support_info['contenu'], internal_links={'page de soutien': '/soutien/'}, owner="accueil")}</div>
+      <div class="commercial-support rich-text">{self.markdown_html(labels['soutienTexte'], internal_links={'page de soutien': '/soutien/'}, owner="accueil")}</div>
       <div class="hero-actions">
         <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
           <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
-          <button class="button" type="submit">{icon('heart')} {e(self.payment_settings['libelleDon'])}</button>
+          <button class="button" type="submit">{icon('heart')} {e(labels['libelleDon'])}</button>
         </form>
-        <a class="button button--secondary" href="/offres-speciales/">{e(self.payment_settings['libelleOffres'])}</a>
+        <a class="button button--secondary" href="/offres-speciales/">{e(labels['libelleOffres'])}</a>
       </div>
     </div>
   </div>
@@ -104,7 +97,7 @@ class PageAccueil:
   <div class="container">
     <div class="section-heading">
       <div><p class="eyebrow">{e(labels['collectionsRubrique'])}</p><h2>{e(labels['collectionsTitre'])}</h2></div>
-      <div class="rich-text">{self.markdown_html(intro, owner="accueil")}</div>
+      <div class="rich-text">{self.markdown_html(labels['collectionsTexte'], owner="accueil")}</div>
     </div>
     {self.render_collection_showcase(heading_level=3)}
   </div>
@@ -121,7 +114,7 @@ class PageAccueil:
   </div>
 </section>"""
         seo_title, seo_description, seo_image = self.seo_values(
-            self.pages_by_slug["accueil"],
+            labels,
             default_title=self.site_settings["nom"],
             default_description=self.site_settings["description"],
         )

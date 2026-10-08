@@ -17,7 +17,7 @@ class PagePlanDuSite:
         editorial_links = "".join(f'<li><a href="/{page["slug"]}/">{e(page["titre"])}</a></li>' for page in editorial)
         collection_links = "".join(f'<li><a href="/collections/{item["slug"]}/">{e(item["titre"])}</a></li>' for item in self.collections)
         content = f"""
-<header class="page-heading"><div class="container">{self.render_breadcrumbs([('Accueil', '/'), ('Plan du site', None)])}<h1>Plan du site</h1></div></header>
+{self.render_page_heading([('Accueil', '/'), ('Plan du site', None)], 'Plan du site')}
 <section class="section"><div class="container editorial-layout"><div>
   <section class="editorial-section"><h2>Livres et personnes</h2><ul><li><a href="/catalogue/">Catalogue</a></li><li><a href="/personnes/">Auteurs & illustrateurs</a></li></ul></section>
   <section class="editorial-section"><h2>Collections</h2><ul>{collection_links}</ul></section>

@@ -21,6 +21,7 @@ from .composants.fil_ariane import FilAriane
 from .composants.galerie import Galerie
 from .composants.panier import Panier
 from .composants.pied_de_page import PiedDePage
+from .composants.titre_de_page import TitreDePage
 from .composants.vitrine_collections import VitrineCollections
 from .feuille_de_style import feuille_de_style_complete
 from .gabarit import Gabarit
@@ -51,6 +52,7 @@ class SiteBuilder(
     EnTete,
     PiedDePage,
     FilAriane,
+    TitreDePage,
     CarteLivre,
     VitrineCollections,
     Galerie,
@@ -195,6 +197,7 @@ class SiteBuilder(
         self.build_book_pages()
         self.build_collection_pages()
         self.build_person_pages()
+        self.build_news_page()
         self.build_editorial_pages()
         self.build_house_page()
         self.build_site_map_page()

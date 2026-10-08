@@ -27,6 +27,16 @@ SEO_TITLE_MAX = 60
 SEO_DESCRIPTION_MAX = 160
 # Valeur neutre de ordreAccueil : les livres non mis en avant la partagent tous.
 HOME_ORDER_UNSET = 999
+# Les textes de l’accueil saisis en markdown, dans l’ordre de la page.
+HOME_MARKDOWN_FIELDS = (
+    "heroAccroche",
+    "informationTexte",
+    "commandesTexte",
+    "librairesTexte",
+    "particuliersTexte",
+    "soutienTexte",
+    "collectionsTexte",
+)
 SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
 
 # Le réglage Apparence, tel que le fixe docs/CONTRAT-APPARENCE.md. L’administration
@@ -187,12 +197,13 @@ def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
     for bloc, champs in (
         ("site", ("description",)),
         ("footer", ("presentation",)),
-        ("accueil", ("heroAccroche",)),
+        ("accueil", HOME_MARKDOWN_FIELDS),
     ):
         for champ in champs:
             valeur = settings.get(bloc, {}).get(champ)
             if isinstance(valeur, str):
                 yield f"Réglages {bloc}.{champ}", valeur
+    yield from _seo_markdown(settings.get("accueil", {}), "Réglages accueil")
     for rubrique, libelles in settings.get("pages", {}).items():
         if not isinstance(libelles, dict):
             continue
@@ -413,9 +424,21 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         "heroAccroche",
         "boutonCatalogue",
         "boutonCollections",
+        "informationRubrique",
         "titreInformation",
+        "informationTexte",
+        "commandesTitre",
+        "commandesTexte",
+        "librairesTitre",
+        "librairesTexte",
+        "particuliersTitre",
+        "particuliersTexte",
+        "soutienTexte",
+        "libelleDon",
+        "libelleOffres",
         "collectionsRubrique",
         "collectionsTitre",
+        "collectionsTexte",
         "suivreRubrique",
         "suivreTitre",
         "actualitesRubrique",
@@ -426,6 +449,8 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         "manuscritsAction",
     ):
         require_text(home, field, "Réglage accueil")
+    validate_seo(root, home, "Réglage accueil")
+    validate_old_slugs(home, "Réglage accueil")
 
     page_settings = settings["pages"]
     for name in ("catalogue", "personnes", "collections", "actualites", "maison"):
@@ -437,6 +462,11 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     actualites = page_settings["actualites"]
     for field in ("appelRubrique", "appelTitre", "appelTexte", "boutonFacebook"):
         require_text(actualites, field, "Réglage page actualites")
+    # Une seule description : descriptionSeo. Le bloc seo ne porte que le titre et l’image.
+    if "description" in (actualites.get("seo") or {}):
+        raise ContentError("Réglage page actualites: la description SEO se saisit dans descriptionSeo")
+    validate_seo(root, actualites, "Réglage page actualites")
+    validate_old_slugs(actualites, "Réglage page actualites")
 
     payment = settings["paiement"]
     button_id = payment.get("donationHostedButtonId")
@@ -448,9 +478,14 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
             "Réglage paiement: le bouton « voir mon panier » attend le bloc signé par PayPal, "
             f"commençant par {PAYPAL_CART_PREFIX}"
         )
+    # Les libellés du don et des offres sont passés dans l’écran de l’accueil, où ils
+    # s’affichent : un fichier resté à l’ancienne forme est refusé plutôt qu’ignoré.
+    for field in ("libelleDon", "libelleOffres"):
+        if field in payment:
+            raise ContentError(
+                f"Réglage paiement: {field} se règle désormais dans content/reglages/accueil.json"
+            )
     for field in (
-        "libelleDon",
-        "libelleOffres",
         "libellePanier",
         "libelleVoirPanier",
         "libelleDisponible",
@@ -734,26 +769,24 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_seo(root, page, "Page")
         validate_old_slugs(page, "Page")
 
-    for required_slug in ("accueil", "actualites", "mentions-legales"):
-        if pages_by_slug.get(required_slug, {}).get("statut") != "publie":
-            raise ContentError(f"Page structurelle {required_slug}: le statut publie est obligatoire")
-    home_section_ids = {section.get("id") for section in pages_by_slug["accueil"]["sections"]}
-    required_home_sections = {
-        "information",
-        "libraires",
-        "particuliers",
-        "presentation",
-        "soutien",
-        "soutien-commandes",
-    }
-    if home_section_ids != required_home_sections:
+    # L’accueil n’est plus une page : tous ses textes sont dans content/reglages/accueil.json.
+    for slug, place in (("accueil", "reglages/accueil.json"), ("actualites", "reglages/pages.json")):
+        if slug in pages_by_slug:
+            raise ContentError(f"Page {slug}: ses réglages sont désormais dans content/{place}")
+    # Les mentions légales sont obligatoires : leur adresse est figée, et le pied de
+    # page de chaque page y renvoie. Renommée, la page serait introuvable ici.
+    if pages_by_slug.get("mentions-legales", {}).get("statut") != "publie":
         raise ContentError(
-            "Page structurelle accueil: les six sections attendues doivent être conservées"
+            "Page mentions-legales: obligatoire, son adresse est figée et le statut publie est obligatoire"
         )
 
     validate_unique_orders(raw)
 
-    old_addresses: dict[str, str] = {}
+    old_addresses: dict[str, str] = {
+        value.strip().lstrip("/").casefold(): owner
+        for owner, record in (("accueil", settings["accueil"]), ("actualites", settings["pages"]["actualites"]))
+        for value in record.get("anciensSlugs", [])
+    }
     for kind, records in (
         ("livre", books),
         ("personne", people),
@@ -831,24 +864,56 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
                     raise ContentError(f"Projet {project['slug']}: nom vide dans {field}")
 
 
+def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
+    """La page Projets, rebâtie depuis son bloc de content/reglages/pages.json.
+
+    Son introduction se règle avec celles des autres pages engendrées ; le reste du
+    site (carte sur « La maison », plan du site, anciennes adresses) la traite comme
+    une page de la maison ordinaire, d’une seule section, sans lien ni image.
+    """
+    page = {
+        "slug": "projets",
+        "statut": intro.get("statut"),
+        "titre": intro.get("titre"),
+        "type": "page",
+        "sections": [{"titre": None, "contenu": intro.get("introduction")}],
+        "liens": [],
+        "images": [],
+        "documents": [],
+        "ordre": intro.get("ordre"),
+        "rubrique": intro.get("rubrique"),
+        "libelleAction": intro.get("libelleAction"),
+        "anciensSlugs": intro.get("anciensSlugs", []),
+    }
+    if "seo" in intro:
+        page["seo"] = intro["seo"]
+    return page
+
+
 def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
     content_dir = root / "content"
     raw = {
         "books": load_folder(content_dir, "livres"),
         "people": load_folder(content_dir, "personnes"),
         "collections": load_folder(content_dir, "collections"),
-        "pages": [
-            *load_folder(content_dir, "pages-fixes"),
-            *load_folder(content_dir, "pages"),
-        ],
+        "pages": load_folder(content_dir, "pages"),
         "news": load_folder(content_dir, "actualites"),
         "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),
     }
+    if any(page["slug"] == "projets" for page in raw["pages"]):
+        raise ContentError(
+            "Page projets: son introduction se règle désormais dans content/reglages/pages.json"
+        )
+    raw["pages"].append(projects_page(raw["settings"]["pages"].get("projets") or {}))
     apply_optional_defaults(raw)
-    page_slugs = [page["slug"] for page in raw["pages"]]
-    if len(page_slugs) != len(set(page_slugs)):
-        raise ContentError("Slug de page dupliqué entre pages-fixes et pages")
+    # L’ancien dossier des pages « principales » : l’accueil et les actualités sont
+    # passés dans les réglages, les mentions légales dans content/pages/.
+    if any((content_dir / "pages-fixes").glob("*.json")):
+        raise ContentError(
+            "content/pages-fixes/ n’est plus lu : l’accueil se règle dans reglages/accueil.json, "
+            "les actualités dans reglages/pages.json, les mentions légales dans pages/"
+        )
     validate_content(root, raw)
     legacy = read_json(root / "config" / "legacy-redirects.json")
 

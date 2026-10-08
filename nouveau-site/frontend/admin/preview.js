@@ -543,11 +543,21 @@
           h('p', { className: 'site-preview__actions' },
             bouton(value(entry, 'boutonCatalogue')), bouton(value(entry, 'boutonCollections'), true))),
         zone('2', 'Bloc information',
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'informationRubrique')),
           h('h2', {}, value(entry, 'titreInformation')),
-          h('p', { className: 'site-preview__muted' }, 'Le texte du bloc se règle dans Pages principales › Accueil.')),
+          blocMarkdown(widgetFor, 'informationTexte'),
+          h('h3', {}, value(entry, 'commandesTitre')),
+          blocMarkdown(widgetFor, 'commandesTexte'),
+          h('div', { className: 'site-preview__split' },
+            h('div', {}, h('h4', {}, value(entry, 'librairesTitre')), blocMarkdown(widgetFor, 'librairesTexte')),
+            h('div', {}, h('h4', {}, value(entry, 'particuliersTitre')), blocMarkdown(widgetFor, 'particuliersTexte'))),
+          blocMarkdown(widgetFor, 'soutienTexte'),
+          h('p', { className: 'site-preview__actions' },
+            bouton(`♡ ${value(entry, 'libelleDon')}`), bouton(value(entry, 'libelleOffres'), true))),
         zone('3', 'Collections',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'collectionsRubrique')),
           h('h2', {}, value(entry, 'collectionsTitre')),
+          blocMarkdown(widgetFor, 'collectionsTexte'),
           h('div', { className: 'site-preview__placeholder' }, 'Les six cartes des collections')),
         h('section', { className: 'site-preview__zone site-preview__zone--dark' },
           h('p', { className: 'site-preview__zone-label' },
@@ -571,7 +581,8 @@
     ['personnes', 'Auteurs et illustrateurs — /personnes/'],
     ['collections', 'Collections — /collections/'],
     ['actualites', 'Actualités — /actualites/'],
-    ['maison', 'La maison — /la-maison/']
+    ['maison', 'La maison — /la-maison/'],
+    ['projets', 'Projets — /projets/']
   ];
   const PageIntrosPreview = createClass({
     render() {
@@ -608,10 +619,7 @@
           h('p', {}, h('a', { href: '#' }, value(entry, 'libelleExtrait')))),
         zone(null, 'Page d’un livre indisponible',
           h('p', { className: 'site-preview__muted' }, value(entry, 'libelleIndisponible')),
-          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'libelleContact'), true))),
-        zone(null, 'Accueil, bloc soutien et commandes',
-          h('p', { className: 'site-preview__actions' },
-            bouton(`♡ ${value(entry, 'libelleDon')}`), bouton(value(entry, 'libelleOffres'), true))));
+          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'libelleContact'), true))));
     }
   });
 
@@ -671,7 +679,6 @@
   CMS.registerPreviewTemplate('actualites', NewsPreview);
   CMS.registerPreviewTemplate('projets', ProjectPreview);
   CMS.registerPreviewTemplate('pages', PagePreview);
-  CMS.registerPreviewTemplate('pages_fixes', PagePreview);
   // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
   CMS.registerPreviewTemplate('apparence', AppearancePreview);
   // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site. Les

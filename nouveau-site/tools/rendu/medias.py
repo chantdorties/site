@@ -169,8 +169,6 @@ class Medias:
                 )
 
         for page in self.pages:
-            if page["slug"] == "actualites":
-                continue
             if page["aVerifier"] and not self.include_drafts:
                 continue
             for index, item in enumerate(page["images"], start=1):
@@ -198,14 +196,20 @@ class Medias:
             self.save_webp(source, destination, (1200, 900))
             self.news_image_media[item["slug"]] = f"/assets/media/news/{destination.name}"
 
-        seo_records = [*self.books, *self.people, *self.collections, *self.pages, *self.news]
-        for item in seo_records:
-            source_path = item.get("seo", {}).get("image")
+        # L’accueil et les actualités n’ont pas de fiche : leur référencement est dans
+        # les réglages, et leur image prend le nom de la page.
+        seo_records = [
+            (item["slug"], item)
+            for item in (*self.books, *self.people, *self.collections, *self.pages, *self.news)
+        ]
+        seo_records += [("accueil", self.home_settings), ("actualites", self.page_settings["actualites"])]
+        for name, item in seo_records:
+            source_path = (item.get("seo") or {}).get("image")
             if not source_path or source_path in self.seo_image_media:
                 continue
             source = self.root / source_path
             digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:10]
-            destination = self.temp_output / "assets" / "media" / "social" / f"{item['slug']}-{digest}.webp"
+            destination = self.temp_output / "assets" / "media" / "social" / f"{name}-{digest}.webp"
             self.save_webp(source, destination, (1200, 630))
             self.seo_image_media[source_path] = f"/assets/media/social/{destination.name}"
 
@@ -223,7 +227,7 @@ class Medias:
             "pages": [
                 page
                 for page in self.pages
-                if page["slug"] != "actualites" and not (page["aVerifier"] and not self.include_drafts)
+                if not (page["aVerifier"] and not self.include_drafts)
             ],
             "settings": self.settings,
         }
