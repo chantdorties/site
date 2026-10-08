@@ -208,10 +208,8 @@ Tout le reste du formulaire est facultatif :
 - **Des liens** : le bouton « Ajouter une entrée de type lien » propose un site web, une
   adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
   directement dans son lien.
-- **Des images** : une galerie au bas de la page.
-- **La carte sur « La maison »** : sa petite ligne et le texte de son lien.
-- **L’ordre** : pour placer la carte ailleurs qu’à la fin, donner un nombre plus petit
-  que celui des pages qui doivent la suivre.
+- **Des photos** : elles s’affichent côte à côte sous le texte.
+- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : la petite ligne et le lien de la carte sur « La maison », la place de la page, les anciennes adresses, le référencement. Rarement utile.
 
 ## Vendre depuis une page
 

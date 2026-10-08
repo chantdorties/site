@@ -677,11 +677,56 @@
   // fichier. Déclaré « required: false » dans config.yml, sans quoi Decap refuserait
   // d’enregistrer une fiche où il est vide. admin.css masque l’étiquette et l’aide
   // ordinaires autour de lui : c’est ce rendu qui les remplace.
+  // Un intertitre « replie: true » cache les champs qui le suivent, jusqu’à l’intertitre
+  // suivant, derrière un bouton : les réglages rares ne s’affichent qu’à la demande.
+  // Decap pose chaque champ dans son propre conteneur, voisin des autres : on masque
+  // ces voisins. Un champ caché qui porte une erreur rouvre le bloc, pour qu’elle se voie.
   const Groupe = createClass({
+    getInitialState() {
+      return { ouvert: !this.props.field.get('replie') };
+    },
+    componentDidMount() {
+      this.appliquer();
+      if (!this.props.field.get('replie')) return;
+      this.observateur = new MutationObserver(() => {
+        if (!this.state.ouvert && this.voisins().some((voisin) =>
+          voisin.querySelector('[class*="ControlErrorsList"] li'))) this.setState({ ouvert: true });
+      });
+      const panneau = this.racine?.closest('[class*="ControlPaneContainer"]');
+      if (panneau) this.observateur.observe(panneau, { childList: true, subtree: true });
+    },
+    componentDidUpdate() {
+      this.appliquer();
+    },
+    componentWillUnmount() {
+      this.observateur?.disconnect();
+    },
+    voisins() {
+      const voisins = [];
+      let voisin = this.racine?.closest('[class*="ControlContainer"]')?.nextElementSibling;
+      while (voisin && !voisin.querySelector('.groupe-champ')) {
+        voisins.push(voisin);
+        voisin = voisin.nextElementSibling;
+      }
+      return voisins;
+    },
+    appliquer() {
+      if (!this.props.field.get('replie')) return;
+      this.voisins().forEach((voisin) => { voisin.style.display = this.state.ouvert ? '' : 'none'; });
+    },
     render() {
       const { field, forID } = this.props;
-      return h('div', { id: forID, className: 'groupe-champ' },
-        h('h2', { className: 'groupe-champ__titre' }, field.get('label')),
+      const replie = field.get('replie');
+      const titre = replie
+        ? h('button', {
+          type: 'button',
+          className: 'groupe-champ__bouton',
+          'aria-expanded': String(this.state.ouvert),
+          onClick: () => this.setState({ ouvert: !this.state.ouvert })
+        }, `${this.state.ouvert ? '▾' : '▸'} ${field.get('label')}`)
+        : field.get('label');
+      return h('div', { id: forID, className: 'groupe-champ', ref: (noeud) => { this.racine = noeud; } },
+        h('h2', { className: 'groupe-champ__titre' }, titre),
         field.get('hint') ? h('p', { className: 'groupe-champ__aide' }, field.get('hint')) : null
       );
     }

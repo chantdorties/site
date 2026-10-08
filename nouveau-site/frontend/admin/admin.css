@@ -184,6 +184,22 @@ noscript {
   line-height: 1.2;
 }
 
+/* Un intertitre repliable (« replie: true ») : le titre devient un bouton. */
+#nc-root .groupe-champ__bouton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+#nc-root .groupe-champ__bouton:hover,
+#nc-root .groupe-champ__bouton:focus-visible {
+  color: var(--green);
+}
+
 #nc-root .groupe-champ__aide {
   margin: 6px 0 0;
   color: var(--muted);

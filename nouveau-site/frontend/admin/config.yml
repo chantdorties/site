@@ -1240,29 +1240,29 @@ collections:
                     widget: string
                     hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
                     pattern: *motif_paypal
-      - label: "Images et liens (facultatif)"
+      - label: "Pour aller plus loin"
         name: groupe2
         widget: groupe
         required: false
-        hint: "Une galerie au bas de la page, et un encadré de liens à droite du texte."
-      - label: Images
+        hint: "Rien d’obligatoire ici : la page s’affiche très bien sans."
+      - label: Photos en bas de page
         name: images
-        label_singular: "image"
+        label_singular: "photo"
         widget: list
         required: false
         collapsed: true
         summary: "{{fields.alt}}"
-        hint: Affichées dans une galerie « En images » au bas de la page.
+        hint: "Elles s’affichent côte à côte, sous le texte."
         fields: *image_et_alt
       # Un lien a un type, choisi en l’ajoutant : seuls ses champs s’affichent. Un PDF
       # se dépose directement dans son lien.
-      - label: Liens et documents
+      - label: Liens à côté du texte
         name: liens
         label_singular: "lien"
         widget: list
         required: false
         collapsed: true
-        hint: "Affichés dans l’encadré « Liens et documents », à droite de la page. Le bouton « Ajouter une entrée de type lien » propose : un site web, une adresse courriel, un document PDF, un livre ou une autre page du site."
+        hint: "Un site, une adresse e-mail, un PDF à télécharger, un livre ou une autre page. Ils s’affichent dans un encadré, à droite du texte."
         types:
           - label: Site web
             name: externe
@@ -1301,36 +1301,33 @@ collections:
               # La valeur est l’adresse de la page, c’est-à-dire le nom de son fichier :
               # une page créée sans champ « slug » est ainsi atteignable.
               - {label: "Page", name: pageCible, widget: relation, collection: pages, search_fields: [titre], display_fields: [titre], value_field: "{{slug}}"}
-      - label: "Carte sur la page « La maison » (facultatif)"
-        name: groupe3
-        widget: groupe
-        required: false
-        hint: "Chaque page y apparaît sous forme de carte, avec le début de sa première section."
-      - label: Rubrique de la carte
-        name: rubrique
-        widget: string
-        required: false
-        hint: La petite ligne au-dessus du titre, sur la carte. Vide, le nom de la maison la remplace.
-      - label: Libellé du lien de la carte
-        name: libelleAction
-        widget: string
-        required: false
-        hint: Le texte cliquable au bas de la carte, par exemple « Découvrir les projets ».
-      - label: "Réglages techniques (facultatif)"
+      # Les réglages rares, repliés derrière leur intertitre (widget « groupe », replie).
+      - label: "Réglages techniques"
         name: groupe4
         widget: groupe
         required: false
-        hint: "Le rang de la page, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+        replie: true
+        hint: "Rarement utile : tout se règle tout seul si on n’y touche pas."
+      - label: Petite ligne sur la carte « La maison »
+        name: rubrique
+        widget: string
+        required: false
+        hint: "Vide : le nom de la maison."
+      - label: Texte du lien sur la carte « La maison »
+        name: libelleAction
+        widget: string
+        required: false
+        hint: "Vide : « Découvrir » suivi du titre de la page."
       # L’adresse est tirée du titre à la création et ne change plus : le champ reste
       # caché pour conserver celle des pages existantes.
       - {label: "Adresse", name: slug, widget: hidden}
       - {label: "Type", name: type, widget: hidden, default: page}
-      - label: Ordre d’affichage
+      - label: Place sur la page « La maison »
         name: ordre
         widget: number
         value_type: int
         min: 0
         required: false
-        hint: "La place de la carte sur « La maison », du plus petit au plus grand. Vide, la page se range après les autres. Deux pages ne peuvent pas partager le même nombre."
+        hint: "Vide : à la fin. Sinon, les pages vont du plus petit nombre au plus grand ; deux pages ne peuvent pas avoir le même."
       - *old_slugs
       - *seo
