@@ -462,6 +462,11 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     actualites = page_settings["actualites"]
     for field in ("appelRubrique", "appelTitre", "appelTexte", "boutonFacebook"):
         require_text(actualites, field, "Réglage page actualites")
+    # Une seule description : descriptionSeo. Le bloc seo ne porte que le titre et l’image.
+    if "description" in (actualites.get("seo") or {}):
+        raise ContentError("Réglage page actualites: la description SEO se saisit dans descriptionSeo")
+    validate_seo(root, actualites, "Réglage page actualites")
+    validate_old_slugs(actualites, "Réglage page actualites")
 
     payment = settings["paiement"]
     button_id = payment.get("donationHostedButtonId")
@@ -765,19 +770,19 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_old_slugs(page, "Page")
 
     # L’accueil n’est plus une page : tous ses textes sont dans content/reglages/accueil.json.
-    if "accueil" in pages_by_slug:
-        raise ContentError(
-            "Page accueil: ses textes se règlent désormais dans content/reglages/accueil.json"
-        )
-    for required_slug in ("actualites", "mentions-legales"):
+    for slug, place in (("accueil", "reglages/accueil.json"), ("actualites", "reglages/pages.json")):
+        if slug in pages_by_slug:
+            raise ContentError(f"Page {slug}: ses réglages sont désormais dans content/{place}")
+    for required_slug in ("mentions-legales",):
         if pages_by_slug.get(required_slug, {}).get("statut") != "publie":
             raise ContentError(f"Page structurelle {required_slug}: le statut publie est obligatoire")
 
     validate_unique_orders(raw)
 
     old_addresses: dict[str, str] = {
-        value.strip().lstrip("/").casefold(): "accueil"
-        for value in settings["accueil"].get("anciensSlugs", [])
+        value.strip().lstrip("/").casefold(): owner
+        for owner, record in (("accueil", settings["accueil"]), ("actualites", settings["pages"]["actualites"]))
+        for value in record.get("anciensSlugs", [])
     }
     for kind, records in (
         ("livre", books),

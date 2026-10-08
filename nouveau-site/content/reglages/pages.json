@@ -25,7 +25,10 @@
     "appelRubrique": "Suivre la maison",
     "appelTitre": "Nos prochaines rencontres et nouvelles parutions",
     "appelTexte": "Retrouvez toute l’actualité de Chant d’orties sur Facebook. La page est accessible même sans compte.",
-    "boutonFacebook": "Voir la page Facebook"
+    "boutonFacebook": "Voir la page Facebook",
+    "anciensSlugs": [
+      "actualite.html"
+    ]
   },
   "maison": {
     "rubrique": "Édition associative",

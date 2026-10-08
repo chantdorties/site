@@ -29,9 +29,6 @@ class PagesEditoriales:
         for page_data in self.pages:
             if page_data["slug"] == "entree":
                 continue
-            if page_data["slug"] == "actualites":
-                self.build_news_page(page_data)
-                continue
             draft = bool(page_data["aVerifier"])
             if draft and not self.include_drafts:
                 continue
@@ -65,7 +62,6 @@ class PagesEditoriales:
             # projets, elle, vient de leur propre rubrique.
             projects = self.render_projects() if page_data["slug"] == "projets" else ""
             description = page_data["sections"][0]["contenu"]
-            active = "actualites" if page_data["slug"] == "actualites" else "maison"
             content = f"""
 {self.render_page_heading(
     [('Accueil', '/'), (page_data['titre'], None)],
@@ -85,7 +81,7 @@ class PagesEditoriales:
                 description=seo_description,
                 route=f"/{page_data['slug']}/",
                 content=content,
-                active=active,
+                active="maison",
                 draft=draft,
                 og_image=seo_image,
             )
@@ -125,7 +121,7 @@ class PagesEditoriales:
         return [
             page
             for page in self.pages
-            if page["slug"] not in {"entree", "actualites"}
+            if page["slug"] != "entree"
             and (self.include_drafts or not page["aVerifier"])
         ]
 

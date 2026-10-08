@@ -353,6 +353,26 @@ collections:
                 buttons: *boutons_courts
                 editor_components: []
               - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
+              # La page n’a pas d’autre écran : son référencement et ses anciennes adresses
+              # sont ici. Sa description est « Description SEO » plus haut, d’où un bloc
+              # sans description.
+              - label: Anciennes adresses
+                name: anciensSlugs
+                label_singular: "ancienne adresse"
+                widget: list
+                required: false
+                collapsed: true
+                hint: Les adresses de l’ancien site, redirigées vers la page Actualités.
+                field: {label: "Ancienne adresse", name: adresse, widget: string}
+              - label: Référencement SEO
+                name: seo
+                widget: object
+                required: false
+                collapsed: true
+                hint: "Facultatif : sans rien ici, le site reprend le titre de la page. La description, elle, est le champ « Description SEO » ci-dessus."
+                fields:
+                  - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre de la page."}
+                  - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
           - label: La maison
             name: maison
             widget: object
@@ -1041,41 +1061,10 @@ collections:
   - name: pages_fixes
     label: Pages principales
     description: >-
-      Le titre et le texte de la page Actualités ne se règlent pas ici mais dans
-      « Réglages du site > Introductions des pages > Actualités ». Cette page est
-      engendrée : ses articles viennent de la rubrique Actualités.
+      Les mentions légales, obligatoires : leur adresse et leur publication sont figées.
     format: json
     delete: false
     files:
-      # La page Actualités est engendrée : son titre, son introduction et son appel
-      # viennent de « Réglages du site > Introductions des pages », et la liste des
-      # articles de la collection Actualités. Seuls le référencement et les anciennes
-      # adresses se règlent ici ; les autres champs sont masqués pour ne pas laisser
-      # croire qu’écrire dedans changerait la page.
-      - name: page_actualites
-        label: Actualités — référencement seulement
-        file: nouveau-site/content/pages-fixes/actualites.json
-        preview_path: "actualites/"
-        fields:
-          - {label: "Titre", name: titre, widget: hidden, default: Actualités}
-          - {label: "Adresse", name: slug, widget: hidden, default: actualites}
-          - {label: "Publication", name: statut, widget: hidden, default: publie}
-          - {label: "Type", name: type, widget: hidden, default: actualites}
-          - {label: "Ordre", name: ordre, widget: hidden, default: 10}
-          - label: Texte de référence
-            name: sections
-            widget: hidden
-            default:
-              - titre: null
-                contenu: >-
-                  Cette page est engendrée : son texte se règle dans « Réglages du site >
-                  Introductions des pages > Actualités », et les articles s’ajoutent dans
-                  la collection Actualités.
-          - {label: "Liens", name: liens, widget: hidden, default: []}
-          - {label: "Images", name: images, widget: hidden, default: []}
-          - {label: "Documents", name: documents, widget: hidden, default: []}
-          - *old_slugs
-          - *seo
       - name: page_mentions_legales
         label: Mentions légales
         file: nouveau-site/content/pages-fixes/mentions-legales.json

@@ -351,7 +351,7 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
         self.assertEqual(
-            {"page_actualites", "page_mentions_legales"},
+            {"page_mentions_legales"},
             {item["name"] for item in collections["pages_fixes"]["files"]},
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
@@ -788,7 +788,11 @@ class BuiltSiteTest(unittest.TestCase):
             (record, f"/{record['slug']}/" if record["statut"] == "publie" else "/la-maison/")
             for folder in ("pages", "pages-fixes")
             for record in (load_json(path) for path in (ROOT / "content" / folder).glob("*.json"))
-            if record["slug"] not in {"accueil"}
+        ]
+        # L’accueil et les actualités gardent leurs anciennes adresses dans les réglages.
+        source_records += [
+            (settings("accueil"), "/"),
+            (settings("pages")["actualites"], "/actualites/"),
         ]
         for record, target in source_records:
             for source in record["anciensSlugs"]:

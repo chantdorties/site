@@ -197,6 +197,7 @@ class SiteBuilder(
         self.build_book_pages()
         self.build_collection_pages()
         self.build_person_pages()
+        self.build_news_page()
         self.build_editorial_pages()
         self.build_house_page()
         self.build_site_map_page()

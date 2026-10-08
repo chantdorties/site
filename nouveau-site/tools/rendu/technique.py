@@ -78,6 +78,7 @@ class FichiersTechniques:
             }
         )
         add_old_addresses(self.home_settings, "/")
+        add_old_addresses(self.page_settings["actualites"], "/actualites/")
         # Hébergement Free : le .htaccess est bien lu, mais seules certaines
         # directives sont acceptées. mod_rewrite est absent : ne jamais ajouter
         # de RewriteRule ici. Les types MIME sont déclarés car le serveur ne
