@@ -17,6 +17,7 @@ from tools.content_data import (
     inline_media_paths,
     load_content,
     media_path,
+    navigation_id,
     valid_isbn,
     validate_appearance_settings,
 )
@@ -227,6 +228,41 @@ class ContentDataTest(unittest.TestCase):
             (root / "content" / "reglages" / "apparence.json").write_text("[]", encoding="utf-8")
             with self.assertRaisesRegex(ContentError, "Réglage apparence: .*objet JSON"):
                 load_content(root, include_drafts=True)
+
+    def test_a_menu_link_created_in_the_admin_gets_an_id_from_its_address(self):
+        self.assertEqual("home", navigation_id("/"))
+        self.assertEqual("agenda", navigation_id("/agenda/"))
+        self.assertEqual("la-maison", navigation_id("/la-maison/#equipe"))
+        with content_sandbox() as root:
+            path = root / "content" / "reglages" / "navigation.json"
+            navigation = json.loads(path.read_text(encoding="utf-8"))
+            navigation["liens"].insert(0, {"libelle": "Agenda", "url": "/agenda/", "visible": True})
+            path.write_text(json.dumps(navigation, ensure_ascii=False), encoding="utf-8")
+            links = load_content(root, include_drafts=True)["settings"]["navigation"]["liens"]
+            self.assertEqual("agenda", links[0]["id"])
+            self.assertEqual("home", links[1]["id"], "un identifiant existant n’est pas recalculé")
+
+    def test_menu_and_footer_links_follow_the_list_order(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            for relative, key in (
+                ("content/reglages/navigation.json", "liens"),
+                ("content/reglages/footer.json", "liensNavigation"),
+            ):
+                path = root / relative
+                setting = json.loads(path.read_text(encoding="utf-8"))
+                setting[key].reverse()
+                path.write_text(json.dumps(setting, ensure_ascii=False), encoding="utf-8")
+            builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            menu = re.findall(r'class="nav-link" href="([^"]+)"', builder.render_nav("home"))
+            self.assertEqual(
+                [item["url"] for item in builder.navigation_settings["liens"] if item["visible"]],
+                menu,
+            )
+            self.assertEqual("/la-maison/", menu[0])
+            footer = builder.render_footer()
+            self.assertLess(footer.index('href="/actualites/"'), footer.index('href="/catalogue/"'))
 
     def test_orders_and_home_selections_are_explicit(self):
         for records in (self.books, self.people, self.collections, self.pages):

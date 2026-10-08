@@ -22,10 +22,8 @@ class EnTete:
 
     def render_nav(self, active: str, *, mobile: bool = False) -> str:
         links = []
-        navigation = sorted(
-            (item for item in self.navigation_settings["liens"] if item["visible"]),
-            key=lambda item: (item["ordre"], item["id"]),
-        )
+        # L’ordre d’affichage est celui de la liste, réglé par glisser-déposer.
+        navigation = [item for item in self.navigation_settings["liens"] if item["visible"]]
         for item in navigation:
             current = ' aria-current="page"' if item["id"] == active else ""
             links.append(

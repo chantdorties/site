@@ -279,6 +279,193 @@
     }
   });
 
+  // Les aperçus des Réglages du site : chacun montre, dans une maquette réduite du
+  // site, l’endroit exact où apparaissent les textes du réglage en cours. Ils
+  // utilisent le thème par défaut de preview.css ; les textes viennent de la saisie.
+  const blocMarkdown = (widgetFor, name, className = 'site-preview__text') =>
+    h('div', { className }, safeWidgetFor(widgetFor, name));
+  const cadre = (legende, ...enfants) =>
+    h('div', { className: 'site-preview' },
+      h('p', { className: 'site-preview__caption' }, legende),
+      ...enfants);
+  const zone = (numero, titre, ...enfants) =>
+    h('section', { className: 'site-preview__zone' },
+      h('p', { className: 'site-preview__zone-label' },
+        numero ? h('span', { className: 'site-preview__number' }, numero) : null, titre),
+      ...enfants);
+  const marque = () =>
+    h('span', { className: 'site-preview__wordmark' },
+      'Chant ', h('span', { className: 'site-preview__accent' }, 'd’orties'));
+  const bouton = (texte, secondaire = false) =>
+    texte ? h('span', {
+      className: secondaire ? 'site-preview__button site-preview__button--secondary' : 'site-preview__button'
+    }, texte) : null;
+  // Le jeton {nombre} est remplacé par le compte réel à la génération.
+  const avecNombre = (texte) => String(texte || '').replace(/\{nombre\}/g, '64');
+  const liste = (entry, name) => {
+    const valeurs = entry.getIn(['data', name]);
+    return valeurs?.toJS ? valeurs.toJS() : [];
+  };
+
+  const SitePreview = createClass({
+    render() {
+      const { entry, widgetFor } = this.props;
+      // Comme l’en-tête du site : le dernier mot du nom court passe en couleur.
+      const nomCourt = String(value(entry, 'nomCourt'));
+      const coupure = nomCourt.lastIndexOf(' ');
+      return cadre('Identité de la maison',
+        zone(null, 'En-tête, à côté du logo',
+          h('header', { className: 'site-preview__header' },
+            h('span', { className: 'site-preview__wordmark' },
+              coupure > 0 ? nomCourt.slice(0, coupure + 1) : nomCourt,
+              h('span', { className: 'site-preview__accent' }, coupure > 0 ? nomCourt.slice(coupure + 1) : '')))),
+        zone(null, 'Pied de page et titre des onglets',
+          h('h1', {}, value(entry, 'nom', 'Nom de la maison')),
+          h('p', { className: 'site-preview__muted' }, `Onglet d’une page : « Catalogue | ${value(entry, 'nom')} »`)),
+        zone(null, 'Moteurs de recherche, page d’accueil',
+          blocMarkdown(widgetFor, 'description')),
+        zone(null, 'Contact',
+          h('p', {}, h('a', { href: '#' }, value(entry, 'courriel'))),
+          h('p', {}, h('a', { href: '#' }, 'Facebook'), ' · ', value(entry, 'facebook')),
+          h('p', { className: 'site-preview__muted' }, `Adresse publique du site : ${value(entry, 'domaine')}`)));
+    }
+  });
+
+  const NavigationPreview = createClass({
+    render() {
+      const { entry } = this.props;
+      const liens = liste(entry, 'liens');
+      const visibles = liens.filter((lien) => lien.visible !== false);
+      const masques = liens.filter((lien) => lien.visible === false);
+      const recherche = value(entry, 'recherche')?.toJS?.() || {};
+      return cadre('Menu principal',
+        zone(null, 'En-tête, sur ordinateur',
+          h('header', { className: 'site-preview__header' },
+            marque(),
+            h('nav', { className: 'site-preview__nav' },
+              visibles.map((lien, index) => h('span', {
+                key: index,
+                className: index === 0 ? 'site-preview__nav-active' : null,
+                title: lien.url
+              }, lien.libelle)),
+              h('span', { className: 'site-preview__icon', title: recherche.libelle }, '⌕')))),
+        zone(null, 'Menu sur téléphone',
+          h('ul', { className: 'site-preview__mobile-menu' },
+            visibles.map((lien, index) => h('li', { key: index }, lien.libelle, h('small', {}, lien.url))),
+            recherche.libelle ? h('li', {}, recherche.libelle, h('small', {}, recherche.url)) : null)),
+        masques.length ? zone(null, 'Masqués, absents du site',
+          h('p', { className: 'site-preview__muted' },
+            masques.map((lien) => lien.libelle).join(' · '))) : null);
+    }
+  });
+
+  const FooterPreview = createClass({
+    render() {
+      const { entry, widgetFor } = this.props;
+      const liens = liste(entry, 'liensNavigation');
+      return cadre('Pied de page, en bas de chaque page',
+        h('footer', { className: 'site-preview__footer' },
+          h('div', {},
+            h('p', { className: 'site-preview__footer-brand' }, 'Éditions Chant d’orties'),
+            blocMarkdown(widgetFor, 'presentation', 'site-preview__footer-text')),
+          h('div', {},
+            h('p', { className: 'site-preview__footer-title' }, value(entry, 'titreNavigation')),
+            h('ul', {}, liens.map((lien, index) => h('li', { key: index, title: lien.url }, lien.libelle)))),
+          h('div', {},
+            h('p', { className: 'site-preview__footer-title' }, value(entry, 'titreInformations')),
+            h('ul', {},
+              h('li', {}, 'adresse courriel'),
+              h('li', {}, value(entry, 'libelleFacebook')),
+              h('li', {}, value(entry, 'libelleManuscrits')),
+              h('li', {}, value(entry, 'libellePlan')),
+              h('li', {}, value(entry, 'libelleMentions'))))));
+    }
+  });
+
+  const HomeTextsPreview = createClass({
+    render() {
+      const { entry, widgetFor } = this.props;
+      return cadre('Page d’accueil — les numéros suivent ceux du formulaire',
+        zone('1', 'Bandeau',
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'heroRubrique')),
+          h('h1', {}, value(entry, 'heroTitre'), ' ',
+            h('span', { className: 'site-preview__accent' }, value(entry, 'heroAccent'))),
+          blocMarkdown(widgetFor, 'heroAccroche'),
+          h('p', { className: 'site-preview__actions' },
+            bouton(value(entry, 'boutonCatalogue')), bouton(value(entry, 'boutonCollections'), true))),
+        zone('2', 'Bloc information',
+          h('h2', {}, value(entry, 'titreInformation')),
+          h('p', { className: 'site-preview__muted' }, 'Le texte du bloc se règle dans Pages principales › Accueil.')),
+        zone('3', 'Collections',
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'collectionsRubrique')),
+          h('h2', {}, value(entry, 'collectionsTitre')),
+          h('div', { className: 'site-preview__placeholder' }, 'Les six cartes des collections')),
+        h('section', { className: 'site-preview__zone site-preview__zone--dark' },
+          h('p', { className: 'site-preview__zone-label' },
+            h('span', { className: 'site-preview__number' }, '4'), 'Suivre la maison'),
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'suivreRubrique')),
+          h('h2', {}, value(entry, 'suivreTitre')),
+          h('div', { className: 'site-preview__split' },
+            h('div', {},
+              h('p', { className: 'site-preview__eyebrow' }, value(entry, 'actualitesRubrique')),
+              h('h3', {}, value(entry, 'actualitesTitre')),
+              h('p', {}, `${value(entry, 'actualitesAction')} →`)),
+            h('div', {},
+              h('p', { className: 'site-preview__eyebrow' }, value(entry, 'manuscritsRubrique')),
+              h('h3', {}, value(entry, 'manuscritsTitre')),
+              h('p', {}, `${value(entry, 'manuscritsAction')} →`)))));
+    }
+  });
+
+  const PAGES_ENGENDREES = [
+    ['catalogue', 'Catalogue — /catalogue/'],
+    ['personnes', 'Auteurs et illustrateurs — /personnes/'],
+    ['collections', 'Collections — /collections/'],
+    ['actualites', 'Actualités — /actualites/'],
+    ['maison', 'La maison — /la-maison/']
+  ];
+  const PageIntrosPreview = createClass({
+    render() {
+      const { entry, widgetsFor } = this.props;
+      return cadre('En-têtes des pages engendrées ({nombre} devient le nombre réel)',
+        PAGES_ENGENDREES.map(([cle, legende]) => {
+          const bloc = safeWidgetsFor(widgetsFor, cle);
+          const donnee = (champ) => bloc?.getIn?.(['data', champ]) || '';
+          const texte = (champ) => bloc?.getIn?.(['widgets', champ]) || null;
+          return h('div', { key: cle },
+            zone(null, legende,
+              h('p', { className: 'site-preview__eyebrow' }, avecNombre(donnee('rubrique'))),
+              h('h1', {}, donnee('titre')),
+              h('div', { className: 'site-preview__text' }, texte('introduction'))),
+            cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
+              h('p', { className: 'site-preview__zone-label' }, 'Actualités — bloc Facebook, en bas de page'),
+              h('p', { className: 'site-preview__eyebrow' }, donnee('appelRubrique')),
+              h('h2', {}, donnee('appelTitre')),
+              h('div', { className: 'site-preview__text' }, texte('appelTexte')),
+              h('p', { className: 'site-preview__actions' }, bouton(donnee('boutonFacebook')))) : null);
+        }));
+    }
+  });
+
+  const PaymentPreview = createClass({
+    render() {
+      const { entry } = this.props;
+      return cadre('Parcours d’achat',
+        zone(null, 'Page d’un livre disponible',
+          h('p', { className: 'site-preview__price' }, '7 € ',
+            h('span', { className: 'site-preview__available' }, value(entry, 'libelleDisponible'))),
+          h('p', { className: 'site-preview__actions' },
+            bouton(value(entry, 'libellePanier')), bouton(value(entry, 'libelleVoirPanier'), true)),
+          h('p', {}, h('a', { href: '#' }, value(entry, 'libelleExtrait')))),
+        zone(null, 'Page d’un livre indisponible',
+          h('p', { className: 'site-preview__muted' }, value(entry, 'libelleIndisponible')),
+          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'libelleContact'), true))),
+        zone(null, 'Accueil, bloc soutien et commandes',
+          h('p', { className: 'site-preview__actions' },
+            bouton(`♡ ${value(entry, 'libelleDon')}`), bouton(value(entry, 'libelleOffres'), true))));
+    }
+  });
+
   // La description de référencement doit tenir en 160 caractères. La limite est déjà
   // vérifiée par le motif déclaré dans config.yml, mais elle ne se manifestait qu’au
   // moment d’enregistrer : ce compteur la rend visible pendant la frappe.
@@ -318,4 +505,13 @@
   CMS.registerPreviewTemplate('pages_fixes', PagePreview);
   // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
   CMS.registerPreviewTemplate('apparence', AppearancePreview);
+  // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site. Les
+  // noms sont ceux des entrées de config.yml : « introductions » et non « pages »,
+  // qui désignerait aussi la rubrique Pages de la maison.
+  CMS.registerPreviewTemplate('site', SitePreview);
+  CMS.registerPreviewTemplate('navigation', NavigationPreview);
+  CMS.registerPreviewTemplate('footer', FooterPreview);
+  CMS.registerPreviewTemplate('accueil', HomeTextsPreview);
+  CMS.registerPreviewTemplate('introductions', PageIntrosPreview);
+  CMS.registerPreviewTemplate('paiement', PaymentPreview);
 })();

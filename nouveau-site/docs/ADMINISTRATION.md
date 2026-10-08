@@ -24,11 +24,15 @@ masqué. Un contenu `brouillon` n’apparaît pas sur le site public. Un contenu
 
 L’administration permet de modifier :
 
-- l’identité, le contact, le menu, le pied de page et les principaux textes du site ;
+- l’identité, le contact, le menu, le pied de page et les principaux textes du site.
+  Chaque entrée des Réglages a un aperçu (maquette de la zone concernée,
+  `frontend/admin/preview.js`). Les liens du menu et du pied de page s’affichent dans
+  l’ordre de leur liste, réglé par glisser-déposer ; l’identifiant d’un lien du menu
+  est caché et, pour un nouveau lien, déduit de son adresse (`navigation_id`) ;
 - l’apparence : neuf couleurs et deux polices, dans « Réglages du site > Apparence »
   (contrat : [CONTRAT-APPARENCE.md](CONTRAT-APPARENCE.md)). L’entrée a sa propre
-  miniature d’aperçu, qui suit la saisie ; les aperçus des autres fiches gardent le
-  thème par défaut ;
+  miniature d’aperçu, qui suit la couleur et la police en cours ; les autres aperçus
+  gardent le thème par défaut ;
 - les livres, personnes, collections, actualités et projets ;
 - les trois pages principales et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;

@@ -37,23 +37,23 @@ collections:
       que les couleurs et polices du site.
     format: json
     delete: false
-    # Les réglages ne correspondent à aucune page : sans cette ligne, Decap
-    # applique l’aperçu dont le nom coïncide avec celui du fichier.
-    editor:
-      preview: false
+    # Chaque réglage a son aperçu (preview.js) : une maquette de la zone du site où
+    # ses textes apparaissent. Decap retrouve l’aperçu par le nom de l’entrée : ces
+    # noms ne doivent pas coïncider avec ceux d’autres rubriques (voir « introductions »).
     files:
       - name: site
         label: Identité et contact
         file: nouveau-site/content/reglages/site.json
         fields:
-          - {label: "Nom complet", name: nom, widget: string}
-          - {label: "Nom court", name: nomCourt, widget: string}
-          - {label: "Adresse courriel", name: courriel, widget: string}
+          - {label: "Nom complet", name: nom, widget: string, hint: "Repris dans le pied de page, le titre des onglets et le titre de l’accueil pour les moteurs de recherche."}
+          - {label: "Nom court", name: nomCourt, widget: string, hint: "Le nom affiché dans l’en-tête, à côté du logo. Son dernier mot s’affiche en couleur."}
+          - {label: "Adresse courriel", name: courriel, widget: string, hint: "L’adresse de contact affichée dans le pied de page et utilisée par les boutons « Nous contacter »."}
           - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
-          - {label: "Domaine public", name: domaine, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+          - {label: "Domaine public", name: domaine, widget: string, hint: "L’adresse du site en ligne. Réglage technique : ne le changer qu’en cas de changement d’hébergement.", pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
           - label: Description générale
             name: description
             widget: markdown
+            hint: La description de l’accueil pour les moteurs de recherche, quand l’accueil n’a pas la sienne.
             modes: [rich_text]
             minimal: true
             buttons: &boutons_courts [bold, italic, code, link, bulleted-list, numbered-list, quote]
@@ -62,20 +62,28 @@ collections:
         label: Menu principal
         file: nouveau-site/content/reglages/navigation.json
         fields:
+          # L’ordre du menu est celui de la liste : on le change par glisser-déposer.
+          # L’identifiant reste dans le fichier (il surligne l’onglet de la page en
+          # cours) mais n’est pas montré ; un nouveau lien le reçoit de son adresse.
           - label: Liens
+            label_singular: lien
             name: liens
             widget: list
             min: 1
-            summary: "{{fields.libelle}}"
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: Glisser un lien par sa poignée pour changer sa place dans le menu. Décocher « Visible » le retire du menu sans l’effacer.
             fields:
-              - {label: "Identifiant technique", name: id, widget: string, hint: "Ne pas modifier l’identifiant d’un lien existant."}
-              - {label: "Libellé", name: libelle, widget: string}
-              - {label: "Adresse", name: url, widget: string}
+              - {label: "Identifiant technique", name: id, widget: hidden}
+              - {label: "Libellé", name: libelle, widget: string, hint: "Le mot affiché dans le menu."}
+              - {label: "Adresse", name: url, widget: string, hint: "Une page du site, par exemple /catalogue/."}
               - {label: "Visible", name: visible, widget: boolean, default: true}
-              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
           - label: Recherche
             name: recherche
             widget: object
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: La loupe de l’en-tête, et le lien « Rechercher » du menu sur téléphone.
             fields:
               - {label: "Libellé", name: libelle, widget: string}
               - {label: "Adresse", name: url, widget: string}
@@ -92,14 +100,16 @@ collections:
             editor_components: []
           - {label: "Titre de la navigation", name: titreNavigation, widget: string}
           - label: Liens de navigation
+            label_singular: lien
             name: liensNavigation
             widget: list
             min: 1
-            summary: "{{fields.libelle}}"
+            collapsed: true
+            summary: "{{fields.libelle}} — {{fields.url}}"
+            hint: Glisser un lien par sa poignée pour changer sa place dans la colonne.
             fields:
               - {label: "Libellé", name: libelle, widget: string}
               - {label: "Adresse", name: url, widget: string}
-              - {label: "Ordre", name: ordre, widget: number, value_type: int, min: 0}
           - {label: "Titre des informations", name: titreInformations, widget: string}
           - {label: "Libellé Facebook", name: libelleFacebook, widget: string}
           - {label: "Libellé Manuscrits", name: libelleManuscrits, widget: string}
@@ -150,13 +160,17 @@ collections:
           - {label: "4. Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
           - {label: "4. Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
           - {label: "4. Carte Manuscrits — lien", name: manuscritsAction, widget: string}
-      - name: pages
+      # Le nom d’entrée n’est pas « pages » : l’aperçu de la rubrique Pages de la
+      # maison s’appliquerait. Le fichier, lui, reste pages.json.
+      - name: introductions
         label: Introductions des pages
         file: nouveau-site/content/reglages/pages.json
         fields:
           - label: Catalogue
             name: catalogue
             widget: object
+            collapsed: true
+            summary: "{{fields.titre}}"
             fields: &page_intro_fields
               - {label: "Rubrique", name: rubrique, widget: string, hint: "La petite ligne au-dessus du titre. Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
               - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
@@ -179,14 +193,20 @@ collections:
           - label: Auteurs et illustrateurs
             name: personnes
             widget: object
+            collapsed: true
+            summary: "{{fields.titre}}"
             fields: *page_intro_fields
           - label: Collections
             name: collections
             widget: object
+            collapsed: true
+            summary: "{{fields.titre}}"
             fields: *page_intro_fields
           - label: Actualités
             name: actualites
             widget: object
+            collapsed: true
+            summary: "{{fields.titre}}"
             fields:
               - {label: "Rubrique", name: rubrique, widget: string}
               - {label: "Titre", name: titre, widget: string}
@@ -217,6 +237,8 @@ collections:
           - label: La maison
             name: maison
             widget: object
+            collapsed: true
+            summary: "{{fields.titre}}"
             fields: *page_intro_fields
       - name: paiement
         label: Paiement et dons
@@ -256,10 +278,6 @@ collections:
       - name: apparence
         label: Apparence
         file: nouveau-site/content/reglages/apparence.json
-        # Seule entrée des réglages à montrer un aperçu : sa miniature de site
-        # (AppearancePreview, preview.js) suit les couleurs et polices en cours.
-        editor:
-          preview: true
         fields:
           - label: Fond du site
             name: couleurFond

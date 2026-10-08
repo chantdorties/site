@@ -107,6 +107,52 @@ noscript {
   color: var(--red-dark);
 }
 
+/* ---- Les éléments d’une liste (liens, illustrations, sections…) ------------- */
+
+/* Replié, un élément de liste occupait deux lignes : une barre grise avec la flèche,
+   la poignée au milieu et la croix, puis son résumé dessous. On ramène tout sur une
+   ligne : flèche, résumé, puis poignée et croix à droite. Déplié, Decap n’affiche pas
+   le résumé : seule la barre reste, inchangée en hauteur. */
+#nc-root [class*="SortableListItem"] {
+  position: relative;
+}
+
+#nc-root [class*="SortableListItem"] > [class*="StyledListItemTopBar"] {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 6px;
+}
+
+#nc-root [class*="SortableListItem"] > [class*="StyledListItemTopBar"] > [aria-roledescription="sortable"] {
+  order: 2;
+  margin-left: auto;
+  cursor: grab;
+}
+
+#nc-root [class*="SortableListItem"] > [class*="StyledListItemTopBar"] > button:last-child {
+  order: 3;
+}
+
+#nc-root [class*="SortableListItem"] > [class*="NestedObjectLabel"] {
+  position: absolute;
+  top: 0;
+  right: 96px;
+  left: 44px;
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
 /* ---- L’éditeur de texte enrichi ------------------------------------------ */
 
 /* Classes stables, écrites en clair par Decap : elles ne dépendent pas d’emotion. */

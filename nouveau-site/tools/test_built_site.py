@@ -356,6 +356,11 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertTrue(str(collection.get("description", "")).strip(), name)
             if collection.get("editor", {}).get("preview") is False:
                 continue
+            if "files" in collection and name == "reglages":
+                # Une rubrique de fichiers voit son aperçu choisi entrée par entrée.
+                for entry in collection["files"]:
+                    self.assertIn(entry["name"], registered, f"{name}/{entry['name']}")
+                continue
             self.assertIn(name, registered, name)
 
     def test_select_options_cover_every_stored_value(self):
@@ -420,9 +425,10 @@ class BuiltSiteTest(unittest.TestCase):
             )
         )
         self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
-        # Le seul gabarit attaché à un fichier de réglages, et à lui seul.
-        self.assertIn("apparence", registered)
-        owned = {("reglages", "apparence"): "apparence"}
+        # Chaque fichier de réglages a son gabarit, à son nom d’entrée.
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        owned = {("reglages", entry["name"]): entry["name"] for entry in reglages["files"]}
+        self.assertLessEqual(set(owned.values()), registered)
         for collection in config["collections"]:
             collection_preview = (collection.get("editor") or {}).get("preview")
             for entry in collection.get("files") or []:
@@ -436,10 +442,9 @@ class BuiltSiteTest(unittest.TestCase):
                     registered - allowed,
                     f"{collection['name']}/{entry['name']} recevrait un aperçu étranger",
                 )
-        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        self.assertNotEqual(False, (reglages.get("editor") or {}).get("preview"))
         for entry in reglages["files"]:
-            expected = entry["name"] == "apparence"
-            self.assertEqual(expected, (entry.get("editor") or {}).get("preview", False), entry["name"])
+            self.assertNotEqual(False, (entry.get("editor") or {}).get("preview"), entry["name"])
 
     def test_appearance_preview_follows_the_python_contract(self):
         script = (DIST / "admin" / "preview.js").read_text(encoding="utf-8")
@@ -474,7 +479,8 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertLessEqual(source_fields, admin_fields, name)
 
         settings_files = {
-            item["name"]: item for item in collections["reglages"]["files"]
+            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
+            for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
             self.assertEqual(
@@ -520,6 +526,20 @@ class BuiltSiteTest(unittest.TestCase):
         forbidden = re.compile(r"[cC]ss|[sS]tyle|^url|Url|[tT]aille|[eE]spacement|[fF]ichier")
         for name in fields:
             self.assertNotRegex(name, forbidden)
+
+    def test_menu_and_footer_links_hide_technical_fields(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        files = {item["name"]: item for item in reglages["files"]}
+        for entry, list_name in (("navigation", "liens"), ("footer", "liensNavigation")):
+            links = next(field for field in files[entry]["fields"] if field["name"] == list_name)
+            subfields = {field["name"]: field for field in links["fields"]}
+            # L’ordre est celui de la liste : aucun numéro à saisir.
+            self.assertNotIn("ordre", subfields, entry)
+            self.assertTrue(links.get("collapsed"), entry)
+            self.assertIn("{{fields.url}}", links["summary"], entry)
+        menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
+        self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
 
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:
