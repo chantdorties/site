@@ -59,6 +59,18 @@ elle-même.
 | Les pages Commandes, Librairies, Soutien, Amis… | **Pages de la maison** |
 | Les mentions légales | **Pages principales › Mentions légales** |
 
+Chaque entrée des **Réglages du site** montre à droite un aperçu : une maquette de la
+zone du site où ses textes apparaissent (en-tête, pied de page, accueil, en-têtes des
+pages, boutons d’achat). Il suit la saisie, avant tout enregistrement.
+
+### Le menu et les liens du pied de page
+
+Dans **Réglages du site › Menu principal** et **› Pied de page**, chaque lien tient sur
+une ligne, « Libellé — adresse ». L’ordre affiché sur le site est celui de la liste :
+pour déplacer un lien, le saisir par sa poignée (≡) et le glisser à sa place. Décocher
+« Visible » retire un lien du menu sans l’effacer. Un nouveau lien ne demande qu’un
+libellé et une adresse.
+
 Deux textes ne se saisissent nulle part, parce qu’ils se déduisent : les catégories
 annoncées en bas de la page Actualités sont celles des articles réellement publiés, et le
 jeton `{nombre}` écrit dans une introduction est remplacé par le compte réel — écrire
@@ -255,6 +267,6 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
   existants et les moteurs de recherche pointeraient dans le vide.
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
   structurelles.
-- **Changer la mise en page**, les tailles ou l’ordre des rubriques du menu au-delà de
-  ce que proposent les Réglages ; couleurs et polices se limitent aux choix de
+- **Changer la mise en page** ou les tailles ; l’ordre du menu se règle par
+  glisser-déposer, couleurs et polices se limitent aux choix de
   **Réglages du site › Apparence**.
