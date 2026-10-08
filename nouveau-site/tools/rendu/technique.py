@@ -57,7 +57,7 @@ class FichiersTechniques:
             add_old_addresses(collection, target)
         for page in self.raw["pages"]:
             slug = page["slug"]
-            if slug in {"entree", "accueil"}:
+            if slug == "entree":
                 continue
             target = f"/{slug}/" if slug in published["pages"] else "/la-maison/"
             source = self.legacy["pages"].get(slug)
@@ -77,6 +77,7 @@ class FichiersTechniques:
                 "/accueil-juillet2026.html": "/",
             }
         )
+        add_old_addresses(self.home_settings, "/")
         # Hébergement Free : le .htaccess est bien lu, mais seules certaines
         # directives sont acceptées. mod_rewrite est absent : ne jamais ajouter
         # de RewriteRule ici. Les types MIME sont déclarés car le serveur ne

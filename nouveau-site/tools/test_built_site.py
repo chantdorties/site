@@ -228,7 +228,7 @@ class BuiltSiteTest(unittest.TestCase):
             for label in expected:
                 self.assertIn(label, text, slug)
         home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
-        self.assertIn(payment["libelleOffres"], home.get_text(" ", strip=True))
+        self.assertIn(settings("accueil")["libelleOffres"], home.get_text(" ", strip=True))
 
     def test_every_collection_shows_its_emblem(self):
         """Les emblèmes viennent de l’ancien site : leur perte passerait inaperçue."""
@@ -351,7 +351,7 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
         self.assertEqual(
-            {"page_accueil", "page_actualites", "page_mentions_legales"},
+            {"page_actualites", "page_mentions_legales"},
             {item["name"] for item in collections["pages_fixes"]["files"]},
         )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
@@ -572,15 +572,15 @@ class BuiltSiteTest(unittest.TestCase):
             for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
-            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier.
-            self.assertEqual(
-                set(load_json(path)),
-                {
-                    field["name"]
-                    for field in settings_files[path.stem]["fields"]
-                    if field.get("widget") != "groupe"
-                },
-                path.name,
+            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier ; un
+            # champ facultatif (référencement, anciennes adresses) peut y manquer.
+            fields = [
+                field for field in settings_files[path.stem]["fields"] if field.get("widget") != "groupe"
+            ]
+            stored = set(load_json(path))
+            self.assertLessEqual(stored, {field["name"] for field in fields}, path.name)
+            self.assertLessEqual(
+                {field["name"] for field in fields if field.get("required", True)}, stored, path.name
             )
 
         fixed_files = {
@@ -767,7 +767,7 @@ class BuiltSiteTest(unittest.TestCase):
             donation_form.select_one('input[name="hosted_button_id"]')["value"],
         )
         self.assertEqual(
-            payment["libelleDon"],
+            settings("accueil")["libelleDon"],
             donation_form.select_one("button").get_text(" ", strip=True),
         )
         self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))

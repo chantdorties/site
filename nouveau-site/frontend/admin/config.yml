@@ -30,8 +30,8 @@ collections:
   - name: reglages
     label: Réglages du site
     description: >-
-      Les textes qui ne dépendent d’aucun contenu : identité, menu, pied de page, textes
-      de l’accueil, introductions des pages engendrées, mots du parcours d’achat, ainsi
+      Les textes qui ne dépendent d’aucun contenu : identité, menu, pied de page, page
+      d’accueil, introductions des pages engendrées, mots du parcours d’achat, ainsi
       que les couleurs et polices du site.
     format: json
     delete: false
@@ -130,9 +130,11 @@ collections:
           - {label: "Libellé Mentions légales", name: libelleMentions, widget: string}
       # Les libellés suivent l’ordre où ils apparaissent en descendant la page d’accueil.
       # « Rubrique » désigne partout la petite ligne en majuscules au-dessus d’un titre.
+      # Toute la page d’accueil se règle ici, de haut en bas : elle n’a pas d’autre écran.
       - name: accueil
-        label: Textes de l’accueil
+        label: Page d’accueil
         file: nouveau-site/content/reglages/accueil.json
+        preview_path: "index.html"
         fields:
           - label: "1. Le bandeau d’ouverture"
             name: groupeBandeau
@@ -165,11 +167,51 @@ collections:
             name: groupeInformation
             widget: groupe
             required: false
-            hint: "L’encadré qui suit le bandeau ; son texte se modifie dans « Pages principales › Accueil »."
-          - label: Titre
-            name: titreInformation
-            widget: string
-            hint: Le bloc qui annonce la situation de la maison. Son texte, lui, s’écrit dans « Pages principales > Accueil ».
+            hint: "Sous le bandeau : à gauche la situation de la maison, à droite les commandes, puis le don et les offres."
+          - {label: "Rubrique", name: informationRubrique, widget: string, hint: "La petite ligne au-dessus du titre, par exemple « Information »."}
+          - {label: "Titre", name: titreInformation, widget: string}
+          - label: Texte
+            name: informationTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+            hint: La situation de la maison, en quelques phrases.
+          - {label: "Titre des commandes", name: commandesTitre, widget: string, hint: "À droite, au-dessus des deux encadrés Libraires et Particuliers."}
+          - label: Texte des commandes
+            name: commandesTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - {label: "Encadré libraires — titre", name: librairesTitre, widget: string}
+          - label: Encadré libraires — texte
+            name: librairesTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - {label: "Encadré particuliers — titre", name: particuliersTitre, widget: string}
+          - label: Encadré particuliers — texte
+            name: particuliersTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - label: Texte du soutien
+            name: soutienTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+            hint: La phrase au-dessus des boutons. Les mots « page de soutien » y deviennent un lien vers la page Soutien.
+          - {label: "Bouton de don", name: libelleDon, widget: string, hint: "Il ouvre le don PayPal. Son identifiant PayPal se règle dans « Paiement et dons »."}
+          - {label: "Bouton vers les offres", name: libelleOffres, widget: string, hint: "Il mène à la page Offres spéciales."}
           - label: "3. Les collections"
             name: groupeCollections
             widget: groupe
@@ -177,6 +219,14 @@ collections:
             hint: "La rangée des collections."
           - {label: "Rubrique", name: collectionsRubrique, widget: string}
           - {label: "Titre", name: collectionsTitre, widget: string}
+          - label: Présentation des collections
+            name: collectionsTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+            hint: Le texte à droite du titre, au-dessus des six collections.
           - label: "4. Suivre la maison"
             name: groupeSuivre
             widget: groupe
@@ -193,6 +243,42 @@ collections:
           - {label: "Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
           - {label: "Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
           - {label: "Carte Manuscrits — lien", name: manuscritsAction, widget: string}
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            hint: "À ne modifier qu’en cas de besoin : les anciennes adresses redirigées vers l’accueil et son référencement dans les moteurs de recherche."
+          # Les anciennes adresses et le référencement, repris par toutes les rubriques.
+          # Le plafond des fichiers déposés (20 Mo) est défini ici, à sa première apparition.
+          - &old_slugs
+            label: Anciennes adresses
+            name: anciensSlugs
+            label_singular: "ancienne adresse"
+            widget: list
+            required: false
+            collapsed: true
+            hint: Les adresses de l’ancien site, redirigées vers celle-ci. À compléter si l’adresse ci-dessus change.
+            field: {label: "Ancienne adresse", name: adresse, widget: string}
+          - &seo
+            label: Référencement SEO
+            name: seo
+            widget: object
+            required: false
+            collapsed: true
+            hint: "Facultatif : sans rien ici, le site reprend le titre et la présentation."
+            fields:
+              - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
+              - label: Description SEO
+                name: description
+                required: false
+                pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"]
+                hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."
+                widget: description-seo
+                modes: [rich_text]
+                minimal: true
+                buttons: []
+                editor_components: []
+              - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: &media_20_mo {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
       # Le nom d’entrée n’est pas « pages » : l’aperçu de la rubrique Pages de la
       # maison s’appliquerait. Le fichier, lui, reste pages.json.
       - name: introductions
@@ -291,10 +377,6 @@ collections:
             widget: string
             hint: Il ouvre un courriel prérempli avec le titre du livre.
           - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
-          # Ce bloc doit rester dans le formulaire : ce qui n’y figure pas est effacé
-          # du fichier au premier enregistrement, et le site ne se génèrerait plus.
-          - {label: "Bouton « voir les offres » (accueil)", name: libelleOffres, widget: string}
-          - {label: "Libellé du bouton de don", name: libelleDon, widget: string}
           # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
           # mode de vente, pas avec le catalogue.
           - label: "Réglages techniques"
@@ -443,7 +525,7 @@ collections:
         widget: image
         allow_multiple: false
         hint: Obligatoire. Format portrait de préférence, 20 Mo maximum.
-        media_library: &media_20_mo {config: {max_file_size: 20971520}}
+        media_library: *media_20_mo
       - label: Texte alternatif de la couverture
         name: couvertureAlt
         widget: string
@@ -609,35 +691,8 @@ collections:
         min: 0
         default: 100
         hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
-      - &old_slugs
-        label: Anciennes adresses
-        name: anciensSlugs
-        label_singular: "ancienne adresse"
-        widget: list
-        required: false
-        collapsed: true
-        hint: Les adresses de l’ancien site, redirigées vers celle-ci. À compléter si l’adresse ci-dessus change.
-        field: {label: "Ancienne adresse", name: adresse, widget: string}
-      - &seo
-        label: Référencement SEO
-        name: seo
-        widget: object
-        required: false
-        collapsed: true
-        hint: "Facultatif : sans rien ici, le site reprend le titre et la présentation."
-        fields:
-          - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre du contenu."}
-          - label: Description SEO
-            name: description
-            required: false
-            pattern: ['^[\s\S]{0,160}$', "160 caractères maximum"]
-            hint: "160 caractères maximum. Laisser vide pour utiliser la description du contenu."
-            widget: description-seo
-            modes: [rich_text]
-            minimal: true
-            buttons: []
-            editor_components: []
-          - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
+      - *old_slugs
+      - *seo
 
   - name: personnes
     label: Auteurs et illustrateurs
@@ -992,37 +1047,6 @@ collections:
     format: json
     delete: false
     files:
-      - name: page_accueil
-        label: Accueil
-        file: nouveau-site/content/pages-fixes/accueil.json
-        preview_path: "index.html"
-        fields:
-          - {label: "Titre", name: titre, widget: string}
-          - {label: "Adresse", name: slug, widget: hidden, default: accueil}
-          - {label: "Publication", name: statut, widget: hidden, default: publie}
-          - {label: "Type", name: type, widget: hidden, default: accueil}
-          - {label: "Ordre", name: ordre, widget: hidden, default: 0}
-          - label: Sections de l’accueil
-            name: sections
-            label_singular: "section"
-            widget: list
-            min: 6
-            max: 6
-            summary: "{{fields.titre | default('Section sans intertitre')}}"
-            fields:
-              - {label: "Identifiant", name: id, widget: hidden}
-              - {label: "Titre", name: titre, widget: string}
-              - label: Texte
-                name: contenu
-                widget: markdown
-                modes: [rich_text]
-                buttons: *boutons_corps
-                editor_components: [image]
-          - {label: "Liens", name: liens, widget: hidden, default: []}
-          - {label: "Images", name: images, widget: hidden, default: []}
-          - {label: "Documents", name: documents, widget: hidden, default: []}
-          - *old_slugs
-          - *seo
       # La page Actualités est engendrée : son titre, son introduction et son appel
       # viennent de « Réglages du site > Introductions des pages », et la liste des
       # articles de la collection Actualités. Seuls le référencement et les anciennes

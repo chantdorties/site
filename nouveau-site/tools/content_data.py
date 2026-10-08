@@ -27,6 +27,16 @@ SEO_TITLE_MAX = 60
 SEO_DESCRIPTION_MAX = 160
 # Valeur neutre de ordreAccueil : les livres non mis en avant la partagent tous.
 HOME_ORDER_UNSET = 999
+# Les textes de l’accueil saisis en markdown, dans l’ordre de la page.
+HOME_MARKDOWN_FIELDS = (
+    "heroAccroche",
+    "informationTexte",
+    "commandesTexte",
+    "librairesTexte",
+    "particuliersTexte",
+    "soutienTexte",
+    "collectionsTexte",
+)
 SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
 
 # Le réglage Apparence, tel que le fixe docs/CONTRAT-APPARENCE.md. L’administration
@@ -187,12 +197,13 @@ def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
     for bloc, champs in (
         ("site", ("description",)),
         ("footer", ("presentation",)),
-        ("accueil", ("heroAccroche",)),
+        ("accueil", HOME_MARKDOWN_FIELDS),
     ):
         for champ in champs:
             valeur = settings.get(bloc, {}).get(champ)
             if isinstance(valeur, str):
                 yield f"Réglages {bloc}.{champ}", valeur
+    yield from _seo_markdown(settings.get("accueil", {}), "Réglages accueil")
     for rubrique, libelles in settings.get("pages", {}).items():
         if not isinstance(libelles, dict):
             continue
@@ -413,9 +424,21 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         "heroAccroche",
         "boutonCatalogue",
         "boutonCollections",
+        "informationRubrique",
         "titreInformation",
+        "informationTexte",
+        "commandesTitre",
+        "commandesTexte",
+        "librairesTitre",
+        "librairesTexte",
+        "particuliersTitre",
+        "particuliersTexte",
+        "soutienTexte",
+        "libelleDon",
+        "libelleOffres",
         "collectionsRubrique",
         "collectionsTitre",
+        "collectionsTexte",
         "suivreRubrique",
         "suivreTitre",
         "actualitesRubrique",
@@ -426,6 +449,8 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         "manuscritsAction",
     ):
         require_text(home, field, "Réglage accueil")
+    validate_seo(root, home, "Réglage accueil")
+    validate_old_slugs(home, "Réglage accueil")
 
     page_settings = settings["pages"]
     for name in ("catalogue", "personnes", "collections", "actualites", "maison"):
@@ -448,9 +473,14 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
             "Réglage paiement: le bouton « voir mon panier » attend le bloc signé par PayPal, "
             f"commençant par {PAYPAL_CART_PREFIX}"
         )
+    # Les libellés du don et des offres sont passés dans l’écran de l’accueil, où ils
+    # s’affichent : un fichier resté à l’ancienne forme est refusé plutôt qu’ignoré.
+    for field in ("libelleDon", "libelleOffres"):
+        if field in payment:
+            raise ContentError(
+                f"Réglage paiement: {field} se règle désormais dans content/reglages/accueil.json"
+            )
     for field in (
-        "libelleDon",
-        "libelleOffres",
         "libellePanier",
         "libelleVoirPanier",
         "libelleDisponible",
@@ -734,26 +764,21 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_seo(root, page, "Page")
         validate_old_slugs(page, "Page")
 
-    for required_slug in ("accueil", "actualites", "mentions-legales"):
+    # L’accueil n’est plus une page : tous ses textes sont dans content/reglages/accueil.json.
+    if "accueil" in pages_by_slug:
+        raise ContentError(
+            "Page accueil: ses textes se règlent désormais dans content/reglages/accueil.json"
+        )
+    for required_slug in ("actualites", "mentions-legales"):
         if pages_by_slug.get(required_slug, {}).get("statut") != "publie":
             raise ContentError(f"Page structurelle {required_slug}: le statut publie est obligatoire")
-    home_section_ids = {section.get("id") for section in pages_by_slug["accueil"]["sections"]}
-    required_home_sections = {
-        "information",
-        "libraires",
-        "particuliers",
-        "presentation",
-        "soutien",
-        "soutien-commandes",
-    }
-    if home_section_ids != required_home_sections:
-        raise ContentError(
-            "Page structurelle accueil: les six sections attendues doivent être conservées"
-        )
 
     validate_unique_orders(raw)
 
-    old_addresses: dict[str, str] = {}
+    old_addresses: dict[str, str] = {
+        value.strip().lstrip("/").casefold(): "accueil"
+        for value in settings["accueil"].get("anciensSlugs", [])
+    }
     for kind, records in (
         ("livre", books),
         ("personne", people),

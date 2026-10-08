@@ -27,7 +27,7 @@ from ..outils import e
 class PagesEditoriales:
     def build_editorial_pages(self) -> None:
         for page_data in self.pages:
-            if page_data["slug"] in {"entree", "accueil"}:
+            if page_data["slug"] == "entree":
                 continue
             if page_data["slug"] == "actualites":
                 self.build_news_page(page_data)
@@ -125,7 +125,7 @@ class PagesEditoriales:
         return [
             page
             for page in self.pages
-            if page["slug"] not in {"entree", "accueil", "actualites"}
+            if page["slug"] not in {"entree", "actualites"}
             and (self.include_drafts or not page["aVerifier"])
         ]
 

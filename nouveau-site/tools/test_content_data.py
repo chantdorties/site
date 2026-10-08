@@ -139,7 +139,8 @@ class ContentDataTest(unittest.TestCase):
         self.assertGreater(len(self.books), 0)
         self.assertGreater(len(self.people), 0)
         self.assertGreater(len(self.collections), 0)
-        self.assertLessEqual({"accueil", "actualites", "mentions-legales"}, {page["slug"] for page in self.pages})
+        self.assertLessEqual({"actualites", "mentions-legales"}, {page["slug"] for page in self.pages})
+        self.assertNotIn("accueil", {page["slug"] for page in self.pages})
 
     def test_records_use_one_json_file_each(self):
         for folder, records in (
@@ -164,8 +165,7 @@ class ContentDataTest(unittest.TestCase):
             set(self.raw["settings"]),
         )
         fixed_files = {path.stem for path in (CONTENT / "pages-fixes").glob("*.json")}
-        self.assertEqual({"accueil", "actualites", "mentions-legales"}, fixed_files)
-        self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "accueil")["statut"])
+        self.assertEqual({"actualites", "mentions-legales"}, fixed_files)
         self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "actualites")["statut"])
 
     def test_appearance_setting_holds_exactly_the_contract_keys(self):
@@ -335,18 +335,36 @@ class ContentDataTest(unittest.TestCase):
             bundle = load_content(root, include_drafts=True)
             self.assertIn("nouvelle-page", {item["slug"] for item in bundle["pages"]})
 
-    def test_home_and_news_pages_cannot_be_unpublished(self):
+    def test_news_page_cannot_be_unpublished(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             shutil.copytree(CONTENT, root / "content", ignore=shutil.ignore_patterns("media"))
             (root / "content" / "media").symlink_to(CONTENT / "media", target_is_directory=True)
             shutil.copytree(ROOT / "config", root / "config")
-            page_path = root / "content" / "pages-fixes" / "accueil.json"
+            page_path = root / "content" / "pages-fixes" / "actualites.json"
             page = json.loads(page_path.read_text(encoding="utf-8"))
             page["statut"] = "brouillon"
             page_path.write_text(json.dumps(page, ensure_ascii=False, indent=2), encoding="utf-8")
             with self.assertRaisesRegex(ContentError, "statut publie est obligatoire"):
                 load_content(root, include_drafts=True)
+
+    def test_home_texts_refuse_their_former_places(self):
+        # L’accueil se règle en un seul écran : l’ancienne page et les anciens libellés
+        # de Paiement sont refusés plutôt qu’ignorés en silence.
+        for name, change, message in (
+            ("pages-fixes/accueil.json", lambda _: {"slug": "accueil", "titre": "Accueil", "statut": "publie", "ordre": 0, "type": "accueil", "sections": [{"titre": None, "contenu": "Texte"}]}, "reglages/accueil.json"),
+            ("reglages/paiement.json", lambda data: {**data, "libelleDon": "Faire un don"}, "libelleDon se règle désormais"),
+        ):
+            with self.subTest(name), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                shutil.copytree(CONTENT, root / "content", ignore=shutil.ignore_patterns("media"))
+                (root / "content" / "media").symlink_to(CONTENT / "media", target_is_directory=True)
+                shutil.copytree(ROOT / "config", root / "config")
+                path = root / "content" / name
+                data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+                path.write_text(json.dumps(change(data), ensure_ascii=False), encoding="utf-8")
+                with self.assertRaisesRegex(ContentError, message):
+                    load_content(root, include_drafts=True)
 
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:

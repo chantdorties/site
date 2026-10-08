@@ -198,14 +198,15 @@ class Medias:
             self.save_webp(source, destination, (1200, 900))
             self.news_image_media[item["slug"]] = f"/assets/media/news/{destination.name}"
 
-        seo_records = [*self.books, *self.people, *self.collections, *self.pages, *self.news]
+        # Les réglages de l’accueil portent son référencement : ils n’ont pas d’adresse propre.
+        seo_records = [*self.books, *self.people, *self.collections, *self.pages, *self.news, self.home_settings]
         for item in seo_records:
             source_path = item.get("seo", {}).get("image")
             if not source_path or source_path in self.seo_image_media:
                 continue
             source = self.root / source_path
             digest = hashlib.sha256(source_path.encode("utf-8")).hexdigest()[:10]
-            destination = self.temp_output / "assets" / "media" / "social" / f"{item['slug']}-{digest}.webp"
+            destination = self.temp_output / "assets" / "media" / "social" / f"{item.get('slug', 'accueil')}-{digest}.webp"
             self.save_webp(source, destination, (1200, 630))
             self.seo_image_media[source_path] = f"/assets/media/social/{destination.name}"
 
