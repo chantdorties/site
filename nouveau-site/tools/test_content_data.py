@@ -732,5 +732,26 @@ class ContentDataTest(unittest.TestCase):
             self.assertIsNone(forbidden.search(content), page["slug"])
 
 
+
+class TextesLisiblesTest(unittest.TestCase):
+    def test_aucun_texte_long_sans_paragraphe(self):
+        """La migration avait collé des pages entières en un seul bloc — adresses,
+        téléphones et liens bout à bout. Un texte de plus de 450 caractères doit
+        désormais compter au moins un saut de ligne."""
+        content = Path(__file__).resolve().parent.parent / "content"
+        champs = {"livres": "description", "personnes": "biographie", "collections": "description",
+                  "actualites": "contenu"}
+        fautifs = []
+        for dossier in ("livres", "personnes", "collections", "actualites", "pages", "pages-fixes"):
+            for fichier in sorted((content / dossier).glob("*.json")):
+                data = json.loads(fichier.read_text(encoding="utf-8"))
+                textes = [data.get(champs.get(dossier, ""))]
+                textes += [section.get("contenu") for section in data.get("sections") or []]
+                for texte in textes:
+                    if isinstance(texte, str) and len(texte) > 450 and "\n" not in texte:
+                        fautifs.append(f"{dossier}/{fichier.stem}")
+        self.assertEqual([], fautifs)
+
+
 if __name__ == "__main__":
     unittest.main()

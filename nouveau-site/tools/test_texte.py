@@ -84,6 +84,18 @@ class BlocsTest(unittest.TestCase):
     def test_un_retour_simple_ne_separe_pas(self):
         self.assertEqual(self.t.markdown_html("Un\ndeux"), "<p>Un\ndeux</p>")
 
+    def test_un_retour_force_passe_a_la_ligne_sans_nouveau_paragraphe(self):
+        # Maj+Entrée dans Decap écrit une barre oblique inverse en fin de ligne : une
+        # adresse postale garde une ligne par information.
+        self.assertEqual(
+            self.t.markdown_html("Publico\\\n145 rue Amelot  \n75011 Paris"),
+            "<p>Publico<br>145 rue Amelot<br>75011 Paris</p>",
+        )
+
+    def test_le_retour_force_disparait_du_texte_brut(self):
+        self.assertEqual(self.t.texte_brut("Publico\\\n145 rue Amelot"), "Publico 145 rue Amelot")
+        self.assertEqual(self.t.markdown_inline("Publico\\\n145 rue Amelot"), "Publico 145 rue Amelot")
+
     def test_les_titres_commencent_au_troisieme_niveau(self):
         self.assertEqual(self.t.markdown_html("# Titre"), "<h3>Titre</h3>")
         self.assertEqual(self.t.markdown_html("### Titre"), "<h5>Titre</h5>")
