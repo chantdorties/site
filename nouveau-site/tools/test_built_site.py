@@ -356,6 +356,11 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertTrue(str(collection.get("description", "")).strip(), name)
             if collection.get("editor", {}).get("preview") is False:
                 continue
+            if "files" in collection and name == "reglages":
+                # Une rubrique de fichiers voit son aperçu choisi entrée par entrée.
+                for entry in collection["files"]:
+                    self.assertIn(entry["name"], registered, f"{name}/{entry['name']}")
+                continue
             self.assertIn(name, registered, name)
 
     def test_select_options_cover_every_stored_value(self):
@@ -420,9 +425,10 @@ class BuiltSiteTest(unittest.TestCase):
             )
         )
         self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
-        # Le seul gabarit attaché à un fichier de réglages, et à lui seul.
-        self.assertIn("apparence", registered)
-        owned = {("reglages", "apparence"): "apparence"}
+        # Chaque fichier de réglages a son gabarit, à son nom d’entrée.
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        owned = {("reglages", entry["name"]): entry["name"] for entry in reglages["files"]}
+        self.assertLessEqual(set(owned.values()), registered)
         for collection in config["collections"]:
             collection_preview = (collection.get("editor") or {}).get("preview")
             for entry in collection.get("files") or []:
@@ -436,10 +442,9 @@ class BuiltSiteTest(unittest.TestCase):
                     registered - allowed,
                     f"{collection['name']}/{entry['name']} recevrait un aperçu étranger",
                 )
-        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        self.assertNotEqual(False, (reglages.get("editor") or {}).get("preview"))
         for entry in reglages["files"]:
-            expected = entry["name"] == "apparence"
-            self.assertEqual(expected, (entry.get("editor") or {}).get("preview", False), entry["name"])
+            self.assertNotEqual(False, (entry.get("editor") or {}).get("preview"), entry["name"])
 
     def test_appearance_preview_follows_the_python_contract(self):
         script = (DIST / "admin" / "preview.js").read_text(encoding="utf-8")
@@ -474,7 +479,8 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertLessEqual(source_fields, admin_fields, name)
 
         settings_files = {
-            item["name"]: item for item in collections["reglages"]["files"]
+            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
+            for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
             self.assertEqual(
