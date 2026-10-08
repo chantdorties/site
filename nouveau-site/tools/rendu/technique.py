@@ -82,8 +82,13 @@ class FichiersTechniques:
         # de RewriteRule ici. Les types MIME sont déclarés car le serveur ne
         # connaît pas toujours le WebP, et un module JavaScript est refusé par
         # le navigateur si son type est incorrect.
+        # Le bloc IfDefine Free reprend l'ancien .htaccess : il garde PHP 5.6 pour les
+        # pages PHP de l'ancien site (dossier wordpress/), toujours présentes chez Free.
         lines = [
             "# Fichier produit par tools/build-site.py : ne pas modifier à la main.",
+            "<IfDefine Free>",
+            "php56 1",
+            "</IfDefine>",
             "Options -Indexes -ExecCGI -Includes",
             "ErrorDocument 404 /404.html",
             "",

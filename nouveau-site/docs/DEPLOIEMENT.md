@@ -73,7 +73,8 @@ Free lit bien le `.htaccess`, mais n’accepte qu’une partie des directives Ap
 `RewriteRule`. Sont acceptés `Options`, `ErrorDocument`, `Redirect` et `RedirectMatch`,
 `AddType`, `Order/Allow/Deny`, un seul bloc `<Files>` par fichier.
 
-Le fichier est produit à chaque génération par `tools/build-site.py` : il désactive le
+Le fichier est produit à chaque génération par `tools/build-site.py` : il garde PHP 5.6
+pour l’ancien site (bloc `<IfDefine Free>`, repris de l’ancien `.htaccess`), désactive le
 listing des répertoires, déclare la page 404 du site, fixe les types MIME du WebP, du
 JSON, du PDF et du JavaScript, puis liste les redirections 301 des anciennes adresses.
 Il est indispensable : les anciennes pages `.html` restent présentes sur le serveur
@@ -86,6 +87,9 @@ Après le premier transfert, vérifier en ligne :
 curl -sI http://chantdorties.free.fr/monhlm.html    # 301 vers /livres/mon-hlm/
 curl -s http://chantdorties.free.fr/page-absente    # la page 404 du site, pas celle de Free
 ```
+
+Essayé chez Free le 8 octobre 2026 dans un dossier isolé : redirections 301, page 404
+du site et types MIME acceptés ; PHP s’exécute toujours malgré `-ExecCGI`.
 
 Si la page 404 affichée reste celle de Free, remplacer le chemin relatif par l’adresse
 complète : `ErrorDocument 404 http://chantdorties.free.fr/404.html`.
