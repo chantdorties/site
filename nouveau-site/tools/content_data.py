@@ -773,9 +773,12 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
     for slug, place in (("accueil", "reglages/accueil.json"), ("actualites", "reglages/pages.json")):
         if slug in pages_by_slug:
             raise ContentError(f"Page {slug}: ses réglages sont désormais dans content/{place}")
-    for required_slug in ("mentions-legales",):
-        if pages_by_slug.get(required_slug, {}).get("statut") != "publie":
-            raise ContentError(f"Page structurelle {required_slug}: le statut publie est obligatoire")
+    # Les mentions légales sont obligatoires : leur adresse est figée, et le pied de
+    # page de chaque page y renvoie. Renommée, la page serait introuvable ici.
+    if pages_by_slug.get("mentions-legales", {}).get("statut") != "publie":
+        raise ContentError(
+            "Page mentions-legales: obligatoire, son adresse est figée et le statut publie est obligatoire"
+        )
 
     validate_unique_orders(raw)
 
@@ -867,18 +870,19 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         "books": load_folder(content_dir, "livres"),
         "people": load_folder(content_dir, "personnes"),
         "collections": load_folder(content_dir, "collections"),
-        "pages": [
-            *load_folder(content_dir, "pages-fixes"),
-            *load_folder(content_dir, "pages"),
-        ],
+        "pages": load_folder(content_dir, "pages"),
         "news": load_folder(content_dir, "actualites"),
         "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),
     }
     apply_optional_defaults(raw)
-    page_slugs = [page["slug"] for page in raw["pages"]]
-    if len(page_slugs) != len(set(page_slugs)):
-        raise ContentError("Slug de page dupliqué entre pages-fixes et pages")
+    # L’ancien dossier des pages « principales » : l’accueil et les actualités sont
+    # passés dans les réglages, les mentions légales dans content/pages/.
+    if any((content_dir / "pages-fixes").glob("*.json")):
+        raise ContentError(
+            "content/pages-fixes/ n’est plus lu : l’accueil se règle dans reglages/accueil.json, "
+            "les actualités dans reglages/pages.json, les mentions légales dans pages/"
+        )
     validate_content(root, raw)
     legacy = read_json(root / "config" / "legacy-redirects.json")
 

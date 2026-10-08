@@ -78,7 +78,7 @@ class BuiltSiteTest(unittest.TestCase):
     def test_draft_pages_are_not_published(self):
         source_pages = [
             load_json(path)
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for path in (ROOT / "content" / folder).glob("*.json")
         ]
         sitemap = (DIST / "sitemap.xml").read_text(encoding="utf-8")
@@ -142,7 +142,7 @@ class BuiltSiteTest(unittest.TestCase):
         source_people = [load_json(path) for path in (ROOT / "content" / "personnes").glob("*.json")]
         source_pages = [
             load_json(path)
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for path in (ROOT / "content" / folder).glob("*.json")
         ]
         source_news = [load_json(path) for path in (ROOT / "content" / "actualites").glob("*.json")]
@@ -342,7 +342,9 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("http://127.0.0.1:8082/api/v1", config["local_backend"]["url"])
         collections = {item["name"]: item for item in config["collections"]}
         self.assertIn("reglages", collections)
-        self.assertIn("pages_fixes", collections)
+        # L’accueil et les actualités sont dans les réglages, les mentions légales
+        # parmi les pages : plus de rubrique « Pages principales ».
+        self.assertNotIn("pages_fixes", collections)
         self.assertTrue(collections["pages"]["create"])
         self.assertFalse(collections["pages"]["delete"])
         # Seuls les projets s’effacent vraiment : ils n’ont pas d’adresse à rediriger.
@@ -350,10 +352,6 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertTrue(collections["projets"]["delete"])
         self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
-        self.assertEqual(
-            {"page_mentions_legales"},
-            {item["name"] for item in collections["pages_fixes"]["files"]},
-        )
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
 
     def test_admin_protects_itself_where_no_header_can_be_set(self):
@@ -583,17 +581,6 @@ class BuiltSiteTest(unittest.TestCase):
                 {field["name"] for field in fields if field.get("required", True)}, stored, path.name
             )
 
-        fixed_files = {
-            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
-            for item in collections["pages_fixes"]["files"]
-        }
-        for path in (ROOT / "content" / "pages-fixes").glob("*.json"):
-            self.assertLessEqual(
-                set(load_json(path)),
-                {field["name"] for field in fixed_files[path.stem]["fields"]},
-                path.name,
-            )
-
     def test_admin_appearance_entry_only_offers_contract_values(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
         reglages = next(item for item in config["collections"] if item["name"] == "reglages")
@@ -786,7 +773,7 @@ class BuiltSiteTest(unittest.TestCase):
         # Voir tools/rendu/technique.py.
         source_records += [
             (record, f"/{record['slug']}/" if record["statut"] == "publie" else "/la-maison/")
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for record in (load_json(path) for path in (ROOT / "content" / folder).glob("*.json"))
         ]
         # L’accueil et les actualités gardent leurs anciennes adresses dans les réglages.

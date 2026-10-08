@@ -678,7 +678,6 @@
   CMS.registerPreviewTemplate('actualites', NewsPreview);
   CMS.registerPreviewTemplate('projets', ProjectPreview);
   CMS.registerPreviewTemplate('pages', PagePreview);
-  CMS.registerPreviewTemplate('pages_fixes', PagePreview);
   // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
   CMS.registerPreviewTemplate('apparence', AppearancePreview);
   // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site. Les

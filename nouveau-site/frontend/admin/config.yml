@@ -1058,161 +1058,15 @@ collections:
         pattern: *motif_adresse
       - *order
 
-  - name: pages_fixes
-    label: Pages principales
-    description: >-
-      Les mentions légales, obligatoires : leur adresse et leur publication sont figées.
-    format: json
-    delete: false
-    files:
-      - name: page_mentions_legales
-        label: Mentions légales
-        file: nouveau-site/content/pages-fixes/mentions-legales.json
-        preview_path: "mentions-legales/"
-        fields:
-          # Page légale obligatoire : son adresse et son statut restent figés,
-          # comme pour l’accueil et les actualités.
-          - {label: "Titre", name: titre, widget: string}
-          - {label: "Adresse", name: slug, widget: hidden, default: mentions-legales}
-          - {label: "Publication", name: statut, widget: hidden, default: publie}
-          - *order
-          - {label: "Type", name: type, widget: hidden, default: legal}
-          - &page_eyebrow
-            label: Rubrique de la carte
-            name: rubrique
-            widget: string
-            required: false
-            hint: La petite ligne au-dessus du titre, sur la carte de la page « La maison ». Vide, le nom de la maison la remplace.
-          - &page_action
-            label: Libellé du lien de la carte
-            name: libelleAction
-            widget: string
-            required: false
-            hint: Le texte cliquable au bas de cette même carte, par exemple « Découvrir les projets ».
-          - &page_sections
-            label: Sections
-            name: sections
-            label_singular: "section"
-            widget: list
-            min: 1
-            summary: "{{fields.titre | default('Section sans intertitre')}}"
-            hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
-            fields:
-              - {label: "Intertitre", name: titre, widget: string, required: false}
-              - label: Texte
-                name: contenu
-                widget: markdown
-                modes: [rich_text]
-                buttons: *boutons_corps
-                editor_components: [image]
-              - label: Livres de cette section
-                name: livres
-                widget: relation
-                collection: livres
-                multiple: true
-                required: false
-                search_fields: [titre]
-                display_fields: [titre]
-                value_field: slug
-                hint: >-
-                  Facultatif. Les livres choisis s’affichent sous le texte, avec leur
-                  couverture, leurs auteurs et leur prix tirés de leur fiche : rien à
-                  recopier. Pratique pour une offre groupée ou une sélection.
-              - label: Boutons d’achat PayPal
-                name: boutonsPaypal
-                label_singular: "bouton PayPal"
-                widget: list
-                required: false
-                collapsed: true
-                summary: "{{fields.libelle}}"
-                hint: >-
-                  À n’utiliser que pour vendre depuis cette page : une offre groupée, une
-                  adhésion, un don, un titre soldé. Pour vendre un livre à son prix normal,
-                  le bouton se saisit dans sa fiche, pas ici.
-                fields:
-                  - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
-                  - label: Identifiant du bouton PayPal
-                    name: hostedButtonId
-                    widget: string
-                    hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
-                    pattern: *motif_paypal
-          # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
-          # faut remplir, d’où les explications sur chacun.
-          - &page_links
-            label: Liens et documents
-            name: liens
-            label_singular: "lien"
-            widget: list
-            required: false
-            collapsed: true
-            summary: "{{fields.texte}}"
-            hint: Affichés dans l’encadré « Liens et documents », à droite de la page.
-            fields:
-              - label: Type de lien
-                name: type
-                widget: select
-                default: externe
-                options:
-                  - {label: "Vers un autre site", value: externe}
-                  - {label: "Vers une adresse courriel", value: email}
-                  - {label: "Vers un document PDF", value: document}
-                  - {label: "Vers un livre du catalogue", value: livre}
-                  - {label: "Vers une autre page du site", value: page}
-              - {label: "Libellé", name: texte, widget: string, required: false, hint: "Le texte cliquable. Vide, l’adresse s’affiche telle quelle."}
-              - label: Adresse ou fichier
-                name: href
-                widget: string
-                required: false
-                hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page, choisis plus bas.
-              # Choisis dans une liste plutôt que tapés : une faute de frappe dans une
-              # adresse ne se voyait qu’au moment de publier.
-              - label: Livre visé
-                name: slug
-                widget: relation
-                collection: livres
-                required: false
-                search_fields: [titre]
-                display_fields: [titre]
-                value_field: slug
-                hint: Uniquement pour un lien « Vers un livre du catalogue ».
-              - label: Page visée
-                name: pageCible
-                widget: relation
-                collection: pages
-                required: false
-                search_fields: [titre]
-                display_fields: [titre]
-                value_field: slug
-                hint: Uniquement pour un lien « Vers une autre page du site ».
-          - &page_images
-            label: Images
-            name: images
-            label_singular: "image"
-            widget: list
-            required: false
-            collapsed: true
-            summary: "{{fields.alt}}"
-            hint: Affichées dans une galerie « En images » au bas de la page.
-            fields: *image_et_alt
-          - &page_documents
-            label: Documents joints
-            name: documents
-            label_singular: "document"
-            widget: list
-            required: false
-            collapsed: true
-            hint: Fichiers déposés avec la page. Pour qu’un document soit cliquable, ajouter aussi un lien de type « document PDF » ci-dessus.
-            field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: *media_20_mo}
-          - *old_slugs
-          - *seo
-
   - name: pages
     label: Pages de la maison
     label_singular: Page
     description: >-
       Les pages libres — commandes, librairies, soutien, projets… Chacune apparaît sous
-      forme de carte sur la page « La maison ». La page Projets porte ici son
-      introduction ; la liste des projets, elle, vient de la rubrique Projets.
+      forme de carte sur la page « La maison ». Les mentions légales en font partie :
+      obligatoires, elles ne peuvent être ni dépubliées ni changer d’adresse. La page
+      Projets porte ici son introduction ; la liste des projets, elle, vient de la
+      rubrique Projets.
     folder: nouveau-site/content/pages
     extension: json
     format: json
@@ -1234,22 +1088,136 @@ collections:
         hint: "Le titre et le texte de la page, découpé en sections."
       - {label: "Titre", name: titre, widget: string}
       - *publication
-      - *page_sections
+      - label: Sections
+        name: sections
+        label_singular: "section"
+        widget: list
+        min: 1
+        summary: "{{fields.titre | default('Section sans intertitre')}}"
+        hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
+        fields:
+          - {label: "Intertitre", name: titre, widget: string, required: false}
+          - label: Texte
+            name: contenu
+            widget: markdown
+            modes: [rich_text]
+            buttons: *boutons_corps
+            editor_components: [image]
+          - label: Livres de cette section
+            name: livres
+            widget: relation
+            collection: livres
+            multiple: true
+            required: false
+            search_fields: [titre]
+            display_fields: [titre]
+            value_field: slug
+            hint: >-
+              Facultatif. Les livres choisis s’affichent sous le texte, avec leur
+              couverture, leurs auteurs et leur prix tirés de leur fiche : rien à
+              recopier. Pratique pour une offre groupée ou une sélection.
+          - label: Boutons d’achat PayPal
+            name: boutonsPaypal
+            label_singular: "bouton PayPal"
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.libelle}}"
+            hint: >-
+              À n’utiliser que pour vendre depuis cette page : une offre groupée, une
+              adhésion, un don, un titre soldé. Pour vendre un livre à son prix normal,
+              le bouton se saisit dans sa fiche, pas ici.
+            fields:
+              - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
+              - label: Identifiant du bouton PayPal
+                name: hostedButtonId
+                widget: string
+                hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
+                pattern: *motif_paypal
       - label: "Images, liens et documents"
         name: groupe2
         widget: groupe
         required: false
         hint: "Affichés à côté et au bas du texte."
-      - *page_images
-      - *page_links
-      - *page_documents
+      - label: Images
+        name: images
+        label_singular: "image"
+        widget: list
+        required: false
+        collapsed: true
+        summary: "{{fields.alt}}"
+        hint: Affichées dans une galerie « En images » au bas de la page.
+        fields: *image_et_alt
+      # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
+      # faut remplir, d’où les explications sur chacun.
+      - label: Liens et documents
+        name: liens
+        label_singular: "lien"
+        widget: list
+        required: false
+        collapsed: true
+        summary: "{{fields.texte}}"
+        hint: Affichés dans l’encadré « Liens et documents », à droite de la page.
+        fields:
+          - label: Type de lien
+            name: type
+            widget: select
+            default: externe
+            options:
+              - {label: "Vers un autre site", value: externe}
+              - {label: "Vers une adresse courriel", value: email}
+              - {label: "Vers un document PDF", value: document}
+              - {label: "Vers un livre du catalogue", value: livre}
+              - {label: "Vers une autre page du site", value: page}
+          - {label: "Libellé", name: texte, widget: string, required: false, hint: "Le texte cliquable. Vide, l’adresse s’affiche telle quelle."}
+          - label: Adresse ou fichier
+            name: href
+            widget: string
+            required: false
+            hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page, choisis plus bas.
+          # Choisis dans une liste plutôt que tapés : une faute de frappe dans une
+          # adresse ne se voyait qu’au moment de publier.
+          - label: Livre visé
+            name: slug
+            widget: relation
+            collection: livres
+            required: false
+            search_fields: [titre]
+            display_fields: [titre]
+            value_field: slug
+            hint: Uniquement pour un lien « Vers un livre du catalogue ».
+          - label: Page visée
+            name: pageCible
+            widget: relation
+            collection: pages
+            required: false
+            search_fields: [titre]
+            display_fields: [titre]
+            value_field: slug
+            hint: Uniquement pour un lien « Vers une autre page du site ».
+      - label: Documents joints
+        name: documents
+        label_singular: "document"
+        widget: list
+        required: false
+        collapsed: true
+        hint: Fichiers déposés avec la page. Pour qu’un document soit cliquable, ajouter aussi un lien de type « document PDF » ci-dessus.
+        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: *media_20_mo}
       - label: "Carte sur la page « La maison »"
         name: groupe3
         widget: groupe
         required: false
         hint: "Chaque page y apparaît sous forme de carte."
-      - *page_eyebrow
-      - *page_action
+      - label: Rubrique de la carte
+        name: rubrique
+        widget: string
+        required: false
+        hint: La petite ligne au-dessus du titre, sur la carte de la page « La maison ». Vide, le nom de la maison la remplace.
+      - label: Libellé du lien de la carte
+        name: libelleAction
+        widget: string
+        required: false
+        hint: Le texte cliquable au bas de cette même carte, par exemple « Découvrir les projets ».
       - label: "Réglages techniques"
         name: groupe4
         widget: groupe
@@ -1258,7 +1226,7 @@ collections:
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: "La fin de l’adresse de la page, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        hint: "La fin de l’adresse de la page, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous. Celle des mentions légales, « mentions-legales », est figée."
         pattern: *motif_adresse
       - {label: "Type", name: type, widget: hidden, default: page}
       - *order

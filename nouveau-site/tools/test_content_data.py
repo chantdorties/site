@@ -154,7 +154,7 @@ class ContentDataTest(unittest.TestCase):
             self.assertEqual({record["slug"] for record in records}, files)
         page_files = {
             path.stem
-            for folder in ("pages", "pages-fixes")
+            for folder in ("pages",)
             for path in (CONTENT / folder).glob("*.json")
         }
         self.assertEqual({record["slug"] for record in self.pages}, page_files)
@@ -164,8 +164,8 @@ class ContentDataTest(unittest.TestCase):
             {"accueil", "apparence", "footer", "navigation", "pages", "paiement", "site"},
             set(self.raw["settings"]),
         )
-        fixed_files = {path.stem for path in (CONTENT / "pages-fixes").glob("*.json")}
-        self.assertEqual({"mentions-legales"}, fixed_files)
+        self.assertFalse((CONTENT / "pages-fixes").exists())
+        self.assertIn("mentions-legales", {page["slug"] for page in self.pages})
 
     def test_appearance_setting_holds_exactly_the_contract_keys(self):
         appearance = self.raw["settings"]["apparence"]
@@ -349,6 +349,7 @@ class ContentDataTest(unittest.TestCase):
                 (root / "content" / "media").symlink_to(CONTENT / "media", target_is_directory=True)
                 shutil.copytree(ROOT / "config", root / "config")
                 path = root / "content" / name
+                path.parent.mkdir(exist_ok=True)
                 data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
                 path.write_text(json.dumps(change(data), ensure_ascii=False), encoding="utf-8")
                 with self.assertRaisesRegex(ContentError, message):
@@ -356,8 +357,17 @@ class ContentDataTest(unittest.TestCase):
 
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:
-            edit(root, "content/pages-fixes/mentions-legales.json", statut="brouillon")
+            edit(root, "content/pages/mentions-legales.json", statut="brouillon")
             with self.assertRaisesRegex(ContentError, "statut publie est obligatoire"):
+                load_content(root, include_drafts=True)
+
+    def test_legal_page_keeps_its_address(self):
+        # Elle est éditée comme une page de la maison, mais son adresse est figée.
+        with content_sandbox() as root:
+            # Decap renomme le fichier avec l’adresse.
+            edit(root, "content/pages/mentions-legales.json", slug="mentions")
+            (root / "content/pages/mentions-legales.json").rename(root / "content/pages/mentions.json")
+            with self.assertRaisesRegex(ContentError, "mentions-legales: obligatoire, son adresse est figée"):
                 load_content(root, include_drafts=True)
 
     def test_optional_fields_are_filled_for_the_generator(self):
@@ -748,7 +758,7 @@ class TextesLisiblesTest(unittest.TestCase):
         champs = {"livres": "description", "personnes": "biographie", "collections": "description",
                   "actualites": "contenu"}
         fautifs = []
-        for dossier in ("livres", "personnes", "collections", "actualites", "pages", "pages-fixes"):
+        for dossier in ("livres", "personnes", "collections", "actualites", "pages"):
             for fichier in sorted((content / dossier).glob("*.json")):
                 data = json.loads(fichier.read_text(encoding="utf-8"))
                 textes = [data.get(champs.get(dossier, ""))]
