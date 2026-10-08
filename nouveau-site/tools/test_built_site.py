@@ -830,6 +830,12 @@ class BuiltSiteTest(unittest.TestCase):
             [f"/livres/{book['slug']}/" for book in selected[: settings("accueil")["nombreCouvertures"]]],
             [link["href"] for link in home.select(".cover-ribbon > a")],
         )
+        # L’aperçu de l’accueil lit ce rang dans les données publiques.
+        ranks = {book["slug"]: book["rangAccueil"] for book in load_json(DIST / "data" / "livres.json")}
+        self.assertEqual(
+            [book["slug"] for book in selected],
+            sorted((slug for slug, rank in ranks.items() if rank is not None), key=ranks.get),
+        )
         for book in source_books:
             page = BeautifulSoup(
                 (DIST / "livres" / book["slug"] / "index.html").read_text(encoding="utf-8"),

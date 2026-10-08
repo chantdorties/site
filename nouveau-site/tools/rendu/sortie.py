@@ -72,6 +72,9 @@ class Sortie:
         return [self.people_by_slug[slug]["nom"] for slug in slugs]
 
     def write_public_data(self) -> None:
+        # Le rang dans le bandeau de l’accueil, pour son aperçu dans l’administration ;
+        # null pour un livre qui n’y figure pas.
+        home_rank = {book["slug"]: rank for rank, book in enumerate(self.featured_books())}
         public_books = []
         for book in self.books:
             public_books.append(
@@ -89,6 +92,7 @@ class Sortie:
                     "disponible": book["disponible"],
                     "couverture": self.cover_media[book["slug"]]["small"],
                     "couvertureAlt": book.get("couvertureAlt") or f"Couverture de {book['titre']}",
+                    "rangAccueil": home_rank.get(book["slug"]),
                 }
             )
 
