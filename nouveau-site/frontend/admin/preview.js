@@ -531,9 +531,18 @@
     }
   });
 
-  const HomeTextsPreview = createClass({
+  // Les livres mis en avant, dans l’ordre du bandeau, d’après les fichiers publics :
+  // ceux de la dernière publication. Le nombre suit la saisie.
+  const couverturesAccueil = (nombre) => (DONNEES.livres ? [...DONNEES.livres.values()] : [])
+    .filter((livre) => livre.rangAccueil !== null && livre.rangAccueil !== undefined)
+    .sort((a, b) => a.rangAccueil - b.rangAccueil)
+    .slice(0, nombre);
+
+  const HomeTextsPreview = avecDonnees({
     render() {
       const { entry, widgetFor } = this.props;
+      const nombre = Number(value(entry, 'nombreCouvertures')) || 0;
+      const livres = couverturesAccueil(nombre);
       return cadre('Page d’accueil — les numéros suivent ceux du formulaire',
         zone('1', 'Bandeau',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'heroRubrique')),
@@ -542,8 +551,15 @@
           blocMarkdown(widgetFor, 'heroAccroche'),
           h('p', { className: 'site-preview__actions' },
             bouton(value(entry, 'boutonCatalogue')), bouton(value(entry, 'boutonCollections'), true)),
-          h('div', { className: 'site-preview__placeholder' },
-            `${value(entry, 'nombreCouvertures') || '?'} couvertures de livres mis en avant`)),
+          livres.length
+            ? h('div', { className: 'site-preview__covers' }, livres.map((livre) =>
+              h('figure', { key: livre.slug },
+                h('img', { src: livre.couverture, alt: livre.couvertureAlt || '' }),
+                h('figcaption', {}, livre.titre))))
+            : h('div', { className: 'site-preview__placeholder' },
+              DONNEES.livres ? 'Aucun livre mis en avant' : 'Chargement des couvertures…'),
+          h('p', { className: 'site-preview__muted' },
+            'Les livres se choisissent dans chaque fiche livre (« Mis en avant sur l’accueil ») ; leur ordre aussi.')),
         zone('2', 'Bloc information',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'informationRubrique')),
           h('h2', {}, value(entry, 'titreInformation')),
