@@ -297,6 +297,22 @@ noscript {
   object-fit: contain;
 }
 
+/* Un portrait est rond, comme sur la page Auteurs & illustrateurs ; sans portrait,
+   les initiales en tiennent lieu. */
+#nc-root .vignette--portrait {
+  height: 34px;
+  border-radius: 50%;
+}
+
+#nc-root .vignette--initiales {
+  display: grid;
+  place-items: center;
+  background: var(--green-pale);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 /* En grille (deuxième icône à côté de « Grouper par »), l’image remplit le haut de
    la carte et le titre passe dessous. */
 #nc-root a.avec-vignette[class*="GridCardLink"] {
@@ -304,6 +320,10 @@ noscript {
   align-items: stretch;
   gap: 0;
   height: 100%;
+}
+
+#nc-root a.avec-vignette[class*="GridCardLink"] .vignette--initiales {
+  font-size: 32px;
 }
 
 #nc-root a.avec-vignette[class*="GridCardLink"] .vignette {
