@@ -316,6 +316,21 @@ class BuiltSiteTest(unittest.TestCase):
         home = (DIST / "index.html").read_text(encoding="utf-8")
         self.assertRegex(home, r"/assets/css/site\.css\?v=[0-9a-f]{12}")
 
+    def test_pages_send_secondary_addresses_to_the_official_one(self):
+        """Free sert les mêmes fichiers en http://chantdorties.free.fr, sans HTTPS : chaque
+        page renvoie d’emblée vers l’adresse officielle, celle du réglage domaine."""
+        domaine = load_settings(ROOT / "content")["site"]["domaine"]
+        self.assertEqual("https://chantdorties.pages-perso.free.fr", domaine)
+        for route in ("index.html", "catalogue/index.html", "404.html"):
+            soup = BeautifulSoup((DIST / route).read_text(encoding="utf-8"), "html.parser")
+            first = soup.head.find_all(recursive=False)[1]
+            self.assertEqual("script", first.name, route)
+            self.assertIn('"chantdorties.free.fr"', first.string)
+            self.assertIn('location.replace("https://chantdorties.pages-perso.free.fr"+', first.string)
+        home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
+        self.assertEqual(domaine + "/", home.select_one('link[rel="canonical"]')["href"])
+        self.assertIn(f"<loc>{domaine}/</loc>", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
+
     def test_admin_is_present_but_not_indexed(self):
         index = DIST / "admin" / "index.html"
         config_path = DIST / "admin" / "config.yml"

@@ -4,6 +4,12 @@
 glisse le tout dans le squelette commun frontend/templates/base.html — c'est là que se
 trouve le <head> du site : titre, description, icône, appel de la feuille de style.
 
+`redirection_adresse` renvoie vers l'adresse officielle du site (réglage `domaine`) le
+visiteur arrivé par une autre adresse des mêmes fichiers : chez Free, l'ancienne
+http://chantdorties.free.fr, sans HTTPS possible, et la version http de l'adresse
+officielle. Free ne permet pas cette redirection côté serveur : c'est un petit script,
+placé tout en haut du <head> pour partir avant d'afficher quoi que ce soit.
+
 `seo_values` choisit le titre et la description vus par les moteurs de recherche :
 ceux saisis dans l'administration s'ils existent, sinon ceux de la page.
 """
@@ -12,11 +18,30 @@ from __future__ import annotations
 
 import json
 from typing import Any
+from urllib.parse import urlsplit
 
 from .outils import absolute_url, e, truncate
 
 
+# Les autres adresses qui servent les mêmes fichiers que l'adresse officielle.
+ADRESSES_SECONDAIRES = ("chantdorties.free.fr",)
+
+
 class Gabarit:
+    def redirection_adresse(self) -> str:
+        officielle = urlsplit(self.base_url)
+        if officielle.scheme != "https" or not officielle.hostname:
+            return ""
+        cible = json.dumps(f"https://{officielle.netloc}")
+        hote = json.dumps(officielle.hostname)
+        secondaires = json.dumps([h for h in ADRESSES_SECONDAIRES if h != officielle.hostname])
+        return (
+            "<script>(function(){var h=location.hostname;"
+            f"if({secondaires}.indexOf(h)!==-1||(h==={hote}&&location.protocol!==\"https:\"))"
+            f"location.replace({cible}+location.pathname+location.search+location.hash)"
+            "})();</script>"
+        )
+
     def render_page(
         self,
         *,
@@ -58,6 +83,7 @@ class Gabarit:
             )
 
         replacements = {
+            "{{redirection_adresse}}": self.redirection_adresse(),
             "{{page_title}}": e(page_title),
             "{{description}}": e(truncate(self.texte_brut(description))),
             "{{robots}}": robots,

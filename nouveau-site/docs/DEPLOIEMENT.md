@@ -53,6 +53,19 @@ aucun serveur extérieur, donc pas GitHub — voir `docs/RELAIS-AUTH.md`.
   Changer l’une sans l’autre fait échouer les tests.
 - L’aperçu OVH ne publie jamais `/admin/`.
 
+## Adresse officielle et HTTPS
+
+Free sert les mêmes fichiers à deux adresses : <https://chantdorties.pages-perso.free.fr>,
+seule à offrir le HTTPS, et l’ancienne `http://chantdorties.free.fr`, sans HTTPS possible.
+L’adresse officielle est la première : c’est le réglage `domaine` de
+`content/reglages/site.json`, d’où viennent les adresses canoniques et le plan du site.
+
+Free ne permet pas de rediriger côté serveur. Chaque page commence donc par un court
+script (`tools/rendu/gabarit.py`, `redirection_adresse`) qui renvoie vers l’adresse
+officielle, chemin compris, le visiteur arrivé par `chantdorties.free.fr` ou par la
+version `http://` de l’adresse officielle. Les autres adresses (aperçu OVH, poste local)
+ne sont pas touchées.
+
 ## Le fichier `.htaccess`
 
 Free lit bien le `.htaccess`, mais n’accepte qu’une partie des directives Apache.
