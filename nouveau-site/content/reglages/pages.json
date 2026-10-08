@@ -35,5 +35,16 @@
     "titre": "La maison",
     "introduction": "Découvrir notre fonctionnement, nos projets et les différentes manières de travailler avec Chant d’orties.",
     "descriptionSeo": "Découvrez la maison d’édition associative Chant d’orties, ses projets et ses partenaires."
+  },
+  "projets": {
+    "rubrique": "À venir",
+    "titre": "Projets",
+    "introduction": "Trois projets pour fin 2026-début 2027",
+    "statut": "publie",
+    "libelleAction": "Découvrir les projets",
+    "ordre": 90,
+    "anciensSlugs": [
+      "projets.html"
+    ]
   }
 }

@@ -152,12 +152,22 @@ class ContentDataTest(unittest.TestCase):
         ):
             files = {path.stem for path in (CONTENT / folder).glob("*.json")}
             self.assertEqual({record["slug"] for record in records}, files)
-        page_files = {
-            path.stem
-            for folder in ("pages",)
-            for path in (CONTENT / folder).glob("*.json")
-        }
-        self.assertEqual({record["slug"] for record in self.pages}, page_files)
+        page_files = {path.stem for path in (CONTENT / "pages").glob("*.json")}
+        # La page Projets n’a pas de fichier : elle est rebâtie depuis reglages/pages.json.
+        self.assertEqual({record["slug"] for record in self.pages}, page_files | {"projets"})
+
+    def test_projects_page_comes_from_its_introduction(self):
+        intro = self.raw["settings"]["pages"]["projets"]
+        page = next(record for record in self.pages if record["slug"] == "projets")
+        self.assertEqual(intro["introduction"], page["sections"][0]["contenu"])
+        self.assertEqual((intro["titre"], intro["ordre"]), (page["titre"], page["ordre"]))
+        with content_sandbox() as root:
+            (root / "content/pages/projets.json").write_text(
+                json.dumps({"slug": "projets", "titre": "Projets", "statut": "publie", "ordre": 90, "sections": [{"titre": None, "contenu": "Texte"}]}),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ContentError, "introduction se règle désormais"):
+                load_content(root, include_drafts=True)
 
     def test_settings_and_fixed_pages_are_present(self):
         self.assertEqual(

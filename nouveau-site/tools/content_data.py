@@ -864,6 +864,32 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
                     raise ContentError(f"Projet {project['slug']}: nom vide dans {field}")
 
 
+def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
+    """La page Projets, rebâtie depuis son bloc de content/reglages/pages.json.
+
+    Son introduction se règle avec celles des autres pages engendrées ; le reste du
+    site (carte sur « La maison », plan du site, anciennes adresses) la traite comme
+    une page de la maison ordinaire, d’une seule section, sans lien ni image.
+    """
+    page = {
+        "slug": "projets",
+        "statut": intro.get("statut"),
+        "titre": intro.get("titre"),
+        "type": "page",
+        "sections": [{"titre": None, "contenu": intro.get("introduction")}],
+        "liens": [],
+        "images": [],
+        "documents": [],
+        "ordre": intro.get("ordre"),
+        "rubrique": intro.get("rubrique"),
+        "libelleAction": intro.get("libelleAction"),
+        "anciensSlugs": intro.get("anciensSlugs", []),
+    }
+    if "seo" in intro:
+        page["seo"] = intro["seo"]
+    return page
+
+
 def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
     content_dir = root / "content"
     raw = {
@@ -875,6 +901,11 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),
     }
+    if any(page["slug"] == "projets" for page in raw["pages"]):
+        raise ContentError(
+            "Page projets: son introduction se règle désormais dans content/reglages/pages.json"
+        )
+    raw["pages"].append(projects_page(raw["settings"]["pages"].get("projets") or {}))
     apply_optional_defaults(raw)
     # L’ancien dossier des pages « principales » : l’accueil et les actualités sont
     # passés dans les réglages, les mentions légales dans content/pages/.

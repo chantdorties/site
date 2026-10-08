@@ -581,7 +581,8 @@
     ['personnes', 'Auteurs et illustrateurs — /personnes/'],
     ['collections', 'Collections — /collections/'],
     ['actualites', 'Actualités — /actualites/'],
-    ['maison', 'La maison — /la-maison/']
+    ['maison', 'La maison — /la-maison/'],
+    ['projets', 'Projets — /projets/']
   ];
   const PageIntrosPreview = createClass({
     render() {
