@@ -1,5 +1,5 @@
 ---
-status: pending
+status: done
 ---
 
 # Instruction: Ajouter l’identité des rubriques sans inventer de logos

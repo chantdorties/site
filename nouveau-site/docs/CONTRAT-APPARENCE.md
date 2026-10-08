@@ -77,6 +77,24 @@ Certaines couleurs ne sont pas administrables, pour préserver la lisibilité :
   et le contour de mise au point au clavier (`--color-highlight`) ;
 - les teintes propres à chaque collection et l’avertissement des brouillons.
 
+## Décision en attente : identité des rubriques
+
+Des couleurs ou des logos propres à chaque rubrique (accueil, catalogue, personnes,
+collections, actualités, maison, pages éditoriales) ne sont **pas** implémentés. Avant
+de les ajouter, le client doit valider :
+
+- la liste exacte des rubriques, et si les pages éditoriales partagent une couleur ;
+- le sens du mot « logo » : image fournie, icône existante ou simple couleur.
+
+Une fois ces réponses obtenues, l’ajout suit le même contrat : un objet fermé
+`couleursRubriques` (une clé par rubrique validée, valeur `#RRGGBB`), des tokens
+`--color-section-<rubrique>` produits depuis une table interne, branchés sur les
+classes existantes ; jamais de sélecteur venu du JSON. Des logos, s’ils sont
+fournis, passeraient par `content/media/` et le pipeline d’optimisation existant.
+
+Les emblèmes des collections ne sont pas concernés : ils restent dans chaque fiche
+Collection (`logo`, `logoAlt`).
+
 ## Responsabilités
 
 | Étape | Fichier | Rôle |
