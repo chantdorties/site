@@ -11,7 +11,13 @@ from urllib.parse import urlsplit
 import yaml
 from bs4 import BeautifulSoup
 
-from tools.content_data import inline_media_paths, load_settings
+from tools.content_data import (
+    APPEARANCE_COLOR_FIELDS,
+    APPEARANCE_FONT_FIELDS,
+    APPEARANCE_FONTS,
+    inline_media_paths,
+    load_settings,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -463,6 +469,33 @@ class BuiltSiteTest(unittest.TestCase):
                 {field["name"] for field in fixed_files[path.stem]["fields"]},
                 path.name,
             )
+
+    def test_admin_appearance_entry_only_offers_contract_values(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        entry = next(item for item in reglages["files"] if item["name"] == "apparence")
+        self.assertEqual("nouveau-site/content/reglages/apparence.json", entry["file"])
+        fields = {field["name"]: field for field in entry["fields"]}
+        self.assertEqual(set(APPEARANCE_COLOR_FIELDS) | set(APPEARANCE_FONT_FIELDS), set(fields))
+
+        for name in APPEARANCE_COLOR_FIELDS:
+            field = fields[name]
+            self.assertEqual("color", field["widget"], name)
+            self.assertFalse(field.get("enableAlpha", False), name)
+            self.assertEqual("^#[0-9A-Fa-f]{6}$", field["pattern"][0], name)
+        for name in APPEARANCE_FONT_FIELDS:
+            field = fields[name]
+            self.assertEqual("select", field["widget"], name)
+            self.assertEqual(
+                list(APPEARANCE_FONTS), [option["value"] for option in field["options"]], name
+            )
+        # Les libellés parlent à la rédaction, jamais en noms de tokens CSS.
+        for field in entry["fields"]:
+            self.assertNotRegex(field["label"], r"--|color|font|css", field["name"])
+        # Sensible à la casse : « couleurLiens » contient « urL » sans être une adresse.
+        forbidden = re.compile(r"[cC]ss|[sS]tyle|^url|Url|[tT]aille|[eE]spacement|[fF]ichier")
+        for name in fields:
+            self.assertNotRegex(name, forbidden)
 
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:

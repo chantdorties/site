@@ -250,31 +250,43 @@ collections:
               effacer : sans lui, le site refuse de se générer. Il ne se remplace que
               par un nouveau bloc fourni par PayPal.
             pattern: ['^-----BEGIN PKCS7-----', "Le bloc doit commencer par -----BEGIN PKCS7-----"]
-      # Contrat complet : docs/CONTRAT-APPARENCE.md. Aucun champ de CSS libre.
+      # Contrat complet : docs/CONTRAT-APPARENCE.md. Aucun champ de CSS libre : des
+      # couleurs #RRGGBB (sélecteur sans transparence, motif en garde-fou pour la
+      # saisie au clavier) et des polices choisies dans une liste fermée.
       - name: apparence
         label: Apparence
         file: nouveau-site/content/reglages/apparence.json
         editor:
           preview: false
         fields:
-          - {label: "Fond du site", name: couleurFond, widget: string, pattern: &couleur ['^#[0-9A-Fa-f]{6}$', "Saisir une couleur au format #RRGGBB, par exemple #c63f32"]}
-          - {label: "Fond des cartes", name: couleurSurface, widget: string, pattern: *couleur}
-          - {label: "Texte principal", name: couleurTexte, widget: string, pattern: *couleur}
-          - {label: "Texte secondaire", name: couleurTexteSecondaire, widget: string, pattern: *couleur}
-          - {label: "Couleur principale", name: couleurPrincipale, widget: string, pattern: *couleur}
-          - {label: "Couleur principale foncée", name: couleurPrincipaleFoncee, widget: string, pattern: *couleur}
-          - {label: "Couleur secondaire", name: couleurSecondaire, widget: string, pattern: *couleur}
-          - {label: "Liens", name: couleurLiens, widget: string, pattern: *couleur}
-          - {label: "Boutons", name: couleurBoutons, widget: string, pattern: *couleur}
+          - label: Fond du site
+            name: couleurFond
+            widget: color
+            allowInput: true
+            enableAlpha: false
+            pattern: &couleur ['^#[0-9A-Fa-f]{6}$', "Choisir une couleur, ou la saisir au format #RRGGBB (par exemple #c63f32)"]
+            hint: >-
+              Le fond général des pages et de l’en-tête. Les tailles, les espacements et
+              la mise en page restent protégés : ici, seules les couleurs et les polices
+              changent. Valeur d’origine : #f7f7f4.
+          - {label: "Fond des cartes", name: couleurSurface, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les cartes, les bandeaux blancs et les champs de recherche. Valeur d’origine : #ffffff."}
+          - {label: "Texte principal", name: couleurTexte, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le texte courant et les titres. Valeur d’origine : #171a18."}
+          - {label: "Texte secondaire", name: couleurTexteSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les textes discrets : fil d’Ariane, légendes, dates. Valeur d’origine : #626862."}
+          - {label: "Couleur principale", name: couleurPrincipale, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "L’accent de la maison : « d’orties », l’onglet actif, les filets, la 1re collection. Valeur d’origine : #c63f32."}
+          - {label: "Couleur principale foncée", name: couleurPrincipaleFoncee, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le survol des liens et des boutons. Valeur d’origine : #963128."}
+          - {label: "Couleur secondaire", name: couleurSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les surtitres, les citations, la mention « disponible », la 2e collection. Valeur d’origine : #3e6b50."}
+          - {label: "Liens", name: couleurLiens, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les liens dans les textes et la 3e collection. Valeur d’origine : #275c7a."}
+          - {label: "Boutons", name: couleurBoutons, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le fond des boutons pleins ; leur texte reste blanc, choisir une couleur foncée. Valeur d’origine : #171a18."}
           - label: Police des titres
             name: policeTitres
             widget: select
+            hint: "Valeur d’origine : Classique à empattements (Georgia)."
             options: &polices
               - {label: "Classique à empattements (Georgia)", value: serif-classique}
               - {label: "Livre à empattements (Palatino)", value: serif-livre}
               - {label: "Moderne sans empattements (Inter)", value: sans-serif-moderne}
               - {label: "Humaniste sans empattements", value: sans-serif-humaniste}
-          - {label: "Police des textes", name: policeTexte, widget: select, options: *polices}
+          - {label: "Police des textes", name: policeTexte, widget: select, options: *polices, hint: "Valeur d’origine : Moderne sans empattements (Inter)."}
 
   # L’ordre des champs suit la façon dont on décrit un livre : de quoi il s’agit, qui
   # l’a fait, ce qu’il raconte, à quoi il ressemble, comment on l’achète, où il se
