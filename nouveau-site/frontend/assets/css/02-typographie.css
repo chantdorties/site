@@ -11,7 +11,7 @@ p {
 h1,
 h2,
 h3 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: 0;

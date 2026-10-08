@@ -122,7 +122,7 @@
 
   .editorial-aside {
     padding: 22px 0 0;
-    border-top: 3px solid var(--green);
+    border-top: 3px solid var(--color-secondary);
     border-left: 0;
   }
 
@@ -142,7 +142,7 @@
 
   .news-topics span + span {
     padding-left: 0;
-    border-top: 1px solid #aebdc5;
+    border-top: 1px solid #aebdc5; /* filets propres à l’encart actualités et à la zone sombre */
     border-left: 0;
   }
 
@@ -169,7 +169,7 @@
   }
 
   .home-commercial__details {
-    border-top: 3px solid var(--red);
+    border-top: 3px solid var(--color-primary);
     border-left: 0;
     padding-top: 1.5rem;
     padding-left: 0;

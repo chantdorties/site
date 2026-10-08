@@ -8,19 +8,19 @@
 }
 
 .section--white {
-  background: var(--surface);
+  background: var(--color-surface);
 }
 
 .section--ink {
-  background: var(--ink);
-  color: #fff;
+  background: var(--color-dark);
+  color: var(--color-on-dark);
 }
 
 .section--ink a {
-  color: #fff;
+  color: var(--color-on-dark);
 }
 
 .section--ink .eyebrow {
-  color: #a9d1b4;
+  color: #a9d1b4; /* vert clair fixe, lisible sur la zone sombre */
 }
 

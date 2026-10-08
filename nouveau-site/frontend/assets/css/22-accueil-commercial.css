@@ -4,8 +4,8 @@
    Il passe sur une colonne sur téléphone : voir 91-mobile-760px.css */
 
 .home-commercial {
-  background: #eef1ed;
-  border-block: 1px solid var(--line);
+  background: #eef1ed; /* teinte de fond propre à ce bandeau */
+  border-block: 1px solid var(--color-border);
 }
 
 .home-commercial__layout {
@@ -21,7 +21,7 @@
 }
 
 .home-commercial__details {
-  border-left: 3px solid var(--red);
+  border-left: 3px solid var(--color-primary);
   padding-left: clamp(1.25rem, 3vw, 2.5rem);
 }
 
@@ -38,11 +38,11 @@
 
 .commercial-audience {
   padding-top: 14px;
-  border-top: 3px solid var(--ink);
+  border-top: 3px solid var(--color-text);
 }
 
 .commercial-audience:last-child {
-  border-top-color: var(--green);
+  border-top-color: var(--color-secondary);
 }
 
 .commercial-audience h4 {

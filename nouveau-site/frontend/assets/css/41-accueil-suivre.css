@@ -9,13 +9,13 @@
 .split-callout {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  border: 1px solid #3c413d;
+  border: 1px solid #3c413d; /* nuances fixes de la zone sombre, voir --color-dark */
 }
 
 .split-callout a {
   min-height: 220px;
   padding: 34px;
-  color: #fff;
+  color: var(--color-on-dark);
   text-decoration: none;
 }
 

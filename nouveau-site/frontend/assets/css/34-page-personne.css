@@ -16,7 +16,7 @@
   place-items: center;
   overflow: hidden;
   border-radius: var(--radius);
-  background: var(--green-pale);
+  background: var(--color-secondary-soft);
 }
 
 .person-detail__visual img {

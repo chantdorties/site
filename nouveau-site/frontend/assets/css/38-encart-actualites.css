@@ -23,7 +23,7 @@
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
   margin: 38px 0;
-  border-top: 1px solid #aebdc5;
+  border-top: 1px solid #aebdc5; /* filet bleu-gris propre à cet encart */
   border-bottom: 1px solid #aebdc5;
 }
 

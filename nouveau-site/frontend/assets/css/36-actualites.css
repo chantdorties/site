@@ -2,8 +2,8 @@
    Le HTML est dans tools/rendu/pages/actualites.py */
 
 .news-section {
-  border-bottom: 1px solid var(--line);
-  background: #e5edf2;
+  border-bottom: 1px solid var(--color-border);
+  background: #e5edf2; /* teinte de fond propre aux actualités */
 }
 
 .news-grid {
@@ -14,9 +14,9 @@
 
 .news-card {
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--color-surface);
 }
 
 .news-card > img {
@@ -37,15 +37,15 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  color: var(--green);
+  color: var(--color-secondary);
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .news-card__summary {
-  color: var(--muted);
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--color-muted);
+  font-family: var(--font-heading);
   font-size: 1.1rem;
 }
 
@@ -59,7 +59,7 @@
   gap: 12px 22px;
   padding-top: 22px;
   margin-top: 24px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-border);
   font-weight: 700;
 }
 

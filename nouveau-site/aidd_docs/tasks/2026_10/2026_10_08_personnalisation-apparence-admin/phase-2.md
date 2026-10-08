@@ -1,5 +1,5 @@
 ---
-status: pending
+status: done
 ---
 
 # Instruction: Centraliser les couleurs et les polices sans changer le rendu

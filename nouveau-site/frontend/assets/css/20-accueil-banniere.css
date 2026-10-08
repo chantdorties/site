@@ -7,8 +7,8 @@
   position: relative;
   overflow: hidden;
   padding: 64px 0 46px;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .hero-copy {
@@ -24,7 +24,7 @@
 }
 
 .hero h1 span {
-  color: var(--red);
+  color: var(--color-primary);
 }
 
 .hero-actions {
@@ -51,7 +51,7 @@
 .cover-ribbon img {
   width: 100%;
   aspect-ratio: 2 / 3;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 2px;
   object-fit: cover;
   box-shadow: var(--shadow);

@@ -11,8 +11,8 @@
 
 .error-code {
   margin-bottom: 12px;
-  color: var(--red);
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--color-primary);
+  font-family: var(--font-heading);
   font-size: 6rem;
   font-weight: 700;
   line-height: 1;

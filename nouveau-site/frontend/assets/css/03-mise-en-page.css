@@ -11,8 +11,8 @@
   left: 8px;
   padding: 10px 14px;
   transform: translateY(-150%);
-  background: var(--ink);
-  color: #fff;
+  background: var(--color-dark);
+  color: var(--color-on-dark);
 }
 
 .skip-link:focus {
