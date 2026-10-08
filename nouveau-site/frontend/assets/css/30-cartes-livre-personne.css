@@ -28,9 +28,9 @@
 .book-card__cover {
   width: 100%;
   aspect-ratio: 2 / 3;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: 2px;
-  background: #e7e9e5;
+  background: #e7e9e5; /* fond d’attente des couvertures ; ombres techniques */
   object-fit: cover;
   box-shadow: 0 10px 24px rgba(23, 26, 24, 0.09);
   transition: transform 180ms ease, box-shadow 180ms ease;
@@ -44,7 +44,7 @@
 .book-card__collection,
 .person-card__roles {
   margin-bottom: 5px;
-  color: var(--green);
+  color: var(--color-secondary);
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -58,24 +58,24 @@
 
 .book-card h3 a,
 .person-card h3 a {
-  color: var(--ink);
+  color: var(--color-text);
   text-decoration: none;
 }
 
 .book-card h3 a:hover,
 .person-card h3 a:hover {
-  color: var(--red-dark);
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
 .book-card__meta {
   margin-bottom: 0;
-  color: var(--muted);
+  color: var(--color-muted);
   font-size: 0.9rem;
 }
 
 .book-card__price {
-  color: var(--ink);
+  color: var(--color-text);
   font-weight: 800;
 }
 
@@ -86,9 +86,9 @@
   place-items: center;
   margin-bottom: 16px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  background: var(--green-pale);
+  background: var(--color-secondary-soft);
 }
 
 .person-card__visual img {
@@ -98,7 +98,7 @@
 }
 
 .monogram {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 3rem;
   font-weight: 700;
   line-height: 1;

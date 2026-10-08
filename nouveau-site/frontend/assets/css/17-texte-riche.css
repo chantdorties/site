@@ -28,7 +28,7 @@
 .rich-text h6 {
   margin-top: 1.4em;
   margin-bottom: 0.5em;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
 }
@@ -63,15 +63,15 @@
   margin-left: 0;
   margin-right: 0;
   padding-left: 18px;
-  border-left: 3px solid var(--green);
-  color: var(--muted);
+  border-left: 3px solid var(--color-secondary);
+  color: var(--color-muted);
   font-style: italic;
 }
 
 .rich-text code {
   padding: 0.1em 0.35em;
   border-radius: 4px;
-  background: var(--green-pale);
+  background: var(--color-secondary-soft);
   font-size: 0.92em;
 }
 
@@ -79,7 +79,7 @@
   overflow-x: auto;
   padding: 14px 16px;
   border-radius: var(--radius);
-  background: var(--green-pale);
+  background: var(--color-secondary-soft);
 }
 
 .rich-text pre code {
@@ -91,7 +91,7 @@
   height: 0;
   margin: 1.6em 0;
   border: 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-border);
 }
 
 .rich-text__figure {
@@ -107,14 +107,14 @@
 
 .rich-text__figure figcaption {
   margin-top: 8px;
-  color: var(--muted);
+  color: var(--color-muted);
   font-size: 0.9rem;
 }
 
 /* Sur fond sombre — le pied de page — la citation et le code reprennent la couleur
    du texte qui les entoure, sinon ils disparaissent. */
 .site-footer .rich-text blockquote {
-  border-left-color: #b9c0ba;
+  border-left-color: #b9c0ba; /* variante de citation sur fond sombre */
   color: inherit;
 }
 

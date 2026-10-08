@@ -12,11 +12,14 @@ import unittest
 from pathlib import Path
 
 from tools.content_data import (
+    APPEARANCE_FONTS,
     ContentError,
     inline_media_paths,
     load_content,
     media_path,
+    navigation_id,
     valid_isbn,
+    validate_appearance_settings,
 )
 
 
@@ -42,6 +45,13 @@ GENERATOR_REQUIRED_FIELDS = {
     ),
 }
 
+
+# Les clés du réglage Apparence, telles que les fixe docs/CONTRAT-APPARENCE.md.
+APPEARANCE_KEYS = {
+    "couleurFond", "couleurSurface", "couleurTexte", "couleurTexteSecondaire",
+    "couleurPrincipale", "couleurPrincipaleFoncee", "couleurSecondaire", "couleurLiens",
+    "couleurBoutons", "policeTitres", "policeTexte",
+}
 
 def load_site_builder():
     """Le module s’appelle build-site.py : il ne s’importe pas directement.
@@ -124,7 +134,7 @@ class ContentDataTest(unittest.TestCase):
 
     def test_content_schema_and_required_records(self):
         schema = json.loads((CONTENT / "schema.json").read_text(encoding="utf-8"))
-        self.assertEqual(3, schema["version"])
+        self.assertEqual(4, schema["version"])
         self.assertEqual({"archive", "brouillon", "publie"}, set(schema["statuts"]))
         self.assertGreater(len(self.books), 0)
         self.assertGreater(len(self.people), 0)
@@ -150,13 +160,109 @@ class ContentDataTest(unittest.TestCase):
 
     def test_settings_and_fixed_pages_are_present(self):
         self.assertEqual(
-            {"accueil", "footer", "navigation", "pages", "paiement", "site"},
+            {"accueil", "apparence", "footer", "navigation", "pages", "paiement", "site"},
             set(self.raw["settings"]),
         )
         fixed_files = {path.stem for path in (CONTENT / "pages-fixes").glob("*.json")}
         self.assertEqual({"accueil", "actualites", "mentions-legales"}, fixed_files)
         self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "accueil")["statut"])
         self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "actualites")["statut"])
+
+    def test_appearance_setting_holds_exactly_the_contract_keys(self):
+        appearance = self.raw["settings"]["apparence"]
+        self.assertIsInstance(appearance, dict)
+        self.assertEqual(APPEARANCE_KEYS, set(appearance))
+
+    def test_missing_appearance_setting_is_reported_by_path(self):
+        with content_sandbox() as root:
+            (root / "content" / "reglages" / "apparence.json").unlink()
+            with self.assertRaisesRegex(ContentError, r"JSON invalide : .*reglages/apparence\.json"):
+                load_content(root, include_drafts=True)
+
+    def test_real_appearance_setting_is_accepted(self):
+        validate_appearance_settings(self.raw["settings"]["apparence"])
+        for field in ("policeTitres", "policeTexte"):
+            self.assertIn(self.raw["settings"]["apparence"][field], APPEARANCE_FONTS)
+
+    def test_appearance_colors_outside_the_contract_are_refused(self):
+        refused = {
+            "chaîne vide": "",
+            "hexadécimal court": "#fff",
+            "transparence": "#c63f32cc",
+            "nom de couleur": "red",
+            "fonction CSS": "rgb(198, 63, 50)",
+            "variable CSS": "var(--color-text)",
+            "point-virgule": "#c63f32; display: none",
+            "accolade": "#c63f32}",
+            "saut de ligne final": "#c63f32\n",
+            "valeur non chaîne": 12,
+        }
+        for case, value in refused.items():
+            with self.subTest(case), content_sandbox() as root:
+                edit(root, "content/reglages/apparence.json", couleurPrincipale=value)
+                with self.assertRaisesRegex(ContentError, "Réglage apparence: couleurPrincipale"):
+                    load_content(root, include_drafts=True)
+
+    def test_appearance_fonts_outside_the_list_are_refused(self):
+        for value in ("comic-sans", 'Georgia, serif', "", None):
+            with self.subTest(value), content_sandbox() as root:
+                edit(root, "content/reglages/apparence.json", policeTitres=value)
+                with self.assertRaisesRegex(ContentError, "Réglage apparence: policeTitres.*serif-classique"):
+                    load_content(root, include_drafts=True)
+
+    def test_appearance_keys_must_match_the_contract(self):
+        with content_sandbox() as root:
+            path = root / "content" / "reglages" / "apparence.json"
+            appearance = json.loads(path.read_text(encoding="utf-8"))
+            del appearance["couleurLiens"]
+            path.write_text(json.dumps(appearance), encoding="utf-8")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: champs manquants couleurLiens"):
+                load_content(root, include_drafts=True)
+        with content_sandbox() as root:
+            edit(root, "content/reglages/apparence.json", css="body { display: none }")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: champs inconnus css"):
+                load_content(root, include_drafts=True)
+
+    def test_appearance_setting_must_be_an_object(self):
+        with content_sandbox() as root:
+            (root / "content" / "reglages" / "apparence.json").write_text("[]", encoding="utf-8")
+            with self.assertRaisesRegex(ContentError, "Réglage apparence: .*objet JSON"):
+                load_content(root, include_drafts=True)
+
+    def test_a_menu_link_created_in_the_admin_gets_an_id_from_its_address(self):
+        self.assertEqual("home", navigation_id("/"))
+        self.assertEqual("agenda", navigation_id("/agenda/"))
+        self.assertEqual("la-maison", navigation_id("/la-maison/#equipe"))
+        with content_sandbox() as root:
+            path = root / "content" / "reglages" / "navigation.json"
+            navigation = json.loads(path.read_text(encoding="utf-8"))
+            navigation["liens"].insert(0, {"libelle": "Agenda", "url": "/agenda/", "visible": True})
+            path.write_text(json.dumps(navigation, ensure_ascii=False), encoding="utf-8")
+            links = load_content(root, include_drafts=True)["settings"]["navigation"]["liens"]
+            self.assertEqual("agenda", links[0]["id"])
+            self.assertEqual("home", links[1]["id"], "un identifiant existant n’est pas recalculé")
+
+    def test_menu_and_footer_links_follow_the_list_order(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            for relative, key in (
+                ("content/reglages/navigation.json", "liens"),
+                ("content/reglages/footer.json", "liensNavigation"),
+            ):
+                path = root / relative
+                setting = json.loads(path.read_text(encoding="utf-8"))
+                setting[key].reverse()
+                path.write_text(json.dumps(setting, ensure_ascii=False), encoding="utf-8")
+            builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            menu = re.findall(r'class="nav-link" href="([^"]+)"', builder.render_nav("home"))
+            self.assertEqual(
+                [item["url"] for item in builder.navigation_settings["liens"] if item["visible"]],
+                menu,
+            )
+            self.assertEqual("/la-maison/", menu[0])
+            footer = builder.render_footer()
+            self.assertLess(footer.index('href="/actualites/"'), footer.index('href="/catalogue/"'))
 
     def test_orders_and_home_selections_are_explicit(self):
         for records in (self.books, self.people, self.collections, self.pages):
@@ -449,6 +555,76 @@ class ContentDataTest(unittest.TestCase):
                 preview.release_lock()
             finally:
                 production.release_lock()
+
+    def test_theme_block_declares_only_known_tokens_in_a_stable_order(self):
+        load_site_builder()
+        feuille = sys.modules["rendu.feuille_de_style"]
+        appearance = dict(self.raw["settings"]["apparence"], couleurPrincipale="#0A7A5B", policeTexte="serif-livre")
+        self.assertEqual(
+            "/* Le thème choisi dans l'administration : content/reglages/apparence.json */\n"
+            ":root {\n"
+            "  --color-background: #f7f7f4;\n"
+            "  --color-surface: #ffffff;\n"
+            "  --color-text: #171a18;\n"
+            "  --color-muted: #626862;\n"
+            "  --color-primary: #0a7a5b;\n"
+            "  --color-primary-dark: #963128;\n"
+            "  --color-secondary: #3e6b50;\n"
+            "  --color-link: #275c7a;\n"
+            "  --color-button: #171a18;\n"
+            '  --font-heading: Georgia, "Times New Roman", serif;\n'
+            '  --font-body: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;\n'
+            "}\n\n",
+            feuille.bloc_du_theme(appearance),
+        )
+
+    def test_every_allowed_font_is_accepted_and_resolved_by_the_code(self):
+        load_site_builder()
+        feuille = sys.modules["rendu.feuille_de_style"]
+        for font, stack in APPEARANCE_FONTS.items():
+            with self.subTest(font):
+                appearance = dict(self.raw["settings"]["apparence"], policeTitres=font, policeTexte=font)
+                validate_appearance_settings(appearance)
+                block = feuille.bloc_du_theme(appearance)
+                self.assertIn(f"  --font-heading: {stack};\n", block)
+                self.assertIn(f"  --font-body: {stack};\n", block)
+                self.assertNotIn(font, block)
+
+    def test_theme_settings_reach_site_css_and_the_asset_version(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            default = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            again = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            self.assertEqual(default.asset_version, again.asset_version, "même thème, même empreinte")
+
+            edit(
+                root, "content/reglages/apparence.json",
+                couleurPrincipale="#0a7a5b", policeTitres="sans-serif-humaniste",
+            )
+            themed = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            themed.prepare_output()
+            css = (themed.temp_output / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+
+            self.assertEqual(themed.site_css, css, "l’empreinte et le fichier publié ont la même source")
+            self.assertNotEqual(default.asset_version, themed.asset_version)
+            self.assertIn("  --color-primary: #0a7a5b;\n", css)
+            self.assertIn("  --font-heading: Optima, Candara,", css)
+            self.assertNotIn("couleurPrincipale", css)
+            self.assertNotIn("policeTitres", css)
+            # Le thème suit les valeurs par défaut des tokens et précède les règles.
+            self.assertLess(css.index("--color-primary: #c63f32;"), css.index("--color-primary: #0a7a5b;"))
+            self.assertLess(css.index("--color-primary: #0a7a5b;"), css.index("box-sizing: border-box;"))
+
+    def test_a_refused_theme_stops_before_anything_is_written(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            edit(root, "content/reglages/apparence.json", couleurFond="#fff} body { display: none")
+            with self.assertRaisesRegex(ValueError, "Réglage apparence: couleurFond"):
+                build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            self.assertFalse((root / "dist").exists())
+            self.assertFalse((root / ".dist-build").exists())
 
     def test_special_contributor_relations(self):
         aquarium = self.books_by_slug["debout-dans-l-aquarium"]

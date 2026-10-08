@@ -4,23 +4,19 @@
   "liensNavigation": [
     {
       "libelle": "Catalogue",
-      "url": "/catalogue/",
-      "ordre": 10
+      "url": "/catalogue/"
     },
     {
       "libelle": "Collections",
-      "url": "/collections/",
-      "ordre": 20
+      "url": "/collections/"
     },
     {
       "libelle": "Auteurs & illustrateurs",
-      "url": "/personnes/",
-      "ordre": 30
+      "url": "/personnes/"
     },
     {
       "libelle": "Actualités",
-      "url": "/actualites/",
-      "ordre": 40
+      "url": "/actualites/"
     }
   ],
   "titreInformations": "Informations",

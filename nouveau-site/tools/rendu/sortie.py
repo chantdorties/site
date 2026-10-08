@@ -10,7 +10,6 @@ from __future__ import annotations
 import fcntl
 import shutil
 
-from .feuille_de_style import assembler_css
 from .outils import monogram, write_json, write_text
 
 
@@ -52,10 +51,8 @@ class Sortie:
         self.temp_output.mkdir(parents=True)
         # Les morceaux de frontend/assets/css/ sont recollés en un seul fichier :
         # le site publié n'en contient qu'un, le navigateur ne fait qu'une requête.
-        write_text(
-            self.temp_output / "assets" / "css" / "site.css",
-            assembler_css(self.frontend_dir),
-        )
+        # La chaîne vient du constructeur, celle-là même qui a servi à l'empreinte.
+        write_text(self.temp_output / "assets" / "css" / "site.css", self.site_css)
         shutil.copytree(
             self.frontend_dir / "assets" / "js",
             self.temp_output / "assets" / "js",

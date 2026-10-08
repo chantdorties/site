@@ -4,8 +4,8 @@
 
 .page-heading {
   padding: 70px 0 50px;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .page-heading h1 {

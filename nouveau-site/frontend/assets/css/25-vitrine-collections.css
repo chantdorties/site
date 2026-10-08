@@ -6,29 +6,29 @@
    92-mobile-430px.css */
 
 .collection-showcase__item {
-  --collection-accent: var(--red);
+  --collection-accent: var(--color-primary);
   display: grid;
   position: relative;
   grid-template-columns: minmax(0, 1fr) 210px;
   min-height: 300px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-top: 5px solid var(--collection-accent);
   border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--color-surface);
+  color: var(--color-text);
   text-decoration: none;
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
 .collection-showcase__item:nth-child(2) {
-  --collection-accent: var(--green);
-  background: var(--green-pale);
+  --collection-accent: var(--color-secondary);
+  background: var(--color-secondary-soft);
 }
 
 .collection-showcase__item:nth-child(3) {
-  --collection-accent: var(--blue);
-  background: #e5edf2;
+  --collection-accent: var(--color-link);
+  background: #e5edf2; /* teintes et accents propres à chaque collection */
 }
 
 .collection-showcase__item:nth-child(4) {
@@ -37,7 +37,7 @@
 }
 
 .collection-showcase__item:nth-child(5) {
-  --collection-accent: var(--red-dark);
+  --collection-accent: var(--color-primary-dark);
   background: #f3e5e2;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .collection-showcase__item:hover {
-  color: var(--ink);
+  color: var(--color-text);
   box-shadow: var(--shadow);
   transform: translateY(-3px);
 }
@@ -86,7 +86,7 @@
   gap: 8px;
   margin-top: auto;
   padding-top: 24px;
-  color: var(--ink);
+  color: var(--color-text);
   font-size: 0.86rem;
   font-weight: 800;
 }
@@ -113,7 +113,7 @@
   width: 112px;
   max-width: none;
   aspect-ratio: 2 / 3;
-  border: 2px solid #fff;
+  border: 2px solid #fff; /* liseré blanc des couvertures, indépendant du thème */
   border-radius: 2px;
   object-fit: cover;
   box-shadow: 0 12px 24px rgba(23, 26, 24, 0.2);

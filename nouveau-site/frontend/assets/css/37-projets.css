@@ -12,9 +12,9 @@
 
 .project-card {
   padding: 28px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--color-surface);
 }
 
 .project-card h2 {
@@ -27,15 +27,15 @@
 }
 
 .project-card__summary {
-  color: var(--muted);
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--color-muted);
+  font-family: var(--font-heading);
   font-size: 1.1rem;
 }
 
 .project-card__release {
   margin-top: 18px;
   margin-bottom: 0;
-  color: var(--green);
+  color: var(--color-secondary);
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;

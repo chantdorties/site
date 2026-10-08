@@ -4,7 +4,7 @@
 
 .eyebrow {
   margin-bottom: 0.7rem;
-  color: var(--green);
+  color: var(--color-secondary);
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -12,8 +12,8 @@
 
 .lead {
   max-width: 760px;
-  color: #373d38;
-  font-family: Georgia, "Times New Roman", serif;
+  color: #373d38; /* gris d’accroche, entre texte et texte secondaire */
+  font-family: var(--font-heading);
   font-size: 1.28rem;
   line-height: 1.55;
 }

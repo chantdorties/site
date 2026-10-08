@@ -29,10 +29,8 @@ class PiedDePage:
             )
         navigation_links = "".join(
             f'<li><a href="{e(item["url"])}">{e(item["libelle"])}</a></li>'
-            for item in sorted(
-                self.footer_settings["liensNavigation"],
-                key=lambda item: (item["ordre"], item["url"]),
-            )
+            # L’ordre d’affichage est celui de la liste, réglé par glisser-déposer.
+            for item in self.footer_settings["liensNavigation"]
         )
         email = self.site_settings["courriel"]
         facebook = self.site_settings["facebook"]

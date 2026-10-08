@@ -5,8 +5,8 @@
 
 .site-footer {
   padding: 58px 0 26px;
-  background: var(--ink);
-  color: #dce1dc;
+  background: var(--color-dark);
+  color: #dce1dc; /* nuances fixes de la zone sombre, voir --color-dark */
 }
 
 .footer-grid {
@@ -16,8 +16,8 @@
 }
 
 .footer-brand {
-  color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--color-on-dark);
+  font-family: var(--font-heading);
   font-size: 1.45rem;
   font-weight: 700;
 }
@@ -42,7 +42,7 @@
 
 .footer-title {
   margin-bottom: 14px;
-  color: #fff;
+  color: var(--color-on-dark);
   font-family: inherit;
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -75,7 +75,7 @@
 .back-to-top {
   border-color: #5e655f;
   background: transparent;
-  color: #fff;
+  color: var(--color-on-dark);
 }
 
 .back-to-top[hidden] {

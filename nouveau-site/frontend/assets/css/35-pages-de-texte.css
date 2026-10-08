@@ -12,7 +12,7 @@
 .editorial-section {
   padding-bottom: 34px;
   margin-bottom: 34px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .editorial-section:last-child {
@@ -36,7 +36,7 @@
 .editorial-aside {
   align-self: start;
   padding-left: 24px;
-  border-left: 3px solid var(--green);
+  border-left: 3px solid var(--color-secondary);
 }
 
 .editorial-aside h2 {

@@ -1,0 +1,13 @@
+{
+  "couleurFond": "#f7f7f4",
+  "couleurSurface": "#ffffff",
+  "couleurTexte": "#171a18",
+  "couleurTexteSecondaire": "#626862",
+  "couleurPrincipale": "#c63f32",
+  "couleurPrincipaleFoncee": "#963128",
+  "couleurSecondaire": "#3e6b50",
+  "couleurLiens": "#275c7a",
+  "couleurBoutons": "#171a18",
+  "policeTitres": "serif-classique",
+  "policeTexte": "sans-serif-moderne"
+}

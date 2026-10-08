@@ -11,7 +11,13 @@ from urllib.parse import urlsplit
 import yaml
 from bs4 import BeautifulSoup
 
-from tools.content_data import inline_media_paths, load_settings
+from tools.content_data import (
+    APPEARANCE_COLOR_FIELDS,
+    APPEARANCE_FONT_FIELDS,
+    APPEARANCE_FONTS,
+    inline_media_paths,
+    load_settings,
+)
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -293,6 +299,23 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIsNotNone(card.select_one(".house-card__action"))
             self.assertIsNotNone(card.select_one("h2"))
 
+    def test_published_stylesheet_carries_the_saved_theme(self):
+        css = (DIST / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        appearance = settings("apparence")
+        theme = css[css.index(":root {", css.index("content/reglages/apparence.json")):]
+        theme = theme[: theme.index("}")]
+        for key, token in (
+            ("couleurFond", "--color-background"),
+            ("couleurTexte", "--color-text"),
+            ("couleurPrincipale", "--color-primary"),
+            ("couleurBoutons", "--color-button"),
+        ):
+            self.assertIn(f"  {token}: {appearance[key].lower()};", theme, key)
+        self.assertNotRegex(theme, r"couleur|police")
+        # La feuille est appelée avec l’empreinte qui tient compte du thème.
+        home = (DIST / "index.html").read_text(encoding="utf-8")
+        self.assertRegex(home, r"/assets/css/site\.css\?v=[0-9a-f]{12}")
+
     def test_admin_is_present_but_not_indexed(self):
         index = DIST / "admin" / "index.html"
         config_path = DIST / "admin" / "config.yml"
@@ -332,6 +355,11 @@ class BuiltSiteTest(unittest.TestCase):
             name = collection["name"]
             self.assertTrue(str(collection.get("description", "")).strip(), name)
             if collection.get("editor", {}).get("preview") is False:
+                continue
+            if "files" in collection and name == "reglages":
+                # Une rubrique de fichiers voit son aperçu choisi entrée par entrée.
+                for entry in collection["files"]:
+                    self.assertIn(entry["name"], registered, f"{name}/{entry['name']}")
                 continue
             self.assertIn(name, registered, name)
 
@@ -423,15 +451,39 @@ class BuiltSiteTest(unittest.TestCase):
             )
         )
         self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
+        # Chaque fichier de réglages a son gabarit, à son nom d’entrée.
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        owned = {("reglages", entry["name"]): entry["name"] for entry in reglages["files"]}
+        self.assertLessEqual(set(owned.values()), registered)
         for collection in config["collections"]:
-            if (collection.get("editor") or {}).get("preview") is False:
-                continue
+            collection_preview = (collection.get("editor") or {}).get("preview")
             for entry in collection.get("files") or []:
+                entry_preview = (entry.get("editor") or {}).get("preview")
+                preview = collection_preview if entry_preview is None else entry_preview
+                if preview is False:
+                    continue
+                allowed = {collection["name"], owned.get((collection["name"], entry["name"]))}
                 self.assertNotIn(
                     entry["name"],
-                    registered - {collection["name"]},
+                    registered - allowed,
                     f"{collection['name']}/{entry['name']} recevrait un aperçu étranger",
                 )
+        self.assertNotEqual(False, (reglages.get("editor") or {}).get("preview"))
+        for entry in reglages["files"]:
+            self.assertNotEqual(False, (entry.get("editor") or {}).get("preview"), entry["name"])
+
+    def test_appearance_preview_follows_the_python_contract(self):
+        script = (DIST / "admin" / "preview.js").read_text(encoding="utf-8")
+        fonts = dict(re.findall(r"^    '([a-z-]+)': '([^']+)',?$", script, re.M))
+        self.assertEqual(dict(APPEARANCE_FONTS), fonts)
+        colors = re.findall(r"\['(couleur\w+)', '(--color-[\w-]+)', '(#[0-9a-f]{6})'\]", script)
+        self.assertEqual(list(APPEARANCE_COLOR_FIELDS), [key for key, _, _ in colors])
+        variables = (ROOT / "frontend" / "assets" / "css" / "00-variables.css").read_text(encoding="utf-8")
+        stylesheet = (DIST / "admin" / "preview.css").read_text(encoding="utf-8")
+        for _, token, default in colors:
+            # Même valeur par défaut dans le site, l’aperçu Apparence et les autres aperçus.
+            self.assertIn(f"  {token}: {default};", variables, token)
+            self.assertIn(f"  {token}: {default};", stylesheet, token)
 
     def test_admin_exposes_every_editable_json_field(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
@@ -453,7 +505,8 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertLessEqual(source_fields, admin_fields, name)
 
         settings_files = {
-            item["name"]: item for item in collections["reglages"]["files"]
+            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
+            for item in collections["reglages"]["files"]
         }
         for path in (ROOT / "content" / "reglages").glob("*.json"):
             self.assertEqual(
@@ -472,6 +525,47 @@ class BuiltSiteTest(unittest.TestCase):
                 {field["name"] for field in fixed_files[path.stem]["fields"]},
                 path.name,
             )
+
+    def test_admin_appearance_entry_only_offers_contract_values(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        entry = next(item for item in reglages["files"] if item["name"] == "apparence")
+        self.assertEqual("nouveau-site/content/reglages/apparence.json", entry["file"])
+        fields = {field["name"]: field for field in entry["fields"]}
+        self.assertEqual(set(APPEARANCE_COLOR_FIELDS) | set(APPEARANCE_FONT_FIELDS), set(fields))
+
+        for name in APPEARANCE_COLOR_FIELDS:
+            field = fields[name]
+            self.assertEqual("color", field["widget"], name)
+            self.assertFalse(field.get("enableAlpha", False), name)
+            self.assertEqual("^#[0-9A-Fa-f]{6}$", field["pattern"][0], name)
+        for name in APPEARANCE_FONT_FIELDS:
+            field = fields[name]
+            self.assertEqual("select", field["widget"], name)
+            self.assertEqual(
+                list(APPEARANCE_FONTS), [option["value"] for option in field["options"]], name
+            )
+        # Les libellés parlent à la rédaction, jamais en noms de tokens CSS.
+        for field in entry["fields"]:
+            self.assertNotRegex(field["label"], r"--|color|font|css", field["name"])
+        # Sensible à la casse : « couleurLiens » contient « urL » sans être une adresse.
+        forbidden = re.compile(r"[cC]ss|[sS]tyle|^url|Url|[tT]aille|[eE]spacement|[fF]ichier")
+        for name in fields:
+            self.assertNotRegex(name, forbidden)
+
+    def test_menu_and_footer_links_hide_technical_fields(self):
+        config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
+        reglages = next(item for item in config["collections"] if item["name"] == "reglages")
+        files = {item["name"]: item for item in reglages["files"]}
+        for entry, list_name in (("navigation", "liens"), ("footer", "liensNavigation")):
+            links = next(field for field in files[entry]["fields"] if field["name"] == list_name)
+            subfields = {field["name"]: field for field in links["fields"]}
+            # L’ordre est celui de la liste : aucun numéro à saisir.
+            self.assertNotIn("ordre", subfields, entry)
+            self.assertTrue(links.get("collapsed"), entry)
+            self.assertIn("{{fields.url}}", links["summary"], entry)
+        menu = next(field for field in files["navigation"]["fields"] if field["name"] == "liens")
+        self.assertEqual("hidden", {field["name"]: field for field in menu["fields"]}["id"]["widget"])
 
     def test_no_draft_warning_in_production(self):
         for path in self.public_html_files:

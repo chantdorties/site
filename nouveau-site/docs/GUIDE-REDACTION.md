@@ -54,14 +54,65 @@ elle-même.
 | Le texte des blocs de l’accueil (situation de la maison, soutien, commandes) | **Pages principales › Accueil** |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
+| Les couleurs et les polices du site | **Réglages du site › Apparence** |
 | L’introduction de la page Projets | **Pages de la maison › Projets** |
 | Les pages Commandes, Librairies, Soutien, Amis… | **Pages de la maison** |
 | Les mentions légales | **Pages principales › Mentions légales** |
+
+Chaque entrée des **Réglages du site** montre à droite un aperçu : une maquette de la
+zone du site où ses textes apparaissent (en-tête, pied de page, accueil, en-têtes des
+pages, boutons d’achat). Il suit la saisie, avant tout enregistrement.
+
+### Le menu et les liens du pied de page
+
+Dans **Réglages du site › Menu principal** et **› Pied de page**, chaque lien tient sur
+une ligne, « Libellé — adresse ». L’ordre affiché sur le site est celui de la liste :
+pour déplacer un lien, le saisir par sa poignée (≡) et le glisser à sa place. Décocher
+« Visible » retire un lien du menu sans l’effacer. Un nouveau lien ne demande qu’un
+libellé et une adresse.
 
 Deux textes ne se saisissent nulle part, parce qu’ils se déduisent : les catégories
 annoncées en bas de la page Actualités sont celles des articles réellement publiés, et le
 jeton `{nombre}` écrit dans une introduction est remplacé par le compte réel — écrire
 « {nombre} ouvrages » évite un chiffre faux au prochain ajout.
+
+## Modifier l’apparence
+
+Les couleurs et les polices de tout le site se règlent à un seul endroit :
+
+1. Ouvrir **Réglages du site › Apparence**.
+2. Modifier une couleur : cliquer sur la pastille et choisir la teinte, ou taper son
+   code (`#` suivi de six chiffres ou lettres, par exemple `#c63f32`). Choisir une
+   police dans sa liste.
+3. Vérifier la miniature **Aperçu du thème**, à droite : elle change pendant la saisie.
+4. Enregistrer, puis publier comme pour tout autre contenu. Le site se reconstruit
+   avec le nouveau thème.
+
+| Champ | Ce qu’il colore | Valeur d’origine |
+|---|---|---|
+| Fond du site | Le fond des pages et de l’en-tête | `#f7f7f4` |
+| Fond des cartes | Les cartes, les bandeaux blancs, les champs de recherche | `#ffffff` |
+| Texte principal | Le texte courant et les titres | `#171a18` |
+| Texte secondaire | Les textes discrets : fil d’Ariane, légendes, dates | `#626862` |
+| Couleur principale | « d’orties », l’onglet actif du menu, les filets, la 1re collection | `#c63f32` |
+| Couleur principale foncée | Le survol des liens et des boutons | `#963128` |
+| Couleur secondaire | Les surtitres, les citations, « Disponible », la 2e collection | `#3e6b50` |
+| Liens | Les liens dans les textes, la 3e collection | `#275c7a` |
+| Boutons | Le fond des boutons pleins ; leur texte reste blanc | `#171a18` |
+| Police des titres | Les titres et le nom de la maison | Classique à empattements (Georgia) |
+| Police des textes | Le texte courant, les menus, les boutons | Moderne sans empattements (Inter) |
+
+Pour revenir à l’apparence d’origine, recopier les valeurs du tableau dans les champs.
+
+Ce qui ne se change pas ici : la mise en page, les tailles de texte, les espacements
+et l’affichage sur téléphone. Le pied de page sombre, les teintes propres à chaque
+collection et l’avertissement des brouillons restent aussi fixes, pour que le texte
+reste lisible. Une couleur mal saisie (pas au format `#` + six caractères) est refusée
+à l’enregistrement. Penser à la lisibilité : un texte clair sur un fond clair reste
+possible, l’administration ne le bloque pas.
+
+Les emblèmes des collections ne sont pas dans Apparence : ils se changent dans chaque
+fiche de la rubrique **Collections**.
 
 ## Ajouter une actualité
 
@@ -216,5 +267,6 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
   existants et les moteurs de recherche pointeraient dans le vide.
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
   structurelles.
-- **Changer la mise en page**, les couleurs, les polices ou l’ordre des rubriques du menu
-  au-delà de ce que proposent les Réglages.
+- **Changer la mise en page** ou les tailles ; l’ordre du menu se règle par
+  glisser-déposer, couleurs et polices se limitent aux choix de
+  **Réglages du site › Apparence**.

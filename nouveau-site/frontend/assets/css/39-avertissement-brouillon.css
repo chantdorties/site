@@ -4,7 +4,7 @@
 
 .draft-notice {
   padding: 14px 0;
-  border-bottom: 1px solid #cf9e2e;
+  border-bottom: 1px solid #cf9e2e; /* couleurs d’alerte, jamais administrables */
   background: #fff3c7;
   color: #5b430a;
   font-weight: 700;
