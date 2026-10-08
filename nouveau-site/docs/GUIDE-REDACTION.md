@@ -209,7 +209,7 @@ Tout le reste du formulaire est facultatif :
   adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
   directement dans son lien.
 - **Des photos** : elles s’affichent côte à côte sous le texte.
-- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : la petite ligne et le lien de la carte sur « La maison », la place de la page, les anciennes adresses, le référencement. Rarement utile.
+- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : le rang de la page sur « La maison », les anciennes adresses, le référencement. Rarement utile.
 
 ## Vendre depuis une page
 

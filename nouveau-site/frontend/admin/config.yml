@@ -290,7 +290,7 @@ collections:
             widget: list
             required: false
             collapsed: true
-            hint: Les adresses de l’ancien site, redirigées vers celle-ci. À compléter si l’adresse ci-dessus change.
+            hint: "Les adresses de l’ancien site qui doivent mener ici. Rarement utile : elles sont déjà remplies quand il le faut."
             field: {label: "Ancienne adresse", name: adresse, widget: string}
           - &seo
             label: Référencement SEO
@@ -1307,27 +1307,22 @@ collections:
         widget: groupe
         required: false
         replie: true
-        hint: "Rarement utile : tout se règle tout seul si on n’y touche pas."
-      - label: Petite ligne sur la carte « La maison »
-        name: rubrique
-        widget: string
-        required: false
-        hint: "Vide : le nom de la maison."
-      - label: Texte du lien sur la carte « La maison »
-        name: libelleAction
-        widget: string
-        required: false
-        hint: "Vide : « Découvrir » suivi du titre de la page."
+        hint: "Rarement utile : la page fonctionne sans y toucher."
+      # La vignette de la page sur « La maison » se compose toute seule : titre, début
+      # du texte, « Découvrir … ». Ces deux retouches restent cachées (le mot « carte »
+      # déroutait) ; les valeurs des pages existantes sont conservées.
+      - {label: "Petite ligne de la vignette", name: rubrique, widget: hidden}
+      - {label: "Lien de la vignette", name: libelleAction, widget: hidden}
       # L’adresse est tirée du titre à la création et ne change plus : le champ reste
       # caché pour conserver celle des pages existantes.
       - {label: "Adresse", name: slug, widget: hidden}
       - {label: "Type", name: type, widget: hidden, default: page}
-      - label: Place sur la page « La maison »
+      - label: Rang de la page
         name: ordre
         widget: number
         value_type: int
         min: 0
         required: false
-        hint: "Vide : à la fin. Sinon, les pages vont du plus petit nombre au plus grand ; deux pages ne peuvent pas avoir le même."
+        hint: "La page « La maison » du site présente toutes les pages, l’une après l’autre. Ce nombre choisit la place de celle-ci : du plus petit au plus grand. Vide : elle vient en dernier."
       - *old_slugs
       - *seo
