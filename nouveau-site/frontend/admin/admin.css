@@ -271,7 +271,7 @@ noscript {
   pointer-events: none;
 }
 
-/* ---- Les vignettes de couverture de la liste des livres (vignettes.js) ------ */
+/* ---- Les vignettes des listes : couvertures et emblèmes (vignettes.js) ------- */
 
 #nc-root a.avec-vignette {
   display: flex;
@@ -279,17 +279,26 @@ noscript {
   gap: 14px;
 }
 
-#nc-root .vignette-livre {
+#nc-root .vignette {
   flex: none;
   width: 34px;
   height: 50px;
   object-fit: cover;
+}
+
+#nc-root .vignette--couverture {
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* En grille (deuxième icône à côté de « Grouper par »), la couverture remplit le
-   haut de la carte et le titre passe dessous. */
+/* Un emblème est un dessin détouré : carré, entier, sans ombre. */
+#nc-root .vignette--embleme {
+  height: 34px;
+  object-fit: contain;
+}
+
+/* En grille (deuxième icône à côté de « Grouper par »), l’image remplit le haut de
+   la carte et le titre passe dessous. */
 #nc-root a.avec-vignette[class*="GridCardLink"] {
   flex-direction: column;
   align-items: stretch;
@@ -297,7 +306,7 @@ noscript {
   height: 100%;
 }
 
-#nc-root a.avec-vignette[class*="GridCardLink"] .vignette-livre {
+#nc-root a.avec-vignette[class*="GridCardLink"] .vignette {
   width: 100%;
   height: 150px;
   padding: 10px 0;
