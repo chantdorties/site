@@ -85,3 +85,7 @@ la mise en ligne dans [Déploiement](docs/DEPLOIEMENT.md). L’authentification 
 dans [Relais d’authentification](docs/RELAIS-AUTH.md). Les comptes dont dépend la
 publication, et la marche à suivre si l’un d’eux est perdu, sont recensés dans
 [Passation](docs/PASSATION.md).
+
+Les couleurs et polices réglables depuis l’administration sont expliquées dans le
+Guide de rédaction (« Modifier l’apparence ») et, côté technique, dans le Guide de
+l’apparence et le [Contrat Apparence](docs/CONTRAT-APPARENCE.md).

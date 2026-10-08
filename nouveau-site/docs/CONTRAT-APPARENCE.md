@@ -95,6 +95,12 @@ fournis, passeraient par `content/media/` et le pipeline d’optimisation exista
 Les emblèmes des collections ne sont pas concernés : ils restent dans chaque fiche
 Collection (`logo`, `logoAlt`).
 
+## Liste figée
+
+À la livraison du 8 octobre 2026 : neuf couleurs (tableau « Couleurs »), deux polices
+choisies parmi quatre identifiants (tableau « Polices »), aucune couleur ni logo de
+rubrique. Toute extension passe par une mise à jour de ce document.
+
 ## Responsabilités
 
 | Étape | Fichier | Rôle |
@@ -103,3 +109,4 @@ Collection (`logo`, `logoAlt`).
 | Validation | `tools/content_data.py` | Refuse toute valeur hors contrat avant la génération |
 | Génération | `tools/rendu/feuille_de_style.py` | Traduit les valeurs en déclarations des tokens connus |
 | Administration | `frontend/admin/config.yml` | Ne propose que des valeurs du contrat |
+| Aperçu | `frontend/admin/preview.js`, `preview.css` | Miniature Apparence ; mêmes clés, tokens et polices |

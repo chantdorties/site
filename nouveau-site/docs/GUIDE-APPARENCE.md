@@ -70,7 +70,7 @@ visiteur ne télécharge toujours qu’une seule feuille.
 
 | Ce que je veux changer | Fichier |
 |---|---|
-| Couleurs, polices, espacements généraux | `00-variables.css` |
+| Couleurs, polices, espacements généraux | `00-variables.css` (voir « Le thème » ci-dessous) |
 | Comportement des images, liens, champs, contour de mise au point | `01-base.css` |
 | Titres et paragraphes | `02-typographie.css` |
 | Largeur du contenu et marges latérales | `03-mise-en-page.css` |
@@ -125,6 +125,31 @@ disputent le même élément, c’est la dernière écrite qui gagne — donc ce
 au plus grand numéro. C’est pourquoi les réglages d’écran portent des numéros élevés :
 ils doivent pouvoir corriger tout ce qui précède. **Ne pas renommer un fichier** sans
 mesurer que cela déplace ses règles dans cet ordre.
+
+### Le thème : couleurs et polices réglables
+
+Les couleurs et les polices sont des **tokens** nommés par leur rôle
+(`--color-background`, `--color-text`, `--color-primary`, `--color-link`,
+`--font-heading`, `--font-body`…), déclarés avec leurs valeurs par défaut dans
+`00-variables.css`. Les règles CSS utilisent toujours ces tokens, jamais une teinte
+écrite en dur ; les rares exceptions (zones sombres, teintes des collections,
+avertissement des brouillons) portent un commentaire.
+
+Neuf couleurs et les deux polices sont réglables depuis l’administration
+(« Réglages du site > Apparence »), qui écrit `content/reglages/apparence.json`. À la
+génération, `feuille_de_style_complete` (`tools/rendu/feuille_de_style.py`) glisse
+juste après `00-variables.css` un bloc `:root` qui remplace leurs valeurs par défaut.
+Seules les clés connues deviennent du CSS ; une police passe par son identifiant
+(`serif-classique`…), la pile CSS est écrite dans `APPEARANCE_FONTS`
+(`tools/content_data.py`). La même chaîne sert au fichier publié et à l’empreinte de
+cache. Le contrat complet — clés, valeurs autorisées, ce qui reste fixe — est dans
+[CONTRAT-APPARENCE.md](CONTRAT-APPARENCE.md).
+
+Pour rendre une nouvelle couleur réglable : la déclarer dans `00-variables.css`, puis
+mettre à jour ensemble le contrat, `APPEARANCE_COLOR_FIELDS`, `COULEURS_DU_THEME`
+(Python et `frontend/admin/preview.js`), `apparence.json`, le formulaire de
+`frontend/admin/config.yml` et les tokens de `frontend/admin/preview.css`. Les tests
+signalent tout oubli.
 
 ### Le comportement
 

@@ -54,6 +54,7 @@ elle-même.
 | Le texte des blocs de l’accueil (situation de la maison, soutien, commandes) | **Pages principales › Accueil** |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
+| Les couleurs et les polices du site | **Réglages du site › Apparence** |
 | L’introduction de la page Projets | **Pages de la maison › Projets** |
 | Les pages Commandes, Librairies, Soutien, Amis… | **Pages de la maison** |
 | Les mentions légales | **Pages principales › Mentions légales** |
@@ -62,6 +63,44 @@ Deux textes ne se saisissent nulle part, parce qu’ils se déduisent : les cat�
 annoncées en bas de la page Actualités sont celles des articles réellement publiés, et le
 jeton `{nombre}` écrit dans une introduction est remplacé par le compte réel — écrire
 « {nombre} ouvrages » évite un chiffre faux au prochain ajout.
+
+## Modifier l’apparence
+
+Les couleurs et les polices de tout le site se règlent à un seul endroit :
+
+1. Ouvrir **Réglages du site › Apparence**.
+2. Modifier une couleur : cliquer sur la pastille et choisir la teinte, ou taper son
+   code (`#` suivi de six chiffres ou lettres, par exemple `#c63f32`). Choisir une
+   police dans sa liste.
+3. Vérifier la miniature **Aperçu du thème**, à droite : elle change pendant la saisie.
+4. Enregistrer, puis publier comme pour tout autre contenu. Le site se reconstruit
+   avec le nouveau thème.
+
+| Champ | Ce qu’il colore | Valeur d’origine |
+|---|---|---|
+| Fond du site | Le fond des pages et de l’en-tête | `#f7f7f4` |
+| Fond des cartes | Les cartes, les bandeaux blancs, les champs de recherche | `#ffffff` |
+| Texte principal | Le texte courant et les titres | `#171a18` |
+| Texte secondaire | Les textes discrets : fil d’Ariane, légendes, dates | `#626862` |
+| Couleur principale | « d’orties », l’onglet actif du menu, les filets, la 1re collection | `#c63f32` |
+| Couleur principale foncée | Le survol des liens et des boutons | `#963128` |
+| Couleur secondaire | Les surtitres, les citations, « Disponible », la 2e collection | `#3e6b50` |
+| Liens | Les liens dans les textes, la 3e collection | `#275c7a` |
+| Boutons | Le fond des boutons pleins ; leur texte reste blanc | `#171a18` |
+| Police des titres | Les titres et le nom de la maison | Classique à empattements (Georgia) |
+| Police des textes | Le texte courant, les menus, les boutons | Moderne sans empattements (Inter) |
+
+Pour revenir à l’apparence d’origine, recopier les valeurs du tableau dans les champs.
+
+Ce qui ne se change pas ici : la mise en page, les tailles de texte, les espacements
+et l’affichage sur téléphone. Le pied de page sombre, les teintes propres à chaque
+collection et l’avertissement des brouillons restent aussi fixes, pour que le texte
+reste lisible. Une couleur mal saisie (pas au format `#` + six caractères) est refusée
+à l’enregistrement. Penser à la lisibilité : un texte clair sur un fond clair reste
+possible, l’administration ne le bloque pas.
+
+Les emblèmes des collections ne sont pas dans Apparence : ils se changent dans chaque
+fiche de la rubrique **Collections**.
 
 ## Ajouter une actualité
 
@@ -216,5 +255,6 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
   existants et les moteurs de recherche pointeraient dans le vide.
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
   structurelles.
-- **Changer la mise en page**, les couleurs, les polices ou l’ordre des rubriques du menu
-  au-delà de ce que proposent les Réglages.
+- **Changer la mise en page**, les tailles ou l’ordre des rubriques du menu au-delà de
+  ce que proposent les Réglages ; couleurs et polices se limitent aux choix de
+  **Réglages du site › Apparence**.

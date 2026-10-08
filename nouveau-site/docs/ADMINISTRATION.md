@@ -25,6 +25,10 @@ masqué. Un contenu `brouillon` n’apparaît pas sur le site public. Un contenu
 L’administration permet de modifier :
 
 - l’identité, le contact, le menu, le pied de page et les principaux textes du site ;
+- l’apparence : neuf couleurs et deux polices, dans « Réglages du site > Apparence »
+  (contrat : [CONTRAT-APPARENCE.md](CONTRAT-APPARENCE.md)). L’entrée a sa propre
+  miniature d’aperçu, qui suit la saisie ; les aperçus des autres fiches gardent le
+  thème par défaut ;
 - les livres, personnes, collections, actualités et projets ;
 - les trois pages principales et les pages de la maison ;
 - l’ordre des collections, livres, personnes et pages ;
@@ -92,7 +96,10 @@ La génération refuse un contenu qui casserait le site, avec un message explici
 - un identifiant de bouton PayPal mal formé, ou absent sur un livre disponible, que le
   bouton soit celui d’une fiche ou celui d’une section de page ;
 - le bloc signé du bouton « voir mon panier » modifié ou effacé ;
-- une adresse (`slug`) invalide, ou une ancienne adresse déclarée deux fois.
+- une adresse (`slug`) invalide, ou une ancienne adresse déclarée deux fois ;
+- un réglage Apparence hors contrat : couleur autre que `#RRGGBB`, police absente de
+  la liste, clé manquante ou inconnue. Le message commence par « Réglage apparence: »
+  et nomme le champ.
 
 Les champs laissés vides dans l’administration ne bloquent jamais la génération :
 ils reçoivent automatiquement une valeur vide.
