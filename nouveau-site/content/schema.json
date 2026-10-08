@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "statuts": [
     "brouillon",
     "publie",
@@ -54,6 +54,66 @@
         "description",
         "image"
       ]
+    },
+    "apparence": {
+      "description": "Réglage content/reglages/apparence.json : couleurs et polices du thème. Contrat complet : docs/CONTRAT-APPARENCE.md",
+      "clesExactes": true,
+      "champs": {
+        "couleurFond": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurSurface": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurTexte": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurTexteSecondaire": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurPrincipale": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurPrincipaleFoncee": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurSecondaire": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurLiens": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "couleurBoutons": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "policeTitres": {
+          "type": "string",
+          "enum": [
+            "serif-classique",
+            "serif-livre",
+            "sans-serif-moderne",
+            "sans-serif-humaniste"
+          ]
+        },
+        "policeTexte": {
+          "type": "string",
+          "enum": [
+            "serif-classique",
+            "serif-livre",
+            "sans-serif-moderne",
+            "sans-serif-humaniste"
+          ]
+        }
+      }
     }
   }
 }

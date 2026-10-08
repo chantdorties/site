@@ -33,7 +33,8 @@ collections:
     label: Réglages du site
     description: >-
       Les textes qui ne dépendent d’aucun contenu : identité, menu, pied de page, textes
-      de l’accueil, introductions des pages engendrées et mots du parcours d’achat.
+      de l’accueil, introductions des pages engendrées, mots du parcours d’achat, ainsi
+      que les couleurs et polices du site.
     format: json
     delete: false
     # Les réglages ne correspondent à aucune page : sans cette ligne, Decap
@@ -249,6 +250,31 @@ collections:
               effacer : sans lui, le site refuse de se générer. Il ne se remplace que
               par un nouveau bloc fourni par PayPal.
             pattern: ['^-----BEGIN PKCS7-----', "Le bloc doit commencer par -----BEGIN PKCS7-----"]
+      # Contrat complet : docs/CONTRAT-APPARENCE.md. Aucun champ de CSS libre.
+      - name: apparence
+        label: Apparence
+        file: nouveau-site/content/reglages/apparence.json
+        editor:
+          preview: false
+        fields:
+          - {label: "Fond du site", name: couleurFond, widget: string, pattern: &couleur ['^#[0-9A-Fa-f]{6}$', "Saisir une couleur au format #RRGGBB, par exemple #c63f32"]}
+          - {label: "Fond des cartes", name: couleurSurface, widget: string, pattern: *couleur}
+          - {label: "Texte principal", name: couleurTexte, widget: string, pattern: *couleur}
+          - {label: "Texte secondaire", name: couleurTexteSecondaire, widget: string, pattern: *couleur}
+          - {label: "Couleur principale", name: couleurPrincipale, widget: string, pattern: *couleur}
+          - {label: "Couleur principale foncée", name: couleurPrincipaleFoncee, widget: string, pattern: *couleur}
+          - {label: "Couleur secondaire", name: couleurSecondaire, widget: string, pattern: *couleur}
+          - {label: "Liens", name: couleurLiens, widget: string, pattern: *couleur}
+          - {label: "Boutons", name: couleurBoutons, widget: string, pattern: *couleur}
+          - label: Police des titres
+            name: policeTitres
+            widget: select
+            options: &polices
+              - {label: "Classique à empattements (Georgia)", value: serif-classique}
+              - {label: "Livre à empattements (Palatino)", value: serif-livre}
+              - {label: "Moderne sans empattements (Inter)", value: sans-serif-moderne}
+              - {label: "Humaniste sans empattements", value: sans-serif-humaniste}
+          - {label: "Police des textes", name: policeTexte, widget: select, options: *polices}
 
   # L’ordre des champs suit la façon dont on décrit un livre : de quoi il s’agit, qui
   # l’a fait, ce qu’il raconte, à quoi il ressemble, comment on l’achète, où il se

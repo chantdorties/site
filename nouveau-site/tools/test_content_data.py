@@ -43,6 +43,13 @@ GENERATOR_REQUIRED_FIELDS = {
 }
 
 
+# Les clés du réglage Apparence, telles que les fixe docs/CONTRAT-APPARENCE.md.
+APPEARANCE_KEYS = {
+    "couleurFond", "couleurSurface", "couleurTexte", "couleurTexteSecondaire",
+    "couleurPrincipale", "couleurPrincipaleFoncee", "couleurSecondaire", "couleurLiens",
+    "couleurBoutons", "policeTitres", "policeTexte",
+}
+
 def load_site_builder():
     """Le module s’appelle build-site.py : il ne s’importe pas directement.
 
@@ -124,7 +131,7 @@ class ContentDataTest(unittest.TestCase):
 
     def test_content_schema_and_required_records(self):
         schema = json.loads((CONTENT / "schema.json").read_text(encoding="utf-8"))
-        self.assertEqual(3, schema["version"])
+        self.assertEqual(4, schema["version"])
         self.assertEqual({"archive", "brouillon", "publie"}, set(schema["statuts"]))
         self.assertGreater(len(self.books), 0)
         self.assertGreater(len(self.people), 0)
@@ -150,13 +157,24 @@ class ContentDataTest(unittest.TestCase):
 
     def test_settings_and_fixed_pages_are_present(self):
         self.assertEqual(
-            {"accueil", "footer", "navigation", "pages", "paiement", "site"},
+            {"accueil", "apparence", "footer", "navigation", "pages", "paiement", "site"},
             set(self.raw["settings"]),
         )
         fixed_files = {path.stem for path in (CONTENT / "pages-fixes").glob("*.json")}
         self.assertEqual({"accueil", "actualites", "mentions-legales"}, fixed_files)
         self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "accueil")["statut"])
         self.assertEqual("publie", next(page for page in self.pages if page["slug"] == "actualites")["statut"])
+
+    def test_appearance_setting_holds_exactly_the_contract_keys(self):
+        appearance = self.raw["settings"]["apparence"]
+        self.assertIsInstance(appearance, dict)
+        self.assertEqual(APPEARANCE_KEYS, set(appearance))
+
+    def test_missing_appearance_setting_is_reported_by_path(self):
+        with content_sandbox() as root:
+            (root / "content" / "reglages" / "apparence.json").unlink()
+            with self.assertRaisesRegex(ContentError, r"JSON invalide : .*reglages/apparence\.json"):
+                load_content(root, include_drafts=True)
 
     def test_orders_and_home_selections_are_explicit(self):
         for records in (self.books, self.people, self.collections, self.pages):

@@ -26,7 +26,7 @@ SEO_TITLE_MAX = 60
 SEO_DESCRIPTION_MAX = 160
 # Valeur neutre de ordreAccueil : les livres non mis en avant la partagent tous.
 HOME_ORDER_UNSET = 999
-SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement")
+SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
 
 # Champs facultatifs dans l’administration : Decap ne les écrit pas quand ils
 # restent vides. Le générateur les lit en accès direct, donc un contenu créé
