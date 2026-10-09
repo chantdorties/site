@@ -62,7 +62,7 @@ Le champ **Publication** offre trois choix :
 ### Archiver ou supprimer
 
 **Archivé** est presque toujours le bon choix : la fiche quitte le site, garde tout, et
-revient d’un clic. **Supprimer l’entrée** (bouton rouge en haut de la fiche) l’efface
+revient d’un clic. **Supprimer** (bouton rouge en haut de la fiche) l’efface
 pour de bon, tout de suite, sans passer par « Publier ».
 
 - Ce qui la citait s’en passe : un livre supprimé disparaît des pages qui le montraient

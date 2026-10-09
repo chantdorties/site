@@ -83,6 +83,8 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - `gh pr edit` échoue (Projects classic) : utiliser `gh api -X PATCH repos/chantdorties/site/pulls/<n>`.
 - Les PDF générés ne sont pas reproductibles octet pour octet : comparer sur une copie de la référence.
 - Les éléments du menu Decap appartiennent à React : les décorer (classes, ajout) sans les déplacer.
+- Decap copie ses traductions au démarrage, avant nos scripts : modifier `CMS.getLocale('fr')` ne change ni la barre du haut ni les confirmations. Remplacer le texte dans la page et dans `window.confirm` (`suppression.js`).
+- Tests au navigateur (chrome-devtools) : « dismiss » sur une confirmation répond **oui**. Ne jamais cliquer « Supprimer » sur une fiche réelle ; restaurer par `git checkout` si c’est arrivé.
 - Les tests tournent sur le contenu réel à chaque publication : **ne jamais y nommer une fiche** (livre, page, personne…) ni figer un compte. La rédaction peut la modifier ou la supprimer, et la publication serait bloquée (#35). Utiliser `exemple()` ou calculer l’attendu depuis le contenu.
 
 ## Journal
@@ -103,3 +105,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #38 · « Sections ajoutées » sur chaque page principale : les mêmes sections que Mes pages (texte, livres, offre PayPal), placées à un emplacement choisi (entre les blocs de l’accueil, au-dessus ou sous la liste ailleurs) et masquables.
 - 2026-10-09 · #39 · « Anciennes adresses » cachées dans l’admin (widget `hidden`, valeur gardée à l’enregistrement) : les redirections de l’ancien site restent actives, à compléter au besoin dans le JSON.
 - 2026-10-09 · #41 · Bouton « Supprimer » sur livres, personnes, collections, actualités et pages : ce qui citait la fiche s’en passe (liens retirés, livre mis en avant choisi d’office), fiches dont d’autres dépendent gardées dans l’admin avec la raison, médias inutilisés tolérés ; tests indépendants des fiches réelles.
+- 2026-10-09 · #42 · Bouton « Supprimer » (au lieu de « Supprimer l’entrée publiée »…) et confirmations en mots simples, qui proposent d’archiver ; « Annuler les modifications » pour les changements non publiés.
