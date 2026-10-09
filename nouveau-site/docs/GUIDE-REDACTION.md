@@ -351,8 +351,21 @@ avant.
 
 Dans le corps d’une section de page (**Mes pages**) et d’une actualité, le dernier
 bouton de la barre d’outils, **« Ajouter un composant »**, propose, en plus de l’image,
-trois blocs. Chacun s’insère à l’endroit du curseur et se règle par des listes : rien à
+cinq blocs. Chacun s’insère à l’endroit du curseur et se règle par des listes : rien à
 taper de technique.
+
+- **Image placée** — une image et sa place : **petite à gauche** ou **petite à droite**
+  (le texte qui suit l’entoure), **centrée**, ou **toute la largeur**. Texte alternatif
+  obligatoire, légende facultative. Sur téléphone, l’image prend toujours toute la
+  largeur, au-dessus du texte qui la suit : la page reste lisible.
+- **Bouton** — un lien mis en valeur : « Commander », « Nous écrire », « Lire
+  l’extrait ». Il mène **vers une page de « Mes pages »**, **un livre du catalogue**,
+  **un document PDF** (déposé dans le bloc), **une adresse courriel** ou **une autre
+  adresse** (un autre site, ou une page principale comme `/catalogue/`). Remplir un seul
+  des champs « Vers… » : s’il y en a plusieurs, le premier rempli l’emporte. Style
+  **plein** (la couleur des boutons du site) ou **discret** (un contour). Sans
+  destination, le bouton ne s’affiche pas. S’il menait à une page ou un livre supprimé
+  depuis, il redevient du simple texte.
 
 - **Texte mis en valeur** — un ou plusieurs paragraphes **centrés**, **en couleur**
   (couleur principale, secondaire ou des liens) et/ou **soulignés**. Le texte du bloc
@@ -393,7 +406,8 @@ Le message dit ce qui coince et sur quelle fiche. Les cas les plus fréquents :
 | *personne en brouillon* / *livre lié non publié* | Un contenu publié pointe vers un contenu qui ne l’est pas : publier l’autre, ou retirer le lien |
 | *titre SEO trop long* | 60 caractères pour le titre, 160 pour la description |
 | *texte alternatif obligatoire pour l’image* | Une image posée au fil d’un texte n’a pas été décrite |
-| *média introuvable* | Une image citée dans un texte a été retirée de la médiathèque |
+| *média introuvable* | Une image ou un PDF cité dans un texte a été retiré de la médiathèque |
+| *un bloc « image » contient une seule image* / *un bouton contient un seul lien* | Le bloc a été retouché à la main : le supprimer et le reposer avec « Ajouter un composant » |
 | *personne inconnue* / *collection inconnue* | Une fiche supprimée était encore citée (la garde du bouton date de la dernière publication) : choisir une autre personne ou collection dans la fiche nommée |
 
 Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce qu’elle passe.

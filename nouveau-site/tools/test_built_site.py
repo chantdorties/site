@@ -407,6 +407,11 @@ class BuiltSiteTest(unittest.TestCase):
         htaccess = (ROOT / "frontend" / "admin-serveur" / "htaccess.conf").read_text(encoding="utf-8")
         header = re.search(r'Content-Security-Policy "([^"]+)"', htaccess).group(1)
         self.assertEqual(header, meta.replace(" http://127.0.0.1:8082", ""))
+        # Decap relit en « blob: » une image ou un PDF tout juste déposé pour l’enregistrer :
+        # chez OVH, chez Free et sur Netlify, dont l’en-tête s’ajoute à la balise de la page.
+        netlify = (ROOT.parent / "netlify.toml").read_text(encoding="utf-8")
+        for politique in (header, meta, netlify):
+            self.assertIn("blob:", re.search(r"connect-src ([^;]+)", politique).group(1))
         scripts = [script["src"] for script in soup.find_all("script")]
         self.assertEqual("garde.js", scripts[0])
         self.assertTrue((DIST / "admin" / "garde.js").is_file())

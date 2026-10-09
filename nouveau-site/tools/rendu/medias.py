@@ -22,7 +22,7 @@ from typing import Any
 import PIL
 from PIL import Image, ImageFile, ImageOps
 
-from content_data import inline_media_paths, media_path
+from content_data import inline_document_paths, inline_media_paths, media_path
 
 from .outils import slugify
 
@@ -246,6 +246,12 @@ class Medias:
             destination = self.temp_output / "assets" / "media" / "texte" / nom
             self.inline_media_dimensions[path] = self.save_webp(source, destination, (1400, 1400))
             self.inline_media[path] = f"/assets/media/texte/{nom}"
+
+    def copy_inline_documents(self) -> None:
+        """Les PDF liés depuis un texte (bouton « Document ») : préparés comme les autres,
+        ils rejoignent document_media, où le convertisseur trouve leur adresse publiée."""
+        for path in sorted(inline_document_paths(self.contenu_rendu())):
+            self.copy_pdf(path)
 
     def copy_pdf(self, relative_path: str) -> str | None:
         if relative_path in self.document_media:

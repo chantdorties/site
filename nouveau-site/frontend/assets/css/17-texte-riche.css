@@ -1,6 +1,7 @@
 /* La mise en forme saisie depuis l'administration : gras, italique, listes,
    intertitres, citations, images au fil du texte, et les blocs « texte mis en
-   valeur », « encadré » et « séparateur » (tools/rendu/texte.py, OPTIONS_BLOCS).
+   valeur », « encadré », « séparateur », « image placée » et « bouton »
+   (tools/rendu/texte.py, OPTIONS_BLOCS).
 
    Tout est porté par la classe .rich-text, posée sur le conteneur du texte. Les
    règles y sont volontairement un peu plus spécifiques que d'ordinaire — d'où les
@@ -108,7 +109,8 @@
   border-radius: var(--radius);
 }
 
-.rich-text__figure figcaption {
+.rich-text__figure figcaption,
+.rich-text__image figcaption {
   margin-top: 8px;
   color: var(--color-muted);
   font-size: 0.9rem;
@@ -169,4 +171,72 @@
 
 .site-footer .rich-text code {
   background: rgba(255, 255, 255, 0.12);
+}
+
+/* L'image placée. À gauche ou à droite, elle occupe un peu plus d'un tiers de la
+   colonne et le texte qui suit l'entoure ; centrée, au plus les deux tiers de la
+   colonne ; « large » prend toute la largeur. Ces deux dernières repartent sous une
+   image flottante. Le texte enrichi devient
+   un contexte de flottants (flow-root) : une image ne déborde jamais sur la section
+   suivante, et un intertitre repart toujours sous elle. Sous 760 px, plus de
+   flottant : voir 91-mobile-760px.css. */
+.rich-text {
+  display: flow-root;
+}
+
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  clear: both;
+}
+
+.rich-text .rich-text__image {
+  margin: 0 0 1em;
+}
+
+.rich-text__image--gauche,
+.rich-text__image--droite {
+  width: 38%;
+}
+
+.rich-text .rich-text__image--gauche {
+  float: left;
+  margin-right: 24px;
+}
+
+.rich-text .rich-text__image--droite {
+  float: right;
+  margin-left: 24px;
+}
+
+.rich-text__image--centre,
+.rich-text__image--large {
+  clear: both;
+}
+
+.rich-text__image--centre {
+  text-align: center;
+}
+
+.rich-text .rich-text__image--centre img {
+  display: block;
+  max-width: 66%;
+  margin-inline: auto;
+}
+
+.rich-text__image--centre figcaption {
+  text-align: center;
+}
+
+.rich-text__image--gauche img,
+.rich-text__image--droite img,
+.rich-text__image--large img {
+  display: block;
+  width: 100%;
+}
+
+/* Le bouton saisi dans un texte : le bouton du site (13-boutons.css). */
+.rich-text__bouton .button {
+  text-decoration: none;
 }

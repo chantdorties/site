@@ -53,10 +53,24 @@ _RE_CLOTURE = re.compile(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$")
 # classes fixes : aucun mot saisi n'atteint un attribut. Les couleurs sont des rôles de
 # la palette du site, jamais des codes. content_data.py refuse au chargement une espèce
 # ou une option absente d'ici ; blocs.js doit proposer les mêmes.
+#
+# Deux blocs ne contiennent pas un texte mais un seul élément :
+#   ::: image gauche                       ::: bouton plein livre
+#   ![texte alternatif](chemin "légende")  [Commander](/livres/le-livre/)
+#   :::                                    :::
+# La place de l'image (gauche, droite, centre, large) devient une classe ; le bouton
+# note aussi la sorte de sa cible, pour que l'éditeur rouvre le bon champ.
 OPTIONS_BLOCS = MappingProxyType({
     "valeur": ("centre", "principale", "secondaire", "liens", "souligne"),
     "encadre": ("principale", "secondaire"),
+    "image": ("gauche", "droite", "centre", "large"),
+    "bouton": ("plein", "discret", "page", "livre", "document", "courriel", "adresse"),
 })
+# Le contenu attendu de ces deux blocs, sur le texte brut (avant échappement).
+RE_IMAGE_SEULE = re.compile(r'^!\[([^\]]*)\]\(([^)\s]+)(?:[ \t]+"(.*?)")?\)$')
+# L'adresse d'un bouton peut être vide : l'éditeur l'écrit ainsi quand aucune
+# destination n'a été choisie, et le bouton ne s'affiche pas.
+RE_LIEN_SEUL = re.compile(r'^\[([^\]]+)\]\(([^)\s]*)\)$')
 # L'espèce est lue largement, pour que la validation puisse nommer une espèce inconnue ;
 # le découpage, lui, ne reconnaît que celles de la liste.
 RE_OUVERTURE_BLOC = re.compile(r"^:::[ \t]*([\w-]+)((?:[ \t]+[\w-]+)*)[ \t]*$")
@@ -77,7 +91,7 @@ _RE_ITALIQUE_TIRET = re.compile(r"(?<![\w_])_(?=\S)([^_]+?)(?<=\S)_(?![\w_])")
 # Sur le texte brut, celle-là : une image seule dans son paragraphe devient une figure,
 # alors qu'au fil d'une phrase elle doit rester une simple image en ligne — un <figure>
 # posé dans un <p> le romprait, et le navigateur réécrirait la page en silence.
-_RE_IMAGE_SEULE = re.compile(r'^!\[([^\]]*)\]\(([^)\s]+)(?:[ \t]+"(.*?)")?\)$')
+_RE_IMAGE_SEULE = RE_IMAGE_SEULE
 
 _RE_JETON = re.compile(r"\x00(\d+)\x00")
 # Ponctuation qu'une adresse écrite au fil du texte ne prend presque jamais, mais que la
@@ -397,12 +411,17 @@ class OutilsTexte:
         niveau_min: int,
         owner: str,
     ) -> str:
-        """Un bloc « valeur » ou « encadre », dont le contenu est un texte comme un autre.
+        """Un bloc « valeur » ou « encadre », dont le contenu est un texte comme un autre,
+        ou un bloc « image » ou « bouton », qui n'en porte qu'un élément.
 
         Les classes suivent l'ordre de la liste blanche, pas celui de la saisie : deux
         blocs aux mêmes options produisent le même HTML. Une option inconnue est
         ignorée ici ; c'est le chargement qui la refuse, avec un message.
         """
+        if espece == "image":
+            return self._image_placee(options, corps, internal_links=internal_links, niveau_min=niveau_min, owner=owner)
+        if espece == "bouton":
+            return self._bouton(options, corps, internal_links=internal_links, owner=owner)
         base = f"rich-text__{espece}"
         classes = " ".join(
             [base] + [f"{base}--{option}" for option in OPTIONS_BLOCS[espece] if option in options]
@@ -424,6 +443,39 @@ class OutilsTexte:
             return ""  # un bloc inséré puis laissé vide ne dessine pas de cadre vide
         balise = "aside" if espece == "encadre" else "div"
         return f'<{balise} class="{classes}">{titre}{interieur}</{balise}>'
+
+    def _image_placee(
+        self, options: list[str], corps: str, *, internal_links, niveau_min: int, owner: str
+    ) -> str:
+        """Une image à gauche ou à droite du texte qui suit, centrée, ou en pleine largeur.
+
+        Sur téléphone, toutes reprennent la largeur de la colonne (17-texte-riche.css).
+        Un contenu qui n'est pas une image seule — retouché à la main — reste du texte
+        ordinaire ; c'est le chargement qui le refuse, avec un message.
+        """
+        seule = RE_IMAGE_SEULE.match(corps.strip())
+        if not seule:
+            return self.markdown_html(corps, internal_links=internal_links, niveau_min=niveau_min, owner=owner)
+        place = next((option for option in OPTIONS_BLOCS["image"] if option in options), "centre")
+        return self._figure_html(
+            seule.group(1), seule.group(2), seule.group(3), owner,
+            classes=f"rich-text__image rich-text__image--{place}",
+        )
+
+    def _bouton(self, options: list[str], corps: str, *, internal_links, owner: str) -> str:
+        """Un lien mis en valeur : le bouton plein du site, ou son contour (« discret »).
+
+        Le lien passe par les mêmes règles que tout lien saisi : schéma refusé, page
+        disparue. S'il n'en reste que le texte, le bouton devient un paragraphe.
+        """
+        seul = RE_LIEN_SEUL.match(corps.strip())
+        if seul and not seul.group(2):
+            return ""  # aucune destination choisie : pas de bouton qui ne mène nulle part
+        rendu = self._inline(corps.strip(), internal_links=internal_links, owner=owner)
+        if not (seul and rendu.startswith("<a ") and rendu.endswith("</a>")):
+            return f"<p>{rendu}</p>" if rendu else ""
+        classes = "button button--secondary" if "discret" in options else "button"
+        return f'<p class="rich-text__bouton"><a class="{classes}" {rendu[3:]}</p>'
 
     @staticmethod
     def _lignes_du_paragraphe(charge: str, enligne) -> str:
@@ -487,11 +539,13 @@ class OutilsTexte:
         """L'image au fil d'une phrase : une balise seule, sans figure ni légende."""
         return self._balise_image(match.group(1), match.group(2), owner)
 
-    def _figure_html(self, alt: str, chemin: str, titre: str | None, owner: str) -> str:
+    def _figure_html(
+        self, alt: str, chemin: str, titre: str | None, owner: str, *, classes: str = "rich-text__figure"
+    ) -> str:
         """L'image qui occupe seule son paragraphe, avec sa légende s'il y en a une."""
         balise = self._balise_image(e(alt), chemin, owner)
         legende = f"<figcaption>{e(titre)}</figcaption>" if titre else ""
-        return f'<figure class="rich-text__figure">{balise}{legende}</figure>'
+        return f'<figure class="{classes}">{balise}{legende}</figure>'
 
     def _balise_image(self, alt: str, chemin: str, owner: str) -> str:
         """La balise elle-même. `alt` arrive déjà échappé, `chemin` vient de nos tables."""
@@ -507,6 +561,11 @@ class OutilsTexte:
 
     def _lien_html(self, match: re.Match[str], jeton, owner: str) -> str:
         libelle, href, titre = match.group(1), match.group(2), match.group(3)
+        # Un PDF déposé depuis l'éditeur (bouton « Document ») : son chemin dans la
+        # médiathèque devient l'adresse du fichier publié.
+        document = getattr(self, "document_media", {}).get(href)
+        if document:
+            return jeton(f'<a href="{e(document)}" target="_blank">{libelle}</a>')
         if not SCHEMAS_AUTORISES.match(href):
             # Ni erreur ni lien : le texte reste tel qu'il a été saisi, et la génération
             # le signale pour qu'on puisse le corriger.

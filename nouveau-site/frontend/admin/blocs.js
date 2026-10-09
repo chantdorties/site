@@ -1,5 +1,5 @@
 // Les blocs de mise en forme proposés dans le corps des pages et des actualités :
-// « Texte mis en valeur », « Encadré » et « Séparateur ».
+// « Texte mis en valeur », « Encadré », « Séparateur », « Image placée » et « Bouton ».
 //
 // L’ancien site, écrit sous Nvu, laissait colorer, centrer ou souligner n’importe quel
 // texte. L’éditeur de Decap n’a pas de marque en ligne personnalisable : la mise en forme
@@ -11,6 +11,10 @@
 //   Le texte, avec gras, liens, listes…           ### Titre facultatif
 //   :::                                            Le texte
 //                                                  :::
+//
+//   ::: image droite                              ::: bouton plein livre
+//   ![Texte alternatif](chemin "Légende")          [Commander](/livres/le-livre/)
+//   :::                                            :::
 //
 // Les mots de la ligne d’ouverture sont tirés d’une liste blanche, la même des deux
 // côtés : les couleurs sont des rôles de la palette (Réglages du site › Apparence),
@@ -146,6 +150,144 @@
       data.titre ? h('h3', { className: 'rich-text__encadre-titre' }, data.titre) : null,
       apercuTexte(data.texte, getAsset, fields),
     ),
+  });
+
+  // Une ligne de texte sûre dans un lien ou une image : ni crochet fermant, ni
+  // guillemet droit (il fermerait la légende), ni retour à la ligne.
+  const uneLigne = (texte) => (texte || '').replace(/\s+/g, ' ').trim();
+  const sansCrochet = (texte) => uneLigne(texte).replace(/[\[\]]/g, '');
+  const IMAGE_SEULE = /^!\[([^\]]*)\]\((\S*?)(?:[ \t]+"(.*?)")?\)$/;
+  const LIEN_SEUL = /^\[([^\]]*)\]\((\S*)\)$/;
+
+  const PLACES = ['gauche', 'droite', 'centre', 'large'];
+  CMS.registerEditorComponent({
+    id: 'illustration',
+    label: 'Image placée',
+    fields: [
+      { label: 'Image', name: 'image', widget: 'image', media_library: { config: { max_file_size: 20971520 } } },
+      {
+        label: 'Texte alternatif',
+        name: 'alt',
+        widget: 'string',
+        hint: 'Une courte description de l’image, lue par les personnes qui ne la voient pas. Obligatoire.',
+      },
+      { label: 'Légende', name: 'legende', widget: 'string', required: false, hint: 'Affichée en petit sous l’image. Facultative.' },
+      {
+        label: 'Place',
+        name: 'place',
+        widget: 'select',
+        default: 'droite',
+        hint: 'Sur téléphone, l’image prend toujours toute la largeur.',
+        options: [
+          { label: 'Petite, à gauche du texte qui suit', value: 'gauche' },
+          { label: 'Petite, à droite du texte qui suit', value: 'droite' },
+          { label: 'Centrée', value: 'centre' },
+          { label: 'Toute la largeur', value: 'large' },
+        ],
+      },
+    ],
+    pattern: OUVERTURE('image'),
+    fromBlock: (match) => {
+      const image = IMAGE_SEULE.exec(match[2].trim()) || [];
+      return {
+        image: image[2] || '',
+        alt: image[1] || '',
+        legende: image[3] || '',
+        place: PLACES.find((place) => options(match[1]).includes(place)) || 'droite',
+      };
+    },
+    toBlock: (data) => {
+      const legende = uneLigne(data.legende).replace(/"/g, '”');
+      const titre = legende ? ` "${legende}"` : '';
+      const place = PLACES.includes(data.place) ? data.place : 'droite';
+      return bloc(['image', place], `![${sansCrochet(data.alt)}](${uneLigne(data.image)}${titre})`);
+    },
+    toPreview: (data, getAsset, fields) => {
+      // Comme le bloc « Image » de Decap : l’objet rendu par getAsset sert tel quel
+      // d’adresse (une image tout juste déposée n’a pas encore d’adresse en texte).
+      const champ = fields && fields.find((f) => f.get('name') === 'image');
+      const source = data.image ? getAsset(data.image, champ) : null;
+      const place = PLACES.includes(data.place) ? data.place : 'droite';
+      return h(
+        'figure',
+        { className: `rich-text__image rich-text__image--${place}` },
+        source ? h('img', { src: source, alt: data.alt || '' }) : null,
+        data.legende ? h('figcaption', {}, data.legende) : null,
+      );
+    },
+  });
+
+  // Le bouton : une destination parmi cinq. Decap n’affiche pas un champ selon un
+  // choix fait plus haut : les cinq champs « Vers… » sont donc visibles, et le
+  // premier rempli l’emporte. Sa sorte est notée dans le bloc (« ::: bouton plein
+  // livre ») pour que l’éditeur rouvre le bon champ.
+  const CIBLES = ['page', 'livre', 'document', 'courriel', 'adresse'];
+  const adresseDe = {
+    page: (valeur) => (valeur === 'accueil' ? '/' : `/${valeur}/`),
+    livre: (valeur) => `/livres/${valeur}/`,
+    document: (valeur) => valeur,
+    courriel: (valeur) => `mailto:${valeur}`,
+    // « www.exemple.fr » tapé sans « https:// » serait refusé par le site.
+    adresse: (valeur) => (/^(https?:\/\/|mailto:|\/|#)/.test(valeur) ? valeur : `https://${valeur}`),
+  };
+  const valeurDe = {
+    page: (href) => (href === '/' ? 'accueil' : href.replace(/^\/|\/$/g, '')),
+    livre: (href) => href.replace(/^\/livres\/|\/$/g, ''),
+    document: (href) => href,
+    courriel: (href) => href.replace(/^mailto:/, ''),
+    adresse: (href) => href,
+  };
+  const RELATION = { widget: 'relation', required: false, search_fields: ['titre'], display_fields: ['titre'] };
+  CMS.registerEditorComponent({
+    id: 'bouton',
+    label: 'Bouton',
+    fields: [
+      { label: 'Texte du bouton', name: 'texte', widget: 'string', hint: 'Court et actif : « Commander », « Nous écrire », « Lire l’extrait ».' },
+      {
+        label: 'Style',
+        name: 'style',
+        widget: 'select',
+        default: 'plein',
+        options: [
+          { label: 'Plein, dans la couleur des boutons du site', value: 'plein' },
+          { label: 'Discret, en simple contour', value: 'discret' },
+        ],
+      },
+      { ...RELATION, label: 'Vers une page de « Mes pages »', name: 'page', collection: 'pages', value_field: '{{slug}}', hint: 'Remplir un seul des champs « Vers… ».' },
+      { ...RELATION, label: 'Vers un livre du catalogue', name: 'livre', collection: 'livres', value_field: 'slug' },
+      { label: 'Vers un document PDF', name: 'document', widget: 'file', required: false, media_library: { config: { max_file_size: 20971520 } }, hint: 'Déposer le PDF ici : le bouton le propose au téléchargement.' },
+      { label: 'Vers une adresse courriel', name: 'courriel', widget: 'string', required: false, hint: 'Par exemple contact@exemple.fr. Un clic ouvre la messagerie du visiteur.' },
+      { label: 'Vers une autre adresse', name: 'adresse', widget: 'string', required: false, hint: 'Un autre site (https://…), ou une page principale du site : /catalogue/, /actualites/…' },
+    ],
+    pattern: OUVERTURE('bouton'),
+    fromBlock: (match) => {
+      const mots = options(match[1]);
+      const lien = LIEN_SEUL.exec(match[2].trim()) || [];
+      const href = lien[2] || '';
+      const cible = CIBLES.find((sorte) => mots.includes(sorte)) || 'adresse';
+      return {
+        texte: lien[1] || '',
+        style: mots.includes('discret') ? 'discret' : 'plein',
+        ...(href ? { [cible]: valeurDe[cible](href) } : {}),
+      };
+    },
+    toBlock: (data) => {
+      const cible = CIBLES.find((sorte) => uneLigne(data[sorte]));
+      const href = cible ? adresseDe[cible](uneLigne(data[cible])).replace(/\s/g, '') : '';
+      return bloc(
+        ['bouton', data.style === 'discret' ? 'discret' : 'plein', cible],
+        `[${sansCrochet(data.texte) || 'En savoir plus'}](${href})`,
+      );
+    },
+    toPreview: (data) => {
+      const pret = CIBLES.some((sorte) => uneLigne(data[sorte]));
+      return h(
+        'p',
+        { className: 'rich-text__bouton' },
+        h('span', { className: data.style === 'discret' ? 'button button--secondary' : 'button' }, data.texte || 'En savoir plus'),
+        pret ? null : h('em', {}, ' — sans destination, ce bouton ne s’affichera pas'),
+      );
+    },
   });
 
   // Decap ne montre un bloc dans l’éditeur que s’il a au moins un champ : le choix du
