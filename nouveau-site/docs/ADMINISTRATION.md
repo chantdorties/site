@@ -229,8 +229,8 @@ barres d’outils suivent une règle écrite au même endroit : un texte court p
 
 Les textes longs (`*boutons_corps` : sections de « Mes pages », corps des actualités)
 reçoivent aussi `*blocs_corps`, les blocs de mise en forme de
-`frontend/admin/blocs.js` : « Image placée », « Bouton », « Texte mis en valeur »,
-« Encadré », « Séparateur ». Ils s’enregistrent dans le texte même, sous une forme que
+`frontend/admin/blocs.js` : « Image placée », « Bouton », « Tableau », « Vidéo »,
+« Texte mis en valeur », « Encadré », « Séparateur ». Ils s’enregistrent dans le texte même, sous une forme que
 `tools/rendu/texte.py` relit :
 
 ```text
@@ -242,7 +242,29 @@ Le texte, avec sa mise en forme.           ### Titre facultatif
 ::: image droite                           ::: bouton plein livre
 ![Texte alternatif](chemin "Légende")      [Commander](/livres/le-livre/)
 :::                                        :::
+
+::: tableau entete                         ::: video
+Format | Prix                              https://www.youtube.com/watch?v=…
+A5 \| poche | 12,50 €                      Titre de la vidéo
+:::                                        :::
 ```
+
+Le tableau : une ligne par rangée, cases séparées par « | » (`\|` pour un trait dans une
+case), quatre colonnes au plus (`COLONNES_TABLEAU_MAX`), lignes courtes complétées,
+colonnes vides à droite retirées (`decouper_tableau`, la même règle dans `blocs.js`). Son
+cadre `rich-text__tableau` défile de côté si un mot ne se coupe pas.
+
+La vidéo : seules les adresses YouTube (`watch?v=`, `youtu.be/`, `shorts/`, `embed/`,
+`live/`, identifiant de 11 caractères) et Vimeo (`vimeo.com/<chiffres>`, avec la clé d’une
+vidéo non répertoriée, ou `player.vimeo.com/video/…?h=`) sont reconnues
+(`video_reconnue`, mêmes motifs dans `blocs.js`) ; toute autre est refusée au chargement,
+un titre est exigé, un bloc sans adresse ne dessine rien. La page ne porte qu’un bouton
+`.video-facade` avec `data-video-site`, `data-video-id` (et `data-video-hash`) : aucune
+adresse de YouTube ou Vimeo, pas de miniature. Au clic, `site.js` le remplace par
+l’`iframe` de `www.youtube-nocookie.com/embed/<id>` ou `player.vimeo.com/video/<id>?dnt=1`.
+La bannière de cookies reste ainsi vraie : rien n’est chargé sans action du visiteur. Le
+site public n’envoie pas de CSP ; s’il en reçoit une, elle devra permettre
+`frame-src https://www.youtube-nocookie.com https://player.vimeo.com`.
 
 « Image » et « bouton » portent un seul élément, vérifié au chargement
 (`validate_single_block`), avec une seule option par groupe (`OPTIONS_EXCLUSIVES`). La

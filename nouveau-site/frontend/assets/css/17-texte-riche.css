@@ -240,3 +240,105 @@
 .rich-text__bouton .button {
   text-decoration: none;
 }
+
+/* Le tableau saisi dans un texte. Sur un écran étroit, ses cases passent à la ligne ;
+   si un mot ne se coupe pas (une adresse, un nombre long), c'est son cadre qui
+   défile de côté, jamais la page. */
+.rich-text__tableau {
+  clear: both;
+  margin: 0 0 1.25em;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.rich-text__tableau:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+.rich-text__tableau table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rich-text__tableau th,
+.rich-text__tableau td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.rich-text__tableau tr:last-child td {
+  border-bottom: 0;
+}
+
+.rich-text__tableau th {
+  background: var(--color-secondary-soft);
+  font-weight: 700;
+}
+
+/* La vidéo : un bouton tant que le visiteur n'a pas cliqué (texte.py, site.js). */
+.rich-text__video {
+  clear: both;
+  margin: 0 0 1.25em;
+}
+
+.video-facade,
+.rich-text__video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: var(--radius);
+}
+
+.video-facade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: var(--color-dark);
+  color: var(--color-on-dark);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.video-facade:focus-visible {
+  outline: 3px solid var(--color-highlight);
+  outline-offset: 3px;
+}
+
+.video-facade__lecture {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  font-size: 1.5rem;
+}
+
+.video-facade__lecture svg {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+.video-facade:hover .video-facade__lecture {
+  background: var(--color-primary-dark);
+}
+
+.video-facade__titre {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+}
+
+.video-facade__mention {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}

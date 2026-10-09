@@ -456,6 +456,29 @@ class ContentDataTest(unittest.TestCase):
                 with self.assertRaisesRegex(ContentError, re.escape(message)):
                     load_content(root, include_drafts=True)
 
+    def test_table_and_video_blocks_are_checked(self):
+        # Un tableau a quatre colonnes au plus ; une vidéo, une adresse YouTube ou Vimeo
+        # reconnue et un titre. Un bloc vidéo laissé sans adresse n'arrête rien.
+        valide = (
+            "::: tableau entete\nA | B | C | D\n1 | 2\n:::\n\n"
+            "::: video\nhttps://youtu.be/abcDEF123_-\nLe salon\n:::\n\n"
+            "::: video\n:::"
+        )
+        slug = exemple("pages", page_libre)["slug"]
+        with content_sandbox() as root:
+            edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": valide}])
+            load_content(root, include_drafts=True)
+        for contenu, message in (
+            ("::: tableau\nA | B | C | D | E\n:::", "4 colonnes au plus (celui-ci en a 5)"),
+            ("::: tableau large\nA\n:::", "option inconnue pour le bloc « tableau »"),
+            ("::: video\nhttps://youtube.com.autre-site.tld/watch?v=abcDEF123_-\nTitre\n:::", "adresse de vidéo non reconnue"),
+            ("::: video\nhttps://youtu.be/abcDEF123_-\n:::", "une vidéo a besoin d’un titre"),
+        ):
+            with self.subTest(contenu), content_sandbox() as root:
+                edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
+                with self.assertRaisesRegex(ContentError, re.escape(message)):
+                    load_content(root, include_drafts=True)
+
     def test_column_gallery_and_quote_sections(self):
         # Les trois sortes à mise en page propre : chargées, rendues avec leurs images
         # préparées comme celles d’un texte, et comptées parmi les médias utilisés.
