@@ -333,7 +333,8 @@
           h('article', {}, sections?.map?.((section, rang) => {
             const livres = enTableau(section.getIn(['data', 'livres']));
             const boutons = enTableau(section.getIn(['data', 'boutonsPaypal']));
-            return h('section', { key: rang, className: 'editorial-section' },
+            const masquee = section.getIn(['data', 'masquee']) === true;
+            return h('section', { key: rang, className: masquee ? 'editorial-section apercu-masque' : 'editorial-section' },
               section.getIn(['data', 'titre']) ? h('h2', {}, section.getIn(['data', 'titre'])) : null,
               h('div', { className: 'rich-text' }, section.getIn(['widgets', 'contenu'])),
               livres.length ? h('div', { className: 'book-grid book-grid--section' }, livres.map(carteOuAdresse)) : null,
@@ -446,6 +447,11 @@
       h('p', { className: 'site-preview__zone-label' },
         numero ? h('span', { className: 'site-preview__number' }, numero) : null, titre),
       ...enfants);
+  // Un bloc ou une section masqués restent dans l’aperçu, grisés : sinon on ne
+  // retrouverait plus leurs textes. La mention vient de preview.css (.apercu-masque).
+  const affiche = (entry, name) => value(entry, name) !== true;
+  const masquable = (visible, element) =>
+    visible ? element : h('div', { className: 'apercu-masque' }, element);
   const marque = () =>
     h('span', { className: 'site-preview__wordmark' },
       'Chant ', h('span', { className: 'site-preview__accent' }, 'd’orties'));
@@ -564,7 +570,7 @@
               DONNEES.livres ? 'Aucun livre mis en avant' : 'Chargement des couvertures…'),
           h('p', { className: 'site-preview__muted' },
             'Les livres se choisissent dans chaque fiche livre (« Mis en avant sur l’accueil ») ; leur ordre aussi.')),
-        zone('2', 'Bloc information',
+        masquable(affiche(entry, 'masquerInformation'), zone('2', 'Bloc information',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'informationRubrique')),
           h('h2', {}, value(entry, 'titreInformation')),
           blocMarkdown(widgetFor, 'informationTexte'),
@@ -575,13 +581,14 @@
             h('div', {}, h('h4', {}, value(entry, 'particuliersTitre')), blocMarkdown(widgetFor, 'particuliersTexte'))),
           blocMarkdown(widgetFor, 'soutienTexte'),
           h('p', { className: 'site-preview__actions' },
-            bouton(`♡ ${value(entry, 'libelleDon')}`), bouton(value(entry, 'libelleOffres'), true))),
-        zone('3', 'Collections',
+            value(entry, 'libelleDon') ? bouton(`♡ ${value(entry, 'libelleDon')}`) : null,
+            bouton(value(entry, 'libelleOffres'), true)))),
+        masquable(affiche(entry, 'masquerCollections'), zone('3', 'Collections',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'collectionsRubrique')),
           h('h2', {}, value(entry, 'collectionsTitre')),
           blocMarkdown(widgetFor, 'collectionsTexte'),
-          h('div', { className: 'site-preview__placeholder' }, 'Les six cartes des collections')),
-        h('section', { className: 'site-preview__zone site-preview__zone--dark' },
+          h('div', { className: 'site-preview__placeholder' }, 'Les six cartes des collections'))),
+        masquable(affiche(entry, 'masquerSuivre'), h('section', { className: 'site-preview__zone site-preview__zone--dark' },
           h('p', { className: 'site-preview__zone-label' },
             h('span', { className: 'site-preview__number' }, '4'), 'Suivre la maison'),
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'suivreRubrique')),
@@ -594,7 +601,7 @@
             h('div', {},
               h('p', { className: 'site-preview__eyebrow' }, value(entry, 'manuscritsRubrique')),
               h('h3', {}, value(entry, 'manuscritsTitre')),
-              h('p', {}, `${value(entry, 'manuscritsAction')} →`)))));
+              h('p', {}, `${value(entry, 'manuscritsAction')} →`))))));
     }
   });
 
@@ -608,12 +615,12 @@
           h('h1', {}, value(entry, 'titre')),
           blocMarkdown(widgetFor, 'introduction')),
         h('div', { className: 'site-preview__placeholder' }, 'La liste se remplit toute seule depuis les fiches'),
-        cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
+        cle === 'actualites' ? masquable(affiche(entry, 'masquerFacebook'), h('section', { className: 'site-preview__zone site-preview__zone--soft' },
           h('p', { className: 'site-preview__zone-label' }, 'Bloc Facebook, en bas de page'),
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'appelRubrique')),
           h('h2', {}, value(entry, 'appelTitre')),
           blocMarkdown(widgetFor, 'appelTexte'),
-          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'boutonFacebook')))) : null);
+          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'boutonFacebook'))))) : null);
     }
   });
 

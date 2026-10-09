@@ -44,6 +44,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - Livres mis en avant : cochés dans la fiche, filtre « ★ » dans la liste ; nombre de couvertures dans Pages principales › Accueil.
 - Les aperçus sont choisis par nom de rubrique **et** d’entrée : noms d’entrée uniques (préfixe `page_` dans Pages principales).
 - Mise en forme : barré partout ; dans les textes longs (pages, actualités), blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur », écrits `::: valeur …` / `::: encadre …` / `---` `***`. Options en liste blanche (`OPTIONS_BLOCS`, `tools/rendu/texte.py`), jamais de couleur libre ni de mise en forme mot à mot.
+- Masquer / laisser vide : cases « Masquer ce bloc » (accueil : information, collections, suivre ; actualités : Facebook) et « Masquer cette section » (Mes pages), toujours au sens « masquer », décochées par défaut (une case « Afficher » absente apparaîtrait décochée dans Decap). Accueil : seul le grand titre est obligatoire, un champ vide n’est pas dessiné.
 - La rédaction n’est pas technique : libellés et aides en mots simples, jamais de jargon (« slug », « carte », « SEO » seul…).
 
 ## Style de code
@@ -95,3 +96,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #31 · Admin : titres des sections typées qui chevauchaient le nom du type ; ancien nom « Pages du site » oublié. Tutoriel : les 20 captures refaites sur `main`, 4 nouvelles (menu Pages, Pages principales, nouvelle page).
 - 2026-10-09 · #34 · Mise en forme : barré partout ; blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur » dans les pages et les actualités.
 - 2026-10-09 · #36 · Test de l’accueil : les conditions de vente sont comparées au contenu saisi, plus à une formulation figée (elle bloquait la publication après la mise à jour du client, #35).
+- 2026-10-09 · #37 · Cases « Masquer ce bloc » (accueil, bloc Facebook) et « Masquer cette section » (Mes pages) ; accueil : seul le grand titre est obligatoire, un champ vide disparaît ; petite ligne et introduction facultatives sur les pages principales.

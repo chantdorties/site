@@ -628,3 +628,24 @@ body {
   color: var(--color-muted, #626862);
   font-size: 15px;
 }
+
+/* Un bloc de l’accueil ou une section décochés : visibles ici, grisés, absents du site. */
+.apercu-masque {
+  position: relative;
+  opacity: 0.45;
+  outline: 2px dashed currentColor;
+  outline-offset: 4px;
+}
+
+.apercu-masque::before {
+  content: "Masqué sur le site";
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #171a18;
+  color: #fff;
+  font: 700 0.75rem/1.6 system-ui, sans-serif;
+}

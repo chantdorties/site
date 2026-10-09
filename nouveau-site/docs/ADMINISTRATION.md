@@ -208,6 +208,21 @@ ou une option inconnus, un bloc non fermé ou imbriqué. Le séparateur s’écr
 (trait) ou `***` (trois étoiles). **Ajouter une option** : la liste blanche, la règle CSS,
 le choix dans `blocs.js` et un test, les quatre ensemble.
 
+Masquer et laisser vide. Les blocs de l’accueil (`masquerInformation`,
+`masquerCollections`, `masquerSuivre`), le bloc Facebook des actualités
+(`masquerFacebook`) et chaque section de Mes pages (`masquee`) se masquent d’une case
+**« Masquer »**, décochée par défaut. Le sens est voulu : Decap montre décochée une case
+absente d’une fiche existante, et une case « Afficher » aurait masqué le bloc au premier
+enregistrement. Absentes, les clés valent `false` (`apply_optional_defaults`) : aucun
+contenu à migrer. Sur l’accueil, seul `heroTitre` est obligatoire
+(`HOME_REQUIRED_FIELDS`) ; un champ vide n’est pas dessiné, sans balise vide, et les
+modificateurs `--seul` / `--seule` passent sur une colonne ce qui en avait deux. Les
+pages principales ont `rubrique` et `introduction` facultatives. Le bloc Facebook
+affiché exige encore `appelTitre` et `boutonFacebook`. Une page de Mes pages garde au
+moins une section visible ; `visible_sections()` (`editoriales.py`) sert au rendu, au
+résumé sur « La maison » et à la description. L’aperçu grise ce qui est masqué
+(`.apercu-masque`, `preview.css`).
+
 Les aperçus (`preview.js`) recopient le HTML du site pour en reprendre la feuille de
 style ; un test vérifie que chacune de leurs classes existe encore dans les pages
 produites. Côté générateur, le titre des pages intérieures et le formulaire PayPal

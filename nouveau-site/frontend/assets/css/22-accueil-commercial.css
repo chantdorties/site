@@ -15,6 +15,11 @@
   align-items: start;
 }
 
+/* Une colonne restée vide dans l'administration : l'autre prend toute la largeur. */
+.home-commercial__layout--seul {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .home-commercial__layout h2,
 .home-commercial__layout h3 {
   margin-top: 0;
@@ -34,6 +39,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin: 24px 0 18px;
+}
+
+.commercial-audiences--seul {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .commercial-audience {

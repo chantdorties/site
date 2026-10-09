@@ -52,72 +52,40 @@ class PageAccueil:
 </a>""".strip()
             for index, book in enumerate(featured)
         )
-        content = f"""
+        texte = lambda champ: (labels.get(champ) or "").strip()
+        md = lambda champ, **options: self.markdown_html(texte(champ), owner="accueil", **options)
+
+        # 1. Le bandeau : seul le titre est obligatoire, le reste disparaît s'il est vide.
+        rubrique = f'\n      <p class="eyebrow">{e(texte("heroRubrique"))}</p>' if texte("heroRubrique") else ""
+        accent = f' <span>{e(texte("heroAccent"))}</span>' if texte("heroAccent") else ""
+        accroche = (
+            f'\n      <p class="lead">{self.markdown_inline(texte("heroAccroche"), owner="accueil")}</p>'
+            if texte("heroAccroche") else ""
+        )
+        boutons = "".join(
+            filter(None, (
+                f'\n        <a class="button" href="/catalogue/">{e(texte("boutonCatalogue"))} <span aria-hidden="true">→</span></a>'
+                if texte("boutonCatalogue") else "",
+                f'\n        <a class="button button--secondary" href="/collections/">{e(texte("boutonCollections"))}</a>'
+                if texte("boutonCollections") else "",
+            ))
+        )
+        actions = f'\n      <div class="hero-actions">{boutons}\n      </div>' if boutons else ""
+        hero = f"""
 <section class="hero">
   <div class="container">
-    <div class="hero-copy">
-      <p class="eyebrow">{e(labels['heroRubrique'])}</p>
-      <h1>{e(labels['heroTitre'])} <span>{e(labels['heroAccent'])}</span></h1>
-      <p class="lead">{self.markdown_inline(labels['heroAccroche'], owner="accueil")}</p>
-      <div class="hero-actions">
-        <a class="button" href="/catalogue/">{e(labels['boutonCatalogue'])} <span aria-hidden="true">→</span></a>
-        <a class="button button--secondary" href="/collections/">{e(labels['boutonCollections'])}</a>
-      </div>
+    <div class="hero-copy">{rubrique}
+      <h1>{e(texte('heroTitre'))}{accent}</h1>{accroche}{actions}
     </div>
     <div class="cover-ribbon">{covers}</div>
   </div>
-</section>
-<section class="section home-commercial">
-  <div class="container home-commercial__layout">
-    <div>
-      <p class="eyebrow">{e(labels['informationRubrique'])}</p>
-      <h2>{e(labels['titreInformation'])}</h2>
-      <div class="lead rich-text">{self.markdown_html(labels['informationTexte'], owner="accueil")}</div>
-    </div>
-    <div class="home-commercial__details">
-      <h3>{e(labels['commandesTitre'])}</h3>
-      <div class="rich-text">{self.markdown_html(labels['commandesTexte'], owner="accueil")}</div>
-      <div class="commercial-audiences">
-        <section class="commercial-audience">
-          <h4>{e(labels['librairesTitre'])}</h4>
-          <div class="rich-text">{self.markdown_html(labels['librairesTexte'], owner="accueil")}</div>
-        </section>
-        <section class="commercial-audience">
-          <h4>{e(labels['particuliersTitre'])}</h4>
-          <div class="rich-text">{self.markdown_html(labels['particuliersTexte'], owner="accueil")}</div>
-        </section>
-      </div>
-      <div class="commercial-support rich-text">{self.markdown_html(labels['soutienTexte'], internal_links={'page de soutien': '/soutien/'}, owner="accueil")}</div>
-      <div class="hero-actions">
-        <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
-          <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
-          <button class="button" type="submit">{icon('heart')} {e(labels['libelleDon'])}</button>
-        </form>
-        <a class="button button--secondary" href="/offres-speciales/">{e(labels['libelleOffres'])}</a>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="section">
-  <div class="container">
-    <div class="section-heading">
-      <div><p class="eyebrow">{e(labels['collectionsRubrique'])}</p><h2>{e(labels['collectionsTitre'])}</h2></div>
-      <div class="rich-text">{self.markdown_html(labels['collectionsTexte'], owner="accueil")}</div>
-    </div>
-    {self.render_collection_showcase(heading_level=3)}
-  </div>
-</section>
-<section class="section section--ink">
-  <div class="container">
-    <div class="section-heading">
-      <div><p class="eyebrow">{e(labels['suivreRubrique'])}</p><h2>{e(labels['suivreTitre'])}</h2></div>
-    </div>
-    <div class="split-callout">
-      <a href="/actualites/"><p class="eyebrow">{e(labels['actualitesRubrique'])}</p><h3>{e(labels['actualitesTitre'])}</h3><span>{e(labels['actualitesAction'])} <span aria-hidden="true">→</span></span></a>
-      <a href="/manuscrits/"><p class="eyebrow">{e(labels['manuscritsRubrique'])}</p><h3>{e(labels['manuscritsTitre'])}</h3><span>{e(labels['manuscritsAction'])} <span aria-hidden="true">→</span></span></a>
-    </div>
-  </div>
 </section>"""
+
+        content = hero + self.render_home_information(labels, texte, md)
+        if not labels["masquerCollections"]:
+            content += self.render_home_collections(texte, md)
+        if not labels["masquerSuivre"]:
+            content += self.render_home_follow(texte)
         seo_title, seo_description, seo_image = self.seo_values(
             labels,
             default_title=self.site_settings["nom"],
@@ -134,3 +102,111 @@ class PageAccueil:
         )
         self.write_route("/", page)
 
+    def render_home_information(self, labels: dict[str, Any], texte, md) -> str:
+        """2. Le bloc d'information, ou rien s'il est masqué ou entièrement vide.
+
+        Chaque élément vide disparaît avec sa balise : un encadré sans titre ni texte,
+        un bouton sans libellé. Une colonne vide laisse l'autre occuper toute la largeur.
+        """
+        if labels["masquerInformation"]:
+            return ""
+        situation = "".join(filter(None, (
+            f'\n      <p class="eyebrow">{e(texte("informationRubrique"))}</p>' if texte("informationRubrique") else "",
+            f'\n      <h2>{e(texte("titreInformation"))}</h2>' if texte("titreInformation") else "",
+            f'\n      <div class="lead rich-text">{md("informationTexte")}</div>' if texte("informationTexte") else "",
+        )))
+        publics = []
+        for titre, corps in (("librairesTitre", "librairesTexte"), ("particuliersTitre", "particuliersTexte")):
+            if not (texte(titre) or texte(corps)):
+                continue
+            interieur = ""
+            if texte(titre):
+                interieur += f"\n          <h4>{e(texte(titre))}</h4>"
+            if texte(corps):
+                interieur += f'\n          <div class="rich-text">{md(corps)}</div>'
+            publics.append(f'\n        <section class="commercial-audience">{interieur}\n        </section>')
+        boutons = "".join(filter(None, (
+            f"""
+        <form class="paypal-form donation-form" action="https://www.paypal.com/donate" method="post" target="_blank">
+          <input type="hidden" name="hosted_button_id" value="{e(self.payment_settings['donationHostedButtonId'])}">
+          <button class="button" type="submit">{icon('heart')} {e(texte('libelleDon'))}</button>
+        </form>""" if texte("libelleDon") else "",
+            f'\n        <a class="button button--secondary" href="/offres-speciales/">{e(texte("libelleOffres"))}</a>'
+            if texte("libelleOffres") else "",
+        )))
+        seul = " commercial-audiences--seul" if len(publics) == 1 else ""
+        details = "".join(filter(None, (
+            f'\n      <h3>{e(texte("commandesTitre"))}</h3>' if texte("commandesTitre") else "",
+            f'\n      <div class="rich-text">{md("commandesTexte")}</div>' if texte("commandesTexte") else "",
+            f'\n      <div class="commercial-audiences{seul}">{"".join(publics)}\n      </div>' if publics else "",
+            f'\n      <div class="commercial-support rich-text">{md("soutienTexte", internal_links={"page de soutien": "/soutien/"})}</div>'
+            if texte("soutienTexte") else "",
+            f'\n      <div class="hero-actions">{boutons}\n      </div>' if boutons else "",
+        )))
+        if not (situation or details):
+            return ""
+        colonnes = []
+        if situation:
+            colonnes.append(f"\n    <div>{situation}\n    </div>")
+        if details:
+            colonnes.append(f'\n    <div class="home-commercial__details">{details}\n    </div>')
+        une_colonne = "" if len(colonnes) == 2 else " home-commercial__layout--seul"
+        return f"""
+<section class="section home-commercial">
+  <div class="container home-commercial__layout{une_colonne}">{"".join(colonnes)}
+  </div>
+</section>"""
+
+    def render_home_collections(self, texte, md) -> str:
+        """3. Les collections : les six cartes restent, leur titre et leur texte sont facultatifs."""
+        titre = "".join(filter(None, (
+            f'<p class="eyebrow">{e(texte("collectionsRubrique"))}</p>' if texte("collectionsRubrique") else "",
+            f'<h2>{e(texte("collectionsTitre"))}</h2>' if texte("collectionsTitre") else "",
+        )))
+        presentation = f'<div class="rich-text">{md("collectionsTexte")}</div>' if texte("collectionsTexte") else ""
+        entete = (
+            f"""
+    <div class="section-heading">
+      <div>{titre}</div>
+      {presentation}
+    </div>""" if titre or presentation else ""
+        )
+        return f"""
+<section class="section">
+  <div class="container">{entete}
+    {self.render_collection_showcase(heading_level=3)}
+  </div>
+</section>"""
+
+    def render_home_follow(self, texte) -> str:
+        """4. « Suivre la maison » : une carte sans titre disparaît, le bandeau sans carte aussi."""
+        cartes = []
+        for cle, adresse in (("actualites", "/actualites/"), ("manuscrits", "/manuscrits/")):
+            if not texte(f"{cle}Titre"):
+                continue
+            rubrique = f'<p class="eyebrow">{e(texte(f"{cle}Rubrique"))}</p>' if texte(f"{cle}Rubrique") else ""
+            action = (
+                f'<span>{e(texte(f"{cle}Action"))} <span aria-hidden="true">→</span></span>'
+                if texte(f"{cle}Action") else ""
+            )
+            cartes.append(f'<a href="{adresse}">{rubrique}<h3>{e(texte(f"{cle}Titre"))}</h3>{action}</a>')
+        if not cartes:
+            return ""
+        titre = "".join(filter(None, (
+            f'<p class="eyebrow">{e(texte("suivreRubrique"))}</p>' if texte("suivreRubrique") else "",
+            f'<h2>{e(texte("suivreTitre"))}</h2>' if texte("suivreTitre") else "",
+        )))
+        entete = f"""
+    <div class="section-heading">
+      <div>{titre}</div>
+    </div>""" if titre else ""
+        seule = " split-callout--seule" if len(cartes) == 1 else ""
+        joined = "\n      ".join(cartes)
+        return f"""
+<section class="section section--ink">
+  <div class="container">{entete}
+    <div class="split-callout{seule}">
+      {joined}
+    </div>
+  </div>
+</section>"""

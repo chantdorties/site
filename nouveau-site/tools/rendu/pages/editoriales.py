@@ -33,7 +33,7 @@ class PagesEditoriales:
             if draft and not self.include_drafts:
                 continue
             rendered_sections = []
-            for section in page_data["sections"]:
+            for section in self.visible_sections(page_data):
                 heading = f'<h2>{e(section["titre"])}</h2>' if section["titre"] else ""
                 rendered_sections.append(
                     f'<section class="editorial-section">{heading}'
@@ -61,7 +61,7 @@ class PagesEditoriales:
             # La page Projets porte son introduction dans ses sections ; la liste des
             # projets, elle, vient de leur propre rubrique.
             projects = self.render_projects() if page_data["slug"] == "projets" else ""
-            description = page_data["sections"][0]["contenu"]
+            description = self.visible_sections(page_data)[0]["contenu"]
             content = f"""
 {self.render_page_heading(
     [('Accueil', '/'), (page_data['titre'], None)],
@@ -116,6 +116,12 @@ class PagesEditoriales:
             for button in buttons
         )
         return f'<div class="section-actions">{forms}</div>'
+
+    @staticmethod
+    def visible_sections(page: dict[str, Any]) -> list[dict[str, Any]]:
+        """Les sections que montre le site : une section masquée garde ses textes dans
+        l'administration sans paraître. Le chargement garantit qu'il en reste une."""
+        return [section for section in page["sections"] if not section["masquee"]]
 
     def published_editorial_pages(self) -> list[dict[str, Any]]:
         return [

@@ -14,6 +14,7 @@ cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 
 from ..icones import icon
 from ..libelles import NEWS_TYPE_LABELS
@@ -86,16 +87,7 @@ class PageActualites:
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="actualites"),
 )}
-{news_listing}
-<section class="section news-section"><div class="container">
-  <div class="news-callout">
-    <p class="eyebrow">{e(labels['appelRubrique'])}</p>
-    <h2>{e(labels['appelTitre'])}</h2>
-    <div class="lead rich-text">{self.markdown_html(labels['appelTexte'], owner="actualites")}</div>
-    {topics}
-    <a class="button" href="{e(self.site_settings['facebook'])}" target="_blank" rel="noopener noreferrer">{e(labels['boutonFacebook'])} {icon('external')}</a>
-  </div>
-</div></section>"""
+{news_listing}{self.render_news_facebook(labels, topics)}"""
         page = self.render_page(
             title=seo.get("titre") or labels["titre"],
             description=labels["descriptionSeo"],
@@ -106,3 +98,26 @@ class PageActualites:
         )
         self.write_route("/actualites/", page)
 
+    def render_news_facebook(self, labels: dict[str, Any], topics: str) -> str:
+        """Le bloc Facebook du bas de la page, ou rien s'il est masqué.
+
+        Affiché, il garde son titre et son bouton (la validation y veille) ; la petite
+        ligne et le texte peuvent rester vides et disparaissent alors.
+        """
+        if labels["masquerFacebook"]:
+            return ""
+        rubrique = (labels.get("appelRubrique") or "").strip()
+        texte = (labels.get("appelTexte") or "").strip()
+        rubrique_html = f'\n    <p class="eyebrow">{e(rubrique)}</p>' if rubrique else ""
+        texte_html = (
+            f'\n    <div class="lead rich-text">{self.markdown_html(texte, owner="actualites")}</div>'
+            if texte else ""
+        )
+        return f"""
+<section class="section news-section"><div class="container">
+  <div class="news-callout">{rubrique_html}
+    <h2>{e(labels['appelTitre'])}</h2>{texte_html}
+    {topics}
+    <a class="button" href="{e(self.site_settings['facebook'])}" target="_blank" rel="noopener noreferrer">{e(labels['boutonFacebook'])} {icon('external')}</a>
+  </div>
+</div></section>"""
