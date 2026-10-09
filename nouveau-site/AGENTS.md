@@ -80,7 +80,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 ## Pièges connus
 
 - Decap efface à l’enregistrement les champs absents du formulaire ; un widget `hidden` conserve la valeur.
-- La CSP de l’admin doit garder `blob:` dans `connect-src` : Decap relit ainsi un fichier tout juste déposé pour l’enregistrer. Sans lui, tout enregistrement avec une image ou un PDF neuf échoue (« Failed to fetch »).
+- La CSP de l’admin (`index.html`, `admin-serveur/htaccess.conf`, `../netlify.toml`) doit garder `blob:` dans `connect-src` : Decap relit ainsi un fichier tout juste déposé pour l’enregistrer. Sans lui, tout enregistrement avec une image ou un PDF neuf échoue (« Failed to fetch »).
 - Decap ne fait pas apparaître un champ selon un choix : un composant à plusieurs cibles (le « Bouton ») montre tous ses champs, et note la sorte choisie dans le texte pour la relire.
 - `gh pr edit` échoue (Projects classic) : utiliser `gh api -X PATCH repos/chantdorties/site/pulls/<n>`.
 - Les PDF générés ne sont pas reproductibles octet pour octet : comparer sur une copie de la référence.
