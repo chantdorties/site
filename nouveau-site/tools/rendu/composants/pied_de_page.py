@@ -63,11 +63,10 @@ class PiedDePage:
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {datetime.now().year} {e(self.site_settings['nom'])}</span>
+      <span>© {datetime.now().year} {e(self.site_settings['nom'])} · Site créé par <a href="https://varascundo.com/" target="_blank" rel="noopener noreferrer">Facundo Varas — varascundo.com</a></span>
       <button class="icon-button back-to-top" type="button" data-back-to-top hidden title="Revenir en haut">
         {icon("arrow-up", label="Revenir en haut")}
       </button>
     </div>
   </div>
 </footer>""".strip()
-
