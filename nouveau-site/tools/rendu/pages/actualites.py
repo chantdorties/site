@@ -87,7 +87,7 @@ class PageActualites:
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="actualites"),
 )}
-{news_listing}{self.render_news_facebook(labels, topics)}"""
+{self.render_free_sections("actualites", "avant-liste")}{news_listing}{self.render_free_sections("actualites", "apres-liste")}{self.render_news_facebook(labels, topics)}"""
         page = self.render_page(
             title=seo.get("titre") or labels["titre"],
             description=labels["descriptionSeo"],

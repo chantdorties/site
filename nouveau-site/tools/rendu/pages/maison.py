@@ -35,8 +35,8 @@ class PageMaison:
     labels['titre'],
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="maison"),
-)}
-<section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>"""
+)}{self.render_free_sections("maison", "avant-liste")}
+<section class="section"><div class="container"><div class="house-grid">{"".join(cards)}</div></div></section>{self.render_free_sections("maison", "apres-liste")}"""
         page = self.render_page(
             title=labels["titre"],
             description=labels["descriptionSeo"],

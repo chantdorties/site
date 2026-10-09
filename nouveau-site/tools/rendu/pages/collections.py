@@ -25,8 +25,8 @@ class PagesCollections:
     labels['titre'],
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="collections"),
-)}
-<section class="section"><div class="container">{self.render_collection_showcase()}</div></section>"""
+)}{self.render_free_sections("collections", "avant-liste")}
+<section class="section"><div class="container">{self.render_collection_showcase()}</div></section>{self.render_free_sections("collections", "apres-liste")}"""
         page = self.render_page(
             title=labels["titre"],
             description=labels["descriptionSeo"],

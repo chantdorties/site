@@ -58,3 +58,15 @@
   padding-left: 18px;
 }
 
+
+/* Les sections ajoutées à une page principale (accueil, catalogue, actualités…) :
+   sans colonne de liens, elles gardent la largeur de lecture des pages de texte.
+   Voir render_free_sections dans tools/rendu/pages/editoriales.py. */
+.free-sections {
+  max-width: 820px;
+}
+
+.free-sections .editorial-section:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}

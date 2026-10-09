@@ -7,6 +7,8 @@ Quatre bandeaux, dans l'ordre :
      soutien, bouton de don PayPal ;
   3. les collections, via la vitrine partagée (composants/vitrine_collections.py) ;
   4. le bandeau sombre « Nous suivre » : actualités et manuscrits.
+Les sections ajoutées dans la fiche (« Sections ajoutées ») se placent entre ces
+bandeaux, à l’emplacement choisi pour chacune.
 
 Tous les textes viennent de content/pages-du-site/accueil.json, rangés dans l'ordre des
 bandeaux ; seul l'identifiant du bouton de don reste dans les réglages de paiement.
@@ -81,11 +83,16 @@ class PageAccueil:
   </div>
 </section>"""
 
-        content = hero + self.render_home_information(labels, texte, md)
+        # Les sections ajoutées se glissent entre les blocs, à l’emplacement choisi.
+        libres = lambda place: self.render_free_sections("accueil", place)
+        content = hero + libres("apres-bandeau")
+        content += self.render_home_information(labels, texte, md) + libres("apres-information")
         if not labels["masquerCollections"]:
             content += self.render_home_collections(texte, md)
+        content += libres("apres-collections")
         if not labels["masquerSuivre"]:
             content += self.render_home_follow(texte)
+        content += libres("bas")
         seo_title, seo_description, seo_image = self.seo_values(
             labels,
             default_title=self.site_settings["nom"],

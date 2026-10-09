@@ -331,6 +331,9 @@
           h('h1', {}, titre))),
         h('section', { className: 'section' }, h('div', { className: 'container editorial-layout' },
           h('article', {}, sections?.map?.((section, rang) => {
+            // Pendant le passage d’une fiche à l’autre, Decap peut fournir une liste
+            // encore incomplète : on attend la suivante plutôt que de vider l’aperçu.
+            if (!section?.getIn) return null;
             const livres = enTableau(section.getIn(['data', 'livres']));
             const boutons = enTableau(section.getIn(['data', 'boutonsPaypal']));
             const masquee = section.getIn(['data', 'masquee']) === true;
@@ -543,6 +546,26 @@
 
   // Les livres mis en avant, dans l’ordre du bandeau, d’après les fichiers publics :
   // ceux de la dernière publication. Le nombre suit la saisie.
+  // Les sections ajoutées d’une page principale, à un emplacement : une zone chacune,
+  // grisée si elle est masquée. Une section sans emplacement prend celui par défaut,
+  // comme à la génération (tools/content_data.py). Les livres y sont nommés, sans carte.
+  const sectionsAjoutees = (widgetsFor, place, defaut) =>
+    [...(safeWidgetsFor(widgetsFor, 'sectionsLibres') || [])]
+      .filter((section) => section?.getIn && (section.getIn(['data', 'emplacement']) || defaut) === place)
+      .map((section, rang) => {
+        const titre = section.getIn(['data', 'titre']);
+        const livres = enTableau(section.getIn(['data', 'livres']));
+        const boutons = enTableau(section.getIn(['data', 'boutonsPaypal']));
+        return h('div', { key: `${place}-${rang}` }, masquable(section.getIn(['data', 'masquee']) !== true,
+          zone(null, 'Section ajoutée',
+            titre ? h('h2', {}, titre) : null,
+            h('div', { className: 'site-preview__text' }, section.getIn(['widgets', 'contenu'])),
+            livres.length ? h('p', { className: 'site-preview__muted' },
+              `Livres montrés : ${livres.map((slug) => fiche('livres', slug)?.titre || lisible(slug)).join(', ')}`) : null,
+            boutons.length ? h('p', { className: 'site-preview__actions' },
+              boutons.map((b, n) => h('span', { key: n, className: 'site-preview__button' }, b.libelle || 'Bouton sans texte'))) : null)));
+      });
+
   const couverturesAccueil = (nombre) => (DONNEES.livres ? [...DONNEES.livres.values()] : [])
     .filter((livre) => livre.rangAccueil !== null && livre.rangAccueil !== undefined)
     .sort((a, b) => a.rangAccueil - b.rangAccueil)
@@ -550,7 +573,8 @@
 
   const HomeTextsPreview = avecDonnees({
     render() {
-      const { entry, widgetFor } = this.props;
+      const { entry, widgetFor, widgetsFor } = this.props;
+      const libres = (place) => sectionsAjoutees(widgetsFor, place, 'apres-information');
       const nombre = Number(value(entry, 'nombreCouvertures')) || 0;
       const livres = couverturesAccueil(nombre);
       return cadre('Page d’accueil — les numéros suivent ceux du formulaire',
@@ -570,6 +594,7 @@
               DONNEES.livres ? 'Aucun livre mis en avant' : 'Chargement des couvertures…'),
           h('p', { className: 'site-preview__muted' },
             'Les livres se choisissent dans chaque fiche livre (« Mis en avant sur l’accueil ») ; leur ordre aussi.')),
+        libres('apres-bandeau'),
         masquable(affiche(entry, 'masquerInformation'), zone('2', 'Bloc information',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'informationRubrique')),
           h('h2', {}, value(entry, 'titreInformation')),
@@ -583,11 +608,13 @@
           h('p', { className: 'site-preview__actions' },
             value(entry, 'libelleDon') ? bouton(`♡ ${value(entry, 'libelleDon')}`) : null,
             bouton(value(entry, 'libelleOffres'), true)))),
+        libres('apres-information'),
         masquable(affiche(entry, 'masquerCollections'), zone('3', 'Collections',
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'collectionsRubrique')),
           h('h2', {}, value(entry, 'collectionsTitre')),
           blocMarkdown(widgetFor, 'collectionsTexte'),
           h('div', { className: 'site-preview__placeholder' }, 'Les six cartes des collections'))),
+        libres('apres-collections'),
         masquable(affiche(entry, 'masquerSuivre'), h('section', { className: 'site-preview__zone site-preview__zone--dark' },
           h('p', { className: 'site-preview__zone-label' },
             h('span', { className: 'site-preview__number' }, '4'), 'Suivre la maison'),
@@ -601,20 +628,25 @@
             h('div', {},
               h('p', { className: 'site-preview__eyebrow' }, value(entry, 'manuscritsRubrique')),
               h('h3', {}, value(entry, 'manuscritsTitre')),
-              h('p', {}, `${value(entry, 'manuscritsAction')} →`))))));
+              h('p', {}, `${value(entry, 'manuscritsAction')} →`))))),
+        libres('bas'));
     }
   });
 
-  // Le haut d’une page engendrée (Pages principales), la liste en dessous venant des fiches.
+  // Une page engendrée (Pages principales) : son haut, ses sections ajoutées, et la
+  // liste qui vient des fiches.
   const pageIntroPreview = (cle, legende) => createClass({
     render() {
-      const { entry, widgetFor } = this.props;
+      const { entry, widgetFor, widgetsFor } = this.props;
+      const libres = (place) => sectionsAjoutees(widgetsFor, place, 'avant-liste');
       return cadre('Haut de la page ({nombre} devient le nombre réel)',
         zone(null, legende,
           h('p', { className: 'site-preview__eyebrow' }, avecNombre(value(entry, 'rubrique'))),
           h('h1', {}, value(entry, 'titre')),
           blocMarkdown(widgetFor, 'introduction')),
+        libres('avant-liste'),
         h('div', { className: 'site-preview__placeholder' }, 'La liste se remplit toute seule depuis les fiches'),
+        libres('apres-liste'),
         cle === 'actualites' ? masquable(affiche(entry, 'masquerFacebook'), h('section', { className: 'site-preview__zone site-preview__zone--soft' },
           h('p', { className: 'site-preview__zone-label' }, 'Bloc Facebook, en bas de page'),
           h('p', { className: 'site-preview__eyebrow' }, value(entry, 'appelRubrique')),

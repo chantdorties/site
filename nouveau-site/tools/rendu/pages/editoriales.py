@@ -11,6 +11,9 @@ et porter des boutons d'achat PayPal, saisis dans sa fiche : les offres
 groupées, l'adhésion et le don, les titres soldés. Comme pour les livres, leur
 identifiant vient toujours de la saisie et ne se fabrique jamais ici.
 
+Les pages principales (accueil, catalogue, actualités…) reçoivent les mêmes sections,
+ajoutées dans leur fiche à un emplacement choisi : render_free_sections les place.
+
 Le style correspondant est dans frontend/assets/css/35-pages-de-texte.css ;
 la page Projets ajoute 37-projets.css.
 """
@@ -32,16 +35,7 @@ class PagesEditoriales:
             draft = bool(page_data["aVerifier"])
             if draft and not self.include_drafts:
                 continue
-            rendered_sections = []
-            for section in self.visible_sections(page_data):
-                heading = f'<h2>{e(section["titre"])}</h2>' if section["titre"] else ""
-                rendered_sections.append(
-                    f'<section class="editorial-section">{heading}'
-                    f'<div class="rich-text">{self.markdown_html(section["contenu"], owner=page_data["slug"])}</div>'
-                    f'{self.render_section_books(section["livres"])}'
-                    f'{self.render_paypal_buttons(section["boutonsPaypal"])}</section>'
-                )
-            sections = "".join(rendered_sections)
+            sections = self.render_sections(page_data["sections"], owner=page_data["slug"])
             link_items = [self.editorial_link(link) for link in page_data["liens"]]
             link_items = [item for item in link_items if item]
             aside = ""
@@ -60,7 +54,12 @@ class PagesEditoriales:
                 gallery = f'<section class="section section--white"><div class="container"><h2>En images</h2>{self.render_gallery(gallery_items)}</div></section>'
             # La page Projets porte son introduction dans ses sections ; la liste des
             # projets, elle, vient de leur propre rubrique.
-            projects = self.render_projects() if page_data["slug"] == "projets" else ""
+            # Ses sections ajoutées se placent avant la liste (à la suite de l’introduction)
+            # ou après.
+            projects = ""
+            if page_data["slug"] == "projets":
+                sections += self.render_sections(self.free_sections("projets", "avant-liste"), owner="projets")
+                projects = self.render_projects() + self.render_free_sections("projets", "apres-liste")
             description = self.visible_sections(page_data)[0]["contenu"]
             content = f"""
 {self.render_page_heading(
@@ -87,6 +86,35 @@ class PagesEditoriales:
             )
             self.write_route(f"/{page_data['slug']}/", page)
 
+
+    def render_sections(self, sections: list[dict[str, Any]], *, owner: str) -> str:
+        """Les sections visibles, l’une après l’autre : intertitre, texte, livres et
+        boutons d’achat. Une section masquée garde ses textes sans paraître."""
+        rendered = []
+        for section in sections:
+            if section["masquee"]:
+                continue
+            heading = f'<h2>{e(section["titre"])}</h2>' if section.get("titre") else ""
+            rendered.append(
+                f'<section class="editorial-section">{heading}'
+                f'<div class="rich-text">{self.markdown_html(section["contenu"], owner=owner)}</div>'
+                f'{self.render_section_books(section["livres"])}'
+                f'{self.render_paypal_buttons(section["boutonsPaypal"])}</section>'
+            )
+        return "".join(rendered)
+
+    def free_sections(self, page: str, placement: str) -> list[dict[str, Any]]:
+        """Les sections ajoutées à une page principale pour un emplacement donné."""
+        record = self.home_settings if page == "accueil" else self.page_settings[page]
+        return [section for section in record["sectionsLibres"] if section["emplacement"] == placement]
+
+    def render_free_sections(self, page: str, placement: str) -> str:
+        """Les sections ajoutées d’une page principale à un emplacement, dans une bande
+        à largeur de lecture ; rien si aucune n’y est visible."""
+        body = self.render_sections(self.free_sections(page, placement), owner=page)
+        if not body:
+            return ""
+        return f'\n<section class="section"><div class="container"><div class="free-sections">{body}</div></div></section>'
 
     def render_section_books(self, slugs: list[str]) -> str:
         """Les livres choisis dans une section, en cartes comme dans le catalogue.

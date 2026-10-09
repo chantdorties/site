@@ -518,6 +518,94 @@ class ContentDataTest(unittest.TestCase):
             with self.assertRaisesRegex(ContentError, "Page amis: toutes les sections sont masquées"):
                 load_content(root, include_drafts=True)
 
+    @staticmethod
+    def free_section(marque, emplacement=None, **champs):
+        """Une section ajoutée reconnaissable à sa marque dans la page rendue."""
+        section = {"type": "texte", "titre": f"Intertitre {marque}", "contenu": f"Texte {marque}."}
+        if emplacement:
+            section["emplacement"] = emplacement
+        section.update(champs)
+        return section
+
+    def test_free_sections_take_their_place_on_the_home(self):
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", sectionsLibres=[
+                self.free_section("BAS", "bas"),
+                self.free_section("APRES-BANDEAU", "apres-bandeau"),
+                self.free_section("PAR-DEFAUT"),
+                self.free_section("APRES-COLLECTIONS", "apres-collections"),
+                self.free_section("MASQUEE", "bas", masquee=True),
+                self.free_section(
+                    "OFFRE", "bas", type="offre", livres=["ailes-d-arc-en-ciel"],
+                    boutonsPaypal=[{"libelle": "Commander le lot", "hostedButtonId": "ABCDEFGHJK234"}],
+                ),
+            ])
+            html = render_pages(root, "build_home")["/"]
+            places = [
+                html.index('class="hero"'),
+                html.index("Texte APRES-BANDEAU."),
+                html.index("home-commercial"),
+                html.index("Texte PAR-DEFAUT."),
+                html.index("collection-showcase__item"),
+                html.index("Texte APRES-COLLECTIONS."),
+                html.index("section--ink"),
+                html.index("Texte BAS."),
+                html.index("Texte OFFRE."),
+            ]
+            self.assertEqual(sorted(places), places)
+            self.assertNotIn("MASQUEE", html)
+            self.assertIn('<h2>Intertitre BAS</h2>', html)
+            # L’offre montre sa carte de livre et son bouton, comme dans Mes pages.
+            self.assertIn('href="/livres/ailes-d-arc-en-ciel/"', html)
+            self.assertIn('value="ABCDEFGHJK234"', html)
+            self.assertIn("Commander le lot", html)
+
+    def test_free_sections_surround_the_list_of_each_main_page(self):
+        listes = {
+            "catalogue": ("build_catalogue", "/catalogue/", "data-book-grid"),
+            "personnes": ("build_people_index", "/personnes/", "data-person-grid"),
+            "collections": ("build_collections_index", "/collections/", "collection-showcase__item"),
+            "actualites": ("build_news_page", "/actualites/", "news-grid"),
+            "maison": ("build_house_page", "/la-maison/", "house-grid"),
+            "projets": ("build_editorial_pages", "/projets/", "project-card"),
+        }
+        with content_sandbox() as root:
+            for nom in listes:
+                edit(root, f"content/pages-du-site/{nom}.json", sectionsLibres=[
+                    self.free_section(f"SOUS-{nom}", "apres-liste"),
+                    self.free_section(f"DESSUS-{nom}"),
+                ])
+            builders = sorted({builder for builder, _, _ in listes.values()})
+            pages = render_pages(root, *builders)
+            for nom, (_, route, liste) in listes.items():
+                html = pages[route]
+                places = [html.index(f"Texte DESSUS-{nom}."), html.index(liste), html.index(f"Texte SOUS-{nom}.")]
+                self.assertEqual(sorted(places), places, nom)
+            # Sous la liste des actualités, mais au-dessus du bloc Facebook.
+            html = pages["/actualites/"]
+            self.assertLess(html.index("Texte SOUS-actualites."), html.index("news-callout"))
+
+    def test_free_sections_follow_the_rules_of_page_sections(self):
+        cas = (
+            ({"emplacement": "apres-liste"}, "accueil", "emplacement de section inconnu « apres-liste »"),
+            ({"emplacement": "bas"}, "catalogue", "emplacement de section inconnu « bas »"),
+            ({"contenu": " "}, "maison", "Page principale maison: contenu de section obligatoire"),
+            ({"livres": ["livre-inconnu"], "type": "livres"}, "actualites", "livre de section indisponible"),
+            ({"type": "texte", "livres": ["ailes-d-arc-en-ciel"]}, "accueil", "une section « texte » ne porte ni livre"),
+            (
+                {"type": "offre", "boutonsPaypal": [{"libelle": "Lot", "hostedButtonId": "https://paypal"}]},
+                "projets",
+                "identifiant du bouton PayPal « Lot » invalide",
+            ),
+            ({"contenu": "![](content/media/inconnu.webp)"}, "personnes", "texte alternatif obligatoire"),
+            ({"contenu": "::: valeur clignotant\nTexte\n:::"}, "collections", "option inconnue"),
+        )
+        for champs, page, message in cas:
+            with self.subTest(page=page, message=message), content_sandbox() as root:
+                edit(root, f"content/pages-du-site/{page}.json", sectionsLibres=[self.free_section("X", **champs)])
+                with self.assertRaisesRegex(ContentError, re.escape(message)):
+                    load_content(root, include_drafts=True)
+
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:
             edit(root, "content/pages/mentions-legales.json", statut="brouillon")

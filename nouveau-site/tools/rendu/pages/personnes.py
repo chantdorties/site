@@ -32,7 +32,7 @@ class PagesPersonnes:
     labels['titre'],
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="personnes"),
-)}
+)}{self.render_free_sections("personnes", "avant-liste")}
 <section class="filter-panel" id="recherche" aria-label="Filtres de l’annuaire">
   <div class="container filter-grid filter-grid--people">
     <div class="field"><label for="person-search">Rechercher un nom</label><input id="person-search" type="search" placeholder="Rechercher…" autocomplete="off"></div>
@@ -44,7 +44,7 @@ class PagesPersonnes:
     <div class="results-bar"><p class="results-status" data-results-status aria-live="polite">Chargement de l’annuaire…</p></div>
     <div class="person-grid" data-person-grid aria-busy="true"><p class="loading-state">Chargement des personnes…</p></div>
   </div>
-</section>"""
+</section>{self.render_free_sections("personnes", "apres-liste")}"""
         page = self.render_page(
             title=labels["titre"],
             description=labels["descriptionSeo"],
