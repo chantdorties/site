@@ -5,7 +5,7 @@ maison). Chaque entrée porte sa date, son titre, son texte, éventuellement une
 et un lien.
 
 Elle n'est pas une page de texte : tous ses réglages, référencement et anciennes
-adresses compris, sont dans le bloc « actualites » de content/reglages/pages.json.
+adresses compris, sont dans content/pages-du-site/actualites.json.
 
 Le style correspondant est dans frontend/assets/css/36-actualites.css pour les
 cartes, et 38-encart-actualites.css pour l'encart de tête et les catégories.

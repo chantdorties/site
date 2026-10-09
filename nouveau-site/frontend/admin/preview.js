@@ -598,34 +598,22 @@
     }
   });
 
-  const PAGES_ENGENDREES = [
-    ['catalogue', 'Catalogue — /catalogue/'],
-    ['personnes', 'Auteurs et illustrateurs — /personnes/'],
-    ['collections', 'Collections — /collections/'],
-    ['actualites', 'Actualités — /actualites/'],
-    ['maison', 'La maison — /la-maison/'],
-    ['projets', 'Projets — /projets/']
-  ];
-  const PageIntrosPreview = createClass({
+  // Le haut d’une page engendrée (Pages du site), la liste en dessous venant des fiches.
+  const pageIntroPreview = (cle, legende) => createClass({
     render() {
-      const { entry, widgetsFor } = this.props;
-      return cadre('En-têtes des pages engendrées ({nombre} devient le nombre réel)',
-        PAGES_ENGENDREES.map(([cle, legende]) => {
-          const bloc = safeWidgetsFor(widgetsFor, cle);
-          const donnee = (champ) => bloc?.getIn?.(['data', champ]) || '';
-          const texte = (champ) => bloc?.getIn?.(['widgets', champ]) || null;
-          return h('div', { key: cle },
-            zone(null, legende,
-              h('p', { className: 'site-preview__eyebrow' }, avecNombre(donnee('rubrique'))),
-              h('h1', {}, donnee('titre')),
-              h('div', { className: 'site-preview__text' }, texte('introduction'))),
-            cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
-              h('p', { className: 'site-preview__zone-label' }, 'Actualités — bloc Facebook, en bas de page'),
-              h('p', { className: 'site-preview__eyebrow' }, donnee('appelRubrique')),
-              h('h2', {}, donnee('appelTitre')),
-              h('div', { className: 'site-preview__text' }, texte('appelTexte')),
-              h('p', { className: 'site-preview__actions' }, bouton(donnee('boutonFacebook')))) : null);
-        }));
+      const { entry, widgetFor } = this.props;
+      return cadre('Haut de la page ({nombre} devient le nombre réel)',
+        zone(null, legende,
+          h('p', { className: 'site-preview__eyebrow' }, avecNombre(value(entry, 'rubrique'))),
+          h('h1', {}, value(entry, 'titre')),
+          blocMarkdown(widgetFor, 'introduction')),
+        h('div', { className: 'site-preview__placeholder' }, 'La liste se remplit toute seule depuis les fiches'),
+        cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
+          h('p', { className: 'site-preview__zone-label' }, 'Bloc Facebook, en bas de page'),
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'appelRubrique')),
+          h('h2', {}, value(entry, 'appelTitre')),
+          blocMarkdown(widgetFor, 'appelTexte'),
+          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'boutonFacebook')))) : null);
     }
   });
 
@@ -748,13 +736,19 @@
   CMS.registerPreviewTemplate('pages', PagePreview);
   // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
   CMS.registerPreviewTemplate('apparence', AppearancePreview);
-  // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site. Les
-  // noms sont ceux des entrées de config.yml : « introductions » et non « pages »,
-  // qui désignerait aussi la rubrique Pages de la maison.
+  // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site.
   CMS.registerPreviewTemplate('site', SitePreview);
   CMS.registerPreviewTemplate('navigation', NavigationPreview);
   CMS.registerPreviewTemplate('footer', FooterPreview);
-  CMS.registerPreviewTemplate('accueil', HomeTextsPreview);
-  CMS.registerPreviewTemplate('introductions', PageIntrosPreview);
   CMS.registerPreviewTemplate('paiement', PaymentPreview);
+  // Les Pages du site. Les noms d’entrée sont préfixés de « page_ » : Decap cherche un
+  // aperçu par nom de rubrique ET d’entrée, et « collections » ou « actualites »
+  // désignent déjà des rubriques.
+  CMS.registerPreviewTemplate('page_accueil', HomeTextsPreview);
+  CMS.registerPreviewTemplate('page_catalogue', pageIntroPreview('catalogue', 'Catalogue — /catalogue/'));
+  CMS.registerPreviewTemplate('page_personnes', pageIntroPreview('personnes', 'Auteurs et illustrateurs — /personnes/'));
+  CMS.registerPreviewTemplate('page_collections', pageIntroPreview('collections', 'Collections — /collections/'));
+  CMS.registerPreviewTemplate('page_actualites', pageIntroPreview('actualites', 'Actualités — /actualites/'));
+  CMS.registerPreviewTemplate('page_maison', pageIntroPreview('maison', 'La maison — /la-maison/'));
+  CMS.registerPreviewTemplate('page_projets', pageIntroPreview('projets', 'Projets — /projets/'));
 })();

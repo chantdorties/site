@@ -8,7 +8,7 @@ Quatre bandeaux, dans l'ordre :
   3. les collections, via la vitrine partagée (composants/vitrine_collections.py) ;
   4. le bandeau sombre « Nous suivre » : actualités et manuscrits.
 
-Tous les textes viennent de content/reglages/accueil.json, rangés dans l'ordre des
+Tous les textes viennent de content/pages-du-site/accueil.json, rangés dans l'ordre des
 bandeaux ; seul l'identifiant du bouton de don reste dans les réglages de paiement.
 Les livres mis en avant sont cochés dans chaque fiche livre.
 

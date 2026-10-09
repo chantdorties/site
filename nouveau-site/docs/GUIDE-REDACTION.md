@@ -59,20 +59,21 @@ Le champ **Publication** offre trois choix :
 
 C’est la question qui revient le plus souvent. La règle : **chaque partie du site se
 règle à un seul endroit**. Les pages qui rassemblent des contenus (catalogue, auteurs,
-collections, actualités, projets) sont fabriquées automatiquement : leur texte
-d’en-tête ne se modifie pas sur la page elle-même, mais dans les Réglages du site.
+collections, actualités, projets) se remplissent toutes seules : on n’y change que le
+titre, l’introduction et le référencement, dans **Pages du site**. Les pages qu’on
+écrit soi-même sont dans **Mes pages**.
 
 | Ce que vous voulez changer | Où aller |
 |---|---|
 | Un livre, une personne, une collection, un projet | La rubrique du même nom |
 | Un article d’actualité | Rubrique **Actualités** |
-| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Réglages du site › Page d’accueil**, de haut en bas dans l’ordre de la page |
-| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Réglages du site › Introductions des pages** |
-| Le référencement et les anciennes adresses de l’accueil, des actualités ou des projets | Le même écran, dans ses réglages techniques |
+| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Pages du site › Accueil**, de haut en bas dans l’ordre de la page |
+| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Pages du site**, la page du même nom |
+| Le référencement et les anciennes adresses d’une de ces pages | La même page, dans « ▸ Réglages techniques » |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
 | Les couleurs et les polices du site | **Réglages du site › Apparence** |
-| Les pages Commandes, Librairies, Soutien, Amis… et les mentions légales | **Pages de la maison** |
+| Les pages Commandes, Librairies, Soutien, Amis… et les mentions légales | **Mes pages** |
 
 La maison a deux textes de présentation, qui ne servent pas au même endroit :
 **Identité et contact › Description pour les moteurs de recherche** n’est lu que par
@@ -82,9 +83,9 @@ en bas de chaque page.
 Les mentions légales se modifient comme les autres pages de la maison, mais elles sont
 obligatoires : elles ne peuvent être ni dépubliées ni changer d’adresse.
 
-Chaque entrée des **Réglages du site** montre à droite un aperçu : une maquette de la
-zone du site où ses textes apparaissent (en-tête, pied de page, accueil, en-têtes des
-pages, boutons d’achat). Il suit la saisie, avant tout enregistrement.
+Chaque entrée des **Réglages du site** et des **Pages du site** montre à droite un
+aperçu : une maquette de la zone du site où ses textes apparaissent (en-tête, pied de
+page, accueil, haut de chaque page, boutons d’achat). Il suit la saisie, avant tout enregistrement.
 
 ### Le menu et les liens du pied de page
 
@@ -190,7 +191,7 @@ livre.
 
 ## Créer une page
 
-1. **Pages de la maison › + Page**.
+1. **Mes pages › + Page**.
 2. Écrire le **titre**, puis le **texte** dans la section déjà ouverte.
 3. **Publier › Publier maintenant**.
 

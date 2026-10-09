@@ -153,7 +153,7 @@ class ContentDataTest(unittest.TestCase):
             files = {path.stem for path in (CONTENT / folder).glob("*.json")}
             self.assertEqual({record["slug"] for record in records}, files)
         page_files = {path.stem for path in (CONTENT / "pages").glob("*.json")}
-        # La page Projets n’a pas de fichier : elle est rebâtie depuis reglages/pages.json.
+        # La page Projets n’a pas de fichier de page : elle est rebâtie depuis pages-du-site/projets.json.
         self.assertEqual({record["slug"] for record in self.pages}, page_files | {"projets"})
 
     def test_projects_page_comes_from_its_introduction(self):
@@ -163,7 +163,7 @@ class ContentDataTest(unittest.TestCase):
         self.assertEqual((intro["titre"], intro["ordre"]), (page["titre"], page["ordre"]))
         with content_sandbox() as root:
             (root / "content/pages/projets.json").write_text(
-                json.dumps({"slug": "projets", "titre": "Projets", "statut": "publie", "ordre": 90, "sections": [{"titre": None, "contenu": "Texte"}]}),
+                json.dumps({"slug": "projets", "titre": "Projets", "statut": "publie", "ordre": 90, "sections": [{"type": "texte", "titre": None, "contenu": "Texte"}]}),
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ContentError, "introduction se règle désormais"):
@@ -277,13 +277,13 @@ class ContentDataTest(unittest.TestCase):
         build_site = load_site_builder()
         with content_sandbox() as root:
             shutil.copytree(ROOT / "frontend", root / "frontend")
-            edit(root, "content/reglages/accueil.json", nombreCouvertures=3)
+            edit(root, "content/pages-du-site/accueil.json", nombreCouvertures=3)
             builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
             self.assertEqual(builder.featured_books()[:3], builder.home_cover_books())
             self.assertGreater(len(builder.featured_books()), 3)
         for value in (0, "6", True):
             with self.subTest(value), content_sandbox() as root:
-                edit(root, "content/reglages/accueil.json", nombreCouvertures=value)
+                edit(root, "content/pages-du-site/accueil.json", nombreCouvertures=value)
                 with self.assertRaisesRegex(ContentError, "nombreCouvertures"):
                     load_content(root, include_drafts=True)
 
@@ -361,10 +361,14 @@ class ContentDataTest(unittest.TestCase):
     def test_generated_pages_refuse_their_former_places(self):
         # L’accueil et les actualités se règlent chacun en un seul écran : les anciennes
         # pages et les anciens libellés de Paiement sont refusés plutôt qu’ignorés.
-        former_page = lambda slug: lambda _: {"slug": slug, "titre": slug, "statut": "publie", "ordre": 0, "type": slug, "sections": [{"titre": None, "contenu": "Texte"}]}
+        former_page = lambda slug: lambda _: {"slug": slug, "titre": slug, "statut": "publie", "ordre": 0, "type": slug, "sections": [{"type": "texte", "titre": None, "contenu": "Texte"}]}
         for name, change, message in (
-            ("pages-fixes/accueil.json", former_page("accueil"), "reglages/accueil.json"),
-            ("pages-fixes/actualites.json", former_page("actualites"), "reglages/pages.json"),
+            ("pages-fixes/accueil.json", former_page("accueil"), "pages-du-site/"),
+            ("pages-fixes/actualites.json", former_page("actualites"), "pages-du-site/"),
+            ("pages/accueil.json", former_page("accueil"), "pages-du-site/accueil.json"),
+            # Les textes des pages ont quitté les réglages pour « Pages du site ».
+            ("reglages/accueil.json", lambda _: {}, "reglages/accueil.json n’est plus lu"),
+            ("reglages/pages.json", lambda _: {}, "reglages/pages.json n’est plus lu"),
             ("reglages/paiement.json", lambda data: {**data, "libelleDon": "Faire un don"}, "libelleDon se règle désormais"),
         ):
             with self.subTest(name), tempfile.TemporaryDirectory() as temporary:
