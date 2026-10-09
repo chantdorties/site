@@ -66,6 +66,17 @@ class FichiersTechniques:
             add_old_addresses(page, target)
         for item in self.raw["news"]:
             add_old_addresses(item, "/actualites/")
+        # Les pages de l’ancien site dont la fiche a été supprimée depuis : leur adresse
+        # mène à la rubrique parente plutôt qu’à une erreur 404.
+        for kind, folder, parent in (
+            ("livres", "books", "/catalogue/"),
+            ("collections", "collections", "/collections/"),
+            ("pages", "pages", "/la-maison/"),
+        ):
+            existing = {record["slug"] for record in self.raw[folder]}
+            for slug, source in self.legacy[kind].items():
+                if slug not in existing and source and source.lower() != "index.html":
+                    redirects.setdefault(f"/{source}", parent)
         redirects.update(
             {
                 "/auteurs.html": "/personnes/",

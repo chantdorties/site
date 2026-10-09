@@ -41,6 +41,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - Chaque partie du site se règle à **un seul endroit**. Menu : Réglages du site · Pages ▾ (Mes pages, Pages principales) · Livres · Auteurs et illustrateurs · Collections · Actualités · Projets.
 - Formulaires : « L’essentiel » en tête, blocs propres ensuite, « ▸ Réglages techniques » replié à la fin. Composants partagés par ancres YAML (une seule définition chacun ; une ancre doit précéder ses alias dans le fichier).
 - Créer une page = Mes pages › + Page › titre › texte › Publier ; adresse tirée du titre, ordre automatique, sections typées (`texte`/`livres`/`offre`), liens typés.
+- Supprimer : bouton actif partout (sauf réglages et pages principales). Une suppression ne doit jamais bloquer la publication : liens d’agrément retirés à la génération, liens de structure gardés par `suppression.js` (`data/suppression.json`), médias inutilisés tolérés. Voir `docs/ADMINISTRATION.md` › « Suppression ».
 - Masquer plutôt que supprimer : cases « Masquer ce bloc » (accueil, bloc Facebook) et « Masquer cette section », décochées par défaut. Les pages principales reçoivent les mêmes sections que Mes pages dans « Sections ajoutées » (`sectionsLibres`, avec un `emplacement`) ; les champs des sections sont définis une fois, dans la fiche Accueil de `config.yml`.
 - Livres mis en avant : cochés dans la fiche, filtre « ★ » dans la liste ; nombre de couvertures dans Pages principales › Accueil.
 - Les aperçus sont choisis par nom de rubrique **et** d’entrée : noms d’entrée uniques (préfixe `page_` dans Pages principales).
@@ -82,6 +83,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - `gh pr edit` échoue (Projects classic) : utiliser `gh api -X PATCH repos/chantdorties/site/pulls/<n>`.
 - Les PDF générés ne sont pas reproductibles octet pour octet : comparer sur une copie de la référence.
 - Les éléments du menu Decap appartiennent à React : les décorer (classes, ajout) sans les déplacer.
+- Les tests tournent sur le contenu réel à chaque publication : **ne jamais y nommer une fiche** (livre, page, personne…) ni figer un compte. La rédaction peut la modifier ou la supprimer, et la publication serait bloquée (#35). Utiliser `exemple()` ou calculer l’attendu depuis le contenu.
 
 ## Journal
 
@@ -100,3 +102,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #37 · Cases « Masquer ce bloc » (accueil, bloc Facebook) et « Masquer cette section » (Mes pages) ; accueil : seul le grand titre est obligatoire, un champ vide disparaît ; petite ligne et introduction facultatives sur les pages principales.
 - 2026-10-09 · #38 · « Sections ajoutées » sur chaque page principale : les mêmes sections que Mes pages (texte, livres, offre PayPal), placées à un emplacement choisi (entre les blocs de l’accueil, au-dessus ou sous la liste ailleurs) et masquables.
 - 2026-10-09 · #39 · « Anciennes adresses » cachées dans l’admin (widget `hidden`, valeur gardée à l’enregistrement) : les redirections de l’ancien site restent actives, à compléter au besoin dans le JSON.
+- 2026-10-09 · #41 · Bouton « Supprimer » sur livres, personnes, collections, actualités et pages : ce qui citait la fiche s’en passe (liens retirés, livre mis en avant choisi d’office), fiches dont d’autres dépendent gardées dans l’admin avec la raison, médias inutilisés tolérés ; tests indépendants des fiches réelles.

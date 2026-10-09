@@ -127,6 +127,22 @@ class SiteBuilder(
         self.people_by_slug = {person["slug"]: person for person in self.people}
         self.collections_by_slug = {item["slug"]: item for item in self.collections}
         self.pages_by_slug = {page["slug"]: page for page in self.pages}
+        # Les adresses des pages que cette génération produit. Un lien interne vers une
+        # autre (une page supprimée ou archivée depuis l’administration) est retiré
+        # plutôt que de mener à une erreur 404 : voir lien_interne_absent (texte.py).
+        self.known_routes = {
+            "/", "/catalogue/", "/personnes/", "/collections/", "/actualites/",
+            "/la-maison/", "/plan-du-site/",
+            *(f"/livres/{slug}/" for slug in self.books_by_slug),
+            *(f"/personnes/{slug}/" for slug in self.people_by_slug),
+            *(f"/collections/{slug}/" for slug in self.collections_by_slug),
+            *(
+                f"/{page['slug']}/"
+                for page in self.published_editorial_pages()
+            ),
+        }
+        # Les liens retirés faute de page, signalés au rapport : (où, adresse).
+        self.liens_retires: list[tuple[str, str]] = []
 
         self.cover_media: dict[str, dict[str, str]] = {}
         self.person_media: dict[str, dict[str, str]] = {}

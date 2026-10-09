@@ -9,6 +9,9 @@ from __future__ import annotations
 
 import fcntl
 import shutil
+from typing import Any
+
+from content_data import referenced_media_paths
 
 from .outils import monogram, write_json, write_text
 
@@ -130,6 +133,78 @@ class Sortie:
         write_json(self.temp_output / "data" / "livres.json", public_books)
         write_json(self.temp_output / "data" / "personnes.json", public_people)
         write_json(self.temp_output / "data" / "collections.json", public_collections)
+        write_json(self.temp_output / "data" / "suppression.json", self.deletion_guard())
+
+    def deletion_guard(self) -> dict[str, dict[str, str]]:
+        """Les fiches que l’administration ne laisse pas supprimer, avec la raison.
+
+        Lu par frontend/admin/suppression.js, qui désactive alors « Supprimer » et
+        affiche la raison. Ce sont les liens de structure, que la génération ne peut pas
+        retirer d’elle-même (voir prune_missing_references, content_data.py) : une
+        personne qui signe un livre ou un projet, une collection qui en contient, le
+        dernier livre d’une collection publiée ou son seul livre disponible, et les
+        mentions légales. Tous les statuts comptent, puisque la validation les vérifie
+        tous. Seuls les titres publiés sont nommés : ce fichier est public.
+        """
+        raw = self.raw
+
+        def citing(records: list[dict[str, Any]], what: str) -> str:
+            what = what if len(records) > 1 else what.removesuffix("s")
+            published = [record["titre"] for record in records if record.get("statut") == "publie"]
+            others = len(records) - len(published)
+            names = ", ".join(f"« {title} »" for title in published[:5])
+            if len(published) > 5:
+                names += f" et {len(published) - 5} autres"
+            if others:
+                names += (" ; " if names else "") + (f"{others} fiches non publiées" if others > 1 else "1 fiche non publiée")
+            return f"{len(records)} {what} ({names})"
+
+        people: dict[str, str] = {}
+        for person in raw["people"]:
+            slug = person["slug"]
+            books = [b for b in raw["books"] if slug in (*b.get("auteurs", []), *b.get("illustrateurs", []), *b.get("prefaciers", []))]
+            projects = [p for p in raw["projects"] if slug in (*p.get("auteurs", []), *p.get("illustrateurs", []))]
+            parts = [citing(books, "livres")] if books else []
+            parts += [citing(projects, "projets")] if projects else []
+            if parts:
+                people[slug] = (
+                    f"Cette personne figure dans {' et '.join(parts)}. Retirez-la d’abord de ces "
+                    "fiches, ou choisissez plutôt Publication : Archivé."
+                )
+        collections: dict[str, str] = {}
+        for collection in raw["collections"]:
+            slug = collection["slug"]
+            books = [b for b in raw["books"] if b.get("collection") == slug]
+            projects = [p for p in raw["projects"] if p.get("collection") == slug]
+            parts = [citing(books, "livres")] if books else []
+            parts += [citing(projects, "projets")] if projects else []
+            if parts:
+                collections[slug] = (
+                    f"Cette collection contient {' et '.join(parts)}. Rangez-les d’abord dans une "
+                    "autre collection, ou choisissez plutôt Publication : Archivé."
+                )
+        books: dict[str, str] = {}
+        for collection in raw["collections"]:
+            if collection.get("statut") != "publie":
+                continue
+            published = [b for b in raw["books"] if b.get("collection") == collection["slug"] and b.get("statut") == "publie"]
+            available = [b for b in published if b.get("disponible")]
+            if len(published) == 1:
+                books[published[0]["slug"]] = (
+                    f"C’est le dernier livre publié de la collection « {collection['titre']} », qui "
+                    "doit en garder au moins un. Publiez d’abord un autre livre dans cette "
+                    "collection."
+                )
+            elif len(available) == 1:
+                books[available[0]["slug"]] = (
+                    f"C’est le seul livre disponible de la collection « {collection['titre']} » : "
+                    "l’accueil en montre toujours un par collection. Choisissez plutôt "
+                    "Publication : Archivé, ou rendez d’abord un autre livre disponible."
+                )
+        pages = {
+            "mentions-legales": "Les mentions légales sont obligatoires : cette page ne peut pas être supprimée.",
+        }
+        return {"personnes": people, "collections": collections, "livres": books, "pages": pages}
 
     def write_route(self, route: str, page_html: str) -> None:
         if route == "/":
@@ -144,6 +219,7 @@ class Sortie:
 
 
     def build_report(self) -> None:
+        referenced = referenced_media_paths(self.raw)
         html_count = len(list(self.temp_output.rglob("*.html")))
         report = {
             "mode": "preview" if self.include_drafts else "production",
@@ -156,6 +232,15 @@ class Sortie:
             "projets": len(self.projects),
             "medias": self.media_stats,
             "documentsIgnores": self.skipped_documents,
+            # Ce qu’une suppression depuis l’administration a laissé derrière elle :
+            # rien n’y bloque la publication, tout y est à relire à l’occasion.
+            "referencesRetirees": self.raw.get("referencesRetirees", []),
+            "liensRetires": [f"{owner}: {href}" for owner, href in self.liens_retires],
+            "mediasInutilises": sorted(
+                path.relative_to(self.root).as_posix()
+                for path in (self.root / "content" / "media").rglob("*")
+                if path.is_file() and path.relative_to(self.root).as_posix() not in referenced
+            ),
         }
         write_json(self.report_path, report)
 

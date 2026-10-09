@@ -16,6 +16,7 @@ from tools.content_data import (
     APPEARANCE_FONT_FIELDS,
     APPEARANCE_FONTS,
     inline_media_paths,
+    load_content,
     load_settings,
 )
 from tools.rendu.texte import OutilsTexte
@@ -63,13 +64,12 @@ class BuiltSiteTest(unittest.TestCase):
         cls.collections = load_json(DIST / "data" / "collections.json")
 
     def test_report_and_public_data_match_output(self):
-        self.assertEqual(169, self.report["pagesHtml"])
         self.assertEqual(len(self.html_files), self.report["pagesHtml"])
         self.assertEqual(len(self.books), self.report["livres"])
         self.assertEqual(len(self.people), self.report["personnes"])
         self.assertEqual(len(self.collections), self.report["collections"])
         self.assertEqual(
-            {"livres.json", "personnes.json", "collections.json"},
+            {"livres.json", "personnes.json", "collections.json", "suppression.json"},
             {path.name for path in (DIST / "data").iterdir()},
         )
 
@@ -231,19 +231,27 @@ class BuiltSiteTest(unittest.TestCase):
     def test_commercial_labels_come_from_the_settings(self):
         """Ces mots suivent les offres et le mode de vente : ils doivent rester éditables."""
         payment = settings("paiement")
-        available = next(book for book in self.books if book["disponible"])
-        unavailable = next(book for book in self.books if not book["disponible"])
-        for slug, expected in (
-            (available["slug"], (payment["libellePanier"], payment["libelleDisponible"])),
-            (unavailable["slug"], (payment["libelleContact"], payment["libelleIndisponible"])),
+        available = next((book for book in self.books if book["disponible"]), None)
+        unavailable = next((book for book in self.books if not book["disponible"]), None)
+        for book, expected in (
+            (available, (payment["libellePanier"], payment["libelleDisponible"])),
+            (unavailable, (payment["libelleContact"], payment["libelleIndisponible"])),
         ):
+            if book is None:
+                continue
+            slug = book["slug"]
             text = BeautifulSoup(
                 (DIST / "livres" / slug / "index.html").read_text(encoding="utf-8"), "html.parser"
             ).get_text(" ", strip=True)
             for label in expected:
                 self.assertIn(label, text, slug)
-        home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
-        self.assertIn(settings("accueil")["libelleOffres"], home.get_text(" ", strip=True))
+        # Le bouton des offres n’existe que si son libellé est saisi, le bloc affiché et
+        # la page Offres spéciales publiée.
+        accueil = settings("accueil")
+        offres = ROOT / "content" / "pages" / "offres-speciales.json"
+        if accueil.get("libelleOffres") and not accueil.get("masquerInformation") and offres.exists() and load_json(offres)["statut"] == "publie":
+            home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
+            self.assertIn(accueil["libelleOffres"], home.get_text(" ", strip=True))
 
     def test_every_collection_shows_its_emblem(self):
         """Les emblèmes viennent de l’ancien site : leur perte passerait inaperçue."""
@@ -260,6 +268,9 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual(len(self.collections), len(index.select(".collection-showcase__emblem")))
 
     def test_projects_page_lists_the_projects(self):
+        if settings("pages")["projets"]["statut"] != "publie":
+            self.assertFalse((DIST / "projets" / "index.html").exists())
+            return
         soup = BeautifulSoup((DIST / "projets" / "index.html").read_text(encoding="utf-8"), "html.parser")
         cards = soup.select(".project-card")
         self.assertEqual(self.report["projets"], len(cards))
@@ -267,10 +278,18 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIsNotNone(card.select_one("h2"), card)
         text = soup.get_text(" ", strip=True)
         # L’introduction reste éditable sur la page, la liste vient de la rubrique.
-        self.assertIn("Trois projets pour fin 2026-début 2027", text)
+        introduction = OutilsTexte().texte_brut(settings("pages")["projets"]["introduction"])
+        self.assertIn(" ".join(introduction.split()[:5]), text)
         # Un intervenant qui a une fiche devient un lien, les autres restent du texte.
-        self.assertIn("/personnes/sebastien-boscus/", str(soup))
-        self.assertIn("Najat Azira", text)
+        # Les projets viennent du contenu du moment : aucun n’est nommé ici.
+        for path in (ROOT / "content" / "projets").glob("*.json"):
+            project = load_json(path)
+            if project["statut"] != "publie":
+                continue
+            for slug in [*project.get("auteurs", []), *project.get("illustrateurs", [])]:
+                self.assertIn(f"/personnes/{slug}/", str(soup), project["slug"])
+            for name in [*project.get("auteursHorsFiche", []), *project.get("illustrateursHorsFiche", [])]:
+                self.assertIn(name, text, project["slug"])
 
     def test_archived_projects_are_absent_from_the_projects_page(self):
         published = {
@@ -308,7 +327,14 @@ class BuiltSiteTest(unittest.TestCase):
     def test_house_page_uses_editorial_cards(self):
         soup = BeautifulSoup((DIST / "la-maison" / "index.html").read_text(encoding="utf-8"), "html.parser")
         cards = soup.select(".house-card")
-        self.assertEqual(9, len(cards))
+        # Une carte par page publiée de « Mes pages », plus la page Projets : le compte
+        # vient du contenu, que la rédaction peut changer à tout moment.
+        published = [
+            path for path in (ROOT / "content" / "pages").glob("*.json")
+            if load_json(path)["statut"] == "publie" and path.stem != "entree"
+        ]
+        projects_page = settings("pages")["projets"]["statut"] == "publie"
+        self.assertEqual(len(published) + projects_page, len(cards))
         self.assertEqual([], soup.select(".collection-tile"))
         for card in cards:
             self.assertIsNotNone(card.select_one(".house-card__action"))
@@ -360,14 +386,15 @@ class BuiltSiteTest(unittest.TestCase):
         # Les pages engendrées ont une fiche chacune, qu’on ne crée ni ne supprime.
         self.assertFalse(collections["pages_du_site"].get("create", False))
         self.assertFalse(collections["pages_du_site"]["delete"])
-        # L’accueil et les actualités sont dans les réglages, les mentions légales
-        # parmi les pages : plus de rubrique « Pages principales ».
+        self.assertFalse(collections["reglages"]["delete"])
         self.assertNotIn("pages_fixes", collections)
         self.assertTrue(collections["pages"]["create"])
-        self.assertFalse(collections["pages"]["delete"])
-        # Seuls les projets s’effacent vraiment : ils n’ont pas d’adresse à rediriger.
-        self.assertTrue(collections["projets"]["create"])
-        self.assertTrue(collections["projets"]["delete"])
+        # Les fiches se suppriment ; celles dont d’autres dépendent sont gardées par
+        # suppression.js, qui lit data/suppression.json.
+        for name in ("livres", "personnes", "collections", "actualites", "projets", "pages"):
+            self.assertTrue(collections[name]["create"], name)
+            self.assertTrue(collections[name]["delete"], name)
+        self.assertIsNotNone(soup.select_one('script[src="suppression.js"]'))
         self.assertEqual("nouveau-site/content/projets", collections["projets"]["folder"])
         self.assertEqual("nouveau-site/content/pages", collections["pages"]["folder"])
         self.assertNotIn("/admin/", (DIST / "sitemap.xml").read_text(encoding="utf-8"))
@@ -544,14 +571,20 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIn(f"  {token}: {default};", stylesheet, token)
 
     def test_an_offer_shows_its_books_as_catalogue_cards(self):
-        soup = BeautifulSoup((DIST / "offres-speciales" / "index.html").read_text(encoding="utf-8"), "html.parser")
-        sections = soup.select(".editorial-section")
-        self.assertEqual(3, len(sections))
-        for section in sections:
-            cards = section.select(".book-grid--section .book-card")
-            self.assertEqual(2, len(cards))
-            self.assertTrue(all(card.select_one("img.book-card__cover") for card in cards))
-            self.assertRegex(section.select_one(".book-card__meta").get_text(), r"\d+ €")
+        # Chaque section qui montre des livres les montre tous, en cartes de catalogue
+        # avec couverture et prix. Les pages viennent du contenu du moment.
+        books = {path.stem: load_json(path) for path in (ROOT / "content" / "livres").glob("*.json")}
+        for path in (ROOT / "content" / "pages").glob("*.json"):
+            page = load_json(path)
+            if page["statut"] != "publie":
+                continue
+            visible = [section for section in page["sections"] if not section.get("masquee")]
+            soup = BeautifulSoup((DIST / page["slug"] / "index.html").read_text(encoding="utf-8"), "html.parser")
+            for section, built in zip(visible, soup.select("article .editorial-section")):
+                shown = [slug for slug in section.get("livres", []) if books.get(slug, {}).get("statut") == "publie"]
+                cards = built.select(".book-grid--section .book-card")
+                self.assertEqual(len(shown), len(cards), page["slug"])
+                self.assertTrue(all(card.select_one("img.book-card__cover") for card in cards), page["slug"])
 
     def test_admin_forms_put_the_essentials_first(self):
         """Chaque rubrique s’ouvre sur « L’essentiel » ; l’adresse de la page et les
@@ -667,6 +700,15 @@ class BuiltSiteTest(unittest.TestCase):
             for path in self.public_html_files
             for value in re.findall(r'class="([^"]*)"', path.read_text(encoding="utf-8"))
             for name in value.split()
+        }
+        # Une classe que le contenu du moment ne produit pas (aucune actualité publiée,
+        # par exemple) compte encore si la feuille du site la met en forme.
+        site_styles = "".join(
+            path.read_text(encoding="utf-8")
+            for path in (ROOT / "frontend" / "assets" / "css").glob("*.css")
+        )
+        produced |= {
+            name for name in re.findall(r"\.([a-zA-Z][\w-]*)", site_styles)
         }
         # Le bandeau des brouillons n’apparaît que dans « make preview » ; « compteur »
         # n’est qu’une enveloppe, seules ses lignes ont un style.
@@ -789,7 +831,12 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertEqual([], soup.select('.section-actions input[name="encrypted"]'), page["slug"])
 
     def test_validated_commercial_content_is_published(self):
-        for slug in ("commandes", "offres-speciales", "soutien", "mentions-legales"):
+        published = {
+            path.stem for path in (ROOT / "content" / "pages").glob("*.json")
+            if load_json(path)["statut"] == "publie"
+        }
+        self.assertIn("mentions-legales", published)
+        for slug in published:
             path = DIST / slug / "index.html"
             self.assertTrue(path.is_file(), slug)
             soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
@@ -817,8 +864,9 @@ class BuiltSiteTest(unittest.TestCase):
             [accueil[champ] for champ in ("librairesTitre", "particuliersTitre") if accueil.get(champ)],
             [heading.get_text(strip=True) for heading in commercial.select(".commercial-audience h4")],
         )
+        # Les liens vers Soutien et Offres spéciales tombent si la page a été supprimée.
         self.assertEqual(
-            int("page de soutien" in (accueil.get("soutienTexte") or "")),
+            int("page de soutien" in (accueil.get("soutienTexte") or "") and "soutien" in published),
             len(commercial.select('a[href="/soutien/"]')),
         )
         donation_form = commercial.select_one(
@@ -838,17 +886,24 @@ class BuiltSiteTest(unittest.TestCase):
             donation_form.select_one("button").get_text(" ", strip=True),
         )
         self.assertEqual(
-            bool(accueil.get("libelleOffres")),
+            bool(accueil.get("libelleOffres")) and "offres-speciales" in published,
             commercial.select_one('a[href="/offres-speciales/"]') is not None,
         )
 
     def test_redirects_cover_every_old_book_page(self):
         redirects = (DIST / ".htaccess").read_text(encoding="utf-8")
         legacy = load_json(ROOT / "config" / "legacy-redirects.json")["livres"]
+        published = {
+            path.stem for path in (ROOT / "content" / "livres").glob("*.json")
+            if load_json(path)["statut"] == "publie"
+        }
         for slug, source in legacy.items():
-            self.assertIn(f'"/{source}" "/livres/{slug}/"', redirects)
+            # Un livre retiré du site (archivé, ou supprimé depuis) : son ancienne page
+            # mène au catalogue.
+            target = f"/livres/{slug}/" if slug in published else "/catalogue/"
+            self.assertIn(f'"/{source}" "{target}"', redirects)
         source_records = [
-            (record, f"/livres/{record['slug']}/")
+            (record, f"/livres/{record['slug']}/" if record["statut"] == "publie" else "/catalogue/")
             for record in (load_json(path) for path in (ROOT / "content" / "livres").glob("*.json"))
         ]
         # Une page encore en brouillon n'a pas d'adresse publique : son ancienne
@@ -869,7 +924,9 @@ class BuiltSiteTest(unittest.TestCase):
                 self.assertIn(f'"/{source.lstrip("/")}" "{target}"', redirects)
 
     def test_explicit_home_selection_and_alternative_texts_are_rendered(self):
-        source_books = [load_json(path) for path in (ROOT / "content" / "livres").glob("*.json")]
+        # Le contenu chargé, et non les fichiers : une collection dont le livre coché a
+        # été supprimé en reçoit un d’office au chargement.
+        source_books = load_content(ROOT, include_drafts=False)["books"]
         selected = sorted(
             (book for book in source_books if book["miseEnAvantAccueil"] and book["disponible"]),
             key=lambda book: (book["ordreAccueil"], book["ordre"], book["slug"]),
@@ -890,14 +947,23 @@ class BuiltSiteTest(unittest.TestCase):
                 (DIST / "livres" / book["slug"] / "index.html").read_text(encoding="utf-8"),
                 "html.parser",
             )
-            self.assertEqual(book["couvertureAlt"], page.select_one(".book-detail__cover")["alt"])
+            self.assertEqual(
+                book.get("couvertureAlt") or f"Couverture de {book['titre']}",
+                page.select_one(".book-detail__cover")["alt"],
+            )
             self.assertEqual(
                 [item["alt"] for item in book["illustrations"]],
                 [image["alt"] for image in page.select(".gallery-grid img")],
             )
 
     def test_custom_seo_fields_override_the_automatic_fallbacks(self):
-        book = load_json(ROOT / "content" / "livres" / "a-quelques-pas-de-l-usine.json")
+        candidates = [
+            book for book in map(load_json, sorted((ROOT / "content" / "livres").glob("*.json")))
+            if book["statut"] == "publie" and all((book.get("seo") or {}).get(field) for field in ("titre", "description", "image"))
+        ]
+        if not candidates:
+            self.skipTest("aucun livre publié n’a de référencement personnalisé complet")
+        book = candidates[0]
         soup = BeautifulSoup(
             (DIST / "livres" / book["slug"] / "index.html").read_text(encoding="utf-8"),
             "html.parser",

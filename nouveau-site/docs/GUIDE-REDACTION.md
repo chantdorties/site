@@ -59,6 +59,23 @@ Le champ **Publication** offre trois choix :
 - **Archivé** — retiré du site sans être effacé, et ses anciennes adresses continuent de
   fonctionner en renvoyant vers la rubrique parente.
 
+### Archiver ou supprimer
+
+**Archivé** est presque toujours le bon choix : la fiche quitte le site, garde tout, et
+revient d’un clic. **Supprimer l’entrée** (bouton rouge en haut de la fiche) l’efface
+pour de bon, tout de suite, sans passer par « Publier ».
+
+- Ce qui la citait s’en passe : un livre supprimé disparaît des pages qui le montraient
+  et des « À découvrir » ; une page supprimée disparaît du menu, du pied de page et des
+  liens qui y menaient (leur texte reste). Si c’était le livre mis en avant de sa
+  collection, le site en prend un autre, disponible.
+- Son image et ses PDF restent dans **Media**, inutilisés : ils ne sont plus publiés, et
+  se suppriment depuis Media si on veut faire de la place.
+- Certaines fiches ne se suppriment pas : le bouton est grisé, et un clic dit pourquoi.
+  Une personne qui signe un livre ou un projet, une collection qui en contient, le
+  dernier livre d’une collection ou son seul livre disponible, les mentions légales. On
+  les archive, ou on retire d’abord ce qui en dépend.
+
 ## Où se règle quel texte
 
 C’est la question qui revient le plus souvent. La règle : **chaque partie du site se
@@ -377,14 +394,14 @@ Le message dit ce qui coince et sur quelle fiche. Les cas les plus fréquents :
 | *titre SEO trop long* | 60 caractères pour le titre, 160 pour la description |
 | *texte alternatif obligatoire pour l’image* | Une image posée au fil d’un texte n’a pas été décrite |
 | *média introuvable* | Une image citée dans un texte a été retirée de la médiathèque |
-| *lien introuvable* | Un lien interne écrit à la main mène à une page qui n’existe pas |
+| *personne inconnue* / *collection inconnue* | Une fiche supprimée était encore citée (la garde du bouton date de la dernière publication) : choisir une autre personne ou collection dans la fiche nommée |
 
 Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce qu’elle passe.
 
 ## Ce que l’administration ne permet pas
 
-- **Supprimer** un livre, une personne, une collection, une page ou une actualité :
-  utiliser le statut *Archivé*. Seuls les projets s’effacent vraiment.
+- **Supprimer** une fiche dont d’autres dépendent (voir « Archiver ou supprimer ») :
+  le bouton est grisé et dit pourquoi.
 - **Changer l’adresse** d’un contenu déjà publié : les liens existants et les moteurs
   de recherche pointeraient dans le vide. Une redirection s’ajoute dans le fichier de la
   fiche (voir `ADMINISTRATION.md`).

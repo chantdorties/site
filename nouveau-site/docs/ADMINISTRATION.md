@@ -128,6 +128,40 @@ La génération refuse un contenu qui casserait le site, avec un message explici
 Les champs laissés vides dans l’administration ne bloquent jamais la génération :
 ils reçoivent automatiquement une valeur vide.
 
+### Suppression
+
+Livres, personnes, collections, actualités, pages et projets ont le bouton « Supprimer
+l’entrée » (`delete: true`). Decap supprime une fiche publiée **directement sur
+`main`**, hors flux éditorial : ce qui la citait ne doit donc jamais bloquer la
+publication suivante.
+
+- **Liens d’agrément, retirés d’office** (`prune_missing_references`, `content_data.py`,
+  dans la copie chargée, jamais dans le JSON) : livres d’une section ou d’une section
+  ajoutée, « À découvrir », liens « Livre » et « Page » d’une page. Une collection
+  publiée sans livre coché « Mis en avant » en reçoit un, son premier livre disponible
+  (`choose_missing_featured_books`). Un lien interne vers une page absente — dans un
+  texte, le menu, le pied de page, les liens écrits par le générateur vers Soutien,
+  Offres spéciales, Manuscrits — est retiré (`lien_interne_absent`, `texte.py` ;
+  `known_routes`, `constructeur.py`). Les anciennes pages `.html` d’une fiche supprimée
+  mènent à sa rubrique parente (`technique.py`).
+- **Liens de structure, gardés dans l’administration** : `deletion_guard` (`sortie.py`)
+  écrit `data/suppression.json` — personnes citées par un livre ou un projet, collections
+  qui en contiennent, dernier livre ou seul livre disponible d’une collection publiée,
+  mentions légales — et `frontend/admin/suppression.js` grise le bouton et arrête le
+  clic avant la confirmation de Decap, en affichant la raison. Le fichier date de la
+  dernière publication : un lien plus récent échappe à la garde, et la validation le
+  refuse alors (« personne inconnue »…).
+- **Médias** : un fichier que plus rien ne cite n’est ni publié ni bloquant ; le rapport
+  le liste (`mediasInutilises`). Rien n’est effacé d’office : une image déposée dans
+  Media avant d’être utilisée passerait pour orpheline.
+- Le rapport (`reports/site-build.json`) liste aussi `referencesRetirees` et
+  `liensRetires`.
+
+Les tests (`make test`) tournent sur le contenu réel, aussi à chaque publication : ils ne
+nomment **jamais** une fiche de la rédaction, qu’elle peut modifier ou supprimer. Ils en
+choisissent une qui convient (`exemple()` dans `test_content_data.py`) ou calculent
+l’attendu depuis le contenu du moment.
+
 Dans « Pages principales », le jeton `{nombre}` est remplacé
 au moment de la génération par le nombre réel de contenus. Écrire
 « {nombre} ouvrages » plutôt que « 64 ouvrages » évite un compte faux après chaque

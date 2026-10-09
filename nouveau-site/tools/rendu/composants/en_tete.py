@@ -23,7 +23,11 @@ class EnTete:
     def render_nav(self, active: str, *, mobile: bool = False) -> str:
         links = []
         # L’ordre d’affichage est celui de la liste, réglé par glisser-déposer.
-        navigation = [item for item in self.navigation_settings["liens"] if item["visible"]]
+        # Un lien vers une page supprimée ou archivée disparaît du menu.
+        navigation = [
+            item for item in self.navigation_settings["liens"]
+            if item["visible"] and not self.lien_menu_retire(item["url"], "menu principal")
+        ]
         for item in navigation:
             current = ' aria-current="page"' if item["id"] == active else ""
             links.append(
@@ -43,6 +47,14 @@ class EnTete:
             )
         )
         return "".join(links) + search + self.render_nav_cart(mobile=mobile)
+
+    def lien_menu_retire(self, url: str, owner: str) -> bool:
+        """Vrai, et signalé une fois au rapport, si le lien vise une page disparue."""
+        if not self.lien_interne_absent(url):
+            return False
+        if (owner, url) not in self.liens_retires:
+            self.signaler_lien_retire(url, owner)
+        return True
 
     def render_nav_cart(self, *, mobile: bool) -> str:
         """Le bouton panier du menu, sur le modèle de la loupe.

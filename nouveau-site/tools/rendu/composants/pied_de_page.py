@@ -31,6 +31,12 @@ class PiedDePage:
             f'<li><a href="{e(item["url"])}">{e(item["libelle"])}</a></li>'
             # L’ordre d’affichage est celui de la liste, réglé par glisser-déposer.
             for item in self.footer_settings["liensNavigation"]
+            if not self.lien_menu_retire(item["url"], "pied de page")
+        )
+        # La page Manuscrits est une page de « Mes pages » : supprimée, son lien part.
+        manuscripts_link = (
+            f'<li><a href="/manuscrits/">{e(self.footer_settings["libelleManuscrits"])}</a></li>'
+            if not self.lien_menu_retire("/manuscrits/", "pied de page") else ""
         )
         email = self.site_settings["courriel"]
         facebook = self.site_settings["facebook"]
@@ -56,7 +62,7 @@ class PiedDePage:
         <ul class="footer-links">
           <li><a href="mailto:{e(email)}">{e(email)}</a></li>
           <li><a href="{e(facebook)}" target="_blank" rel="noopener noreferrer">{e(self.footer_settings['libelleFacebook'])} {icon("external")}</a></li>
-          <li><a href="/manuscrits/">{e(self.footer_settings['libelleManuscrits'])}</a></li>
+          {manuscripts_link}
           <li><a href="/plan-du-site/">{e(self.footer_settings['libellePlan'])}</a></li>
           {legal_link}
         </ul>

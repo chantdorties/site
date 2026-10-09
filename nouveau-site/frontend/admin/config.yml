@@ -694,7 +694,7 @@ collections:
             name: statut
             widget: select
             default: publie
-            hint: « Brouillon » n’apparaît que dans l’aperçu, « Archivé » disparaît du site sans être effacé.
+            hint: "« Brouillon » n’apparaît que dans l’aperçu. « Archivé » disparaît du site sans être effacé et peut revenir d’un clic : à préférer à la suppression, qui efface pour de bon."
             options:
               - {label: "Publié", value: publie}
               - {label: "Brouillon", value: brouillon}
@@ -740,7 +740,7 @@ collections:
     extension: json
     format: json
     create: true
-    delete: false
+    delete: true
     identifier_field: titre
     slug: "{{fields.slug}}"
     # L’étoile signale dans la liste les livres en couverture de l’accueil ; le filtre
@@ -990,7 +990,7 @@ collections:
     extension: json
     format: json
     create: true
-    delete: false
+    delete: true
     identifier_field: nom
     slug: "{{fields.slug}}"
     summary: "{{nom}} — {{statut}}"
@@ -1085,7 +1085,7 @@ collections:
     extension: json
     format: json
     create: true
-    delete: false
+    delete: true
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{titre}} — {{statut}}"
@@ -1145,7 +1145,7 @@ collections:
     extension: json
     format: json
     create: true
-    delete: false
+    delete: true
     identifier_field: titre
     slug: "{{fields.slug}}"
     summary: "{{datePublication | date('DD/MM/YYYY')}} — {{titre}} — {{statut}}"
@@ -1241,8 +1241,7 @@ collections:
     description: >-
       Les livres à paraître. Ils s’affichent sur la page Projets, sous son introduction,
       laquelle s’écrit dans « Pages principales › Projets ».
-      C’est la seule rubrique où la suppression est possible : le jour de la parution,
-      supprimer le projet et créer le livre.
+      Le jour de la parution, créer le livre puis supprimer le projet.
     folder: nouveau-site/content/projets
     extension: json
     format: json
@@ -1338,7 +1337,7 @@ collections:
     extension: json
     format: json
     create: true
-    delete: false
+    delete: true
     identifier_field: titre
     # Le nom du fichier, donc l’adresse, est tiré du titre à la création
     # (« Atelier dessin » → /atelier-dessin/) et ne change plus ensuite.

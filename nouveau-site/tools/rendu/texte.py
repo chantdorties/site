@@ -512,6 +512,11 @@ class OutilsTexte:
             # le signale pour qu'on puisse le corriger.
             self.signaler_lien_refuse(href, owner)
             return match.group(0)
+        if self.lien_interne_absent(href):
+            # La page visée n’existe plus (supprimée ou archivée) : le texte reste, sans
+            # lien, et la génération le signale.
+            self.signaler_lien_retire(href, owner)
+            return libelle
         attributs = f' title="{titre}"' if titre else ""
         if href.startswith("http"):
             attributs += ' target="_blank" rel="noopener noreferrer"'
@@ -537,6 +542,25 @@ class OutilsTexte:
             return match.group(0)
         lien = f'<a href="{adresse}" target="_blank" rel="noopener noreferrer">{adresse}</a>'
         return jeton(lien) + fin
+
+    def lien_interne_absent(self, href: str) -> bool:
+        """Vrai si `href` vise une page du site que cette génération ne produit pas.
+
+        Seules les adresses de page (« /amis/ ») sont vérifiées ; les fichiers et les
+        anciennes adresses en .html, que le .htaccess redirige, passent tels quels.
+        Hors génération (tests du convertisseur seul), aucune page n’est connue : rien
+        n’est retiré.
+        """
+        routes = getattr(self, "known_routes", None)
+        if routes is None or not href.startswith("/") or href.startswith("//"):
+            return False
+        path = re.split(r"[?#]", href, maxsplit=1)[0]
+        return path.endswith("/") and path not in routes
+
+    def signaler_lien_retire(self, href: str, owner: str) -> None:
+        liens = getattr(self, "liens_retires", None)
+        if liens is not None:
+            liens.append((owner, href))
 
     def signaler_lien_refuse(self, href: str, owner: str) -> None:
         """Consigne un lien dont le schéma n'est pas autorisé.

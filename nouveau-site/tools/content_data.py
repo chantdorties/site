@@ -322,6 +322,137 @@ def _seo_markdown(record: dict[str, Any], proprietaire: str) -> Iterator[tuple[s
         yield f"{proprietaire} (description SEO)", valeur
 
 
+def referenced_media_paths(raw: dict[str, Any]) -> set[str]:
+    """Les fichiers de content/media/ que cite une fiche, quel que soit son statut.
+
+    Les autres sont inutilisés : une fiche supprimée laisse son image et ses PDF. Ils
+    ne sont jamais publiés et ne bloquent rien ; le rapport de génération les liste
+    (« mediasInutilises ») pour qui voudrait faire le ménage dans la médiathèque.
+    """
+    paths: set[str] = set()
+    for book in raw["books"]:
+        paths.update(filter(None, [book.get("couverture"), *map(media_path, book.get("illustrations", [])), *book.get("extraits", [])]))
+    for person in raw["people"]:
+        paths.update(filter(None, [person.get("imagePrincipale"), *map(media_path, person.get("images", []))]))
+    for page in raw["pages"]:
+        paths.update(filter(None, [*map(media_path, page.get("images", [])), *page.get("documents", [])]))
+        paths.update(
+            link.get("href")
+            for link in page.get("liens", [])
+            if link.get("type") == "document" and link.get("href")
+        )
+    for item in raw["news"]:
+        paths.update(filter(None, [item.get("image"), item.get("document")]))
+    for collection in raw["collections"]:
+        paths.update(filter(None, [collection.get("logo")]))
+    for kind in ("books", "people", "collections", "pages", "news"):
+        paths.update(
+            (item.get("seo") or {}).get("image")
+            for item in raw[kind]
+            if (item.get("seo") or {}).get("image")
+        )
+    for record in (raw["settings"].get("accueil"), *raw["settings"].get("pages", {}).values()):
+        image = ((record or {}).get("seo") or {}).get("image")
+        if image:
+            paths.add(image)
+    # Les images déposées au fil d'un texte ne figurent dans aucun champ.
+    paths.update(inline_media_paths(raw))
+    return paths
+
+
+def prune_missing_references(raw: dict[str, Any]) -> list[str]:
+    """Retire les renvois vers une fiche supprimée, là où la fiche qui renvoie s’en passe.
+
+    Decap supprime une fiche publiée directement sur la branche publiée : si une autre
+    la citait encore, refuser bloquerait toute publication jusqu’à réparation. Les
+    liens « d’agrément » sont donc retirés de la copie chargée (jamais du JSON) :
+    livres d’une section, « À découvrir » d’un livre, liens « Livre » et « Page » d’une
+    page. Une cible présente mais non publiée reste refusée, comme avant. Les liens de
+    structure (la collection d’un livre, ses auteurs, les personnes d’un projet) ne se
+    retirent pas : l’administration empêche de supprimer ces fiches
+    (frontend/admin/suppression.js) et la validation les refuse toujours.
+
+    Rend la liste des renvois retirés, que le rapport de génération reprend.
+    """
+    books = {book.get("slug") for book in raw["books"]}
+    pages = {page.get("slug") for page in raw["pages"]}
+    retires: list[str] = []
+
+    def keep_books(owner: str, slugs: Any) -> Any:
+        if not isinstance(slugs, list):
+            return slugs
+        for slug in slugs:
+            if isinstance(slug, str) and slug not in books:
+                retires.append(f"{owner}: livre supprimé « {slug} » retiré")
+        return [slug for slug in slugs if not (isinstance(slug, str) and slug not in books)]
+
+    for page in raw["pages"]:
+        owner = f"Page {page.get('slug')}"
+        for section in page.get("sections") or []:
+            if isinstance(section, dict) and "livres" in section:
+                section["livres"] = keep_books(owner, section["livres"])
+        links = page.get("liens")
+        if isinstance(links, list):
+            kept = []
+            for link in links:
+                target = None
+                if isinstance(link, dict) and link.get("type") == "livre" and link.get("slug") not in books:
+                    target = f"livre supprimé « {link.get('slug')} »"
+                elif isinstance(link, dict) and link.get("type") == "page" and (link.get("pageCible") or link.get("slug")) not in pages:
+                    target = f"page supprimée « {link.get('pageCible') or link.get('slug')} »"
+                if target:
+                    retires.append(f"{owner}: lien vers une {target} retiré")
+                else:
+                    kept.append(link)
+            page["liens"] = kept
+    for name, record in main_pages(raw["settings"]):
+        for section in record.get("sectionsLibres") or [] if isinstance(record.get("sectionsLibres"), list) else []:
+            if isinstance(section, dict) and "livres" in section:
+                section["livres"] = keep_books(f"Page principale {name}", section["livres"])
+    for book in raw["books"]:
+        if "aDecouvrir" in book:
+            book["aDecouvrir"] = keep_books(f"Livre {book.get('slug')} (À découvrir)", book["aDecouvrir"])
+    return retires
+
+
+def choose_missing_featured_books(raw: dict[str, Any]) -> list[str]:
+    """Une collection publiée dont aucun livre n’est coché « Mis en avant sur l’accueil »
+    (le livre coché a été supprimé) prend son premier livre publié et disponible.
+
+    Deux livres cochés restent une erreur : c’est un choix à trancher par la rédaction.
+    Le choix est fait dans la copie chargée seulement, et noté dans le rapport.
+    """
+    choisis = []
+    taken = {
+        book.get("ordreAccueil")
+        for book in raw["books"]
+        if book.get("miseEnAvantAccueil") and book.get("statut") != "archive"
+    }
+    for collection in raw["collections"]:
+        if collection.get("statut") != "publie":
+            continue
+        candidates = sorted(
+            (
+                book for book in raw["books"]
+                if book.get("collection") == collection.get("slug")
+                and book.get("statut") == "publie" and book.get("disponible")
+            ),
+            key=lambda book: (book.get("ordre") if isinstance(book.get("ordre"), int) else 0, str(book.get("slug"))),
+        )
+        if not candidates or any(book.get("miseEnAvantAccueil") for book in candidates):
+            continue
+        chosen = candidates[0]
+        chosen["miseEnAvantAccueil"] = True
+        # Un rang libre à la suite des autres, pour ne pas en partager un.
+        rank = max((value for value in taken if isinstance(value, int)), default=0) + 1
+        chosen["ordreAccueil"] = rank
+        taken.add(rank)
+        choisis.append(
+            f"Collection {collection.get('slug')}: aucun livre mis en avant, « {chosen.get('slug')} » choisi"
+        )
+    return choisis
+
+
 def inline_media_paths(raw: dict[str, Any]) -> set[str]:
     """Les chemins des images citées au fil des textes."""
     return {
@@ -1113,6 +1244,7 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         )
     raw["pages"].append(projects_page(raw["settings"]["pages"].get("projets") or {}))
     apply_optional_defaults(raw)
+    raw["referencesRetirees"] = prune_missing_references(raw) + choose_missing_featured_books(raw)
     # L’ancien dossier des pages « principales » : l’accueil et les actualités sont
     # passés dans les réglages, les mentions légales dans content/pages/.
     if any((content_dir / "pages-fixes").glob("*.json")):
