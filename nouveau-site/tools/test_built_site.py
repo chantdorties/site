@@ -103,6 +103,10 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIsNotNone(soup.select_one("a.skip-link"), path)
             self.assertEqual(1, len(soup.select("main#contenu")), path)
 
+            creator_link = soup.select_one('footer.site-footer a[href="https://varascundo.com/"]')
+            self.assertIsNotNone(creator_link, path)
+            self.assertIn("Facundo Varas", creator_link.get_text(), path)
+
     def test_every_public_html_page_has_cookie_banner(self):
         for path in self.public_html_files:
             soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
