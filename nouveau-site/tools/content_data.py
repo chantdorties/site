@@ -46,6 +46,12 @@ HOME_MARKDOWN_FIELDS = (
     "collectionsTexte",
 )
 SECTION_TYPES = {"texte", "livres", "offre"}
+# Les sections ajoutées aux pages principales (« Sections ajoutées ») : les mêmes sortes
+# que dans Mes pages, plus leur place sur la page. L’accueil en a quatre, entre ses
+# blocs ; les autres pages deux, autour de leur liste (livres, auteurs, actualités…).
+# Le premier emplacement de chaque liste est celui d’une section qui n’en dit rien.
+HOME_FREE_PLACEMENTS = ("apres-information", "apres-bandeau", "apres-collections", "bas")
+PAGE_FREE_PLACEMENTS = ("avant-liste", "apres-liste")
 # Les blocs qui se masquent d’une case « Masquer ce bloc », décochée par défaut : un
 # fichier sans la clé affiche le bloc, comme avant. Le sens « masquer » plutôt
 # qu’« afficher » est voulu : Decap montre décochée une case absente d’une fiche
@@ -273,6 +279,12 @@ def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
             valeur = libelles.get(champ)
             if isinstance(valeur, str):
                 yield f"Réglages pages.{rubrique}.{champ}", valeur
+    for nom, record in main_pages(settings):
+        sections = record.get("sectionsLibres")
+        for rang, section in enumerate(sections if isinstance(sections, list) else [], start=1):
+            valeur = section.get("contenu") if isinstance(section, dict) else None
+            if isinstance(valeur, str):
+                yield f"Page principale {nom} (section ajoutée {rang})", valeur
 
     for kind, etiquette, champs in (
         ("books", "Livre", ("description",)),
@@ -295,6 +307,13 @@ def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
             if isinstance(valeur, str):
                 yield f"{proprietaire} (section {rang})", valeur
         yield from _seo_markdown(page, proprietaire)
+
+
+def main_pages(settings: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """(nom, fiche) de chaque page principale, l’accueil en tête : celles qui peuvent
+    recevoir des sections ajoutées."""
+    records = [("accueil", settings.get("accueil")), *(settings.get("pages") or {}).items()]
+    return [(name, record) for name, record in records if isinstance(record, dict)]
 
 
 def _seo_markdown(record: dict[str, Any], proprietaire: str) -> Iterator[tuple[str, str]]:
@@ -654,12 +673,23 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
                 record.setdefault(field, deepcopy(empty))
     # Les boutons PayPal se rattachent à une section de page, pas à sa racine :
     # la table ci-dessus, plate par nature, ne peut pas les atteindre.
+    def section_defaults(section: Any) -> None:
+        if isinstance(section, dict):
+            section.setdefault("boutonsPaypal", [])
+            section.setdefault("livres", [])
+            section.setdefault("masquee", False)
+
     for page in raw["pages"]:
         for section in page.get("sections") or []:
+            section_defaults(section)
+    # Les sections ajoutées aux pages principales : aucune par défaut.
+    for name, record in main_pages(raw["settings"]):
+        record.setdefault("sectionsLibres", [])
+        placements = HOME_FREE_PLACEMENTS if name == "accueil" else PAGE_FREE_PLACEMENTS
+        for section in record["sectionsLibres"] if isinstance(record["sectionsLibres"], list) else []:
+            section_defaults(section)
             if isinstance(section, dict):
-                section.setdefault("boutonsPaypal", [])
-                section.setdefault("livres", [])
-                section.setdefault("masquee", False)
+                section.setdefault("emplacement", placements[0])
     # Les cases « Masquer ce bloc » : absentes, le bloc s’affiche.
     settings = raw["settings"]
     for record, switches in (
@@ -706,6 +736,70 @@ def navigation_id(url: str) -> str:
     """L’identifiant déduit d’une adresse de menu : son premier segment, ou « home »."""
     segment = url.split("#", 1)[0].split("?", 1)[0].strip("/").split("/", 1)[0]
     return re.sub(r"[^a-z0-9]+", "-", segment.lower()).strip("-") or "home"
+
+
+def validate_section(
+    section: Any, owner: str, books_by_slug: dict[str, dict[str, Any]], *, published: bool
+) -> None:
+    """Une section de Mes pages ou une section ajoutée à une page principale : les
+    mêmes règles partout, puisque l’administration propose les mêmes sortes."""
+    if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
+        raise ContentError(f"{owner}: contenu de section obligatoire")
+    # Le type choisi dans « Ajouter section » : un texte seul, un texte et des
+    # livres du catalogue, ou une offre avec ses boutons d’achat.
+    section_type = section.get("type")
+    if section_type not in SECTION_TYPES:
+        raise ContentError(
+            f"{owner}: type de section attendu parmi {sorted(SECTION_TYPES)}"
+        )
+    if section_type == "texte" and (section["livres"] or section["boutonsPaypal"]):
+        raise ContentError(f"{owner}: une section « texte » ne porte ni livre ni bouton")
+    if section_type == "livres" and section["boutonsPaypal"]:
+        raise ContentError(f"{owner}: une section « livres » ne porte pas de bouton d’achat")
+    # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
+    # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
+    section_books = section.get("livres", [])
+    if not isinstance(section_books, list):
+        raise ContentError(f"{owner}: livres de section invalides")
+    for book_slug in section_books:
+        target = books_by_slug.get(book_slug) if isinstance(book_slug, str) else None
+        if not target or (published and target["statut"] != "publie"):
+            raise ContentError(f"{owner}: livre de section indisponible ({book_slug})")
+    buttons = section.get("boutonsPaypal", [])
+    if not isinstance(buttons, list):
+        raise ContentError(f"{owner}: boutons PayPal de section invalides")
+    for button in buttons:
+        if not isinstance(button, dict):
+            raise ContentError(f"{owner}: bouton PayPal invalide")
+        if not isinstance(button.get("libelle"), str) or not button["libelle"].strip():
+            raise ContentError(f"{owner}: libellé de bouton PayPal obligatoire")
+        identifier = button.get("hostedButtonId")
+        if not isinstance(identifier, str) or not PAYPAL_BUTTON_PATTERN.fullmatch(identifier):
+            raise ContentError(
+                f"{owner}: identifiant du bouton PayPal « {button['libelle']} » invalide"
+            )
+
+
+def validate_free_sections(settings: dict[str, Any], books_by_slug: dict[str, dict[str, Any]]) -> None:
+    """Les sections ajoutées aux pages principales : une liste, chacune à une place
+    connue de sa page. Une page principale est toujours en ligne : ses livres aussi."""
+    for name, record in main_pages(settings):
+        owner = f"Page principale {name}"
+        sections = record.get("sectionsLibres")
+        if not isinstance(sections, list):
+            raise ContentError(f"{owner}: sections ajoutées invalides")
+        placements = HOME_FREE_PLACEMENTS if name == "accueil" else PAGE_FREE_PLACEMENTS
+        for section in sections:
+            if not isinstance(section, dict):
+                raise ContentError(f"{owner}: section ajoutée invalide")
+            if section.get("emplacement") not in placements:
+                raise ContentError(
+                    f"{owner}: emplacement de section inconnu « {section.get('emplacement')} » "
+                    f"(emplacements possibles : {', '.join(placements)})"
+                )
+            if not isinstance(section.get("masquee"), bool):
+                raise ContentError(f"{owner}: la case « Masquer cette section » est invalide")
+            validate_section(section, owner, books_by_slug, published=True)
 
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
@@ -852,41 +946,7 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         if all(isinstance(section, dict) and section["masquee"] for section in sections):
             raise ContentError(f"Page {page['slug']}: toutes les sections sont masquées, il en faut au moins une visible")
         for section in sections:
-            if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
-                raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")
-            # Le type choisi dans « Ajouter section » : un texte seul, un texte et des
-            # livres du catalogue, ou une offre avec ses boutons d’achat.
-            section_type = section.get("type")
-            if section_type not in SECTION_TYPES:
-                raise ContentError(
-                    f"Page {page['slug']}: type de section attendu parmi {sorted(SECTION_TYPES)}"
-                )
-            if section_type == "texte" and (section["livres"] or section["boutonsPaypal"]):
-                raise ContentError(f"Page {page['slug']}: une section « texte » ne porte ni livre ni bouton")
-            if section_type == "livres" and section["boutonsPaypal"]:
-                raise ContentError(f"Page {page['slug']}: une section « livres » ne porte pas de bouton d’achat")
-            # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
-            # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
-            section_books = section.get("livres", [])
-            if not isinstance(section_books, list):
-                raise ContentError(f"Page {page['slug']}: livres de section invalides")
-            for book_slug in section_books:
-                target = books_by_slug.get(book_slug) if isinstance(book_slug, str) else None
-                if not target or (page["statut"] == "publie" and target["statut"] != "publie"):
-                    raise ContentError(f"Page {page['slug']}: livre de section indisponible ({book_slug})")
-            buttons = section.get("boutonsPaypal", [])
-            if not isinstance(buttons, list):
-                raise ContentError(f"Page {page['slug']}: boutons PayPal de section invalides")
-            for button in buttons:
-                if not isinstance(button, dict):
-                    raise ContentError(f"Page {page['slug']}: bouton PayPal invalide")
-                if not isinstance(button.get("libelle"), str) or not button["libelle"].strip():
-                    raise ContentError(f"Page {page['slug']}: libellé de bouton PayPal obligatoire")
-                identifier = button.get("hostedButtonId")
-                if not isinstance(identifier, str) or not PAYPAL_BUTTON_PATTERN.fullmatch(identifier):
-                    raise ContentError(
-                        f"Page {page['slug']}: identifiant du bouton PayPal « {button['libelle']} » invalide"
-                    )
+            validate_section(section, f"Page {page['slug']}", books_by_slug, published=page["statut"] == "publie")
         for item in page.get("images", []):
             validate_media_item(root, item, f"Page {page['slug']}")
         for path in page.get("documents", []):
@@ -911,6 +971,8 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
                     raise ContentError(f"Page {page['slug']}: page liée indisponible")
         validate_seo(root, page, "Page")
         validate_old_slugs(page, "Page")
+
+    validate_free_sections(settings, books_by_slug)
 
     # L’accueil et les actualités ne sont pas des pages de la maison : leurs textes sont
     # dans content/pages-du-site/.

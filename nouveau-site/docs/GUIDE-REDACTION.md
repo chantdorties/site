@@ -115,6 +115,20 @@ Rien n’oblige à tout remplir ni à tout montrer :
 Dans l’aperçu, ce qui est masqué reste visible, grisé, avec la mention « Masqué sur le
 site » : on retrouve ainsi ses textes pour le réafficher.
 
+### Ajouter des sections à une page principale
+
+Chaque page principale (Accueil, Catalogue, Auteurs et illustrateurs, Collections,
+Actualités, La maison, Projets) a un groupe **Sections ajoutées**. Il propose les mêmes
+trois sortes que **Mes pages** : un texte, un texte suivi de livres du catalogue, ou une
+offre avec ses boutons d’achat PayPal (voir « Vendre depuis une page »).
+
+- **Emplacement** : sur l’accueil, après le bandeau, après le bloc d’information (choix
+  par défaut), après les collections, ou tout en bas. Sur les autres pages, au-dessus ou
+  sous la liste qui se remplit toute seule (livres, auteurs, actualités…). Plusieurs
+  sections au même endroit suivent l’ordre de la liste ; la poignée ≡ les déplace.
+- **Masquer cette section** la retire du site sans perdre ses textes.
+- Rien d’obligatoire : sans section ajoutée, la page reste telle quelle.
+
 ### Le menu et les liens du pied de page
 
 Dans **Réglages du site › Menu principal** et **› Pied de page**, chaque lien tient sur
@@ -374,7 +388,8 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
   existants et les moteurs de recherche pointeraient dans le vide.
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
   structurelles. On peut en revanche masquer des blocs de l’accueil et le bloc Facebook
-  des actualités (voir « Masquer un bloc, laisser un champ vide »).
+  des actualités (voir « Masquer un bloc, laisser un champ vide »), et ajouter des
+  sections (voir « Ajouter des sections à une page principale »).
 - **Changer la mise en page** ou les tailles ; l’ordre du menu se règle par
   glisser-déposer, couleurs et polices se limitent aux choix de
   **Réglages du site › Apparence**. Centrer, colorer ou souligner se fait par

@@ -22,7 +22,7 @@ class PageCatalogue:
     labels['titre'],
     eyebrow=labels['rubrique'],
     introduction=self.markdown_html(labels['introduction'], owner="catalogue"),
-)}
+)}{self.render_free_sections("catalogue", "avant-liste")}
 <section class="filter-panel" id="recherche" aria-label="Filtres du catalogue">
   <div class="container filter-grid">
     <div class="field"><label for="book-search">Titre, auteur ou illustrateur</label><input id="book-search" type="search" placeholder="Rechercher…" autocomplete="off"></div>
@@ -37,7 +37,7 @@ class PageCatalogue:
     <div class="book-grid" data-book-grid aria-busy="true"><p class="loading-state">Chargement des livres…</p></div>
     <noscript><p class="error-state">JavaScript est nécessaire pour filtrer le catalogue. Les livres restent accessibles depuis les pages des collections.</p></noscript>
   </div>
-</section>"""
+</section>{self.render_free_sections("catalogue", "apres-liste")}"""
         page = self.render_page(
             title=labels["titre"],
             description=labels["descriptionSeo"],

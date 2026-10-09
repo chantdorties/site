@@ -378,6 +378,103 @@ collections:
           - {label: "Carte Manuscrits — rubrique", name: manuscritsRubrique, required: false, widget: string}
           - {label: "Carte Manuscrits — titre", name: manuscritsTitre, required: false, widget: string}
           - {label: "Carte Manuscrits — lien", name: manuscritsAction, required: false, widget: string}
+          - label: "5. Sections ajoutées"
+            name: groupeSections
+            widget: groupe
+            required: false
+            hint: "Pour ajouter du contenu à l’accueil sans toucher aux blocs : un texte, des livres du catalogue ou une offre à vendre, chacun à l’emplacement choisi. Rien d’obligatoire : sans section ajoutée, l’accueil reste tel quel."
+          # Les sections ajoutées : les mêmes sortes que dans Mes pages, plus leur place sur
+          # la page. Leurs champs sont définis ici, à leur première apparition dans ce
+          # fichier, puis repris par les autres pages principales et par Mes pages. Les
+          # emplacements sont ceux de tools/content_data.py (HOME_FREE_PLACEMENTS,
+          # PAGE_FREE_PLACEMENTS).
+          - label: Sections ajoutées
+            name: sectionsLibres
+            label_singular: "section"
+            widget: list
+            required: false
+            collapsed: true
+            hint: "Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
+            types:
+              - label: Texte
+                name: texte
+                widget: object
+                summary: "{{fields.titre | default('Texte')}}"
+                fields:
+                  - &emplacement_accueil
+                    label: Emplacement
+                    name: emplacement
+                    widget: select
+                    default: apres-information
+                    hint: "Où la section s’affiche sur l’accueil. Plusieurs sections au même endroit suivent l’ordre de la liste."
+                    options:
+                      - {label: "Après le bandeau d’ouverture", value: apres-bandeau}
+                      - {label: "Après le bloc d’information", value: apres-information}
+                      - {label: "Après les collections", value: apres-collections}
+                      - {label: "Tout en bas, après « Suivre la maison »", value: bas}
+                  - &section_titre {label: "Intertitre", name: titre, widget: string, required: false}
+                  - &section_texte
+                    label: Texte
+                    name: contenu
+                    widget: markdown
+                    modes: [rich_text]
+                    # Les seuls outils utiles à la rédaction : le code et six niveaux de titre
+                    # déroutaient plus qu'ils ne servaient. Le barré, retiré un temps, est revenu pour
+                    # les anciens prix. Le texte déjà saisi n'est pas touché.
+                    buttons: &boutons_corps [bold, italic, strikethrough, link, heading-two, heading-three,
+                              bulleted-list, numbered-list, quote]
+                    # Les blocs de mise en forme (frontend/admin/blocs.js), réservés aux textes longs.
+                    editor_components: &blocs_corps [image, valeur, encadre, separateur]
+                  - &section_masquee_libre {label: "Masquer cette section", name: masquee, widget: boolean, default: false, required: false, hint: "Cochée : la section disparaît du site, ses textes sont gardés pour plus tard."}
+              - label: Texte et livres du catalogue
+                name: livres
+                widget: object
+                summary: "{{fields.titre | default('Texte et livres')}}"
+                fields:
+                  - *emplacement_accueil
+                  - *section_titre
+                  - *section_texte
+                  - &section_livres
+                    label: Livres à montrer
+                    name: livres
+                    widget: relation
+                    collection: livres
+                    multiple: true
+                    required: false
+                    search_fields: [titre]
+                    display_fields: [titre]
+                    value_field: slug
+                    hint: Ils s’affichent sous le texte, avec leur couverture, leurs auteurs et leur prix tirés de leur fiche.
+                  - *section_masquee_libre
+              - label: Offre à vendre (bouton PayPal)
+                name: offre
+                widget: object
+                summary: "{{fields.titre | default('Offre')}}"
+                fields:
+                  - *emplacement_accueil
+                  - *section_titre
+                  - *section_texte
+                  - *section_livres
+                  - &section_boutons
+                    label: Boutons d’achat PayPal
+                    name: boutonsPaypal
+                    label_singular: "bouton PayPal"
+                    widget: list
+                    required: false
+                    collapsed: true
+                    summary: "{{fields.libelle}}"
+                    hint: >-
+                      Pour vendre depuis cette page : une offre groupée, une adhésion, un don,
+                      un titre soldé. Pour vendre un livre à son prix normal, le bouton se
+                      saisit dans sa fiche, pas ici.
+                    fields:
+                      - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
+                      - label: Identifiant du bouton PayPal
+                        name: hostedButtonId
+                        widget: string
+                        hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
+                        pattern: *motif_paypal
+                  - *section_masquee_libre
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -438,6 +535,59 @@ collections:
             minimal: true
             buttons: *boutons_courts
             editor_components: []
+          - &groupe_sections_page
+            label: "Sections ajoutées"
+            name: groupeSections
+            widget: groupe
+            required: false
+            hint: "Pour ajouter du contenu à la page : un texte, des livres du catalogue ou une offre à vendre, au-dessus ou au-dessous de la liste. Rien d’obligatoire."
+          - &sections_libres_page
+            label: Sections ajoutées
+            name: sectionsLibres
+            label_singular: "section"
+            widget: list
+            required: false
+            collapsed: true
+            hint: "Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
+            types:
+              - label: Texte
+                name: texte
+                widget: object
+                summary: "{{fields.titre | default('Texte')}}"
+                fields:
+                  - &emplacement_page
+                    label: Emplacement
+                    name: emplacement
+                    widget: select
+                    default: avant-liste
+                    hint: "Au-dessus ou au-dessous de ce qui se remplit tout seul : les livres, les auteurs, les collections, les actualités, les pages ou les projets, selon la page."
+                    options:
+                      - {label: "Au-dessus de la liste", value: avant-liste}
+                      - {label: "Sous la liste", value: apres-liste}
+                  - *section_titre
+                  - *section_texte
+                  - *section_masquee_libre
+              - label: Texte et livres du catalogue
+                name: livres
+                widget: object
+                summary: "{{fields.titre | default('Texte et livres')}}"
+                fields:
+                  - *emplacement_page
+                  - *section_titre
+                  - *section_texte
+                  - *section_livres
+                  - *section_masquee_libre
+              - label: Offre à vendre (bouton PayPal)
+                name: offre
+                widget: object
+                summary: "{{fields.titre | default('Offre')}}"
+                fields:
+                  - *emplacement_page
+                  - *section_titre
+                  - *section_texte
+                  - *section_livres
+                  - *section_boutons
+                  - *section_masquee_libre
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -500,6 +650,8 @@ collections:
             buttons: *boutons_courts
             editor_components: []
           - {label: "Bouton Facebook", name: boutonFacebook, required: false, widget: string}
+          - *groupe_sections_page
+          - *sections_libres_page
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -566,6 +718,8 @@ collections:
             minimal: true
             buttons: *boutons_courts
             editor_components: []
+          - *groupe_sections_page
+          - *sections_libres_page
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -1059,13 +1213,8 @@ collections:
         name: contenu
         widget: markdown
         modes: [rich_text]
-        # Les seuls outils utiles à la rédaction : le code et six niveaux de titre
-        # déroutaient plus qu'ils ne servaient. Le barré, retiré un temps, est revenu pour
-        # les anciens prix. Le texte déjà saisi n'est pas touché.
-        buttons: &boutons_corps [bold, italic, strikethrough, link, heading-two, heading-three,
-                  bulleted-list, numbered-list, quote]
-        # Les blocs de mise en forme (frontend/admin/blocs.js), réservés aux textes longs.
-        editor_components: &blocs_corps [image, valeur, encadre, separateur]
+        buttons: *boutons_corps
+        editor_components: *blocs_corps
         hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
       - label: Lien externe
         name: lienExterne
@@ -1229,20 +1378,16 @@ collections:
         collapsed: false
         default: [{type: texte, titre: "", contenu: ""}]
         hint: "Le corps de la page. Une section par idée. Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. La première sert aussi de résumé sur la page « La maison »."
+        # Les champs des sections sont définis avec ceux des sections ajoutées de l’accueil,
+        # leur première apparition dans ce fichier.
         types:
           - label: Texte
             name: texte
             widget: object
             summary: "{{fields.titre | default('Texte')}}"
             fields:
-              - &section_titre {label: "Intertitre", name: titre, widget: string, required: false}
-              - &section_texte
-                label: Texte
-                name: contenu
-                widget: markdown
-                modes: [rich_text]
-                buttons: *boutons_corps
-                editor_components: *blocs_corps
+              - *section_titre
+              - *section_texte
               # Masquer plutôt que supprimer : une offre épuisée, un texte de saison.
               - &section_masquee
                 label: Masquer cette section
@@ -1258,17 +1403,7 @@ collections:
             fields:
               - *section_titre
               - *section_texte
-              - &section_livres
-                label: Livres à montrer
-                name: livres
-                widget: relation
-                collection: livres
-                multiple: true
-                required: false
-                search_fields: [titre]
-                display_fields: [titre]
-                value_field: slug
-                hint: Ils s’affichent sous le texte, avec leur couverture, leurs auteurs et leur prix tirés de leur fiche.
+              - *section_livres
               - *section_masquee
           - label: Offre à vendre (bouton PayPal)
             name: offre
@@ -1278,24 +1413,7 @@ collections:
               - *section_titre
               - *section_texte
               - *section_livres
-              - label: Boutons d’achat PayPal
-                name: boutonsPaypal
-                label_singular: "bouton PayPal"
-                widget: list
-                required: false
-                collapsed: true
-                summary: "{{fields.libelle}}"
-                hint: >-
-                  Pour vendre depuis cette page : une offre groupée, une adhésion, un don,
-                  un titre soldé. Pour vendre un livre à son prix normal, le bouton se
-                  saisit dans sa fiche, pas ici.
-                fields:
-                  - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
-                  - label: Identifiant du bouton PayPal
-                    name: hostedButtonId
-                    widget: string
-                    hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
-                    pattern: *motif_paypal
+              - *section_boutons
               - *section_masquee
       - label: "Pour aller plus loin"
         name: groupe2

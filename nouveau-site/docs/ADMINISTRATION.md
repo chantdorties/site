@@ -223,6 +223,22 @@ moins une section visible ; `visible_sections()` (`editoriales.py`) sert au rend
 résumé sur « La maison » et à la description. L’aperçu grise ce qui est masqué
 (`.apercu-masque`, `preview.css`).
 
+Sections ajoutées. Chaque fiche de `content/pages-du-site/` porte une liste facultative
+`sectionsLibres` : les trois sortes de section de Mes pages, plus un `emplacement`. Les
+champs des sections (`&section_titre`, `&section_texte`, `&section_livres`,
+`&section_boutons`, avec `&boutons_corps` et `&blocs_corps`) sont définis dans la fiche
+Accueil, leur première apparition dans `config.yml`, puis repris par les autres pages
+principales (`&sections_libres_page`) et par Mes pages. Les emplacements sont
+`HOME_FREE_PLACEMENTS` (accueil : `apres-information` par défaut, `apres-bandeau`,
+`apres-collections`, `bas`) et `PAGE_FREE_PLACEMENTS` (`avant-liste` par défaut,
+`apres-liste`), dans `content_data.py` ; un emplacement inconnu est refusé. Les règles
+d’une section sont écrites une fois (`validate_section`), et `iter_markdown_texts` lit
+ces textes : leurs images et leurs blocs `:::` sont vérifiés comme les autres. Le rendu
+passe par `render_sections` / `render_free_sections` (`editoriales.py`), dans une bande
+à largeur de lecture (`.free-sections`, `35-pages-de-texte.css`) ; sur la page Projets,
+les sections « au-dessus » suivent l’introduction. L’aperçu les montre à leur place
+(`sectionsAjoutees`, `preview.js`).
+
 Les aperçus (`preview.js`) recopient le HTML du site pour en reprendre la feuille de
 style ; un test vérifie que chacune de leurs classes existe encore dans les pages
 produites. Côté générateur, le titre des pages intérieures et le formulaire PayPal
