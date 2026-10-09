@@ -401,7 +401,7 @@ noscript {
 
 /* Le groupe dépliant « Pages » du menu de gauche (menu-pages.js). Decap ne déplace pas
    ses éléments : l’ordre se règle ici. Les Réglages d’abord, puis le titre du groupe,
-   « Mes pages », « Pages automatiques », et les autres rubriques ensuite. */
+   « Mes pages », « Pages principales », et les autres rubriques ensuite. */
 #nc-root ul.menu-avec-groupe {
   display: flex;
   flex-direction: column;

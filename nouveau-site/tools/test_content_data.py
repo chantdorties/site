@@ -366,7 +366,7 @@ class ContentDataTest(unittest.TestCase):
             ("pages-fixes/accueil.json", former_page("accueil"), "pages-du-site/"),
             ("pages-fixes/actualites.json", former_page("actualites"), "pages-du-site/"),
             ("pages/accueil.json", former_page("accueil"), "pages-du-site/accueil.json"),
-            # Les textes des pages ont quitté les réglages pour « Pages automatiques ».
+            # Les textes des pages ont quitté les réglages pour « Pages principales ».
             ("reglages/accueil.json", lambda _: {}, "reglages/accueil.json n’est plus lu"),
             ("reglages/pages.json", lambda _: {}, "reglages/pages.json n’est plus lu"),
             ("reglages/paiement.json", lambda data: {**data, "libelleDon": "Faire un don"}, "libelleDon se règle désormais"),

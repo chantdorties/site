@@ -37,7 +37,7 @@ L’administration permet de modifier :
 - la page d’accueil et les autres pages engendrées, une fiche chacune dans « Pages du
   site », et les pages écrites à la main dans « Mes pages » ;
 - l’ordre des collections, livres, personnes et pages ;
-- les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Pages automatiques > Accueil » fixe
+- les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Pages principales > Accueil » fixe
   combien de couvertures s’affichent) et les suggestions « À découvrir aussi » ;
 - l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
@@ -46,17 +46,17 @@ L’administration permet de modifier :
   parcours d’achat — « Ajouter au panier », « Voir mon panier », « Actuellement
   indisponible », « Nous contacter », « Lire l’extrait », réunis dans « Réglages du
   site > Paiement et dons ». Les boutons « Faire un don » et « Voir les offres »,
-  affichés sur l’accueil seulement, se libellent dans « Pages automatiques > Accueil » ;
+  affichés sur l’accueil seulement, se libellent dans « Pages principales > Accueil » ;
 - les boutons d’achat propres à une page — offre groupée, adhésion, don, titre soldé —
   saisis section par section dans la page concernée. Un livre vendu à son prix normal
   garde le sien dans sa fiche. Le bouton « voir mon panier », lui, est posé
   automatiquement dans le menu de chaque page : seul son libellé se règle.
 
 Chaque partie du site se règle à un seul endroit. L’accueil se règle entièrement
-dans « Pages automatiques > Accueil » (`content/pages-du-site/accueil.json`), son
+dans « Pages principales > Accueil » (`content/pages-du-site/accueil.json`), son
 référencement et ses anciennes adresses compris. Les pages engendrées — catalogue,
 auteurs, collections, actualités, maison et projets — ont chacune leur fiche dans
-« Pages automatiques » (`content/pages-du-site/<page>.json`) ; pour les actualités et les
+« Pages principales » (`content/pages-du-site/<page>.json`) ; pour les actualités et les
 projets, référencement et anciennes adresses y sont aussi. `load_settings` les
 présente au générateur sous `settings["accueil"]` et `settings["pages"][<page>]`, et
 refuse les anciens `content/reglages/accueil.json` et `pages.json`. La page
@@ -93,7 +93,7 @@ adresses » afin que le générateur crée la redirection.
 
 La rubrique **Projets** tient les livres à paraître. Ils n’ont pas de page à eux :
 ils s’affichent sur la page Projets, sous son introduction, du plus petit rang au
-plus grand. L’introduction, elle, s’écrit dans « Pages automatiques > Projets ».
+plus grand. L’introduction, elle, s’écrit dans « Pages principales > Projets ».
 
 Un auteur ou un illustrateur qui possède déjà une fiche se choisit dans « Auteurs »
 ou « Illustrateurs », et son nom devient un lien vers elle. Celui qui n’en a pas
@@ -125,7 +125,7 @@ La génération refuse un contenu qui casserait le site, avec un message explici
 Les champs laissés vides dans l’administration ne bloquent jamais la génération :
 ils reçoivent automatiquement une valeur vide.
 
-Dans « Pages automatiques », le jeton `{nombre}` est remplacé
+Dans « Pages principales », le jeton `{nombre}` est remplacé
 au moment de la génération par le nombre réel de contenus. Écrire
 « {nombre} ouvrages » plutôt que « 64 ouvrages » évite un compte faux après chaque
 ajout.

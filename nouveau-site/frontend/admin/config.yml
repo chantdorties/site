@@ -53,7 +53,7 @@ collections:
           - label: Description pour les moteurs de recherche
             name: description
             widget: markdown
-            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Pages automatiques › Accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
+            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Pages principales › Accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
             modes: [rich_text]
             minimal: true
             # Deux barres d’outils, et une règle : un texte court (accroche, introduction,
@@ -229,18 +229,20 @@ collections:
               - {label: "Humaniste sans empattements", value: sans-serif-humaniste}
           - {label: "Police des textes", name: policeTexte, widget: select, options: *polices, hint: "Valeur d’origine : Moderne sans empattements (Inter)."}
 
-  # Les pages qui se remplissent toutes seules, une fiche chacune : on y change ce qui
+  # L’accueil et les pages engendrées, une fiche chacune : on y change ce qui
   # s’écrit (titre, introduction, référencement), jamais la liste, qui vient des fiches.
   # Placée juste après les Réglages : les ancres YAML qu’elle définit (anciennes adresses,
   # référencement, publication, rang) servent aux rubriques suivantes. Les noms d’entrée
   # sont préfixés de « page_ » : Decap retrouve un aperçu par nom, et « collections »,
   # « actualites » ou « projets » désignent déjà des rubriques.
   - name: pages_du_site
-    label: Pages automatiques
+    label: Pages principales
     label_singular: Page
     description: >-
-      Les pages qui se remplissent toutes seules : on n’y change que le titre,
-      l’introduction et le référencement. Pour créer une page, aller dans « Mes pages ».
+      L’accueil et les pages du menu : Catalogue, Auteurs et illustrateurs,
+      Collections, Actualités, La maison, Projets. Elles existent toujours ; leurs
+      listes (livres, auteurs, articles…) viennent des fiches, on y écrit les textes.
+      Pour créer une page, aller dans « Mes pages ».
     format: json
     delete: false
     files:
@@ -978,7 +980,7 @@ collections:
     label_singular: Actualité
     description: >-
       Les articles de la page Actualités, du plus récent au plus ancien. Le titre et
-      l’introduction de la page, eux, se règlent dans « Pages automatiques › Actualités ».
+      l’introduction de la page, eux, se règlent dans « Pages principales › Actualités ».
     folder: nouveau-site/content/actualites
     extension: json
     format: json
@@ -1081,7 +1083,7 @@ collections:
     label_singular: Projet
     description: >-
       Les livres à paraître. Ils s’affichent sur la page Projets, sous son introduction,
-      laquelle s’écrit dans « Pages automatiques › Projets ».
+      laquelle s’écrit dans « Pages principales › Projets ».
       C’est la seule rubrique où la suppression est possible : le jour de la parution,
       supprimer le projet et créer le livre.
     folder: nouveau-site/content/projets
