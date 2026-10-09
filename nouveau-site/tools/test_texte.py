@@ -129,6 +129,9 @@ class BlocsTest(unittest.TestCase):
     def test_un_filet(self):
         self.assertEqual(self.t.markdown_html("---"), "<hr>")
 
+    def test_un_filet_trois_etoiles(self):
+        self.assertEqual(self.t.markdown_html("***"), '<hr class="rich-text__filet--etoiles">')
+
     def test_une_liste_interrompt_le_paragraphe(self):
         rendu = self.t.markdown_html("Voici :\n- un")
         self.assertEqual(rendu, "<p>Voici :</p><ul><li>un</li></ul>")
@@ -277,6 +280,81 @@ class LienEditorialTest(unittest.TestCase):
     def test_l_ancienne_forme_tapee_reste_acceptee(self):
         lien = {"type": "page", "slug": "accueil", "texte": "Accueil"}
         self.assertEqual(self.t.editorial_link(lien), '<a href="/">Accueil</a>')
+
+
+class BlocsDeMiseEnFormeTest(unittest.TestCase):
+    """Les blocs « ::: » posés par l'éditeur (frontend/admin/blocs.js)."""
+
+    def setUp(self):
+        self.t = Convertisseur()
+
+    def test_texte_mis_en_valeur(self):
+        self.assertEqual(
+            self.t.markdown_html("::: valeur centre\nUn **mot**.\n:::"),
+            '<div class="rich-text__valeur rich-text__valeur--centre"><p>Un <strong>mot</strong>.</p></div>',
+        )
+
+    def test_les_classes_suivent_la_liste_blanche_et_non_la_saisie(self):
+        rendu = self.t.markdown_html("::: valeur souligne liens centre\nx\n:::")
+        self.assertIn(
+            'class="rich-text__valeur rich-text__valeur--centre rich-text__valeur--liens '
+            'rich-text__valeur--souligne"',
+            rendu,
+        )
+
+    def test_une_option_inconnue_est_ignoree(self):
+        # Le chargement la refuse ; le convertisseur, lui, ne la recopie jamais.
+        rendu = self.t.markdown_html("::: valeur rouge centre\nx\n:::")
+        self.assertNotIn("rouge", rendu)
+        self.assertIn("rich-text__valeur--centre", rendu)
+
+    def test_un_bloc_inconnu_reste_du_texte(self):
+        self.assertEqual(self.t.markdown_html("::: cadre\nx\n:::"), "<p>::: cadre\nx\n:::</p>")
+
+    def test_plusieurs_paragraphes_et_un_lien_dans_un_bloc(self):
+        rendu = self.t.markdown_html("::: valeur principale\nUn.\n\nDeux [l](https://e.fr).\n:::\n\nAprès.")
+        self.assertTrue(rendu.startswith('<div class="rich-text__valeur rich-text__valeur--principale"><p>Un.</p><p>Deux <a '))
+        self.assertTrue(rendu.endswith("</div><p>Après.</p>"))
+
+    def test_l_encadre_et_son_titre(self):
+        self.assertEqual(
+            self.t.markdown_html("::: encadre principale\n### À noter\n\nSalon.\n:::"),
+            '<aside class="rich-text__encadre rich-text__encadre--principale">'
+            '<h3 class="rich-text__encadre-titre">À noter</h3><p>Salon.</p></aside>',
+        )
+
+    def test_l_encadre_sans_titre(self):
+        self.assertEqual(
+            self.t.markdown_html("::: encadre secondaire\nSalon.\n:::"),
+            '<aside class="rich-text__encadre rich-text__encadre--secondaire"><p>Salon.</p></aside>',
+        )
+
+    def test_un_bloc_vide_ne_dessine_rien(self):
+        self.assertEqual(self.t.markdown_html("::: encadre secondaire\n\n:::"), "")
+
+    def test_un_bloc_non_ferme_court_jusqu_a_la_fin(self):
+        self.assertEqual(
+            self.t.markdown_html("::: valeur centre\nx"),
+            '<div class="rich-text__valeur rich-text__valeur--centre"><p>x</p></div>',
+        )
+
+    def test_un_bloc_interrompt_le_paragraphe(self):
+        rendu = self.t.markdown_html("Avant\n::: valeur centre\nx\n:::")
+        self.assertTrue(rendu.startswith("<p>Avant</p><div"))
+
+    def test_rien_de_saisi_n_atteint_un_attribut(self):
+        rendu = self.t.markdown_html('::: valeur centre" onmouseover="x\n<script>\n:::')
+        # La ligne reste du texte : le guillemet saisi est échappé, aucun bloc n'est ouvert.
+        self.assertNotIn('onmouseover="', rendu)
+        self.assertIn("&quot;", rendu)
+        self.assertNotIn("<script>", rendu)
+        self.assertNotIn("<div", rendu)
+
+    def test_le_texte_brut_perd_les_marqueurs(self):
+        self.assertEqual(
+            self.t.texte_brut("::: valeur centre\nUn **mot**.\n:::\n\n::: encadre secondaire\n### Titre\n\nSuite\n:::"),
+            "Un mot. Titre Suite",
+        )
 
 
 if __name__ == "__main__":

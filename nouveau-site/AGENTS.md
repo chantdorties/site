@@ -33,7 +33,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
   - `constructeur.py` assemble, `pages/*.py` une page par fichier, `composants/*.py` les morceaux partagés (en-tête, titre de page `render_page_heading`, formulaire PayPal `render_paypal_form`, cartes…) ;
   - `medias.py` (images, PDF), `sortie.py` (fichiers et `data/*.json` publics lus par l’admin), `technique.py` (redirections, sitemap, `.htaccess`).
 - **Front** `frontend/` : `templates/`, `assets/css/` (fichiers numérotés par zone : `0x` base, `1x` composants, `2x`–`4x` pages, `9x` points de rupture), `assets/js/`.
-- **Admin** `frontend/admin/` : `config.yml` (Decap 3.15.1 embarqué dans `vendor/`, aucun CDN), `preview.js` (aperçus + widgets maison : `groupe` repliable, description SEO), `vignettes.js` (miniatures des listes), `menu-pages.js` (groupe « Pages » du menu), `tutoriel.js`, `admin.css`, `preview.css`. CSP stricte dans `index.html` : pas de script en ligne.
+- **Admin** `frontend/admin/` : `config.yml` (Decap 3.15.1 embarqué dans `vendor/`, aucun CDN), `preview.js` (aperçus + widgets maison : `groupe` repliable, description SEO), `blocs.js` (blocs de mise en forme de l’éditeur), `vignettes.js` (miniatures des listes), `menu-pages.js` (groupe « Pages » du menu), `tutoriel.js`, `admin.css`, `preview.css`. CSP stricte dans `index.html` : pas de script en ligne.
 - **CI** `../.github/workflows/` : `site.yml` valide (`make validate`) chaque PR et **publie sur Free à chaque push sur `main`** ; `admin.yml` publie l’admin/relais sur OVH ; `apercu.yml`, `restore.yml`.
 
 ## Fonctionnement de l’admin (choix déjà tranchés)
@@ -43,6 +43,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - Créer une page = Mes pages › + Page › titre › texte › Publier ; adresse tirée du titre, ordre automatique, sections typées (`texte`/`livres`/`offre`), liens typés.
 - Livres mis en avant : cochés dans la fiche, filtre « ★ » dans la liste ; nombre de couvertures dans Pages principales › Accueil.
 - Les aperçus sont choisis par nom de rubrique **et** d’entrée : noms d’entrée uniques (préfixe `page_` dans Pages principales).
+- Mise en forme : barré partout ; dans les textes longs (pages, actualités), blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur », écrits `::: valeur …` / `::: encadre …` / `---` `***`. Options en liste blanche (`OPTIONS_BLOCS`, `tools/rendu/texte.py`), jamais de couleur libre ni de mise en forme mot à mot.
 - La rédaction n’est pas technique : libellés et aides en mots simples, jamais de jargon (« slug », « carte », « SEO » seul…).
 
 ## Style de code
@@ -92,3 +93,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #29 · Lien « Tutoriel » dans la barre du haut de l’admin.
 - 2026-10-09 · #30 · Ce fichier `AGENTS.md` (et `CLAUDE.md` qui l’importe) : consignes lues à chaque session, journal des changements, règle de mise à jour du tutoriel. Tutoriel : chapitre Réglages corrigé (les pages n’y sont plus).
 - 2026-10-09 · #31 · Admin : titres des sections typées qui chevauchaient le nom du type ; ancien nom « Pages du site » oublié. Tutoriel : les 20 captures refaites sur `main`, 4 nouvelles (menu Pages, Pages principales, nouvelle page).
+- 2026-10-09 · #34 · Mise en forme : barré partout ; blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur » dans les pages et les actualités.

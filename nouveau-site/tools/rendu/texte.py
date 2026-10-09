@@ -21,6 +21,7 @@ depuis la source et échappent en interne, ce qui est exactement l'ordre inverse
 from __future__ import annotations
 
 import re
+from types import MappingProxyType
 from typing import Any
 
 from .icones import icon
@@ -35,11 +36,31 @@ SCHEMAS_AUTORISES = re.compile(r"^(?:https?://|mailto:|/|#)")
 NIVEAU_TITRE_MIN = 3
 
 _RE_TITRE = re.compile(r"^(#{1,6})[ \t]+(.*)$")
+_RE_TITRE_EN_TETE = re.compile(r"(#{1,6})[ \t]+([^\n]*)(?:\n|$)")
 _RE_FILET = re.compile(r"^(?:-{3,}|\*{3,}|_{3,})[ \t]*$")
 _RE_PUCE = re.compile(r"^[-*+][ \t]+(.*)$")
 _RE_NUMERO = re.compile(r"^\d{1,9}[.)][ \t]+(.*)$")
 _RE_CITATION = re.compile(r"^>[ \t]?(.*)$")
 _RE_CLOTURE = re.compile(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$")
+
+# Les blocs de mise en forme que pose l'éditeur (frontend/admin/blocs.js) :
+#
+#   ::: valeur centre principale souligne
+#   Le texte, avec sa propre mise en forme.
+#   :::
+#
+# Les mots de la ligne d'ouverture sont pris dans cette liste blanche et deviennent des
+# classes fixes : aucun mot saisi n'atteint un attribut. Les couleurs sont des rôles de
+# la palette du site, jamais des codes. content_data.py refuse au chargement une espèce
+# ou une option absente d'ici ; blocs.js doit proposer les mêmes.
+OPTIONS_BLOCS = MappingProxyType({
+    "valeur": ("centre", "principale", "secondaire", "liens", "souligne"),
+    "encadre": ("principale", "secondaire"),
+})
+# L'espèce est lue largement, pour que la validation puisse nommer une espèce inconnue ;
+# le découpage, lui, ne reconnaît que celles de la liste.
+RE_OUVERTURE_BLOC = re.compile(r"^:::[ \t]*([\w-]+)((?:[ \t]+[\w-]+)*)[ \t]*$")
+RE_FERMETURE_BLOC = re.compile(r"^:::[ \t]*$")
 
 # Motifs appliqués sur du texte DÉJÀ ÉCHAPPÉ : le guillemet d'un titre de lien y est
 # devenu « &quot; », l'esperluette « &amp; ».
@@ -87,7 +108,16 @@ def _ouvre_un_bloc(nu: str) -> bool:
         or _RE_PUCE.match(nu)
         or _RE_NUMERO.match(nu)
         or _RE_CLOTURE.match(nu)
+        or _ouverture_de_bloc(nu)
     )
+
+
+def _ouverture_de_bloc(nu: str) -> tuple[str, list[str]] | None:
+    """(espèce, options) si la ligne ouvre un bloc de mise en forme connu."""
+    ouverture = RE_OUVERTURE_BLOC.match(nu)
+    if not ouverture or ouverture.group(1) not in OPTIONS_BLOCS:
+        return None
+    return ouverture.group(1), ouverture.group(2).split()
 
 
 def _decouper_blocs(texte: str) -> list[tuple[str, Any]]:
@@ -117,8 +147,21 @@ def _decouper_blocs(texte: str) -> list[tuple[str, Any]]:
             blocs.append(("code", "\n".join(corps)))
             continue
 
+        ouverture = _ouverture_de_bloc(nu)
+        if ouverture:
+            # Sans clôture, le bloc court jusqu'à la fin du texte, comme un bloc de code.
+            i += 1
+            corps = []
+            while i < len(lignes) and not RE_FERMETURE_BLOC.match(lignes[i].lstrip(" ")):
+                corps.append(lignes[i])
+                i += 1
+            i += 1  # la clôture
+            blocs.append(("mise_en_forme", (*ouverture, "\n".join(corps))))
+            continue
+
         if _RE_FILET.match(nu):
-            blocs.append(("filet", None))
+            # Trois astérisques font le séparateur « trois étoiles » de l'éditeur.
+            blocs.append(("filet", "etoiles" if nu.startswith("*") else None))
             i += 1
             continue
 
@@ -267,6 +310,7 @@ class OutilsTexte:
         texte = _normaliser(str(value or ""))
         texte = re.sub(r"\\\n", "\n", texte)
         texte = re.sub(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$", "", texte, flags=re.MULTILINE)
+        texte = re.sub(r"^[ \t]*:::(?:[ \t]*[\w-]+)*[ \t]*$", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*>[ \t]?", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*#{1,6}[ \t]+", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$", "", texte, flags=re.MULTILINE)
@@ -307,7 +351,11 @@ class OutilsTexte:
             balise = f"h{min(niveau + niveau_min - 1, 6)}"
             return f"<{balise}>{enligne(texte)}</{balise}>"
         if espece == "filet":
-            return "<hr>"
+            return '<hr class="rich-text__filet--etoiles">' if charge == "etoiles" else "<hr>"
+        if espece == "mise_en_forme":
+            return self._bloc_mis_en_forme(
+                *charge, internal_links=internal_links, niveau_min=niveau_min, owner=owner
+            )
         if espece == "code":
             return f"<pre><code>{e(charge)}</code></pre>"
         if espece == "citation":
@@ -338,6 +386,44 @@ class OutilsTexte:
                     entrees.append(f"<li>{''.join(morceaux)}</li>")
             return f"<{balise}>{''.join(entrees)}</{balise}>" if entrees else ""
         raise ValueError(f"espèce de bloc inconnue : {espece}")
+
+    def _bloc_mis_en_forme(
+        self,
+        espece: str,
+        options: list[str],
+        corps: str,
+        *,
+        internal_links: dict[str, str] | None,
+        niveau_min: int,
+        owner: str,
+    ) -> str:
+        """Un bloc « valeur » ou « encadre », dont le contenu est un texte comme un autre.
+
+        Les classes suivent l'ordre de la liste blanche, pas celui de la saisie : deux
+        blocs aux mêmes options produisent le même HTML. Une option inconnue est
+        ignorée ici ; c'est le chargement qui la refuse, avec un message.
+        """
+        base = f"rich-text__{espece}"
+        classes = " ".join(
+            [base] + [f"{base}--{option}" for option in OPTIONS_BLOCS[espece] if option in options]
+        )
+        titre = ""
+        if espece == "encadre":
+            # Le titre facultatif de l'encadré : un intertitre « ### » en première ligne,
+            # rendu au premier niveau permis, quel que soit le nombre de dièses.
+            premier = _RE_TITRE_EN_TETE.match(corps.lstrip("\n"))
+            if premier:
+                corps = corps.lstrip("\n")[premier.end():]
+                balise = f"h{niveau_min}"
+                enligne = self._inline(premier.group(2).strip(), internal_links=internal_links, owner=owner)
+                titre = f'<{balise} class="{base}-titre">{enligne}</{balise}>'
+        interieur = self.markdown_html(
+            corps, internal_links=internal_links, niveau_min=niveau_min, owner=owner
+        )
+        if not (titre or interieur):
+            return ""  # un bloc inséré puis laissé vide ne dessine pas de cadre vide
+        balise = "aside" if espece == "encadre" else "div"
+        return f'<{balise} class="{classes}">{titre}{interieur}</{balise}>'
 
     @staticmethod
     def _lignes_du_paragraphe(charge: str, enligne) -> str:

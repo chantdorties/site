@@ -60,7 +60,7 @@ collections:
             # présentation, biographie, résumé) prend *boutons_courts, sans intertitres ;
             # un texte long découpé en parties (section d’une page, article) prend
             # *boutons_corps, défini plus bas avec le contenu des actualités.
-            buttons: &boutons_courts [bold, italic, link, bulleted-list, numbered-list, quote]
+            buttons: &boutons_courts [bold, italic, strikethrough, link, bulleted-list, numbered-list, quote]
             editor_components: []
           - {label: "Adresse courriel", name: courriel, widget: string, hint: "L’adresse de contact affichée dans le pied de page et utilisée par les boutons « Nous contacter »."}
           - {label: "Page Facebook", name: facebook, widget: string, pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
@@ -1042,11 +1042,13 @@ collections:
         name: contenu
         widget: markdown
         modes: [rich_text]
-        # Les seuls outils utiles à la rédaction : le barré, le code et six niveaux de
-        # titre déroutaient plus qu'ils ne servaient. Le texte déjà saisi n'est pas touché.
-        buttons: &boutons_corps [bold, italic, link, heading-two, heading-three,
+        # Les seuls outils utiles à la rédaction : le code et six niveaux de titre
+        # déroutaient plus qu'ils ne servaient. Le barré, retiré un temps, est revenu pour
+        # les anciens prix. Le texte déjà saisi n'est pas touché.
+        buttons: &boutons_corps [bold, italic, strikethrough, link, heading-two, heading-three,
                   bulleted-list, numbered-list, quote]
-        editor_components: [image]
+        # Les blocs de mise en forme (frontend/admin/blocs.js), réservés aux textes longs.
+        editor_components: &blocs_corps [image, valeur, encadre, separateur]
         hint: Le texte de l’article. Laisser une ligne vide entre deux paragraphes.
       - label: Lien externe
         name: lienExterne
@@ -1223,7 +1225,7 @@ collections:
                 widget: markdown
                 modes: [rich_text]
                 buttons: *boutons_corps
-                editor_components: [image]
+                editor_components: *blocs_corps
           - label: Texte et livres du catalogue
             name: livres
             widget: object
