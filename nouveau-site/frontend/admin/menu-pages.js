@@ -1,7 +1,7 @@
 // Le groupe dépliant « Pages » du menu de gauche de l’administration.
 //
 // Decap range ses rubriques en une liste plate, sans groupe. « Mes pages » et « Pages
-// automatiques » sont deux rubriques (l’une de fichiers libres, l’autre de fiches
+// principales » sont deux rubriques (l’une de fichiers libres, l’autre de fiches
 // fixes) que la rédaction cherche pourtant au même endroit : ce script pose au-dessus
 // d’elles un titre « Pages » qui les replie et les déplie.
 //

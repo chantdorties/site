@@ -40,7 +40,7 @@ HOME_MARKDOWN_FIELDS = (
 SECTION_TYPES = {"texte", "livres", "offre"}
 SETTING_FILES = ("site", "navigation", "footer", "paiement", "apparence")
 # Les pages engendrées, une fiche chacune dans content/pages-du-site/ (rubrique « Pages
-# du site » de l’administration), à côté de accueil.json. Le générateur les lit dans
+# principales » de l’administration), à côté de accueil.json. Le générateur les lit dans
 # settings["pages"][nom] et l’accueil dans settings["accueil"].
 SITE_PAGES = ("catalogue", "personnes", "collections", "actualites", "maison", "projets")
 

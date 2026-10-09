@@ -31,8 +31,8 @@ collections:
     label: Réglages du site
     description: >-
       Ce qui vaut pour tout le site : identité, menu, pied de page, mots du parcours
-      d’achat, couleurs et polices. Le texte de chaque page se règle dans « Pages du
-      site » ou « Mes pages ».
+      d’achat, couleurs et polices. Le texte de chaque page se règle dans « Pages ›
+      Mes pages » ou « Pages › Pages principales ».
     format: json
     delete: false
     # Chaque réglage a son aperçu (preview.js) : une maquette de la zone du site où

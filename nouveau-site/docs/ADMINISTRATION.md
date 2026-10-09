@@ -34,8 +34,8 @@ L’administration permet de modifier :
   miniature d’aperçu, qui suit la couleur et la police en cours ; les autres aperçus
   gardent le thème par défaut ;
 - les livres, personnes, collections, actualités et projets ;
-- la page d’accueil et les autres pages engendrées, une fiche chacune dans « Pages du
-  site », et les pages écrites à la main dans « Mes pages » ;
+- la page d’accueil et les autres pages engendrées, une fiche chacune dans « Pages
+  principales », et les pages écrites à la main dans « Mes pages » ;
 - l’ordre des collections, livres, personnes et pages ;
 - les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Pages principales > Accueil » fixe
   combien de couvertures s’affichent) et les suggestions « À découvrir aussi » ;

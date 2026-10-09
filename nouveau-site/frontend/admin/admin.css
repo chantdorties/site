@@ -461,3 +461,11 @@ noscript {
    comme ses voisins, d’où le soulignement retiré. */
 #nc-root .lien-tutoriel > a { text-decoration: none; }
 #nc-root .lien-tutoriel__icone { display: inline-flex; margin-right: 4px; }
+
+/* Listes à types (sections et liens de « Mes pages ») : Decap pose le nom du type
+   au-dessus de la barre de l’élément, mais laisse le résumé de l’élément (son titre)
+   en position absolue tout en haut : les deux textes se chevauchaient. On descend le
+   résumé de la hauteur du nom du type (20 px + 8 px de marge), sur la barre. */
+#nc-root [class*="SortableListItem"]:has(> label[class*="FieldLabel"]) > [class*="NestedObjectLabel"] {
+  top: 28px;
+}
