@@ -60,12 +60,78 @@ _RE_CLOTURE = re.compile(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$")
 #   :::                                    :::
 # La place de l'image (gauche, droite, centre, large) devient une classe ; le bouton
 # note aussi la sorte de sa cible, pour que l'éditeur rouvre le bon champ.
+#
+# Deux autres ont un contenu à eux :
+#   ::: tableau entete                     ::: video
+#   Format | Prix                          https://www.youtube.com/watch?v=…
+#   A4 | 12,50 €                           Titre de la vidéo
+#   :::                                    :::
+# Une ligne par rangée, les cases séparées par « | » (« \| » pour un trait dans une
+# case). La vidéo n'est jamais chargée avant un clic : voir `_video`.
 OPTIONS_BLOCS = MappingProxyType({
     "valeur": ("centre", "principale", "secondaire", "liens", "souligne"),
     "encadre": ("principale", "secondaire"),
     "image": ("gauche", "droite", "centre", "large"),
     "bouton": ("plein", "discret", "page", "livre", "document", "courriel", "adresse"),
+    "tableau": ("entete",),
+    "video": (),
 })
+# Au-delà, un tableau ne se lit plus sur un téléphone, même en défilant.
+COLONNES_TABLEAU_MAX = 4
+_RE_SEPARATEUR_CASE = re.compile(r"(?<!\\)\|")
+
+# Les seules adresses de vidéo reconnues. Le domaine est suivi d'une barre : ainsi
+# « youtube.com.autre-site.tld » ne passe pas. Seul l'identifiant extrait atteint la
+# page, jamais l'adresse saisie.
+_ID_YOUTUBE = r"([A-Za-z0-9_-]{11})"
+_RE_VIDEOS = (
+    ("youtube", re.compile(r"^https?://(?:www\.|m\.)?youtube\.com/watch\?(?:[^#\s]*&)?v=" + _ID_YOUTUBE + r"(?:[&#]\S*)?$")),
+    ("youtube", re.compile(r"^https?://(?:www\.|m\.)?youtube\.com/(?:shorts|embed|live)/" + _ID_YOUTUBE + r"(?:[/?#]\S*)?$")),
+    ("youtube", re.compile(r"^https?://youtu\.be/" + _ID_YOUTUBE + r"(?:[/?#]\S*)?$")),
+    # Une vidéo Vimeo « non répertoriée » porte en plus sa clé : vimeo.com/123456/0a1b2c3d4e.
+    ("vimeo", re.compile(r"^https?://(?:www\.)?vimeo\.com/(\d{1,12})(?:/([0-9a-f]{6,20}))?/?(?:[?#]\S*)?$")),
+    ("vimeo", re.compile(r"^https?://player\.vimeo\.com/video/(\d{1,12})/?(?:\?(?:[^#\s]*&)?h=([0-9a-f]{6,20}))?(?:[&#]\S*)?$")),
+)
+NOMS_SITES_VIDEO = MappingProxyType({"youtube": "YouTube", "vimeo": "Vimeo"})
+
+
+def video_reconnue(adresse: str) -> tuple[str, str, str] | None:
+    """(site, identifiant, clé éventuelle) d'une adresse YouTube ou Vimeo, sinon None."""
+    for site, motif in _RE_VIDEOS:
+        trouvee = motif.match(adresse.strip())
+        if trouvee:
+            cle = trouvee.group(2) if trouvee.re.groups > 1 else None
+            return site, trouvee.group(1), cle or ""
+    return None
+
+
+def decouper_video(corps: str) -> tuple[str, str]:
+    """(adresse, titre) : la première ligne non vide, puis le reste, sur une ligne."""
+    lignes = [ligne.strip() for ligne in corps.split("\n") if ligne.strip()]
+    if not lignes:
+        return "", ""
+    return lignes[0], " ".join(lignes[1:])
+
+
+def decouper_tableau(corps: str) -> list[list[str]]:
+    """Les rangées d'un bloc « tableau », sur le texte brut.
+
+    Les rangées vides sont sautées, les rangées courtes complétées, et les colonnes
+    vides sur toute la hauteur, en fin de tableau, retirées.
+    """
+    rangees = [
+        [case.strip().replace("\\|", "|") for case in _RE_SEPARATEUR_CASE.split(ligne)]
+        for ligne in corps.split("\n")
+        if ligne.strip()
+    ]
+    rangees = [rangee for rangee in rangees if any(rangee)]
+    if not rangees:
+        return []
+    largeur = max(len(rangee) for rangee in rangees)
+    rangees = [rangee + [""] * (largeur - len(rangee)) for rangee in rangees]
+    while largeur > 1 and not any(rangee[largeur - 1] for rangee in rangees):
+        largeur -= 1
+    return [rangee[:largeur] for rangee in rangees]
 # Le contenu attendu de ces deux blocs, sur le texte brut (avant échappement).
 RE_IMAGE_SEULE = re.compile(r'^!\[([^\]]*)\]\(([^)\s]+)(?:[ \t]+"(.*?)")?\)$')
 # L'adresse d'un bouton peut être vide : l'éditeur l'écrit ainsi quand aucune
@@ -97,6 +163,16 @@ _RE_JETON = re.compile(r"\x00(\d+)\x00")
 # Ponctuation qu'une adresse écrite au fil du texte ne prend presque jamais, mais que la
 # phrase qui la porte, elle, pose juste après.
 _RE_PONCTUATION_FINALE = re.compile(r"(?:[.,;:!?]|&quot;|&#x27;|&gt;|&lt;)+$")
+
+
+def _retirer_videos(texte: str) -> str:
+    """Retire l'adresse d'une vidéo, qui n'a rien à faire dans un résumé ; le titre reste."""
+    return re.sub(
+        r"^([ \t]*:::[ \t]*video[ \t]*\n)[ \t]*\S+[ \t]*$",
+        r"\1",
+        texte,
+        flags=re.MULTILINE,
+    )
 
 
 def _normaliser(texte: str) -> str:
@@ -324,7 +400,10 @@ class OutilsTexte:
         texte = _normaliser(str(value or ""))
         texte = re.sub(r"\\\n", "\n", texte)
         texte = re.sub(r"^(?:```|~~~)[ \t]*[\w+-]*[ \t]*$", "", texte, flags=re.MULTILINE)
+        texte = _retirer_videos(texte)
         texte = re.sub(r"^[ \t]*:::(?:[ \t]*[\w-]+)*[ \t]*$", "", texte, flags=re.MULTILINE)
+        # Les cases d'un tableau, mises bout à bout.
+        texte = re.sub(r"[ \t]*(?<!\\)\|[ \t]*", " ", texte).replace("\\|", "|")
         texte = re.sub(r"^[ \t]*>[ \t]?", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*#{1,6}[ \t]+", "", texte, flags=re.MULTILINE)
         texte = re.sub(r"^[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*$", "", texte, flags=re.MULTILINE)
@@ -422,6 +501,10 @@ class OutilsTexte:
             return self._image_placee(options, corps, internal_links=internal_links, niveau_min=niveau_min, owner=owner)
         if espece == "bouton":
             return self._bouton(options, corps, internal_links=internal_links, owner=owner)
+        if espece == "tableau":
+            return self._tableau(options, corps, internal_links=internal_links, owner=owner)
+        if espece == "video":
+            return self._video(corps)
         base = f"rich-text__{espece}"
         classes = " ".join(
             [base] + [f"{base}--{option}" for option in OPTIONS_BLOCS[espece] if option in options]
@@ -476,6 +559,61 @@ class OutilsTexte:
             return f"<p>{rendu}</p>" if rendu else ""
         classes = "button button--secondary" if "discret" in options else "button"
         return f'<p class="rich-text__bouton"><a class="{classes}" {rendu[3:]}</p>'
+
+    def _tableau(self, options: list[str], corps: str, *, internal_links, owner: str) -> str:
+        """Un tableau simple, chaque case mise en forme au fil du texte (gras, liens).
+
+        Sur téléphone, son cadre défile de côté (17-texte-riche.css) ; le cadre prend le
+        focus pour qu'on puisse aussi le faire défiler au clavier.
+        """
+        rangees = decouper_tableau(corps)
+        if not rangees:
+            return ""  # un tableau inséré puis laissé vide ne dessine rien
+        enligne = lambda texte: self._inline(texte, internal_links=internal_links, owner=owner)
+        entete = ""
+        if "entete" in options:
+            titres = "".join(f'<th scope="col">{enligne(case)}</th>' for case in rangees[0])
+            entete = f"<thead><tr>{titres}</tr></thead>"
+            rangees = rangees[1:]
+        corps_html = "".join(
+            "<tr>" + "".join(f"<td>{enligne(case)}</td>" for case in rangee) + "</tr>"
+            for rangee in rangees
+        )
+        corps_html = f"<tbody>{corps_html}</tbody>" if corps_html else ""
+        return (
+            '<div class="rich-text__tableau" role="region" aria-label="Tableau" tabindex="0">'
+            f"<table>{entete}{corps_html}</table></div>"
+        )
+
+    @staticmethod
+    def _video(corps: str) -> str:
+        """Une vidéo YouTube ou Vimeo, chargée seulement au clic du visiteur.
+
+        La page ne porte qu'un bouton, le titre et l'identifiant : aucune adresse de
+        YouTube ou de Vimeo, pas même une miniature, car ces services déposent des
+        cookies et la bannière promet qu'aucun n'est déposé sans action. Au clic,
+        site.js remplace le bouton par le lecteur. Si le site public reçoit un jour une
+        règle CSP, elle devra permettre « frame-src https://www.youtube-nocookie.com
+        https://player.vimeo.com ».
+        """
+        adresse, titre = decouper_video(corps)
+        reconnue = video_reconnue(adresse)
+        if not reconnue:
+            return ""  # adresse non reconnue : refusée au chargement, jamais publiée
+        site, identifiant, cle = reconnue
+        nom = NOMS_SITES_VIDEO[site]
+        titre = titre or "Vidéo"
+        cle_html = f' data-video-hash="{cle}"' if cle else ""
+        return (
+            '<div class="rich-text__video">'
+            f'<button class="video-facade" type="button" data-video-site="{site}" '
+            f'data-video-id="{identifiant}"{cle_html} data-video-title="{e(titre)}">'
+            '<span class="video-facade__lecture" aria-hidden="true">'
+            '<svg viewBox="0 0 24 24" focusable="false"><path d="M8 5v14l11-7z"/></svg></span>'
+            f'<span class="video-facade__titre">{e(titre)}</span>'
+            f'<span class="video-facade__mention">Lecture sur {nom} : ce service peut déposer des cookies.</span>'
+            "</button></div>"
+        )
 
     @staticmethod
     def _lignes_du_paragraphe(charge: str, enligne) -> str:

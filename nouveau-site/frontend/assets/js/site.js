@@ -99,3 +99,25 @@ if (window.location.hash === '#recherche') {
     document.querySelector('#recherche input')?.focus();
   });
 }
+
+// La vidéo d'un texte : le lecteur de YouTube ou de Vimeo n'est demandé qu'au clic du
+// visiteur, et seul l'identifiant vient de la page (tools/rendu/texte.py).
+const lecteurs = {
+  youtube: (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`,
+  vimeo: (id, hash) => `https://player.vimeo.com/video/${id}?${hash ? `h=${hash}&` : ''}dnt=1&autoplay=1`,
+};
+document.querySelectorAll('.video-facade[data-video-site]').forEach((bouton) => {
+  bouton.addEventListener('click', () => {
+    const { videoSite, videoId, videoHash, videoTitle } = bouton.dataset;
+    const adresse = lecteurs[videoSite];
+    if (!adresse || !/^[\w-]+$/.test(videoId) || (videoHash && !/^[0-9a-f]+$/.test(videoHash))) return;
+    const lecteur = document.createElement('iframe');
+    lecteur.src = adresse(videoId, videoHash);
+    lecteur.title = videoTitle || 'Vidéo';
+    lecteur.allow = 'autoplay; fullscreen; picture-in-picture';
+    lecteur.allowFullscreen = true;
+    lecteur.referrerPolicy = 'strict-origin-when-cross-origin';
+    bouton.replaceWith(lecteur);
+    lecteur.focus();
+  });
+});

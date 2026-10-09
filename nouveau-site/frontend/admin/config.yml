@@ -424,7 +424,7 @@ collections:
                     buttons: &boutons_corps [bold, italic, strikethrough, link, heading-two, heading-three,
                               bulleted-list, numbered-list, quote]
                     # Les blocs de mise en forme (frontend/admin/blocs.js), réservés aux textes longs.
-                    editor_components: &blocs_corps [image, illustration, bouton, valeur, encadre, separateur]
+                    editor_components: &blocs_corps [image, illustration, bouton, tableau, video, valeur, encadre, separateur]
                   - &section_masquee_libre {label: "Masquer cette section", name: masquee, widget: boolean, default: false, required: false, hint: "Cochée : la section disparaît du site, ses textes sont gardés pour plus tard."}
               - label: Texte et livres du catalogue
                 name: livres

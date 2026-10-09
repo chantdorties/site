@@ -362,7 +362,7 @@ avant.
 
 Dans le corps d’une section de page (**Mes pages**) et d’une actualité, le dernier
 bouton de la barre d’outils, **« Ajouter un composant »**, propose, en plus de l’image,
-cinq blocs. Chacun s’insère à l’endroit du curseur et se règle par des listes : rien à
+sept blocs. Chacun s’insère à l’endroit du curseur et se règle par des listes : rien à
 taper de technique.
 
 - **Image placée** — une image et sa place : **petite à gauche** ou **petite à droite**
@@ -377,6 +377,18 @@ taper de technique.
   **plein** (la couleur des boutons du site) ou **discret** (un contour). Sans
   destination, le bouton ne s’affiche pas. S’il menait à une page ou un livre supprimé
   depuis, il redevient du simple texte.
+- **Tableau** — pour des tarifs, des horaires, un programme : quatre colonnes au plus.
+  Chaque ligne se remplit case par case ; cochez **« La première ligne donne les titres
+  des colonnes »** pour la mettre en évidence. Une case garde gras, italique et liens.
+  Laissez vides les cases inutiles : les colonnes vides sont retirées. Sur téléphone,
+  les cases passent à la ligne.
+- **Vidéo** — une vidéo **YouTube** ou **Vimeo** : collez son adresse (celle de la barre
+  d’adresse, ou du bouton « Partager ») et donnez-lui un titre, obligatoire : il
+  s’affiche sur le bouton de lecture et il est lu aux personnes qui ne voient pas
+  l’écran. Sur le site, la vidéo n’apparaît d’abord que comme un bouton : rien n’est
+  demandé à YouTube ou Vimeo avant que le visiteur clique, car ces services déposent
+  des cookies. Une adresse d’un autre site est refusée à la publication ; l’aperçu
+  prévient déjà par « Adresse non reconnue ».
 
 - **Texte mis en valeur** — un ou plusieurs paragraphes **centrés**, **en couleur**
   (couleur principale, secondaire ou des liens) et/ou **soulignés**. Le texte du bloc

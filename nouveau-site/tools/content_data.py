@@ -15,9 +15,29 @@ from typing import Any
 # « tools.content_data » (tests) : la liste blanche des blocs vient du convertisseur,
 # qui n'importe rien en retour.
 if __package__:
-    from .rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_IMAGE_SEULE, RE_LIEN_SEUL, RE_OUVERTURE_BLOC
+    from .rendu.texte import (
+        COLONNES_TABLEAU_MAX,
+        OPTIONS_BLOCS,
+        RE_FERMETURE_BLOC,
+        RE_IMAGE_SEULE,
+        RE_LIEN_SEUL,
+        RE_OUVERTURE_BLOC,
+        decouper_tableau,
+        decouper_video,
+        video_reconnue,
+    )
 else:
-    from rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_IMAGE_SEULE, RE_LIEN_SEUL, RE_OUVERTURE_BLOC
+    from rendu.texte import (
+        COLONNES_TABLEAU_MAX,
+        OPTIONS_BLOCS,
+        RE_FERMETURE_BLOC,
+        RE_IMAGE_SEULE,
+        RE_LIEN_SEUL,
+        RE_OUVERTURE_BLOC,
+        decouper_tableau,
+        decouper_video,
+        video_reconnue,
+    )
 
 
 STATUSES = {"archive", "brouillon", "publie"}
@@ -564,7 +584,8 @@ OPTIONS_EXCLUSIVES = MappingProxyType({
 
 def validate_single_block(proprietaire: str, espece: str, options: list[str], corps: str) -> None:
     """Le contenu d'un bloc « image » ou « bouton » : un seul élément, et une seule
-    option par groupe. Les autres blocs portent un texte libre."""
+    option par groupe. Un tableau a quatre colonnes au plus ; une vidéo, une adresse
+    YouTube ou Vimeo reconnue et un titre. Les autres blocs portent un texte libre."""
     for groupe in OPTIONS_EXCLUSIVES.get(espece, ()):
         choisies = [option for option in options if option in groupe]
         if len(choisies) > 1:
@@ -573,6 +594,24 @@ def validate_single_block(proprietaire: str, espece: str, options: list[str], co
         raise ContentError(f"{proprietaire}: un bloc « image » contient une seule image, sans texte autour")
     if espece == "bouton" and not RE_LIEN_SEUL.match(corps):
         raise ContentError(f"{proprietaire}: un bouton contient un seul lien, avec son texte (« [Commander](/livres/…/) »)")
+    if espece == "tableau":
+        largeur = max((len(rangee) for rangee in decouper_tableau(corps)), default=0)
+        if largeur > COLONNES_TABLEAU_MAX:
+            raise ContentError(
+                f"{proprietaire}: un tableau a {COLONNES_TABLEAU_MAX} colonnes au plus "
+                f"(celui-ci en a {largeur})"
+            )
+    if espece == "video":
+        adresse, titre = decouper_video(corps)
+        if not adresse:
+            return  # bloc inséré sans adresse : le site n'affiche rien
+        if not video_reconnue(adresse):
+            raise ContentError(
+                f"{proprietaire}: adresse de vidéo non reconnue : « {adresse} ». Copiez l’adresse "
+                "d’une vidéo YouTube (youtube.com/watch?v=…, youtu.be/…) ou Vimeo (vimeo.com/…)"
+            )
+        if not titre:
+            raise ContentError(f"{proprietaire}: une vidéo a besoin d’un titre, lu par les personnes qui ne la voient pas")
 
 
 def media_path(value: Any) -> str | None:

@@ -1,5 +1,6 @@
 // Les blocs de mise en forme proposés dans le corps des pages et des actualités :
-// « Texte mis en valeur », « Encadré », « Séparateur », « Image placée » et « Bouton ».
+// « Texte mis en valeur », « Encadré », « Séparateur », « Image placée », « Bouton »,
+// « Tableau » et « Vidéo ».
 //
 // L’ancien site, écrit sous Nvu, laissait colorer, centrer ou souligner n’importe quel
 // texte. L’éditeur de Decap n’a pas de marque en ligne personnalisable : la mise en forme
@@ -14,6 +15,11 @@
 //
 //   ::: image droite                              ::: bouton plein livre
 //   ![Texte alternatif](chemin "Légende")          [Commander](/livres/le-livre/)
+//   :::                                            :::
+//
+//   ::: tableau entete                            ::: video
+//   Format | Prix                                  https://www.youtube.com/watch?v=…
+//   A4 | 12,50 €                                   Titre de la vidéo
 //   :::                                            :::
 //
 // Les mots de la ligne d’ouverture sont tirés d’une liste blanche, la même des deux
@@ -286,6 +292,146 @@
         { className: 'rich-text__bouton' },
         h('span', { className: data.style === 'discret' ? 'button button--secondary' : 'button' }, data.texte || 'En savoir plus'),
         pret ? null : h('em', {}, ' — sans destination, ce bouton ne s’affichera pas'),
+      );
+    },
+  });
+
+  // Le tableau : Decap n’en a pas dans son éditeur. Chaque ligne a quatre cases au
+  // plus ; les colonnes laissées vides partout, à droite, sont retirées. Un « | »
+  // saisi dans une case est écrit « \| » pour ne pas couper la case en deux.
+  const CASES = ['c1', 'c2', 'c3', 'c4'];
+  const SEPARATEUR = /\s*(?<!\\)\|\s*/;
+  const rangeesDu = (lignes) => {
+    const rangees = (lignes || [])
+      .map((ligne) => CASES.map((c) => uneLigne(ligne && ligne[c])))
+      .filter((rangee) => rangee.some(Boolean));
+    let largeur = CASES.length;
+    while (largeur > 1 && !rangees.some((rangee) => rangee[largeur - 1])) largeur -= 1;
+    return rangees.map((rangee) => rangee.slice(0, largeur));
+  };
+  // Dans l’aperçu, une case montre son gras, son italique et le texte de ses liens.
+  const MARQUES = /(\*\*[^*]+\*\*|\*[^*]+\*|_[^_]+_|\[[^\]]+\]\([^)]*\))/;
+  const caseEnLigne = (texte) => texte.split(MARQUES).filter(Boolean).map((morceau) => {
+    if (/^\*\*.+\*\*$/.test(morceau)) return h('strong', {}, morceau.slice(2, -2));
+    if (/^(\*|_).+\1$/.test(morceau)) return h('em', {}, morceau.slice(1, -1));
+    const lien = /^\[([^\]]+)\]\(/.exec(morceau);
+    return lien ? h('u', {}, lien[1]) : morceau;
+  });
+  CMS.registerEditorComponent({
+    id: 'tableau',
+    label: 'Tableau',
+    fields: [
+      { label: 'La première ligne donne les titres des colonnes', name: 'entete', widget: 'boolean', default: true },
+      {
+        label: 'Lignes',
+        name: 'lignes',
+        label_singular: 'ligne',
+        widget: 'list',
+        summary: '{{fields.c1}}',
+        hint: 'Quatre colonnes au plus. Laissez vides les cases inutiles. Sur téléphone, les cases passent à la ligne.',
+        fields: [
+          { label: 'Colonne 1', name: 'c1', widget: 'string', required: false },
+          { label: 'Colonne 2', name: 'c2', widget: 'string', required: false },
+          { label: 'Colonne 3', name: 'c3', widget: 'string', required: false },
+          { label: 'Colonne 4', name: 'c4', widget: 'string', required: false },
+        ],
+      },
+    ],
+    pattern: OUVERTURE('tableau'),
+    fromBlock: (match) => ({
+      entete: options(match[1]).includes('entete'),
+      lignes: match[2]
+        .split('\n')
+        .filter((ligne) => ligne.trim())
+        .map((ligne) => {
+          const cases = ligne.split(SEPARATEUR).map((c) => c.trim().replace(/\\\|/g, '|'));
+          return Object.fromEntries(CASES.map((c, rang) => [c, cases[rang] || '']));
+        }),
+    }),
+    toBlock: (data) => bloc(
+      ['tableau', data.entete && 'entete'],
+      rangeesDu(data.lignes)
+        .map((rangee) => rangee.map((c) => c.replace(/\|/g, '\\|')).join(' | '))
+        .join('\n'),
+    ),
+    toPreview: (data) => {
+      const rangees = rangeesDu(data.lignes);
+      if (!rangees.length) return h('p', {}, h('em', {}, 'Tableau vide : il ne s’affichera pas.'));
+      const titres = data.entete ? rangees[0] : null;
+      const corps = data.entete ? rangees.slice(1) : rangees;
+      return h(
+        'div',
+        { className: 'rich-text__tableau' },
+        h(
+          'table',
+          {},
+          titres ? h('thead', {}, h('tr', {}, ...titres.map((c) => h('th', { scope: 'col' }, ...caseEnLigne(c))))) : null,
+          h('tbody', {}, ...corps.map((rangee) => h('tr', {}, ...rangee.map((c) => h('td', {}, ...caseEnLigne(c)))))),
+        ),
+      );
+    },
+  });
+
+  // La vidéo : seules les adresses YouTube et Vimeo sont reconnues, avec les mêmes
+  // règles que tools/rendu/texte.py. Sur le site, rien n’est chargé avant le clic du
+  // visiteur ; l’aperçu ne montre donc que le bouton de lecture.
+  const ID_YOUTUBE = '([A-Za-z0-9_-]{11})';
+  const VIDEOS = [
+    ['YouTube', new RegExp(`^https?://(?:www\\.|m\\.)?youtube\\.com/watch\\?(?:[^#\\s]*&)?v=${ID_YOUTUBE}(?:[&#]\\S*)?$`)],
+    ['YouTube', new RegExp(`^https?://(?:www\\.|m\\.)?youtube\\.com/(?:shorts|embed|live)/${ID_YOUTUBE}(?:[/?#]\\S*)?$`)],
+    ['YouTube', new RegExp(`^https?://youtu\\.be/${ID_YOUTUBE}(?:[/?#]\\S*)?$`)],
+    ['Vimeo', /^https?:\/\/(?:www\.)?vimeo\.com\/(\d{1,12})(?:\/([0-9a-f]{6,20}))?\/?(?:[?#]\S*)?$/],
+    ['Vimeo', /^https?:\/\/player\.vimeo\.com\/video\/(\d{1,12})\/?(?:\?(?:[^#\s]*&)?h=([0-9a-f]{6,20}))?(?:[&#]\S*)?$/],
+  ];
+  const siteDe = (adresse) => (VIDEOS.find(([, motif]) => motif.test(adresse)) || [])[0];
+  CMS.registerEditorComponent({
+    id: 'video',
+    label: 'Vidéo',
+    fields: [
+      {
+        label: 'Adresse de la vidéo',
+        name: 'adresse',
+        widget: 'string',
+        hint: 'Copiez l’adresse de la vidéo sur YouTube ou Vimeo, par exemple https://www.youtube.com/watch?v=…',
+      },
+      {
+        label: 'Titre de la vidéo',
+        name: 'titre',
+        widget: 'string',
+        hint: 'Affiché sur le bouton de lecture, et lu par les personnes qui ne voient pas l’écran. Obligatoire.',
+      },
+    ],
+    pattern: OUVERTURE('video'),
+    fromBlock: (match) => {
+      const [adresse = '', ...titre] = match[2].split('\n').map((ligne) => ligne.trim()).filter(Boolean);
+      return { adresse, titre: titre.join(' ') };
+    },
+    // Sans adresse, le bloc reste vide : le site n’affiche rien, et rien n’est refusé.
+    toBlock: (data) => {
+      const adresse = uneLigne(data.adresse).replace(/\s/g, '');
+      return bloc(['video'], adresse ? `${adresse}\n${uneLigne(data.titre)}` : '');
+    },
+    toPreview: (data) => {
+      const adresse = uneLigne(data.adresse).replace(/\s/g, '');
+      const site = siteDe(adresse);
+      return h(
+        'div',
+        { className: 'rich-text__video' },
+        h(
+          'span',
+          { className: 'video-facade' },
+          h('span', { className: 'video-facade__lecture', 'aria-hidden': 'true' }, '▶'),
+          h('span', { className: 'video-facade__titre' }, uneLigne(data.titre) || 'Vidéo'),
+          h(
+            'span',
+            { className: 'video-facade__mention' },
+            site
+              ? `Lecture sur ${site} : ce service peut déposer des cookies.`
+              : adresse
+                ? 'Adresse non reconnue : copiez celle d’une vidéo YouTube ou Vimeo.'
+                : 'Sans adresse, cette vidéo ne s’affichera pas.',
+          ),
+        ),
       );
     },
   });

@@ -8,7 +8,7 @@ peut saisir ne devient une balise. Tant qu'il ne passe pas, le convertisseur ne 
 
 import unittest
 
-from tools.rendu.texte import OutilsTexte
+from tools.rendu.texte import OutilsTexte, video_reconnue
 
 
 class Convertisseur(OutilsTexte):
@@ -420,6 +420,91 @@ class ImagePlaceeEtBoutonTest(unittest.TestCase):
         self.assertEqual(
             self.t.texte_brut("::: image gauche\n![Salon](content/media/uploads/salon.jpg)\n:::\n::: bouton plein livre\n[Commander](/livres/x/)\n:::"),
             "Salon Commander",
+        )
+
+
+class TableauEtVideoTest(unittest.TestCase):
+    """Le tableau simple et la vidéo chargée au clic."""
+
+    def setUp(self):
+        self.t = Convertisseur()
+
+    def test_un_tableau_avec_sa_ligne_de_titres(self):
+        self.assertEqual(
+            self.t.markdown_html("::: tableau entete\nFormat | Prix\nA4 | **12,50 €**\n:::"),
+            '<div class="rich-text__tableau" role="region" aria-label="Tableau" tabindex="0"><table>'
+            '<thead><tr><th scope="col">Format</th><th scope="col">Prix</th></tr></thead>'
+            "<tbody><tr><td>A4</td><td><strong>12,50 €</strong></td></tr></tbody></table></div>",
+        )
+
+    def test_un_tableau_sans_titres(self):
+        rendu = self.t.markdown_html("::: tableau\nA | B\n:::")
+        self.assertNotIn("<thead>", rendu)
+        self.assertIn("<tbody><tr><td>A</td><td>B</td></tr></tbody>", rendu)
+
+    def test_les_lignes_courtes_sont_completees_et_les_colonnes_vides_retirees(self):
+        rendu = self.t.markdown_html("::: tableau\nA | B |  | \nC\n\n | \n:::")
+        self.assertIn("<tr><td>A</td><td>B</td></tr><tr><td>C</td><td></td></tr>", rendu)
+
+    def test_un_trait_echappe_reste_dans_sa_case(self):
+        self.assertIn("<td>A5 | poche</td><td>8 €</td>", self.t.markdown_html("::: tableau\nA5 \\| poche | 8 €\n:::"))
+
+    def test_une_case_reste_du_texte(self):
+        rendu = self.t.markdown_html('::: tableau\n<img src=x onerror=alert(1)> | [x](javascript:alert(1))\n:::')
+        self.assertNotIn("<img", rendu)
+        self.assertNotIn('href="javascript', rendu)
+
+    def test_un_tableau_vide_ne_dessine_rien(self):
+        self.assertEqual(self.t.markdown_html("::: tableau entete\n\n:::"), "")
+
+    def test_les_adresses_de_video_reconnues(self):
+        for adresse, attendu in (
+            ("https://www.youtube.com/watch?v=abcDEF123_-", ("youtube", "abcDEF123_-", "")),
+            ("https://youtube.com/watch?feature=share&v=abcDEF123_-&t=12", ("youtube", "abcDEF123_-", "")),
+            ("https://youtu.be/abcDEF123_-?si=xyz", ("youtube", "abcDEF123_-", "")),
+            ("https://www.youtube.com/shorts/abcDEF123_-", ("youtube", "abcDEF123_-", "")),
+            ("https://vimeo.com/76979871", ("vimeo", "76979871", "")),
+            ("https://vimeo.com/76979871/0a1b2c3d4e", ("vimeo", "76979871", "0a1b2c3d4e")),
+            ("https://player.vimeo.com/video/76979871?h=0a1b2c3d4e", ("vimeo", "76979871", "0a1b2c3d4e")),
+        ):
+            with self.subTest(adresse):
+                self.assertEqual(video_reconnue(adresse), attendu)
+
+    def test_les_fausses_adresses_de_video_sont_refusees(self):
+        for adresse in (
+            "https://youtube.com.autre-site.tld/watch?v=abcDEF123_-",
+            "https://www.youtube.com/watch?v=abcDEF123_-X",
+            "https://youtu.be/abc",
+            "https://vimeo.com/autre-site.tld",
+            "javascript:alert(1)",
+            "https://www.youtube.com/watch?v=abcDEF123_-\"onerror=x",
+            "",
+        ):
+            with self.subTest(adresse):
+                self.assertIsNone(video_reconnue(adresse))
+
+    def test_la_video_n_est_qu_un_bouton_avant_le_clic(self):
+        rendu = self.t.markdown_html("::: video\nhttps://www.youtube.com/watch?v=abcDEF123_-\nLe salon \" onerror=x\n:::")
+        self.assertIn('data-video-site="youtube" data-video-id="abcDEF123_-"', rendu)
+        self.assertIn('<span class="video-facade__titre">Le salon &quot; onerror=x</span>', rendu)
+        self.assertNotIn("youtube.com", rendu)
+        self.assertNotIn("<iframe", rendu)
+        self.assertNotIn("<img", rendu)
+
+    def test_la_cle_d_une_video_vimeo_non_repertoriee_est_gardee(self):
+        rendu = self.t.markdown_html("::: video\nhttps://vimeo.com/76979871/0a1b2c3d4e\nTitre\n:::")
+        self.assertIn('data-video-site="vimeo" data-video-id="76979871" data-video-hash="0a1b2c3d4e"', rendu)
+        self.assertIn("Lecture sur Vimeo", rendu)
+        self.assertNotIn("vimeo.com", rendu)
+
+    def test_une_video_sans_adresse_reconnue_ne_s_affiche_pas(self):
+        self.assertEqual(self.t.markdown_html("::: video\n:::"), "")
+        self.assertEqual(self.t.markdown_html("::: video\nhttps://exemple.fr/film\nTitre\n:::"), "")
+
+    def test_le_texte_brut_garde_les_mots_sans_l_adresse(self):
+        self.assertEqual(
+            self.t.texte_brut("::: tableau entete\nFormat | Prix\n:::\n::: video\nhttps://youtu.be/abcDEF123_-\nLe salon\n:::"),
+            "Format Prix Le salon",
         )
 
 if __name__ == "__main__":
