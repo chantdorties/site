@@ -598,7 +598,7 @@
     }
   });
 
-  // Le haut d’une page engendrée (Pages du site), la liste en dessous venant des fiches.
+  // Le haut d’une page engendrée (Pages automatiques), la liste en dessous venant des fiches.
   const pageIntroPreview = (cle, legende) => createClass({
     render() {
       const { entry, widgetFor } = this.props;
@@ -741,7 +741,7 @@
   CMS.registerPreviewTemplate('navigation', NavigationPreview);
   CMS.registerPreviewTemplate('footer', FooterPreview);
   CMS.registerPreviewTemplate('paiement', PaymentPreview);
-  // Les Pages du site. Les noms d’entrée sont préfixés de « page_ » : Decap cherche un
+  // Les Pages automatiques. Les noms d’entrée sont préfixés de « page_ » : Decap cherche un
   // aperçu par nom de rubrique ET d’entrée, et « collections » ou « actualites »
   // désignent déjà des rubriques.
   CMS.registerPreviewTemplate('page_accueil', HomeTextsPreview);

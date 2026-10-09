@@ -53,7 +53,7 @@ collections:
           - label: Description pour les moteurs de recherche
             name: description
             widget: markdown
-            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Pages du site › Accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
+            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Pages automatiques › Accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
             modes: [rich_text]
             minimal: true
             # Deux barres d’outils, et une règle : un texte court (accroche, introduction,
@@ -236,7 +236,7 @@ collections:
   # sont préfixés de « page_ » : Decap retrouve un aperçu par nom, et « collections »,
   # « actualites » ou « projets » désignent déjà des rubriques.
   - name: pages_du_site
-    label: Pages du site
+    label: Pages automatiques
     label_singular: Page
     description: >-
       Les pages qui se remplissent toutes seules : on n’y change que le titre,
@@ -978,7 +978,7 @@ collections:
     label_singular: Actualité
     description: >-
       Les articles de la page Actualités, du plus récent au plus ancien. Le titre et
-      l’introduction de la page, eux, se règlent dans « Pages du site › Actualités ».
+      l’introduction de la page, eux, se règlent dans « Pages automatiques › Actualités ».
     folder: nouveau-site/content/actualites
     extension: json
     format: json
@@ -1081,7 +1081,7 @@ collections:
     label_singular: Projet
     description: >-
       Les livres à paraître. Ils s’affichent sur la page Projets, sous son introduction,
-      laquelle s’écrit dans « Pages du site › Projets ».
+      laquelle s’écrit dans « Pages automatiques › Projets ».
       C’est la seule rubrique où la suppression est possible : le jour de la parution,
       supprimer le projet et créer le livre.
     folder: nouveau-site/content/projets

@@ -932,7 +932,7 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
 def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
     """La page Projets, rebâtie depuis content/pages-du-site/projets.json.
 
-    Elle se règle avec les autres pages engendrées, dans « Pages du site » ; le reste du
+    Elle se règle avec les autres pages engendrées, dans « Pages automatiques » ; le reste du
     site (carte sur « La maison », plan du site, anciennes adresses) la traite comme
     une page de la maison ordinaire, d’une seule section, sans lien ni image.
     """

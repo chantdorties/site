@@ -60,15 +60,16 @@ Le champ **Publication** offre trois choix :
 C’est la question qui revient le plus souvent. La règle : **chaque partie du site se
 règle à un seul endroit**. Les pages qui rassemblent des contenus (catalogue, auteurs,
 collections, actualités, projets) se remplissent toutes seules : on n’y change que le
-titre, l’introduction et le référencement, dans **Pages du site**. Les pages qu’on
-écrit soi-même sont dans **Mes pages**.
+titre, l’introduction et le référencement, dans **Pages › Pages automatiques**. Les
+pages qu’on écrit soi-même sont dans **Pages › Mes pages**. Dans le menu de gauche,
+« Pages » se déplie d’un clic pour montrer les deux.
 
 | Ce que vous voulez changer | Où aller |
 |---|---|
 | Un livre, une personne, une collection, un projet | La rubrique du même nom |
 | Un article d’actualité | Rubrique **Actualités** |
-| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Pages du site › Accueil**, de haut en bas dans l’ordre de la page |
-| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Pages du site**, la page du même nom |
+| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Pages automatiques › Accueil**, de haut en bas dans l’ordre de la page |
+| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Pages automatiques**, la page du même nom |
 | Le référencement et les anciennes adresses d’une de ces pages | La même page, dans « ▸ Réglages techniques » |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
@@ -83,7 +84,7 @@ en bas de chaque page.
 Les mentions légales se modifient comme les autres pages de la maison, mais elles sont
 obligatoires : elles ne peuvent être ni dépubliées ni changer d’adresse.
 
-Chaque entrée des **Réglages du site** et des **Pages du site** montre à droite un
+Chaque entrée des **Réglages du site** et des **Pages automatiques** montre à droite un
 aperçu : une maquette de la zone du site où ses textes apparaissent (en-tête, pied de
 page, accueil, haut de chaque page, boutons d’achat). Il suit la saisie, avant tout enregistrement.
 
