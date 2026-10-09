@@ -383,6 +383,28 @@ class ContentDataTest(unittest.TestCase):
                 with self.assertRaisesRegex(ContentError, message):
                     load_content(root, include_drafts=True)
 
+    def test_text_blocks_are_checked(self):
+        # Les blocs « ::: » posés par l’éditeur sont acceptés ; une forme abîmée à la main
+        # est refusée avec un message qui dit quoi corriger, au lieu d’une page qui
+        # perdrait sa mise en forme en silence.
+        valide = "::: valeur centre principale souligne\nTexte\n:::\n\n::: encadre secondaire\n### Titre\n\nTexte\n:::"
+        with content_sandbox() as root:
+            edit(root, "content/pages/amis.json", sections=[{"type": "texte", "titre": None, "contenu": valide}])
+            load_content(root, include_drafts=True)
+        for contenu, message in (
+            ("::: cadre\nTexte\n:::", "bloc inconnu « cadre »"),
+            ("::: valeur rouge\nTexte\n:::", "option inconnue pour le bloc « valeur » : rouge"),
+            ("::: encadre liens\nTexte\n:::", "option inconnue pour le bloc « encadre » : liens"),
+            ("::: valeur centre\nTexte", "n'est pas fermé"),
+            ("Texte\n:::", "n'a pas été ouvert"),
+            ("::: valeur\n::: encadre\nTexte\n:::\n:::", "s'ouvre dans un autre bloc"),
+            (":::valeur!\nTexte\n:::", "ligne de bloc non reconnue"),
+        ):
+            with self.subTest(contenu), content_sandbox() as root:
+                edit(root, "content/pages/amis.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
+                with self.assertRaisesRegex(ContentError, f"Page amis \\(section 1\\): .*{re.escape(message)}"):
+                    load_content(root, include_drafts=True)
+
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:
             edit(root, "content/pages/mentions-legales.json", statut="brouillon")

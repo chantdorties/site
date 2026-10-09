@@ -1,5 +1,6 @@
 /* La mise en forme saisie depuis l'administration : gras, italique, listes,
-   intertitres, citations, images au fil du texte.
+   intertitres, citations, images au fil du texte, et les blocs « texte mis en
+   valeur », « encadré » et « séparateur » (tools/rendu/texte.py, OPTIONS_BLOCS).
 
    Tout est porté par la classe .rich-text, posée sur le conteneur du texte. Les
    règles y sont volontairement un peu plus spécifiques que d'ordinaire — d'où les
@@ -14,7 +15,9 @@
 .rich-text ol:not(:last-child),
 .rich-text blockquote:not(:last-child),
 .rich-text pre:not(:last-child),
-.rich-text figure:not(:last-child) {
+.rich-text figure:not(:last-child),
+.rich-text__valeur:not(:last-child),
+.rich-text__encadre:not(:last-child) {
   margin-bottom: 1em;
 }
 
@@ -109,6 +112,52 @@
   margin-top: 8px;
   color: var(--color-muted);
   font-size: 0.9rem;
+}
+
+/* Le séparateur « trois étoiles » : l'astérisme des livres, plutôt qu'un trait. */
+.rich-text hr.rich-text__filet--etoiles {
+  border-top: 0;
+  overflow: visible;
+  text-align: center;
+}
+
+.rich-text hr.rich-text__filet--etoiles::after {
+  content: "* * *";
+  position: relative;
+  top: -0.7em;
+  color: var(--color-muted);
+  letter-spacing: 0.4em;
+}
+
+/* Le texte mis en valeur. Les couleurs sont celles de la palette (Réglages du site ›
+   Apparence) : changer la palette change aussi ces textes. */
+.rich-text__valeur--centre { text-align: center; }
+.rich-text__valeur--centre ul,
+.rich-text__valeur--centre ol { display: inline-block; text-align: left; }
+.rich-text__valeur--principale { color: var(--color-primary); }
+.rich-text__valeur--secondaire { color: var(--color-secondary); }
+.rich-text__valeur--liens { color: var(--color-link); }
+.rich-text__valeur--souligne {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* L'encadré : un fond doux et un filet à gauche, comme une note en marge. */
+.rich-text__encadre {
+  padding: 16px 20px;
+  border-left: 4px solid var(--color-secondary);
+  border-radius: var(--radius);
+  background: var(--color-secondary-soft);
+}
+
+.rich-text__encadre--principale {
+  border-left-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface));
+}
+
+.rich-text .rich-text__encadre-titre {
+  margin-top: 0;
 }
 
 /* Sur fond sombre — le pied de page — la citation et le code reprennent la couleur

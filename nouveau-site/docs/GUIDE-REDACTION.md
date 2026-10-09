@@ -287,8 +287,30 @@ avant.
 - **Les descriptions de référencement** n’ont pas de barre d’outils, et c’est voulu :
   elles ne servent qu’aux moteurs de recherche, qui n’affichent ni gras ni lien. Un
   compteur sous le champ indique où l’on en est des 160 caractères.
+- **Le barré** — pour un ancien prix : « ~~25 €~~ **19 €** ». Bouton présent dans
+  toutes les barres d’outils.
 - **Voir le résultat** — le volet de droite montre le texte mis en forme pendant la
   frappe. Le bouton « Voir sur le site » ouvre la vraie page.
+
+### Les blocs de mise en forme
+
+Dans le corps d’une section de page (**Mes pages**) et d’une actualité, le dernier
+bouton de la barre d’outils, **« Ajouter un composant »**, propose, en plus de l’image,
+trois blocs. Chacun s’insère à l’endroit du curseur et se règle par des listes : rien à
+taper de technique.
+
+- **Texte mis en valeur** — un ou plusieurs paragraphes **centrés**, **en couleur**
+  (couleur principale, secondaire ou des liens) et/ou **soulignés**. Le texte du bloc
+  garde gras, italique, barré, liens et listes. Pour un poème, une annonce, une phrase
+  à faire ressortir.
+- **Encadré** — un titre facultatif et un texte sur un fond doux, dans la couleur
+  secondaire ou principale. Pour un « À noter », une date de salon, une précision.
+- **Séparateur** — un trait fin, ou trois étoiles « * * * » pour marquer une pause dans
+  un texte.
+
+Les couleurs sont celles de **Réglages du site › Apparence** : les changer là change
+aussi les textes colorés, partout. C’est voulu : le site reste assorti et lisible, sans
+texte clair sur fond clair. Un bloc laissé vide n’affiche rien.
 
 ## Les images
 
@@ -331,4 +353,6 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
   structurelles.
 - **Changer la mise en page** ou les tailles ; l’ordre du menu se règle par
   glisser-déposer, couleurs et polices se limitent aux choix de
-  **Réglages du site › Apparence**.
+  **Réglages du site › Apparence**. Centrer, colorer ou souligner se fait par
+  paragraphe, avec les blocs de mise en forme, jamais mot à mot ; le texte justifié
+  n’existe pas.

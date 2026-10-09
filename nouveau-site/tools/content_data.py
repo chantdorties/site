@@ -11,6 +11,14 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any
 
+# Le module est chargé tantôt comme « content_data » (générateur), tantôt comme
+# « tools.content_data » (tests) : la liste blanche des blocs vient du convertisseur,
+# qui n'importe rien en retour.
+if __package__:
+    from .rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_OUVERTURE_BLOC
+else:
+    from rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_OUVERTURE_BLOC
+
 
 STATUSES = {"archive", "brouillon", "publie"}
 ROLES = ("auteur", "illustrateur", "prefacier")
@@ -293,6 +301,46 @@ def validate_inline_images(root: Path, raw: dict[str, Any]) -> None:
                 raise ContentError(
                     f"{proprietaire}: un document ne s'insère pas dans un texte: {chemin}"
                 )
+
+
+def validate_text_blocks(raw: dict[str, Any]) -> None:
+    """Vérifie les blocs de mise en forme « ::: » de chaque texte.
+
+    L'éditeur ne pose que des blocs valides ; ce contrôle arrête ceux qu'un texte
+    retouché à la main aurait abîmés. Le convertisseur, lui, ignorerait une option
+    inconnue et laisserait un bloc inconnu en texte : la page paraîtrait juste, en
+    silence, mais sans la mise en forme voulue.
+    """
+    for proprietaire, texte in iter_markdown_texts(raw):
+        ouvert = False
+        for ligne in texte.splitlines():
+            nu = ligne.strip()
+            if not nu.startswith(":::"):
+                continue
+            if RE_FERMETURE_BLOC.match(nu):
+                if not ouvert:
+                    raise ContentError(f"{proprietaire}: « ::: » ferme un bloc qui n'a pas été ouvert")
+                ouvert = False
+                continue
+            ouverture = RE_OUVERTURE_BLOC.match(nu)
+            if not ouverture:
+                raise ContentError(f"{proprietaire}: ligne de bloc non reconnue: {nu}")
+            espece, options = ouverture.group(1), ouverture.group(2).split()
+            if espece not in OPTIONS_BLOCS:
+                connues = ", ".join(OPTIONS_BLOCS)
+                raise ContentError(f"{proprietaire}: bloc inconnu « {espece} » (blocs possibles : {connues})")
+            inconnues = [option for option in options if option not in OPTIONS_BLOCS[espece]]
+            if inconnues:
+                permises = ", ".join(OPTIONS_BLOCS[espece])
+                raise ContentError(
+                    f"{proprietaire}: option inconnue pour le bloc « {espece} » : "
+                    f"{', '.join(inconnues)} (options possibles : {permises})"
+                )
+            if ouvert:
+                raise ContentError(f"{proprietaire}: un bloc « {espece} » s'ouvre dans un autre bloc")
+            ouvert = True
+        if ouvert:
+            raise ContentError(f"{proprietaire}: un bloc de mise en forme n'est pas fermé par « ::: »")
 
 
 def media_path(value: Any) -> str | None:
@@ -638,6 +686,7 @@ def navigation_id(url: str) -> str:
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
     validate_inline_images(root, raw)
+    validate_text_blocks(raw)
     books = raw["books"]
     people = raw["people"]
     collections = raw["collections"]

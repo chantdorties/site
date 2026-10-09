@@ -188,6 +188,26 @@ anciennes adresses et le référencement. Un test vérifie qu’aucun n’est re
 barres d’outils suivent une règle écrite au même endroit : un texte court prend
 `*boutons_courts`, un texte long découpé en parties `*boutons_corps`.
 
+Les textes longs (`*boutons_corps` : sections de « Mes pages », corps des actualités)
+reçoivent aussi `*blocs_corps`, les blocs de mise en forme de
+`frontend/admin/blocs.js` : « Texte mis en valeur », « Encadré », « Séparateur ». Ils
+s’enregistrent dans le texte même, sous une forme que `tools/rendu/texte.py` relit :
+
+```text
+::: valeur centre principale souligne      ::: encadre secondaire
+Le texte, avec sa mise en forme.           ### Titre facultatif
+:::                                        Le texte
+                                           :::
+```
+
+Les mots de la ligne d’ouverture viennent de la liste blanche `OPTIONS_BLOCS`
+(`texte.py`) et deviennent des classes fixes (`rich-text__valeur--centre`…, styles dans
+`17-texte-riche.css`) : rien de saisi n’atteint un attribut. Les couleurs sont des rôles
+de la palette, jamais des codes. Le chargement (`validate_text_blocks`) refuse un bloc
+ou une option inconnus, un bloc non fermé ou imbriqué. Le séparateur s’écrit `---`
+(trait) ou `***` (trois étoiles). **Ajouter une option** : la liste blanche, la règle CSS,
+le choix dans `blocs.js` et un test, les quatre ensemble.
+
 Les aperçus (`preview.js`) recopient le HTML du site pour en reprendre la feuille de
 style ; un test vérifie que chacune de leurs classes existe encore dans les pages
 produites. Côté générateur, le titre des pages intérieures et le formulaire PayPal
