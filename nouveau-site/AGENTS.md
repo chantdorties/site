@@ -3,7 +3,8 @@
 À lire en entier au début de chaque session. Ce fichier résume l’architecture, le style
 et les règles du site ; le détail est dans `docs/`. **Après chaque changement validé et
 poussé, ajouter une ligne au Journal en bas de ce fichier**, et corriger les parties
-plus haut que le changement rend fausses.
+plus haut que le changement rend fausses. **Après un changement significatif pour la
+rédaction, mettre à jour le tutoriel et le pousser en ligne** (voir « Le tutoriel »).
 
 ## Le site en bref
 
@@ -61,6 +62,15 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 6. Pousser, ouvrir une PR, attendre le CI vert. **Demander avant de fusionner** : fusionner sur `main` met le site en ligne.
 7. Ne jamais : publier/supprimer sur les serveurs (Free, OVH) sans accord ; afficher un secret ; committer des fichiers modifiés par l’utilisateur hors de la tâche (ex. `README.md`) ni `.playwright-cli/` — donc jamais `git commit -a`, toujours `git add <fichiers>` ; arrêter le `make admin` de l’utilisateur (il verrouille `dist/` : construire ailleurs).
 8. Après un changement validé et poussé : **ajouter une ligne au Journal ci-dessous** (dans la même PR).
+9. Après un changement **significatif** pour la personne qui administre (écran ajouté, renommé ou déplacé, parcours modifié, nouvelle règle de saisie) : **mettre à jour le tutoriel et le pousser en ligne** (section suivante). Un correctif invisible dans l’admin n’en demande pas.
+
+## Le tutoriel
+
+- Dossier `../tuto/` (à côté de `nouveau-site/`), **dépôt Git séparé** `chantdorties/tuto-des-orties`, branche `main`. Servi tel quel (Apache, OVH) sur `https://tuto-des-orties.varascundo.com/` : **pousser sur `main` le met en ligne**.
+- Fichiers : `index.html` (le guide, chapitres et encadrés), `assets/` (CSS, JS, captures `assets/images/*.webp`), `README.md` (version illustrée : commit de référence du site), `sources/` (`version-reference.md`, `matrice-captures.md`, `captures-a-refaire.md`), `skill.md` (référence détaillée du site, à garder cohérente avec ce fichier).
+- Mise à jour : corriger les textes de `index.html` touchés par le changement (noms d’écrans, chemins « Rubrique → Entrée », étapes) ; noter dans `sources/captures-a-refaire.md` les captures devenues fausses ; mettre à jour le commit de référence dans `README.md` et la date « Guide vérifié le … » ; puis `git -C ../tuto add <fichiers> && git commit && git push`.
+- Vérifier la mise en ligne : `curl -s https://tuto-des-orties.varascundo.com/ | sha1sum` doit égaler `sha1sum ../tuto/index.html`.
+- Captures : jamais de mot de passe, jeton, compte GitHub ni donnée privée ; prises dans l’admin locale, sans rien enregistrer.
 
 ## Pièges connus
 
@@ -79,4 +89,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #26, #27 · Vignettes dans les listes de l’admin : couvertures, emblèmes des collections, portraits ou initiales.
 - 2026-10-09 · #28 · Création de page simplifiée (titre + texte), sections et liens typés ; « Pages principales » (`content/pages-du-site/`) ; « Mes pages » ; groupe « Pages ▾ » dans le menu.
 - 2026-10-09 · #29 · Lien « Tutoriel » dans la barre du haut de l’admin.
-- 2026-10-09 · #30 · Ce fichier `AGENTS.md` (et `CLAUDE.md` qui l’importe) : consignes lues à chaque session, journal des changements.
+- 2026-10-09 · #30 · Ce fichier `AGENTS.md` (et `CLAUDE.md` qui l’importe) : consignes lues à chaque session, journal des changements, règle de mise à jour du tutoriel. Tutoriel : chapitre Réglages corrigé (les pages n’y sont plus).
