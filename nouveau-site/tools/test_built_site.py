@@ -733,7 +733,10 @@ class BuiltSiteTest(unittest.TestCase):
         source = (DIST / "admin" / "config.yml").read_text(encoding="utf-8")
         for motif in ("max_file_size", "^[A-Z0-9]{13}$", "^[a-z0-9]+(?:-[a-z0-9]+)*$"):
             self.assertEqual(1, source.count(motif), motif)
-        self.assertEqual(1, source.count('name: alt, widget: string'))
+        # Deux textes alternatifs : facultatif pour les photos de bas de page (le site a
+        # un repli), obligatoire pour les images des sections. Chacun une seule fois.
+        self.assertEqual(1, source.count('name: alt, widget: string, required: false'))
+        self.assertEqual(1, source.count('name: alt, widget: string, hint:'))
 
         config = yaml.safe_load(source)
 

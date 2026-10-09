@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from content_data import media_alt, media_path
+from content_data import media_alt, media_path, section_images
 
 from ..outils import e
 
@@ -60,7 +60,7 @@ class PagesEditoriales:
             if page_data["slug"] == "projets":
                 sections += self.render_sections(self.free_sections("projets", "avant-liste"), owner="projets")
                 projects = self.render_projects() + self.render_free_sections("projets", "apres-liste")
-            description = self.visible_sections(page_data)[0]["contenu"]
+            description = self.summary_text(page_data)
             content = f"""
 {self.render_page_heading(
     [('Accueil', '/'), (page_data['titre'], None)],
@@ -89,12 +89,19 @@ class PagesEditoriales:
 
     def render_sections(self, sections: list[dict[str, Any]], *, owner: str) -> str:
         """Les sections visibles, l’une après l’autre : intertitre, texte, livres et
-        boutons d’achat. Une section masquée garde ses textes sans paraître."""
+        boutons d’achat. Une section masquée garde ses textes sans paraître.
+
+        Trois sortes ont leur propre mise en page : le texte et l’image côte à côte,
+        la galerie de photos, la citation en grand (35-pages-de-texte.css)."""
         rendered = []
         for section in sections:
             if section["masquee"]:
                 continue
             heading = f'<h2>{e(section["titre"])}</h2>' if section.get("titre") else ""
+            special = self.render_special_section(section, heading, owner=owner)
+            if special is not None:
+                rendered.append(special)
+                continue
             rendered.append(
                 f'<section class="editorial-section">{heading}'
                 f'<div class="rich-text">{self.markdown_html(section["contenu"], owner=owner)}</div>'
@@ -102,6 +109,42 @@ class PagesEditoriales:
                 f'{self.render_paypal_buttons(section["boutonsPaypal"])}</section>'
             )
         return "".join(rendered)
+
+    def render_special_section(self, section: dict[str, Any], heading: str, *, owner: str) -> str | None:
+        """Une section côte à côte, une galerie ou une citation ; None pour les autres.
+
+        Les images viennent de la même préparation que celles posées dans un texte
+        (optimize_inline_images) : allégées, et jamais publiées dans leur taille
+        d’origine.
+        """
+        kind = section.get("type")
+        body = self.markdown_html(section["contenu"], owner=owner) if section["contenu"].strip() else ""
+        if kind == "colonnes":
+            # L’image vient en premier dans la page : sur téléphone, où les colonnes
+            # s’empilent, elle précède le texte. Sur ordinateur, « droite » l’y range.
+            image = self._balise_image(e(section["alt"]), section["image"], owner)
+            return (
+                f'<section class="editorial-section editorial-columns editorial-columns--{e(section["cote"])}">'
+                f'{heading}<div class="editorial-columns__grid">'
+                f'<figure class="editorial-columns__image">{image}</figure>'
+                f'<div class="rich-text">{body}</div></div></section>'
+            )
+        if kind == "galerie":
+            photos = [
+                (self.inline_media[path], alt)
+                for path, alt in section_images(section)
+                if path in self.inline_media
+            ]
+            text = f'<div class="rich-text">{body}</div>' if body else ""
+            return f'<section class="editorial-section editorial-gallery">{heading}{text}{self.render_gallery(photos)}</section>'
+        if kind == "citation":
+            source = section.get("source") or ""
+            caption = f"<figcaption>{e(source.strip())}</figcaption>" if source.strip() else ""
+            return (
+                f'<section class="editorial-section">{heading}'
+                f'<figure class="editorial-quote"><blockquote class="rich-text">{body}</blockquote>{caption}</figure></section>'
+            )
+        return None
 
     def free_sections(self, page: str, placement: str) -> list[dict[str, Any]]:
         """Les sections ajoutées à une page principale pour un emplacement donné."""
@@ -150,6 +193,16 @@ class PagesEditoriales:
         """Les sections que montre le site : une section masquée garde ses textes dans
         l'administration sans paraître. Le chargement garantit qu'il en reste une."""
         return [section for section in page["sections"] if not section["masquee"]]
+
+    @classmethod
+    def summary_text(cls, page: dict[str, Any]) -> str:
+        """Le texte qui résume la page sur « La maison » et pour les moteurs de
+        recherche : celui de la première section visible qui en a un. Une galerie
+        sans texte, en tête de page, ne laisse donc pas le résumé vide."""
+        return next(
+            (section["contenu"] for section in cls.visible_sections(page) if section["contenu"].strip()),
+            "",
+        )
 
     def published_editorial_pages(self) -> list[dict[str, Any]]:
         return [

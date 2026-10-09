@@ -45,7 +45,9 @@ HOME_MARKDOWN_FIELDS = (
     "soutienTexte",
     "collectionsTexte",
 )
-SECTION_TYPES = {"texte", "livres", "offre"}
+SECTION_TYPES = {"texte", "livres", "offre", "colonnes", "galerie", "citation"}
+# « Texte et image côte à côte » : l’image à gauche ou à droite du texte, sur ordinateur.
+COLUMN_IMAGE_SIDES = ("gauche", "droite")
 # Les sections ajoutées aux pages principales (« Sections ajoutées ») : les mêmes sortes
 # que dans Mes pages, plus leur place sur la page. L’accueil en a quatre, entre ses
 # blocs ; les autres pages deux, autour de leur liste (livres, auteurs, actualités…).
@@ -361,6 +363,7 @@ def referenced_media_paths(raw: dict[str, Any]) -> set[str]:
     # Les images déposées au fil d'un texte, et les PDF qu'il lie, ne figurent dans aucun champ.
     paths.update(inline_media_paths(raw))
     paths.update(inline_document_paths(raw))
+    paths.update(section_media_paths(raw))
     return paths
 
 
@@ -858,6 +861,12 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
             section.setdefault("boutonsPaypal", [])
             section.setdefault("livres", [])
             section.setdefault("masquee", False)
+            # Le texte d’une galerie est facultatif : Decap n’écrit pas un champ laissé vide.
+            section.setdefault("contenu", "")
+            if section.get("type") == "galerie":
+                section.setdefault("photos", [])
+            if section.get("type") == "colonnes":
+                section.setdefault("cote", COLUMN_IMAGE_SIDES[0])
 
     for page in raw["pages"]:
         for section in page.get("sections") or []:
@@ -919,15 +928,23 @@ def navigation_id(url: str) -> str:
 
 
 def validate_section(
-    section: Any, owner: str, books_by_slug: dict[str, dict[str, Any]], *, published: bool
+    section: Any,
+    owner: str,
+    books_by_slug: dict[str, dict[str, Any]],
+    *,
+    published: bool,
+    root: Path | None = None,
 ) -> None:
     """Une section de Mes pages ou une section ajoutée à une page principale : les
     mêmes règles partout, puisque l’administration propose les mêmes sortes."""
-    if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
+    # Le type choisi dans « Ajouter section » : un texte seul, un texte et des livres
+    # du catalogue, une offre avec ses boutons d’achat, un texte et une image côte à
+    # côte, une galerie de photos, ou une citation en grand.
+    section_type = section.get("type") if isinstance(section, dict) else None
+    contenu = section.get("contenu") if isinstance(section, dict) else None
+    # Seule la galerie peut se passer de texte : ses photos parlent d’elles-mêmes.
+    if not isinstance(contenu, str) or (section_type != "galerie" and not contenu.strip()):
         raise ContentError(f"{owner}: contenu de section obligatoire")
-    # Le type choisi dans « Ajouter section » : un texte seul, un texte et des
-    # livres du catalogue, ou une offre avec ses boutons d’achat.
-    section_type = section.get("type")
     if section_type not in SECTION_TYPES:
         raise ContentError(
             f"{owner}: type de section attendu parmi {sorted(SECTION_TYPES)}"
@@ -936,6 +953,22 @@ def validate_section(
         raise ContentError(f"{owner}: une section « texte » ne porte ni livre ni bouton")
     if section_type == "livres" and section["boutonsPaypal"]:
         raise ContentError(f"{owner}: une section « livres » ne porte pas de bouton d’achat")
+    if section_type in {"colonnes", "galerie", "citation"} and (section["livres"] or section["boutonsPaypal"]):
+        raise ContentError(f"{owner}: une section « {section_type} » ne porte ni livre ni bouton")
+    if section_type == "colonnes":
+        if section.get("cote") not in COLUMN_IMAGE_SIDES:
+            raise ContentError(f"{owner}: place de l’image attendue parmi {', '.join(COLUMN_IMAGE_SIDES)}")
+        validate_section_image(root, section, owner, "l’image de la section")
+    if section_type == "galerie":
+        photos = section.get("photos")
+        if not isinstance(photos, list) or not photos:
+            raise ContentError(f"{owner}: une galerie contient au moins une photo")
+        for rang, photo in enumerate(photos, start=1):
+            if not isinstance(photo, dict):
+                raise ContentError(f"{owner}: photo {rang} de la galerie invalide")
+            validate_section_image(root, photo, owner, f"la photo {rang} de la galerie")
+    if section_type == "citation":
+        optional_text(section, "source", owner)
     # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
     # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
     section_books = section.get("livres", [])
@@ -960,7 +993,52 @@ def validate_section(
             )
 
 
-def validate_free_sections(settings: dict[str, Any], books_by_slug: dict[str, dict[str, Any]]) -> None:
+def validate_section_image(root: Path | None, record: dict[str, Any], owner: str, quoi: str) -> None:
+    """L’image d’une section (côte à côte, galerie) : un fichier de la médiathèque, et
+    son texte alternatif, obligatoire comme pour une image posée dans un texte."""
+    chemin = record.get("image")
+    if not isinstance(chemin, str) or not chemin.strip():
+        raise ContentError(f"{owner}: image obligatoire pour {quoi}")
+    alt = record.get("alt")
+    if not isinstance(alt, str) or not alt.strip():
+        raise ContentError(f"{owner}: texte alternatif obligatoire pour {quoi}")
+    if root is not None:
+        validate_media(root, chemin, owner)
+    if Path(chemin).suffix.lower() == ".pdf":
+        raise ContentError(f"{owner}: {quoi} doit être une image, pas un document: {chemin}")
+
+
+def section_images(section: Any) -> list[tuple[str, str]]:
+    """(chemin, texte alternatif) des images d’une section : celle d’une section côte à
+    côte, les photos d’une galerie. Les autres sortes n’en ont pas."""
+    if not isinstance(section, dict):
+        return []
+    if section.get("type") == "colonnes":
+        records = [section]
+    elif section.get("type") == "galerie":
+        records = section.get("photos") if isinstance(section.get("photos"), list) else []
+    else:
+        return []
+    return [
+        (record["image"], str(record.get("alt") or ""))
+        for record in records
+        if isinstance(record, dict) and isinstance(record.get("image"), str) and record["image"]
+    ]
+
+
+def section_media_paths(raw: dict[str, Any]) -> set[str]:
+    """Les images de toutes les sections : Mes pages et sections ajoutées aux pages
+    principales. Elles sont préparées comme les images posées dans un texte."""
+    sections = [section for page in raw["pages"] for section in page.get("sections") or []]
+    for _, record in main_pages(raw["settings"]):
+        if isinstance(record.get("sectionsLibres"), list):
+            sections.extend(record["sectionsLibres"])
+    return {path for section in sections for path, _ in section_images(section)}
+
+
+def validate_free_sections(
+    settings: dict[str, Any], books_by_slug: dict[str, dict[str, Any]], root: Path | None = None
+) -> None:
     """Les sections ajoutées aux pages principales : une liste, chacune à une place
     connue de sa page. Une page principale est toujours en ligne : ses livres aussi."""
     for name, record in main_pages(settings):
@@ -979,7 +1057,7 @@ def validate_free_sections(settings: dict[str, Any], books_by_slug: dict[str, di
                 )
             if not isinstance(section.get("masquee"), bool):
                 raise ContentError(f"{owner}: la case « Masquer cette section » est invalide")
-            validate_section(section, owner, books_by_slug, published=True)
+            validate_section(section, owner, books_by_slug, published=True, root=root)
 
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
@@ -1127,7 +1205,9 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         if all(isinstance(section, dict) and section["masquee"] for section in sections):
             raise ContentError(f"Page {page['slug']}: toutes les sections sont masquées, il en faut au moins une visible")
         for section in sections:
-            validate_section(section, f"Page {page['slug']}", books_by_slug, published=page["statut"] == "publie")
+            validate_section(
+                section, f"Page {page['slug']}", books_by_slug, published=page["statut"] == "publie", root=root
+            )
         for item in page.get("images", []):
             validate_media_item(root, item, f"Page {page['slug']}")
         for path in page.get("documents", []):
@@ -1153,7 +1233,7 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_seo(root, page, "Page")
         validate_old_slugs(page, "Page")
 
-    validate_free_sections(settings, books_by_slug)
+    validate_free_sections(settings, books_by_slug, root)
 
     # L’accueil et les actualités ne sont pas des pages de la maison : leurs textes sont
     # dans content/pages-du-site/.

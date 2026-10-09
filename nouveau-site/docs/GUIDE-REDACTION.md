@@ -136,8 +136,9 @@ site » : on retrouve ainsi ses textes pour le réafficher.
 
 Chaque page principale (Accueil, Catalogue, Auteurs et illustrateurs, Collections,
 Actualités, La maison, Projets) a un groupe **Sections ajoutées**. Il propose les mêmes
-trois sortes que **Mes pages** : un texte, un texte suivi de livres du catalogue, ou une
-offre avec ses boutons d’achat PayPal (voir « Vendre depuis une page »).
+six sortes que **Mes pages** (voir « Créer une page ») : un texte, un texte suivi de
+livres du catalogue, une offre avec ses boutons d’achat PayPal (voir « Vendre depuis une
+page »), un texte et une image côte à côte, une galerie de photos, une citation en grand.
 
 - **Emplacement** : sur l’accueil, après le bandeau, après le bloc d’information (choix
   par défaut), après les collections, ou tout en bas. Sur les autres pages, au-dessus ou
@@ -262,10 +263,20 @@ menu du haut : **Réglages du site › Menu principal**.
 
 Tout le reste du formulaire est facultatif :
 
-- **Une autre section** : le bouton « Ajouter une entrée de type section » propose trois
-  sortes de section — un **texte**, un **texte et des livres du catalogue** (montrés en
-  cartes sous le texte), ou une **offre à vendre** avec ses boutons PayPal (voir
-  ci-dessous). Chacune ne montre que ses propres champs.
+- **Une autre section** : le bouton « Ajouter une entrée de type section » propose six
+  sortes de section. Chacune ne montre que ses propres champs.
+  - un **texte** ;
+  - un **texte et des livres du catalogue**, montrés en cartes sous le texte ;
+  - une **offre à vendre** avec ses boutons PayPal (voir ci-dessous) ;
+  - un **texte et une image côte à côte**, l’image à gauche ou à droite. Sur téléphone,
+    l’image passe au-dessus du texte ;
+  - une **galerie de photos** : quatre vignettes par rangée (deux sur téléphone), qui
+    s’agrandissent d’un clic. Un texte peut les précéder, il est facultatif ;
+  - une **citation en grand**, en italique, avec son auteur ou sa source.
+
+  Le texte alternatif de chaque image ou photo est obligatoire. Une galerie sans texte
+  placée en tête de page ne sert pas de résumé : « La maison » reprend le texte de la
+  section suivante.
 - **Des liens** : le bouton « Ajouter une entrée de type lien » propose un site web, une
   adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
   directement dans son lien.

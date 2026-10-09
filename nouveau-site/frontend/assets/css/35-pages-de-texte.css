@@ -59,6 +59,67 @@
 }
 
 
+/* « Texte et image côte à côte » : deux colonnes, l’image du côté choisi. L’image
+   vient en premier dans le HTML ; « droite » la range après le texte. Sur
+   téléphone, les colonnes s’empilent, image au-dessus : 91-mobile-760px.css. */
+.editorial-columns__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.editorial-columns--droite .editorial-columns__grid {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+}
+
+.editorial-columns--droite .editorial-columns__image {
+  order: 2;
+}
+
+.editorial-columns figure {
+  margin: 0;
+}
+
+.editorial-columns__image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+/* La galerie d’une section : la grille de vignettes des fiches (33-galerie.css),
+   sous le texte s’il y en a un. */
+.editorial-gallery .rich-text + .gallery-grid {
+  margin-top: 24px;
+}
+
+/* La citation en grand : le texte en corps de titre, un filet de la couleur
+   principale, et la source en petit dessous. */
+.editorial-quote {
+  margin: 0;
+  padding-left: 28px;
+  border-left: 4px solid var(--color-primary);
+}
+
+.editorial-quote blockquote {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.editorial-quote figcaption {
+  margin-top: 14px;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.editorial-quote figcaption::before {
+  content: "— ";
+}
+
 /* Les sections ajoutées à une page principale (accueil, catalogue, actualités…) :
    sans colonne de liens, elles gardent la largeur de lecture des pages de texte.
    Voir render_free_sections dans tools/rendu/pages/editoriales.py. */

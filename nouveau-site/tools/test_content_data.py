@@ -17,6 +17,7 @@ from tools.content_data import (
     APPEARANCE_FONTS,
     ContentError,
     inline_document_paths,
+    section_media_paths,
     inline_media_paths,
     load_content,
     media_path,
@@ -452,6 +453,55 @@ class ContentDataTest(unittest.TestCase):
         ):
             with self.subTest(contenu), content_sandbox() as root:
                 edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
+                with self.assertRaisesRegex(ContentError, re.escape(message)):
+                    load_content(root, include_drafts=True)
+
+    def test_column_gallery_and_quote_sections(self):
+        # Les trois sortes à mise en page propre : chargées, rendues avec leurs images
+        # préparées comme celles d’un texte, et comptées parmi les médias utilisés.
+        image = next(CONTENT.glob("media/**/*.jpg")).relative_to(ROOT).as_posix()
+        sections = [
+            {"type": "galerie", "titre": "Photos", "photos": [{"image": image, "alt": "Une photo"}]},
+            {"type": "colonnes", "titre": None, "contenu": "Le texte à côté.", "image": image, "alt": "Une image", "cote": "droite"},
+            {"type": "citation", "titre": None, "contenu": "Une phrase qui *compte*.", "source": "Une autrice"},
+        ]
+        page = exemple("pages", page_libre)
+        with content_sandbox() as root:
+            edit(root, f"content/pages/{page['slug']}.json", sections=sections)
+            raw = load_content(root, include_drafts=True)["raw"]
+            self.assertIn(image, section_media_paths(raw))
+            self.assertIn(image, referenced_media_paths(raw))
+            build_site = load_site_builder()
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            builder.inline_media = {image: "/assets/media/texte/x.webp"}
+            loaded = next(item for item in builder.pages if item["slug"] == page["slug"])
+            html = builder.render_sections(loaded["sections"], owner=page["slug"])
+            # La galerie sans texte, en tête : le résumé saute à la section suivante.
+            self.assertEqual("Le texte à côté.", builder.summary_text(loaded))
+        self.assertIn('<section class="editorial-section editorial-gallery"><h2>Photos</h2><div class="gallery-grid">', html)
+        self.assertIn('data-gallery-src="/assets/media/texte/x.webp" data-gallery-alt="Une photo"', html)
+        self.assertIn('editorial-columns editorial-columns--droite', html)
+        self.assertIn('<figure class="editorial-columns__image"><img src="/assets/media/texte/x.webp" alt="Une image"', html)
+        self.assertIn('<blockquote class="rich-text"><p>Une phrase qui <em>compte</em>.</p></blockquote><figcaption>Une autrice</figcaption>', html)
+
+    def test_column_gallery_and_quote_sections_are_checked(self):
+        image = next(CONTENT.glob("media/**/*.jpg")).relative_to(ROOT).as_posix()
+        colonnes = {"type": "colonnes", "titre": None, "contenu": "Texte", "image": image, "alt": "Une image", "cote": "gauche"}
+        slug = exemple("pages", page_libre)["slug"]
+        livre = self.books[0]["slug"]
+        for section, message in (
+            ({**colonnes, "alt": ""}, "texte alternatif obligatoire pour l’image de la section"),
+            ({**colonnes, "image": ""}, "image obligatoire pour l’image de la section"),
+            ({**colonnes, "cote": "haut"}, "place de l’image attendue parmi gauche, droite"),
+            ({**colonnes, "image": "content/media/uploads/absente.jpg"}, "absente.jpg"),
+            ({**colonnes, "contenu": ""}, "contenu de section obligatoire"),
+            ({"type": "galerie", "titre": None, "photos": []}, "une galerie contient au moins une photo"),
+            ({"type": "galerie", "titre": None, "photos": [{"image": image, "alt": " "}]}, "texte alternatif obligatoire pour la photo 1 de la galerie"),
+            ({"type": "citation", "titre": None, "contenu": "Phrase", "livres": [livre]}, "une section « citation » ne porte ni livre ni bouton"),
+        ):
+            with self.subTest(message), content_sandbox() as root:
+                edit(root, f"content/pages/{slug}.json", sections=[section])
                 with self.assertRaisesRegex(ContentError, re.escape(message)):
                     load_content(root, include_drafts=True)
 
