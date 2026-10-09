@@ -5,6 +5,7 @@
   "type": "page",
   "sections": [
     {
+      "type": "texte",
       "titre": null,
       "contenu": "Si vous aimez les découvertes, voici quelques sites de médias ou éditeurs qui nous tiennent particulièrement à coeur.\n\nDivergences 2 est un site d'information comme on en voit rarement, pour des articles sans concessions ni \"politiquement correct\".\n\nCréé en mai 2008 mais toujours en activité, voici un collectif d'illustrateurs qui mettent gracieusement à dispositions des affiches de mai 68 détournées ou des créations actuelles.\n\nEditeur éclectique et prolifique, le Chemin de fer propose des nouvelles illustrées alliant la modernité d'un texte à l'originalité des illustrations.\n\nSite de critiques littéraires, Encres Vagabondes propose un panorama exigeant des sorties en jeunesse et adulte en France."
     }
@@ -49,7 +50,6 @@
       "alt": "Amis — image 4"
     }
   ],
-  "documents": [],
   "ordre": 20,
   "rubrique": "Réseau",
   "libelleAction": "Découvrir nos amis",

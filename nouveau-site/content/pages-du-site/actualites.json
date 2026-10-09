@@ -1,0 +1,13 @@
+{
+  "rubrique": "Éditions Chant d’orties",
+  "titre": "Actualités",
+  "introduction": "Retrouvez toutes nos actualités, rencontres et nouvelles parutions.",
+  "descriptionSeo": "Les actualités, rencontres et nouvelles parutions des Éditions Chant d’orties.",
+  "appelRubrique": "Suivre la maison",
+  "appelTitre": "Nos prochaines rencontres et nouvelles parutions",
+  "appelTexte": "Retrouvez toute l’actualité de Chant d’orties sur Facebook. La page est accessible même sans compte.",
+  "boutonFacebook": "Voir la page Facebook",
+  "anciensSlugs": [
+    "actualite.html"
+  ]
+}

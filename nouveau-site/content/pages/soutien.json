@@ -5,6 +5,7 @@
   "type": "page",
   "sections": [
     {
+      "type": "offre",
       "titre": null,
       "contenu": "Notre maison d’édition fonctionne en association. Il y a deux manières de nous soutenir et de nous aider à publier de nouveaux ouvrages.\n\nEn adhérant à l’association, vous bénéficierez pendant un an d’une carte d’adhérent, de 10 % de remise sur nos publications commandées par courrier, des frais de port gratuits, d’un sachet de graines de fleurs des champs et, sur demande, d’un sachet de graines d’orties. Vous pourrez également vous investir dans le fonctionnement de l’association.\n\nVous pouvez aussi faire un don d’un montant libre pour aider à promouvoir la littérature sociale.\n\nImprimez le bulletin d’adhésion et de soutien, puis retournez-le avec votre chèque libellé à l’ordre de Chant d’orties, à l’adresse :\n\nChant d’orties\\\n9 Chemin Serre de Cassagnes\\\n34600 Bédarieux\n\nPour toute question concernant une adhésion ou un don, contactez-nous à chantdorties@free.fr.",
       "boutonsPaypal": [
@@ -37,11 +38,6 @@
     }
   ],
   "images": [],
-  "documents": [
-    "content/media/uploads/pages-soutien-documents-01-documents-statuts-chant-d-orties.pdf",
-    "content/media/uploads/pages-soutien-documents-02-documents-reglement-interieur.pdf",
-    "content/media/uploads/pages-soutien-documents-03-documents-adhesion-soutien-chantdorties.pdf"
-  ],
   "ordre": 100,
   "rubrique": "Association",
   "libelleAction": "Soutenir la maison",

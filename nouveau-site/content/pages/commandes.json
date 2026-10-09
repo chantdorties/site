@@ -5,10 +5,12 @@
   "type": "commande",
   "sections": [
     {
+      "type": "texte",
       "titre": "Pour les libraires",
       "contenu": "Si vous souhaitez passer commande, vous pouvez nous contacter directement sur chantdorties@free.fr. Nous sommes dans l'attente d'un nouveau diffuseur.\n\nVous pouvez devenir librairie-partenaire. Dans ce cas les frais de port sont offerts et nous nous mettons d'accord sur le nombre d'exemplaires à vous envoyer à chaque sortie de livre (possibilité de retour avec avoir)."
     },
     {
+      "type": "texte",
       "titre": "Pour les particuliers",
       "contenu": "Nos livres sont disponibles dans toutes les librairies sur commande puisque nous sommes recensés dans les grandes bases de données. Les librairies-partenaires ont un stock de nos ouvrages directement sur place.\n\nPour commander en ligne, ouvrez la fiche d'un livre disponible puis cliquez sur « Ajouter au panier avec PayPal ». Vous pourrez vérifier votre panier et régler la commande sur PayPal. Les frais de port sont offerts pour toute commande en France.\n\nIl vous est également possible d'imprimer un bon de commande papier et de nous l'envoyer, accompagné de votre chèque, :\n\nChant d'orties\\\n9 chemin Serre de Cassagnes\\\n34600 Bédarieux"
     }
@@ -21,9 +23,6 @@
     }
   ],
   "images": [],
-  "documents": [
-    "content/media/uploads/pages-commandes-documents-01-documents-commande-chantdorties.pdf"
-  ],
   "ordre": 40,
   "rubrique": "Commander",
   "libelleAction": "Commander un livre",

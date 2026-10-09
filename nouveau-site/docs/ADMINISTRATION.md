@@ -34,9 +34,10 @@ L’administration permet de modifier :
   miniature d’aperçu, qui suit la couleur et la police en cours ; les autres aperçus
   gardent le thème par défaut ;
 - les livres, personnes, collections, actualités et projets ;
-- la page d’accueil, en un seul écran, et les pages de la maison ;
+- la page d’accueil et les autres pages engendrées, une fiche chacune dans « Pages du
+  site », et les pages écrites à la main dans « Mes pages » ;
 - l’ordre des collections, livres, personnes et pages ;
-- les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Page d’accueil » fixe
+- les livres mis en avant sur l’accueil (cochés dans chaque fiche ; « Pages principales > Accueil » fixe
   combien de couvertures s’affichent) et les suggestions « À découvrir aussi » ;
 - l’emblème de chaque collection — le petit dessin repris de l’ancien site, qui
   s’affiche sur la page de la collection et sur les vignettes de l’accueil ;
@@ -45,26 +46,33 @@ L’administration permet de modifier :
   parcours d’achat — « Ajouter au panier », « Voir mon panier », « Actuellement
   indisponible », « Nous contacter », « Lire l’extrait », réunis dans « Réglages du
   site > Paiement et dons ». Les boutons « Faire un don » et « Voir les offres »,
-  affichés sur l’accueil seulement, se libellent dans « Réglages du site > Page
-  d’accueil » ;
+  affichés sur l’accueil seulement, se libellent dans « Pages principales > Accueil » ;
 - les boutons d’achat propres à une page — offre groupée, adhésion, don, titre soldé —
   saisis section par section dans la page concernée. Un livre vendu à son prix normal
   garde le sien dans sa fiche. Le bouton « voir mon panier », lui, est posé
   automatiquement dans le menu de chaque page : seul son libellé se règle.
 
 Chaque partie du site se règle à un seul endroit. L’accueil se règle entièrement
-dans « Réglages du site > Page d’accueil » (`content/reglages/accueil.json`), son
+dans « Pages principales > Accueil » (`content/pages-du-site/accueil.json`), son
 référencement et ses anciennes adresses compris. Les pages engendrées — catalogue,
-auteurs, collections, actualités, maison et projets — se règlent dans « Réglages du
-site > Introductions des pages » (`content/reglages/pages.json`) ; pour les
-actualités et les projets, référencement et anciennes adresses y sont aussi. La page
-Projets est rebâtie depuis son bloc par `projects_page` (`tools/content_data.py`) :
+auteurs, collections, actualités, maison et projets — ont chacune leur fiche dans
+« Pages principales » (`content/pages-du-site/<page>.json`) ; pour les actualités et les
+projets, référencement et anciennes adresses y sont aussi. `load_settings` les
+présente au générateur sous `settings["accueil"]` et `settings["pages"][<page>]`, et
+refuse les anciens `content/reglages/accueil.json` et `pages.json`. La page
+Projets est rebâtie depuis sa fiche par `projects_page` (`tools/content_data.py`) :
 pour le reste du site, c’est une page de la maison ordinaire. Le dossier
 `content/pages-fixes/` n’existe plus, et sa réapparition est refusée par la
 validation. Les catégories annoncées en bas de la page Actualités ne s’écrivent pas :
 ce sont celles des articles réellement publiés.
 
-De nouvelles pages de la maison peuvent être créées.
+De nouvelles pages de la maison peuvent être créées avec un titre et un texte seulement.
+Decap tire le nom du fichier du titre (`slug: "{{slug}}"`) ; le chargeur en fait l’adresse
+de la page quand le champ `slug` manque (`load_folder(..., slug_from_filename=True)`), et
+range après les autres une page sans `ordre`. Sections et liens sont des listes à types
+(`type` : `texte`, `livres`, `offre` ; `externe`, `email`, `document`, `livre`, `page`) ;
+la validation refuse une section sans type. Un PDF se dépose dans son lien
+« Document PDF » : `documents` n’est plus proposé, mais encore lu s’il existe.
 
 La suppression est désactivée partout sauf dans la rubrique **Projets** : un projet
 n’a pas d’adresse à lui, donc rien à rediriger, et un livre paru n’a plus à encombrer
@@ -85,7 +93,7 @@ adresses » afin que le générateur crée la redirection.
 
 La rubrique **Projets** tient les livres à paraître. Ils n’ont pas de page à eux :
 ils s’affichent sur la page Projets, sous son introduction, du plus petit rang au
-plus grand. L’introduction, elle, s’écrit dans « Réglages du site > Introductions des pages > Projets ».
+plus grand. L’introduction, elle, s’écrit dans « Pages principales > Projets ».
 
 Un auteur ou un illustrateur qui possède déjà une fiche se choisit dans « Auteurs »
 ou « Illustrateurs », et son nom devient un lien vers elle. Celui qui n’en a pas
@@ -117,7 +125,7 @@ La génération refuse un contenu qui casserait le site, avec un message explici
 Les champs laissés vides dans l’administration ne bloquent jamais la génération :
 ils reçoivent automatiquement une valeur vide.
 
-Dans les rubriques « Introductions des pages », le jeton `{nombre}` est remplacé
+Dans « Pages principales », le jeton `{nombre}` est remplacé
 au moment de la génération par le nombre réel de contenus. Écrire
 « {nombre} ouvrages » plutôt que « 64 ouvrages » évite un compte faux après chaque
 ajout.

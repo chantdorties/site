@@ -32,7 +32,9 @@ def load_json(path):
 def settings(name):
     """Les libellés viennent des réglages : les recopier ici rendrait la suite
     rouge dès que le client édite un texte, sans aucune régression réelle."""
-    return load_json(ROOT / "content" / "reglages" / f"{name}.json")
+    # load_settings rassemble content/reglages/ et content/pages-du-site/ (accueil, et
+    # sous « pages » chaque page engendrée), comme le générateur.
+    return load_settings(ROOT / "content")[name]
 
 
 def local_target(value, directory):
@@ -342,6 +344,9 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertEqual("http://127.0.0.1:8082/api/v1", config["local_backend"]["url"])
         collections = {item["name"]: item for item in config["collections"]}
         self.assertIn("reglages", collections)
+        # Les pages engendrées ont une fiche chacune, qu’on ne crée ni ne supprime.
+        self.assertFalse(collections["pages_du_site"].get("create", False))
+        self.assertFalse(collections["pages_du_site"]["delete"])
         # L’accueil et les actualités sont dans les réglages, les mentions légales
         # parmi les pages : plus de rubrique « Pages principales ».
         self.assertNotIn("pages_fixes", collections)
@@ -391,7 +396,7 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertTrue(str(collection.get("description", "")).strip(), name)
             if collection.get("editor", {}).get("preview") is False:
                 continue
-            if "files" in collection and name == "reglages":
+            if "files" in collection:
                 # Une rubrique de fichiers voit son aperçu choisi entrée par entrée.
                 for entry in collection["files"]:
                     self.assertIn(entry["name"], registered, f"{name}/{entry['name']}")
@@ -486,9 +491,14 @@ class BuiltSiteTest(unittest.TestCase):
             )
         )
         self.assertTrue(registered, "aucun gabarit d’aperçu détecté")
-        # Chaque fichier de réglages a son gabarit, à son nom d’entrée.
+        # Chaque fichier de réglages et chaque page du site a son gabarit, à son nom d’entrée.
         reglages = next(item for item in config["collections"] if item["name"] == "reglages")
-        owned = {("reglages", entry["name"]): entry["name"] for entry in reglages["files"]}
+        owned = {
+            (collection["name"], entry["name"]): entry["name"]
+            for collection in config["collections"]
+            if collection["name"] in ("reglages", "pages_du_site")
+            for entry in collection["files"]
+        }
         self.assertLessEqual(set(owned.values()), registered)
         for collection in config["collections"]:
             collection_preview = (collection.get("editor") or {}).get("preview")
@@ -543,7 +553,7 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertTrue(all(group.get("required") is False for group in groups), name)
             names = [field["name"] for field in fields]
             technique = max(i for i, field in enumerate(fields) if field.get("widget") == "groupe")
-            self.assertEqual("Réglages techniques", fields[technique]["label"], name)
+            self.assertTrue(fields[technique]["label"].startswith("Réglages techniques"), name)
             self.assertGreater(names.index("slug"), technique, name)
 
     def test_admin_exposes_every_editable_json_field(self):
@@ -565,21 +575,22 @@ class BuiltSiteTest(unittest.TestCase):
             admin_fields = {field["name"] for field in collections[name]["fields"]}
             self.assertLessEqual(source_fields, admin_fields, name)
 
-        settings_files = {
-            item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
-            for item in collections["reglages"]["files"]
-        }
-        for path in (ROOT / "content" / "reglages").glob("*.json"):
-            # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier ; un
-            # champ facultatif (référencement, anciennes adresses) peut y manquer.
-            fields = [
-                field for field in settings_files[path.stem]["fields"] if field.get("widget") != "groupe"
-            ]
-            stored = set(load_json(path))
-            self.assertLessEqual(stored, {field["name"] for field in fields}, path.name)
-            self.assertLessEqual(
-                {field["name"] for field in fields if field.get("required", True)}, stored, path.name
-            )
+        for collection, folder in (("reglages", "reglages"), ("pages_du_site", "pages-du-site")):
+            files = {
+                item["file"].rsplit("/", 1)[-1].removesuffix(".json"): item
+                for item in collections[collection]["files"]
+            }
+            paths = sorted((ROOT / "content" / folder).glob("*.json"))
+            self.assertEqual(set(files), {path.stem for path in paths}, folder)
+            for path in paths:
+                # Les intertitres (widget « groupe ») n’écrivent rien dans le fichier ; un
+                # champ facultatif (référencement, anciennes adresses) peut y manquer.
+                fields = [field for field in files[path.stem]["fields"] if field.get("widget") != "groupe"]
+                stored = set(load_json(path))
+                self.assertLessEqual(stored, {field["name"] for field in fields}, path.name)
+                self.assertLessEqual(
+                    {field["name"] for field in fields if field.get("required", True)}, stored, path.name
+                )
 
     def test_admin_appearance_entry_only_offers_contract_values(self):
         config = yaml.safe_load((DIST / "admin" / "config.yml").read_text(encoding="utf-8"))
@@ -670,6 +681,9 @@ class BuiltSiteTest(unittest.TestCase):
             for field in fields:
                 yield field
                 yield from fields_of(field.get("fields", []))
+                # Une liste à types (sections, liens) : chaque type a ses champs.
+                for variant in field.get("types", []):
+                    yield from fields_of(variant.get("fields", []))
                 if "field" in field:
                     yield field["field"]
 
@@ -681,7 +695,8 @@ class BuiltSiteTest(unittest.TestCase):
         # Un champ repris par une ancre est le même objet : on ne le compte qu’une fois.
         every_field = list({id(field): field for field in every_field}.values())
         slugs = [field for field in every_field if field["name"] == "slug" and field["widget"] == "string"]
-        self.assertEqual(6, len(slugs))
+        # Celle des pages de la maison vient du titre : son champ est caché.
+        self.assertEqual(5, len(slugs))
         # « Identifiant » pour les actualités et les projets, qui n’ont pas de page.
         self.assertEqual({"Adresse de la page", "Identifiant"}, {field["label"] for field in slugs})
         paypal = [field for field in every_field if field["name"].lower().endswith("hostedbuttonid")]

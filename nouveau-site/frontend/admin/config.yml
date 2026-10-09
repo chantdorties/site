@@ -30,9 +30,9 @@ collections:
   - name: reglages
     label: Réglages du site
     description: >-
-      Les textes qui ne dépendent d’aucun contenu : identité, menu, pied de page, page
-      d’accueil, introductions des pages engendrées, mots du parcours d’achat, ainsi
-      que les couleurs et polices du site.
+      Ce qui vaut pour tout le site : identité, menu, pied de page, mots du parcours
+      d’achat, couleurs et polices. Le texte de chaque page se règle dans « Pages du
+      site » ou « Mes pages ».
     format: json
     delete: false
     # Chaque réglage a son aperçu (preview.js) : une maquette de la zone du site où
@@ -53,7 +53,7 @@ collections:
           - label: Description pour les moteurs de recherche
             name: description
             widget: markdown
-            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Page d’accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
+            hint: "Le résumé de la maison que montrent Google et les réseaux sociaux pour l’accueil. Il ne s’affiche pas sur le site. Une description propre à l’accueil, dans « Pages principales › Accueil › Réglages techniques », passe avant. Le texte de bas de page, lui, se règle dans « Pied de page »."
             modes: [rich_text]
             minimal: true
             # Deux barres d’outils, et une règle : un texte court (accroche, introduction,
@@ -154,12 +154,101 @@ collections:
           - {label: "Lien vers les manuscrits", name: libelleManuscrits, widget: string}
           - {label: "Lien vers le plan du site", name: libellePlan, widget: string}
           - {label: "Lien vers les mentions légales", name: libelleMentions, widget: string}
-      # Les libellés suivent l’ordre où ils apparaissent en descendant la page d’accueil.
-      # « Rubrique » désigne partout la petite ligne en majuscules au-dessus d’un titre.
-      # Toute la page d’accueil se règle ici, de haut en bas : elle n’a pas d’autre écran.
-      - name: accueil
-        label: Page d’accueil
-        file: nouveau-site/content/reglages/accueil.json
+      - name: paiement
+        label: Paiement et dons
+        file: nouveau-site/content/reglages/paiement.json
+        fields:
+          - label: "Les textes des boutons"
+            name: groupeTextes
+            widget: groupe
+            required: false
+            hint: "Ce que lit le visiteur sur les boutons et mentions d’achat."
+          - {label: "Bouton d’achat d’un livre", name: libellePanier, widget: string}
+          - {label: "Bouton « voir mon panier »", name: libelleVoirPanier, widget: string}
+          - {label: "Mention « disponible »", name: libelleDisponible, widget: string}
+          - {label: "Mention « indisponible »", name: libelleIndisponible, widget: string}
+          - label: Bouton de contact d’un livre indisponible
+            name: libelleContact
+            widget: string
+            hint: Il ouvre un courriel prérempli avec le titre du livre.
+          - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
+          # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
+          # mode de vente, pas avec le catalogue.
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            hint: "Fournis par PayPal : à ne modifier qu’en recopiant exactement ce que donne PayPal."
+          - label: Identifiant du bouton PayPal de don
+            name: donationHostedButtonId
+            widget: string
+            hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page. Celui-ci reçoit les dons."
+            # Le motif des identifiants PayPal, repris par les livres et les sections.
+            pattern: &motif_paypal ['^[A-Z0-9]{13}$', "Treize caractères, en majuscules et chiffres uniquement"]
+          - label: Bloc technique du bouton « voir mon panier »
+            name: panierEncrypted
+            widget: text
+            hint: >-
+              Code signé par PayPal, recopié de l’ancien site. À ne pas modifier ni
+              effacer : sans lui, le site refuse de se générer. Il ne se remplace que
+              par un nouveau bloc fourni par PayPal.
+            pattern: ['^-----BEGIN PKCS7-----', "Le bloc doit commencer par -----BEGIN PKCS7-----"]
+      # Contrat complet : docs/CONTRAT-APPARENCE.md. Aucun champ de CSS libre : des
+      # couleurs #RRGGBB (sélecteur sans transparence, motif en garde-fou pour la
+      # saisie au clavier) et des polices choisies dans une liste fermée.
+      - name: apparence
+        label: Apparence
+        file: nouveau-site/content/reglages/apparence.json
+        fields:
+          - label: Fond du site
+            name: couleurFond
+            widget: color
+            allowInput: true
+            enableAlpha: false
+            pattern: &couleur ['^#[0-9A-Fa-f]{6}$', "Choisir une couleur, ou la saisir au format #RRGGBB (par exemple #c63f32)"]
+            hint: >-
+              Le fond général des pages et de l’en-tête. Les tailles, les espacements et
+              la mise en page restent protégés : ici, seules les couleurs et les polices
+              changent. Valeur d’origine : #f7f7f4.
+          - {label: "Fond des cartes", name: couleurSurface, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les cartes, les bandeaux blancs et les champs de recherche. Valeur d’origine : #ffffff."}
+          - {label: "Texte principal", name: couleurTexte, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le texte courant et les titres. Valeur d’origine : #171a18."}
+          - {label: "Texte secondaire", name: couleurTexteSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les textes discrets : fil d’Ariane, légendes, dates. Valeur d’origine : #626862."}
+          - {label: "Couleur principale", name: couleurPrincipale, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "L’accent de la maison : « d’orties », l’onglet actif, les filets, la 1re collection. Valeur d’origine : #c63f32."}
+          - {label: "Couleur principale foncée", name: couleurPrincipaleFoncee, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le survol des liens et des boutons. Valeur d’origine : #963128."}
+          - {label: "Couleur secondaire", name: couleurSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les surtitres, les citations, la mention « disponible », la 2e collection. Valeur d’origine : #3e6b50."}
+          - {label: "Liens", name: couleurLiens, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les liens dans les textes et la 3e collection. Valeur d’origine : #275c7a."}
+          - {label: "Boutons", name: couleurBoutons, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le fond des boutons pleins ; leur texte reste blanc, choisir une couleur foncée. Valeur d’origine : #171a18."}
+          - label: Police des titres
+            name: policeTitres
+            widget: select
+            hint: "Valeur d’origine : Classique à empattements (Georgia)."
+            options: &polices
+              - {label: "Classique à empattements (Georgia)", value: serif-classique}
+              - {label: "Livre à empattements (Palatino)", value: serif-livre}
+              - {label: "Moderne sans empattements (Inter)", value: sans-serif-moderne}
+              - {label: "Humaniste sans empattements", value: sans-serif-humaniste}
+          - {label: "Police des textes", name: policeTexte, widget: select, options: *polices, hint: "Valeur d’origine : Moderne sans empattements (Inter)."}
+
+  # L’accueil et les pages engendrées, une fiche chacune : on y change ce qui
+  # s’écrit (titre, introduction, référencement), jamais la liste, qui vient des fiches.
+  # Placée juste après les Réglages : les ancres YAML qu’elle définit (anciennes adresses,
+  # référencement, publication, rang) servent aux rubriques suivantes. Les noms d’entrée
+  # sont préfixés de « page_ » : Decap retrouve un aperçu par nom, et « collections »,
+  # « actualites » ou « projets » désignent déjà des rubriques.
+  - name: pages_du_site
+    label: Pages principales
+    label_singular: Page
+    description: >-
+      L’accueil et les pages du menu : Catalogue, Auteurs et illustrateurs,
+      Collections, Actualités, La maison, Projets. Elles existent toujours ; leurs
+      listes (livres, auteurs, articles…) viennent des fiches, on y écrit les textes.
+      Pour créer une page, aller dans « Mes pages ».
+    format: json
+    delete: false
+    files:
+      - name: page_accueil
+        label: Accueil
+        file: nouveau-site/content/pages-du-site/accueil.json
         preview_path: "index.html"
         fields:
           - label: "1. Le bandeau d’ouverture"
@@ -280,6 +369,7 @@ collections:
             name: groupeTechnique
             widget: groupe
             required: false
+            replie: true
             hint: "À ne modifier qu’en cas de besoin : les anciennes adresses redirigées vers l’accueil et son référencement dans les moteurs de recherche."
           # Les anciennes adresses et le référencement, repris par toutes les rubriques.
           # Le plafond des fichiers déposés (20 Mo) est défini ici, à sa première apparition.
@@ -290,7 +380,7 @@ collections:
             widget: list
             required: false
             collapsed: true
-            hint: Les adresses de l’ancien site, redirigées vers celle-ci. À compléter si l’adresse ci-dessus change.
+            hint: "Les adresses de l’ancien site qui doivent mener ici. Rarement utile : elles sont déjà remplies quand il le faut."
             field: {label: "Ancienne adresse", name: adresse, widget: string}
           - &seo
             label: Référencement SEO
@@ -314,227 +404,168 @@ collections:
               - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: &media_20_mo {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
       # Le nom d’entrée n’est pas « pages » : l’aperçu de la rubrique Pages de la
       # maison s’appliquerait. Le fichier, lui, reste pages.json.
-      - name: introductions
-        label: Introductions des pages
-        file: nouveau-site/content/reglages/pages.json
-        fields:
-          - label: "Les pages engendrées"
-            name: groupeEngendrees
+      - name: page_catalogue
+        label: Catalogue
+        file: nouveau-site/content/pages-du-site/catalogue.json
+        preview_path: "catalogue/"
+        fields: &page_intro_fields
+          - label: "L’essentiel"
+            name: groupe1
             widget: groupe
             required: false
-            hint: "Le haut des pages dont la liste se remplit toute seule : surtitre, titre et introduction. Ouvrir une page pour la modifier."
-          - label: Catalogue
-            name: catalogue
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            fields: &page_intro_fields
-              - {label: "Rubrique", name: rubrique, widget: string, hint: "La petite ligne au-dessus du titre. Écrire {nombre} pour insérer le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
-              - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
-              - label: Introduction
-                name: introduction
-                hint: "La phrase sous le titre."
-                widget: markdown
-                modes: [rich_text]
-                minimal: true
-                buttons: *boutons_courts
-                editor_components: []
-              - label: Description SEO
-                name: descriptionSeo
-                hint: "Affichée par les moteurs de recherche. {nombre} y est remplacé de la même façon. 160 caractères maximum."
-                widget: description-seo
-                modes: [rich_text]
-                minimal: true
-                buttons: []
-                editor_components: []
-          - label: Auteurs et illustrateurs
-            name: personnes
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            fields: *page_intro_fields
-          - label: Collections
-            name: collections
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            fields: *page_intro_fields
-          - label: Actualités
-            name: actualites
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            fields:
-              - {label: "Rubrique", name: rubrique, widget: string}
-              - {label: "Titre", name: titre, widget: string}
-              - label: Introduction
-                name: introduction
-                widget: markdown
-                modes: [rich_text]
-                minimal: true
-                buttons: *boutons_courts
-                editor_components: []
-              - label: Description SEO
-                name: descriptionSeo
-                widget: description-seo
-                modes: [rich_text]
-                minimal: true
-                buttons: []
-                editor_components: []
-              - {label: "Rubrique du bloc Facebook", name: appelRubrique, widget: string}
-              - {label: "Titre du bloc Facebook", name: appelTitre, widget: string}
-              - label: Texte du bloc Facebook
-                name: appelTexte
-                widget: markdown
-                modes: [rich_text]
-                minimal: true
-                buttons: *boutons_courts
-                editor_components: []
-              - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
-              # La page n’a pas d’autre écran : son référencement et ses anciennes adresses
-              # sont ici. Sa description est « Description SEO » plus haut, d’où un bloc
-              # sans description.
-              - label: Anciennes adresses
-                name: anciensSlugs
-                label_singular: "ancienne adresse"
-                widget: list
-                required: false
-                collapsed: true
-                hint: Les adresses de l’ancien site, redirigées vers la page Actualités.
-                field: {label: "Ancienne adresse", name: adresse, widget: string}
-              - label: Référencement SEO
-                name: seo
-                widget: object
-                required: false
-                collapsed: true
-                hint: "Facultatif : sans rien ici, le site reprend le titre de la page. La description, elle, est le champ « Description SEO » ci-dessus."
-                fields:
-                  - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre de la page."}
-                  - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
-          - label: La maison
-            name: maison
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            fields: *page_intro_fields
-          - label: "La page Projets"
-            name: groupeProjets
-            widget: groupe
-            required: false
-            hint: "Le texte de la page des livres à paraître. Les projets eux-mêmes s’ajoutent dans la rubrique Projets."
-          - label: Projets
-            name: projets
-            widget: object
-            collapsed: true
-            summary: "{{fields.titre}}"
-            # La page Projets est aussi une carte de « La maison » : d’où la publication,
-            # le lien de la carte et le rang, que les autres introductions n’ont pas.
-            fields:
-              - {label: "Rubrique", name: rubrique, widget: string, required: false, hint: "La petite ligne au-dessus du titre, reprise sur la carte de « La maison »."}
-              - {label: "Titre", name: titre, widget: string}
-              - &publication
-                label: Publication
-                name: statut
-                widget: select
-                default: publie
-                hint: « Brouillon » n’apparaît que dans l’aperçu, « Archivé » disparaît du site sans être effacé.
-                options:
-                  - {label: "Publié", value: publie}
-                  - {label: "Brouillon", value: brouillon}
-                  - {label: "Archivé", value: archive}
-              - label: Introduction
-                name: introduction
-                hint: "Le texte au-dessus de la liste des projets. Il sert aussi de résumé sur la carte de « La maison »."
-                widget: markdown
-                modes: [rich_text]
-                minimal: true
-                buttons: *boutons_courts
-                editor_components: []
-              - {label: "Lien de la carte", name: libelleAction, widget: string, required: false, hint: "Le texte cliquable au bas de la carte de « La maison », par exemple « Découvrir les projets »."}
-              - &order
-                label: Ordre d’affichage
-                name: ordre
-                widget: number
-                value_type: int
-                min: 0
-                default: 100
-                hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
-              - *old_slugs
-              - *seo
-      - name: paiement
-        label: Paiement et dons
-        file: nouveau-site/content/reglages/paiement.json
-        fields:
-          - label: "Les textes des boutons"
-            name: groupeTextes
-            widget: groupe
-            required: false
-            hint: "Ce que lit le visiteur sur les boutons et mentions d’achat."
-          - {label: "Bouton d’achat d’un livre", name: libellePanier, widget: string}
-          - {label: "Bouton « voir mon panier »", name: libelleVoirPanier, widget: string}
-          - {label: "Mention « disponible »", name: libelleDisponible, widget: string}
-          - {label: "Mention « indisponible »", name: libelleIndisponible, widget: string}
-          - label: Bouton de contact d’un livre indisponible
-            name: libelleContact
-            widget: string
-            hint: Il ouvre un courriel prérempli avec le titre du livre.
-          - {label: "Bouton de lecture d’un extrait", name: libelleExtrait, widget: string}
-          # Les mots du parcours d’achat, réunis ici : ils changent avec les offres et le
-          # mode de vente, pas avec le catalogue.
+            hint: "Le haut de la page : la petite ligne, le titre et la phrase d’introduction. La liste en dessous se remplit toute seule."
+          - {label: "Petite ligne au-dessus du titre", name: rubrique, widget: string, hint: "Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+          - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
+          - label: Introduction
+            name: introduction
+            hint: "La phrase sous le titre."
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
             required: false
-            hint: "Fournis par PayPal : à ne modifier qu’en recopiant exactement ce que donne PayPal."
-          - label: Identifiant du bouton PayPal de don
-            name: donationHostedButtonId
-            widget: string
-            hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page. Celui-ci reçoit les dons."
-            # Le motif des identifiants PayPal, repris par les livres et les sections.
-            pattern: &motif_paypal ['^[A-Z0-9]{13}$', "Treize caractères, en majuscules et chiffres uniquement"]
-          - label: Bloc technique du bouton « voir mon panier »
-            name: panierEncrypted
-            widget: text
-            hint: >-
-              Code signé par PayPal, recopié de l’ancien site. À ne pas modifier ni
-              effacer : sans lui, le site refuse de se générer. Il ne se remplace que
-              par un nouveau bloc fourni par PayPal.
-            pattern: ['^-----BEGIN PKCS7-----', "Le bloc doit commencer par -----BEGIN PKCS7-----"]
-      # Contrat complet : docs/CONTRAT-APPARENCE.md. Aucun champ de CSS libre : des
-      # couleurs #RRGGBB (sélecteur sans transparence, motif en garde-fou pour la
-      # saisie au clavier) et des polices choisies dans une liste fermée.
-      - name: apparence
-        label: Apparence
-        file: nouveau-site/content/reglages/apparence.json
+            replie: true
+            hint: "Rarement utile : la page fonctionne sans y toucher."
+          - label: Description pour les moteurs de recherche
+            name: descriptionSeo
+            hint: "Ce qu’affiche Google sous le titre de la page. {nombre} y est remplacé de la même façon. 160 caractères maximum."
+            widget: description-seo
+            modes: [rich_text]
+            minimal: true
+            buttons: []
+            editor_components: []
+      - name: page_personnes
+        label: Auteurs et illustrateurs
+        file: nouveau-site/content/pages-du-site/personnes.json
+        preview_path: "personnes/"
+        fields: *page_intro_fields
+      - name: page_collections
+        label: Collections
+        file: nouveau-site/content/pages-du-site/collections.json
+        preview_path: "collections/"
+        fields: *page_intro_fields
+      - name: page_actualites
+        label: Actualités
+        file: nouveau-site/content/pages-du-site/actualites.json
+        preview_path: "actualites/"
         fields:
-          - label: Fond du site
-            name: couleurFond
-            widget: color
-            allowInput: true
-            enableAlpha: false
-            pattern: &couleur ['^#[0-9A-Fa-f]{6}$', "Choisir une couleur, ou la saisir au format #RRGGBB (par exemple #c63f32)"]
-            hint: >-
-              Le fond général des pages et de l’en-tête. Les tailles, les espacements et
-              la mise en page restent protégés : ici, seules les couleurs et les polices
-              changent. Valeur d’origine : #f7f7f4.
-          - {label: "Fond des cartes", name: couleurSurface, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les cartes, les bandeaux blancs et les champs de recherche. Valeur d’origine : #ffffff."}
-          - {label: "Texte principal", name: couleurTexte, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le texte courant et les titres. Valeur d’origine : #171a18."}
-          - {label: "Texte secondaire", name: couleurTexteSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les textes discrets : fil d’Ariane, légendes, dates. Valeur d’origine : #626862."}
-          - {label: "Couleur principale", name: couleurPrincipale, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "L’accent de la maison : « d’orties », l’onglet actif, les filets, la 1re collection. Valeur d’origine : #c63f32."}
-          - {label: "Couleur principale foncée", name: couleurPrincipaleFoncee, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le survol des liens et des boutons. Valeur d’origine : #963128."}
-          - {label: "Couleur secondaire", name: couleurSecondaire, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les surtitres, les citations, la mention « disponible », la 2e collection. Valeur d’origine : #3e6b50."}
-          - {label: "Liens", name: couleurLiens, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Les liens dans les textes et la 3e collection. Valeur d’origine : #275c7a."}
-          - {label: "Boutons", name: couleurBoutons, widget: color, allowInput: true, enableAlpha: false, pattern: *couleur, hint: "Le fond des boutons pleins ; leur texte reste blanc, choisir une couleur foncée. Valeur d’origine : #171a18."}
-          - label: Police des titres
-            name: policeTitres
+          - label: "L’essentiel"
+            name: groupe1
+            widget: groupe
+            required: false
+            hint: "Le haut de la page : la petite ligne, le titre et la phrase d’introduction. La liste en dessous se remplit toute seule."
+          - {label: "Petite ligne au-dessus du titre", name: rubrique, widget: string, hint: "Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+          - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
+          - label: Introduction
+            name: introduction
+            hint: "La phrase sous le titre."
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - label: "Le bloc Facebook"
+            name: groupeFacebook
+            widget: groupe
+            required: false
+            hint: "En bas de la page, sous les actualités : une invitation à suivre la maison sur Facebook."
+          - {label: "Rubrique du bloc Facebook", name: appelRubrique, widget: string}
+          - {label: "Titre du bloc Facebook", name: appelTitre, widget: string}
+          - label: Texte du bloc Facebook
+            name: appelTexte
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            replie: true
+            hint: "Rarement utile : la page fonctionne sans y toucher."
+          - label: Description pour les moteurs de recherche
+            name: descriptionSeo
+            hint: "Ce qu’affiche Google sous le titre de la page. {nombre} y est remplacé de la même façon. 160 caractères maximum."
+            widget: description-seo
+            modes: [rich_text]
+            minimal: true
+            buttons: []
+            editor_components: []
+          - label: Anciennes adresses
+            name: anciensSlugs
+            label_singular: "ancienne adresse"
+            widget: list
+            required: false
+            collapsed: true
+            hint: Les adresses de l’ancien site, redirigées vers la page Actualités.
+            field: {label: "Ancienne adresse", name: adresse, widget: string}
+          - label: Référencement SEO
+            name: seo
+            widget: object
+            required: false
+            collapsed: true
+            hint: "Facultatif : sans rien ici, le site reprend le titre de la page. La description, elle, est le champ « Description SEO » ci-dessus."
+            fields:
+              - {label: "Titre SEO", name: titre, widget: string, required: false, pattern: ['^.{0,60}$', "60 caractères maximum"], hint: "60 caractères maximum. Laisser vide pour utiliser le titre de la page."}
+              - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
+      - name: page_maison
+        label: La maison
+        file: nouveau-site/content/pages-du-site/maison.json
+        preview_path: "la-maison/"
+        fields: *page_intro_fields
+      - name: page_projets
+        label: Projets
+        file: nouveau-site/content/pages-du-site/projets.json
+        preview_path: "projets/"
+        fields:
+          - label: "L’essentiel"
+            name: groupe1
+            widget: groupe
+            required: false
+            hint: "Le haut de la page Projets. Les livres à paraître eux-mêmes s’ajoutent dans la rubrique Projets."
+          - {label: "Petite ligne au-dessus du titre", name: rubrique, widget: string, required: false}
+          - {label: "Titre", name: titre, widget: string}
+          - &publication
+            label: Publication
+            name: statut
             widget: select
-            hint: "Valeur d’origine : Classique à empattements (Georgia)."
-            options: &polices
-              - {label: "Classique à empattements (Georgia)", value: serif-classique}
-              - {label: "Livre à empattements (Palatino)", value: serif-livre}
-              - {label: "Moderne sans empattements (Inter)", value: sans-serif-moderne}
-              - {label: "Humaniste sans empattements", value: sans-serif-humaniste}
-          - {label: "Police des textes", name: policeTexte, widget: select, options: *polices, hint: "Valeur d’origine : Moderne sans empattements (Inter)."}
+            default: publie
+            hint: « Brouillon » n’apparaît que dans l’aperçu, « Archivé » disparaît du site sans être effacé.
+            options:
+              - {label: "Publié", value: publie}
+              - {label: "Brouillon", value: brouillon}
+              - {label: "Archivé", value: archive}
+          - label: Introduction
+            name: introduction
+            hint: "Le texte au-dessus de la liste des projets."
+            widget: markdown
+            modes: [rich_text]
+            minimal: true
+            buttons: *boutons_courts
+            editor_components: []
+          - label: "Réglages techniques"
+            name: groupeTechnique
+            widget: groupe
+            required: false
+            replie: true
+            hint: "Rarement utile : la page fonctionne sans y toucher."
+          - {label: "Lien de la vignette", name: libelleAction, widget: hidden}
+          - &order
+            label: Rang
+            name: ordre
+            widget: number
+            value_type: int
+            min: 0
+            default: 100
+            hint: "Du plus petit au plus grand. Deux contenus ne peuvent pas partager le même rang : la publication serait refusée."
+          - *old_slugs
+          - *seo
 
   # L’ordre des champs suit la façon dont on décrit un livre : de quoi il s’agit, qui
   # l’a fait, ce qu’il raconte, à quoi il ressemble, comment on l’achète, où il se
@@ -949,8 +980,7 @@ collections:
     label_singular: Actualité
     description: >-
       Les articles de la page Actualités, du plus récent au plus ancien. Le titre et
-      l’introduction de la page, eux, se règlent dans « Réglages du site > Introductions
-      des pages > Actualités ».
+      l’introduction de la page, eux, se règlent dans « Pages principales › Actualités ».
     folder: nouveau-site/content/actualites
     extension: json
     format: json
@@ -1053,7 +1083,7 @@ collections:
     label_singular: Projet
     description: >-
       Les livres à paraître. Ils s’affichent sur la page Projets, sous son introduction,
-      laquelle s’écrit dans « Réglages du site › Introductions des pages › Projets ».
+      laquelle s’écrit dans « Pages principales › Projets ».
       C’est la seule rubrique où la suppression est possible : le jour de la parution,
       supprimer le projet et créer le livre.
     folder: nouveau-site/content/projets
@@ -1138,21 +1168,24 @@ collections:
         pattern: *motif_adresse
       - *order
 
+  # Créer une page tient en trois gestes : un titre, un texte, « Publier ». Tout le
+  # reste est facultatif : l’adresse vient du titre, l’ordre se range après les autres.
   - name: pages
-    label: Pages de la maison
+    label: Mes pages
     label_singular: Page
     description: >-
-      Les pages libres — commandes, librairies, soutien, manuscrits… Chacune apparaît
-      sous forme de carte sur la page « La maison ». Les mentions légales en font
+      Créer ou modifier une page : Commandes, Soutien, Amis… Pour en créer une :
+      « + Page », un titre, un texte, puis « Publier ». Les mentions légales en font
       partie : obligatoires, elles ne peuvent être ni dépubliées ni changer d’adresse.
-      La page Projets, elle, se règle dans « Réglages du site › Introductions des pages ».
     folder: nouveau-site/content/pages
     extension: json
     format: json
     create: true
     delete: false
     identifier_field: titre
-    slug: "{{fields.slug}}"
+    # Le nom du fichier, donc l’adresse, est tiré du titre à la création
+    # (« Atelier dessin » → /atelier-dessin/) et ne change plus ensuite.
+    slug: "{{slug}}"
     summary: "{{titre}} — {{statut}}"
     preview_path: "{{slug}}/"
     view_groups:
@@ -1164,150 +1197,160 @@ collections:
         name: groupe1
         widget: groupe
         required: false
-        hint: "Le titre et le texte de la page, découpé en sections."
-      - {label: "Titre", name: titre, widget: string}
+        hint: "Un titre et un texte suffisent. Tout ce qui suit est facultatif."
+      - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page. Il donne aussi son adresse : « Atelier dessin » devient /atelier-dessin/."}
       - *publication
+      # Une section a un type, choisi en l’ajoutant : seuls ses champs s’affichent.
       - label: Sections
         name: sections
         label_singular: "section"
         widget: list
         min: 1
-        summary: "{{fields.titre | default('Section sans intertitre')}}"
-        hint: "Le corps de la page. Une section par idée : un intertitre facultatif et un texte. La première sert aussi de résumé sur la page « La maison »."
-        fields:
-          - {label: "Intertitre", name: titre, widget: string, required: false}
+        # Ouvertes d’emblée : le texte d’une nouvelle page s’écrit sans chercher où cliquer.
+        collapsed: false
+        default: [{type: texte, titre: "", contenu: ""}]
+        hint: "Le corps de la page. Une section par idée. Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. La première sert aussi de résumé sur la page « La maison »."
+        types:
           - label: Texte
-            name: contenu
-            widget: markdown
-            modes: [rich_text]
-            buttons: *boutons_corps
-            editor_components: [image]
-          - label: Livres de cette section
-            name: livres
-            widget: relation
-            collection: livres
-            multiple: true
-            required: false
-            search_fields: [titre]
-            display_fields: [titre]
-            value_field: slug
-            hint: >-
-              Facultatif. Les livres choisis s’affichent sous le texte, avec leur
-              couverture, leurs auteurs et leur prix tirés de leur fiche : rien à
-              recopier. Pratique pour une offre groupée ou une sélection.
-          - label: Boutons d’achat PayPal
-            name: boutonsPaypal
-            label_singular: "bouton PayPal"
-            widget: list
-            required: false
-            collapsed: true
-            summary: "{{fields.libelle}}"
-            hint: >-
-              À n’utiliser que pour vendre depuis cette page : une offre groupée, une
-              adhésion, un don, un titre soldé. Pour vendre un livre à son prix normal,
-              le bouton se saisit dans sa fiche, pas ici.
+            name: texte
+            widget: object
+            summary: "{{fields.titre | default('Texte')}}"
             fields:
-              - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
-              - label: Identifiant du bouton PayPal
-                name: hostedButtonId
-                widget: string
-                hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
-                pattern: *motif_paypal
-      - label: "Images, liens et documents"
+              - &section_titre {label: "Intertitre", name: titre, widget: string, required: false}
+              - &section_texte
+                label: Texte
+                name: contenu
+                widget: markdown
+                modes: [rich_text]
+                buttons: *boutons_corps
+                editor_components: [image]
+          - label: Texte et livres du catalogue
+            name: livres
+            widget: object
+            summary: "{{fields.titre | default('Texte et livres')}}"
+            fields:
+              - *section_titre
+              - *section_texte
+              - &section_livres
+                label: Livres à montrer
+                name: livres
+                widget: relation
+                collection: livres
+                multiple: true
+                required: false
+                search_fields: [titre]
+                display_fields: [titre]
+                value_field: slug
+                hint: Ils s’affichent sous le texte, avec leur couverture, leurs auteurs et leur prix tirés de leur fiche.
+          - label: Offre à vendre (bouton PayPal)
+            name: offre
+            widget: object
+            summary: "{{fields.titre | default('Offre')}}"
+            fields:
+              - *section_titre
+              - *section_texte
+              - *section_livres
+              - label: Boutons d’achat PayPal
+                name: boutonsPaypal
+                label_singular: "bouton PayPal"
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.libelle}}"
+                hint: >-
+                  Pour vendre depuis cette page : une offre groupée, une adhésion, un don,
+                  un titre soldé. Pour vendre un livre à son prix normal, le bouton se
+                  saisit dans sa fiche, pas ici.
+                fields:
+                  - {label: "Texte du bouton", name: libelle, widget: string, hint: "Ce que lit le visiteur, par exemple « Commander les deux tomes — 25 € »."}
+                  - label: Identifiant du bouton PayPal
+                    name: hostedButtonId
+                    widget: string
+                    hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
+                    pattern: *motif_paypal
+      - label: "Pour aller plus loin"
         name: groupe2
         widget: groupe
         required: false
-        hint: "Affichés à côté et au bas du texte."
-      - label: Images
+        hint: "Rien d’obligatoire ici : la page s’affiche très bien sans."
+      - label: Photos en bas de page
         name: images
-        label_singular: "image"
+        label_singular: "photo"
         widget: list
         required: false
         collapsed: true
         summary: "{{fields.alt}}"
-        hint: Affichées dans une galerie « En images » au bas de la page.
+        hint: "Elles s’affichent côte à côte, sous le texte."
         fields: *image_et_alt
-      # Trois champs pour cinq types de lien : le type choisi décide de celui qu’il
-      # faut remplir, d’où les explications sur chacun.
-      - label: Liens et documents
+      # Un lien a un type, choisi en l’ajoutant : seuls ses champs s’affichent. Un PDF
+      # se dépose directement dans son lien.
+      - label: Liens à côté du texte
         name: liens
         label_singular: "lien"
         widget: list
         required: false
         collapsed: true
-        summary: "{{fields.texte}}"
-        hint: Affichés dans l’encadré « Liens et documents », à droite de la page.
-        fields:
-          - label: Type de lien
-            name: type
-            widget: select
-            default: externe
-            options:
-              - {label: "Vers un autre site", value: externe}
-              - {label: "Vers une adresse courriel", value: email}
-              - {label: "Vers un document PDF", value: document}
-              - {label: "Vers un livre du catalogue", value: livre}
-              - {label: "Vers une autre page du site", value: page}
-          - {label: "Libellé", name: texte, widget: string, required: false, hint: "Le texte cliquable. Vide, l’adresse s’affiche telle quelle."}
-          - label: Adresse ou fichier
-            name: href
-            widget: string
-            required: false
-            hint: Pour « autre site » l’adresse complète (https://…), pour « courriel » mailto:adresse@exemple.fr, pour « document PDF » le chemin du fichier. À laisser vide pour un livre ou une page, choisis plus bas.
-          # Choisis dans une liste plutôt que tapés : une faute de frappe dans une
-          # adresse ne se voyait qu’au moment de publier.
-          - label: Livre visé
-            name: slug
-            widget: relation
-            collection: livres
-            required: false
-            search_fields: [titre]
-            display_fields: [titre]
-            value_field: slug
-            hint: Uniquement pour un lien « Vers un livre du catalogue ».
-          - label: Page visée
-            name: pageCible
-            widget: relation
-            collection: pages
-            required: false
-            search_fields: [titre]
-            display_fields: [titre]
-            value_field: slug
-            hint: Uniquement pour un lien « Vers une autre page du site ».
-      - label: Documents joints
-        name: documents
-        label_singular: "document"
-        widget: list
-        required: false
-        collapsed: true
-        hint: Fichiers déposés avec la page. Pour qu’un document soit cliquable, ajouter aussi un lien de type « document PDF » ci-dessus.
-        field: {label: "PDF", name: document, widget: file, allow_multiple: false, media_library: *media_20_mo}
-      - label: "Carte sur la page « La maison »"
-        name: groupe3
-        widget: groupe
-        required: false
-        hint: "Chaque page y apparaît sous forme de carte."
-      - label: Rubrique de la carte
-        name: rubrique
-        widget: string
-        required: false
-        hint: La petite ligne au-dessus du titre, sur la carte de la page « La maison ». Vide, le nom de la maison la remplace.
-      - label: Libellé du lien de la carte
-        name: libelleAction
-        widget: string
-        required: false
-        hint: Le texte cliquable au bas de cette même carte, par exemple « Découvrir les projets ».
+        hint: "Un site, une adresse e-mail, un PDF à télécharger, un livre ou une autre page. Ils s’affichent dans un encadré, à droite du texte."
+        types:
+          - label: Site web
+            name: externe
+            widget: object
+            summary: "{{fields.texte | default('Lien')}}"
+            fields:
+              - &lien_texte {label: "Texte du lien", name: texte, widget: string, required: false, hint: "Le texte cliquable. Vide, l’adresse s’affiche telle quelle."}
+              - {label: "Adresse du site", name: href, widget: string, hint: "L’adresse complète, commençant par https://", pattern: ['^https?://', "L’adresse doit commencer par http:// ou https://"]}
+          - label: Adresse courriel
+            name: email
+            widget: object
+            summary: "{{fields.texte | default('Lien')}}"
+            fields:
+              - *lien_texte
+              - {label: "Adresse courriel", name: href, widget: string, hint: "Par exemple contact@exemple.fr. Un clic ouvre la messagerie du visiteur."}
+          - label: Document PDF
+            name: document
+            widget: object
+            summary: "{{fields.texte | default('Document PDF')}}"
+            fields:
+              - *lien_texte
+              - {label: "Fichier PDF", name: href, widget: file, allow_multiple: false, media_library: *media_20_mo, hint: "Déposer le PDF ici : il est proposé au téléchargement."}
+          - label: Livre du catalogue
+            name: livre
+            widget: object
+            summary: "{{fields.texte | default('Livre du catalogue')}}"
+            fields:
+              - *lien_texte
+              - {label: "Livre", name: slug, widget: relation, collection: livres, search_fields: [titre], display_fields: [titre], value_field: slug}
+          - label: Autre page du site
+            name: page
+            widget: object
+            summary: "{{fields.texte | default('Page du site')}}"
+            fields:
+              - *lien_texte
+              # La valeur est l’adresse de la page, c’est-à-dire le nom de son fichier :
+              # une page créée sans champ « slug » est ainsi atteignable.
+              - {label: "Page", name: pageCible, widget: relation, collection: pages, search_fields: [titre], display_fields: [titre], value_field: "{{slug}}"}
+      # Les réglages rares, repliés derrière leur intertitre (widget « groupe », replie).
       - label: "Réglages techniques"
         name: groupe4
         widget: groupe
         required: false
-        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
-      - label: Adresse de la page
-        name: slug
-        widget: string
-        hint: "La fin de l’adresse de la page, par exemple « commandes » pour /commandes/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous. Celle des mentions légales, « mentions-legales », est figée."
-        pattern: *motif_adresse
+        replie: true
+        hint: "Rarement utile : la page fonctionne sans y toucher."
+      # La vignette de la page sur « La maison » se compose toute seule : titre, début
+      # du texte, « Découvrir … ». Ces deux retouches restent cachées (le mot « carte »
+      # déroutait) ; les valeurs des pages existantes sont conservées.
+      - {label: "Petite ligne de la vignette", name: rubrique, widget: hidden}
+      - {label: "Lien de la vignette", name: libelleAction, widget: hidden}
+      # L’adresse est tirée du titre à la création et ne change plus : le champ reste
+      # caché pour conserver celle des pages existantes.
+      - {label: "Adresse", name: slug, widget: hidden}
       - {label: "Type", name: type, widget: hidden, default: page}
-      - *order
+      - label: Rang de la page
+        name: ordre
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        hint: "La page « La maison » du site présente toutes les pages, l’une après l’autre. Ce nombre choisit la place de celle-ci : du plus petit au plus grand. Vide : elle vient en dernier."
       - *old_slugs
       - *seo

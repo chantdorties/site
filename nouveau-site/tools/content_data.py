@@ -37,7 +37,12 @@ HOME_MARKDOWN_FIELDS = (
     "soutienTexte",
     "collectionsTexte",
 )
-SETTING_FILES = ("site", "navigation", "footer", "accueil", "pages", "paiement", "apparence")
+SECTION_TYPES = {"texte", "livres", "offre"}
+SETTING_FILES = ("site", "navigation", "footer", "paiement", "apparence")
+# Les pages engendrées, une fiche chacune dans content/pages-du-site/ (rubrique « Pages
+# du site » de l’administration), à côté de accueil.json. Le générateur les lit dans
+# settings["pages"][nom] et l’accueil dans settings["accueil"].
+SITE_PAGES = ("catalogue", "personnes", "collections", "actualites", "maison", "projets")
 
 # Le réglage Apparence, tel que le fixe docs/CONTRAT-APPARENCE.md. L’administration
 # choisit des valeurs ; le code décide où elles s’appliquent. Une couleur n’est
@@ -128,13 +133,23 @@ def read_json(path: Path) -> Any:
         raise ContentError(f"JSON invalide : {path}: {error}") from error
 
 
-def load_folder(content_dir: Path, folder: str) -> list[dict[str, Any]]:
+def load_folder(
+    content_dir: Path, folder: str, *, slug_from_filename: bool = False
+) -> list[dict[str, Any]]:
+    """Les fiches d’un dossier, une par fichier JSON.
+
+    Avec `slug_from_filename`, une fiche sans adresse prend celle de son fichier : c’est
+    le cas d’une page créée dans l’administration, dont Decap tire le nom de fichier du
+    titre (« Atelier dessin » → atelier-dessin.json).
+    """
     records = []
     seen: set[str] = set()
     for path in sorted((content_dir / folder).glob("*.json")):
         record = read_json(path)
         if not isinstance(record, dict):
             raise ContentError(f"{path} doit contenir un objet JSON")
+        if slug_from_filename and not record.get("slug"):
+            record["slug"] = path.stem
         slug = record.get("slug")
         if not isinstance(slug, str) or not SLUG_PATTERN.fullmatch(slug):
             raise ContentError(f"Slug invalide dans {path}: {slug!r}")
@@ -149,10 +164,19 @@ def load_folder(content_dir: Path, folder: str) -> list[dict[str, Any]]:
 
 def load_settings(content_dir: Path) -> dict[str, dict[str, Any]]:
     settings_dir = content_dir / "reglages"
-    return {
-        name: read_json(settings_dir / f"{name}.json")
-        for name in SETTING_FILES
-    }
+    # Les textes des pages ont quitté les réglages pour content/pages-du-site/ : un
+    # fichier resté à l’ancienne place est refusé plutôt qu’ignoré en silence.
+    for name in ("accueil", "pages"):
+        if (settings_dir / f"{name}.json").exists():
+            raise ContentError(
+                f"content/reglages/{name}.json n’est plus lu : les textes des pages se règlent "
+                "dans content/pages-du-site/"
+            )
+    pages_dir = content_dir / "pages-du-site"
+    settings = {name: read_json(settings_dir / f"{name}.json") for name in SETTING_FILES}
+    settings["accueil"] = read_json(pages_dir / "accueil.json")
+    settings["pages"] = {name: read_json(pages_dir / f"{name}.json") for name in SITE_PAGES}
+    return settings
 
 
 def require_text(record: dict[str, Any], field: str, kind: str) -> None:
@@ -368,6 +392,9 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     for name in SETTING_FILES:
         if not isinstance(settings.get(name), dict):
             raise ContentError(f"Réglage content/reglages/{name}.json invalide")
+    for name, record in (("accueil", settings.get("accueil")), *settings.get("pages", {}).items()):
+        if not isinstance(record, dict):
+            raise ContentError(f"Page du site content/pages-du-site/{name}.json invalide")
 
     site = settings["site"]
     for field in ("nom", "nomCourt", "courriel", "facebook", "domaine", "description"):
@@ -486,7 +513,7 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
     for field in ("libelleDon", "libelleOffres"):
         if field in payment:
             raise ContentError(
-                f"Réglage paiement: {field} se règle désormais dans content/reglages/accueil.json"
+                f"Réglage paiement: {field} se règle désormais dans content/pages-du-site/accueil.json"
             )
     for field in (
         "libellePanier",
@@ -570,6 +597,29 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
             if isinstance(section, dict):
                 section.setdefault("boutonsPaypal", [])
                 section.setdefault("livres", [])
+    # Une page créée sans ordre se range après les autres, dans l’ordre alphabétique
+    # de leurs adresses si plusieurs attendent : rien à numéroter pour la rédaction.
+    unordered = sorted(
+        (page for page in raw["pages"] if page.get("ordre") in (None, "")),
+        key=lambda page: str(page.get("slug")),
+    )
+    if unordered:
+        last = max(
+            (page["ordre"] for page in raw["pages"] if isinstance(page.get("ordre"), int)),
+            default=0,
+        )
+        for rank, page in enumerate(unordered, start=1):
+            page["ordre"] = last + 10 * rank
+    # Un lien courriel se saisit comme une adresse : « mailto: » s’ajoute ici.
+    for page in raw["pages"]:
+        for link in page.get("liens") or []:
+            if (
+                isinstance(link, dict)
+                and link.get("type") == "email"
+                and isinstance(link.get("href"), str)
+                and not link["href"].startswith("mailto:")
+            ):
+                link["href"] = "mailto:" + link["href"].strip()
     # L’identifiant d’un lien du menu est caché dans l’administration : un lien créé
     # là n’en a pas. On le déduit de l’adresse (« /agenda/ » → « agenda »). Les
     # identifiants existants, que les pages utilisent pour surligner l’onglet actif,
@@ -725,6 +775,17 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         for section in sections:
             if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
                 raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")
+            # Le type choisi dans « Ajouter section » : un texte seul, un texte et des
+            # livres du catalogue, ou une offre avec ses boutons d’achat.
+            section_type = section.get("type")
+            if section_type not in SECTION_TYPES:
+                raise ContentError(
+                    f"Page {page['slug']}: type de section attendu parmi {sorted(SECTION_TYPES)}"
+                )
+            if section_type == "texte" and (section["livres"] or section["boutonsPaypal"]):
+                raise ContentError(f"Page {page['slug']}: une section « texte » ne porte ni livre ni bouton")
+            if section_type == "livres" and section["boutonsPaypal"]:
+                raise ContentError(f"Page {page['slug']}: une section « livres » ne porte pas de bouton d’achat")
             # Les livres d'une section (une offre groupée, une sélection) : leur couverture,
             # leurs auteurs et leur prix viennent de leur fiche, rien n'est recopié ici.
             section_books = section.get("livres", [])
@@ -772,8 +833,9 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         validate_seo(root, page, "Page")
         validate_old_slugs(page, "Page")
 
-    # L’accueil n’est plus une page : tous ses textes sont dans content/reglages/accueil.json.
-    for slug, place in (("accueil", "reglages/accueil.json"), ("actualites", "reglages/pages.json")):
+    # L’accueil et les actualités ne sont pas des pages de la maison : leurs textes sont
+    # dans content/pages-du-site/.
+    for slug, place in (("accueil", "pages-du-site/accueil.json"), ("actualites", "pages-du-site/actualites.json")):
         if slug in pages_by_slug:
             raise ContentError(f"Page {slug}: ses réglages sont désormais dans content/{place}")
     # Les mentions légales sont obligatoires : leur adresse est figée, et le pied de
@@ -868,9 +930,9 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
 
 
 def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
-    """La page Projets, rebâtie depuis son bloc de content/reglages/pages.json.
+    """La page Projets, rebâtie depuis content/pages-du-site/projets.json.
 
-    Son introduction se règle avec celles des autres pages engendrées ; le reste du
+    Elle se règle avec les autres pages engendrées, dans « Pages principales » ; le reste du
     site (carte sur « La maison », plan du site, anciennes adresses) la traite comme
     une page de la maison ordinaire, d’une seule section, sans lien ni image.
     """
@@ -879,7 +941,7 @@ def projects_page(intro: dict[str, Any]) -> dict[str, Any]:
         "statut": intro.get("statut"),
         "titre": intro.get("titre"),
         "type": "page",
-        "sections": [{"titre": None, "contenu": intro.get("introduction")}],
+        "sections": [{"type": "texte", "titre": None, "contenu": intro.get("introduction")}],
         "liens": [],
         "images": [],
         "documents": [],
@@ -899,14 +961,14 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
         "books": load_folder(content_dir, "livres"),
         "people": load_folder(content_dir, "personnes"),
         "collections": load_folder(content_dir, "collections"),
-        "pages": load_folder(content_dir, "pages"),
+        "pages": load_folder(content_dir, "pages", slug_from_filename=True),
         "news": load_folder(content_dir, "actualites"),
         "projects": load_folder(content_dir, "projets"),
         "settings": load_settings(content_dir),
     }
     if any(page["slug"] == "projets" for page in raw["pages"]):
         raise ContentError(
-            "Page projets: son introduction se règle désormais dans content/reglages/pages.json"
+            "Page projets: son introduction se règle désormais dans content/pages-du-site/projets.json"
         )
     raw["pages"].append(projects_page(raw["settings"]["pages"].get("projets") or {}))
     apply_optional_defaults(raw)
@@ -914,8 +976,8 @@ def load_content(root: Path, *, include_drafts: bool) -> dict[str, Any]:
     # passés dans les réglages, les mentions légales dans content/pages/.
     if any((content_dir / "pages-fixes").glob("*.json")):
         raise ContentError(
-            "content/pages-fixes/ n’est plus lu : l’accueil se règle dans reglages/accueil.json, "
-            "les actualités dans reglages/pages.json, les mentions légales dans pages/"
+            "content/pages-fixes/ n’est plus lu : l’accueil et les actualités se règlent dans "
+            "pages-du-site/, les mentions légales dans pages/"
         )
     validate_content(root, raw)
     legacy = read_json(root / "config" / "legacy-redirects.json")

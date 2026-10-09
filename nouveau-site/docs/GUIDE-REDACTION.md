@@ -58,21 +58,23 @@ Le champ **Publication** offre trois choix :
 ## Où se règle quel texte
 
 C’est la question qui revient le plus souvent. La règle : **chaque partie du site se
-règle à un seul endroit**. Les pages qui rassemblent des contenus (catalogue, auteurs,
-collections, actualités, projets) sont fabriquées automatiquement : leur texte
-d’en-tête ne se modifie pas sur la page elle-même, mais dans les Réglages du site.
+règle à un seul endroit**. L’accueil et les pages du menu (catalogue, auteurs,
+collections, actualités, la maison, projets) sont dans **Pages › Pages principales** :
+elles existent toujours, et leurs listes viennent des fiches. Les
+pages qu’on écrit soi-même sont dans **Pages › Mes pages**. Dans le menu de gauche,
+« Pages » se déplie d’un clic pour montrer les deux.
 
 | Ce que vous voulez changer | Où aller |
 |---|---|
 | Un livre, une personne, une collection, un projet | La rubrique du même nom |
 | Un article d’actualité | Rubrique **Actualités** |
-| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Réglages du site › Page d’accueil**, de haut en bas dans l’ordre de la page |
-| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Réglages du site › Introductions des pages** |
-| Le référencement et les anciennes adresses de l’accueil, des actualités ou des projets | Le même écran, dans ses réglages techniques |
+| **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Pages principales › Accueil**, de haut en bas dans l’ordre de la page |
+| Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Pages principales**, la page du même nom |
+| Le référencement et les anciennes adresses d’une de ces pages | La même page, dans « ▸ Réglages techniques » |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
 | Les couleurs et les polices du site | **Réglages du site › Apparence** |
-| Les pages Commandes, Librairies, Soutien, Amis… et les mentions légales | **Pages de la maison** |
+| Les pages Commandes, Librairies, Soutien, Amis… et les mentions légales | **Mes pages** |
 
 La maison a deux textes de présentation, qui ne servent pas au même endroit :
 **Identité et contact › Description pour les moteurs de recherche** n’est lu que par
@@ -82,9 +84,9 @@ en bas de chaque page.
 Les mentions légales se modifient comme les autres pages de la maison, mais elles sont
 obligatoires : elles ne peuvent être ni dépubliées ni changer d’adresse.
 
-Chaque entrée des **Réglages du site** montre à droite un aperçu : une maquette de la
-zone du site où ses textes apparaissent (en-tête, pied de page, accueil, en-têtes des
-pages, boutons d’achat). Il suit la saisie, avant tout enregistrement.
+Chaque entrée des **Réglages du site** et des **Pages principales** montre à droite un
+aperçu : une maquette de la zone du site où ses textes apparaissent (en-tête, pied de
+page, accueil, haut de chaque page, boutons d’achat). Il suit la saisie, avant tout enregistrement.
 
 ### Le menu et les liens du pied de page
 
@@ -188,12 +190,36 @@ C’est la seule rubrique où la **suppression** est possible : un projet n’a 
 propre, donc rien à rediriger. Le jour de la parution, supprimer le projet et créer le
 livre.
 
+## Créer une page
+
+1. **Mes pages › + Page**.
+2. Écrire le **titre**, puis le **texte** dans la section déjà ouverte.
+3. **Publier › Publier maintenant**.
+
+C’est tout. L’adresse de la page vient du titre (« Atelier dessin » devient
+`/atelier-dessin/`) et ne change plus ensuite, même si le titre est modifié. La page
+prend place à la fin de « La maison » et entre dans le plan du site. Pour l’ajouter au
+menu du haut : **Réglages du site › Menu principal**.
+
+Tout le reste du formulaire est facultatif :
+
+- **Une autre section** : le bouton « Ajouter une entrée de type section » propose trois
+  sortes de section — un **texte**, un **texte et des livres du catalogue** (montrés en
+  cartes sous le texte), ou une **offre à vendre** avec ses boutons PayPal (voir
+  ci-dessous). Chacune ne montre que ses propres champs.
+- **Des liens** : le bouton « Ajouter une entrée de type lien » propose un site web, une
+  adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
+  directement dans son lien.
+- **Des photos** : elles s’affichent côte à côte sous le texte.
+- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : le rang de la page sur « La maison », les anciennes adresses, le référencement. Rarement utile.
+
 ## Vendre depuis une page
 
 Un livre se vend depuis sa fiche : c’est là que se saisit son bouton PayPal, et nulle part
 ailleurs. Mais certaines ventes n’appartiennent à aucun livre — une offre groupée à deux
-tomes, une adhésion, un don, un titre soldé. Pour celles-là, chaque **section** d’une page
-de la maison peut porter ses propres **boutons d’achat PayPal**.
+tomes, une adhésion, un don, un titre soldé. Pour celles-là, ajouter à la page une section
+de sorte **« Offre à vendre (bouton PayPal) »** : elle porte ses propres **boutons d’achat
+PayPal**.
 
 Un bouton demande deux choses : le texte que lira le visiteur, et l’**identifiant à
 13 caractères** fourni par PayPal au moment où le bouton y a été créé — par exemple
@@ -208,8 +234,8 @@ Deux précautions valent d’être répétées :
 - **Vérifier le bouton après publication** en cliquant dessus : PayPal affiche l’article et
   le montant réels. C’est la seule vérification qui compte.
 
-**Montrer les livres d’une offre.** Une section a aussi un champ **Livres de cette
-section** : on y choisit les livres dans une liste. Ils s’affichent sous le texte avec leur
+**Montrer les livres d’une offre.** Une section « Offre à vendre » ou « Texte et livres
+du catalogue » a un champ **Livres à montrer** : on y choisit les livres dans une liste. Ils s’affichent sous le texte avec leur
 couverture, leurs auteurs et leur prix, tirés de leur fiche — rien à recopier, rien à
 mettre à jour deux fois. C’est ainsi qu’est faite la page Offres spéciales : une section
 par offre, ses deux livres, son bouton.

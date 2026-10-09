@@ -312,9 +312,13 @@
       const titre = value(entry, 'titre', 'Page sans titre');
       const sections = safeWidgetsFor(widgetsFor, 'sections');
       const liens = enTableau(value(entry, 'liens')).map((lien, rang) => {
-        const cible = lien.type === 'livre' ? fiche('livres', lien.slug)?.titre : '';
-        return h('li', { key: rang }, h('a', { href: '#' },
-          lien.texte || cible || lisible(lien.slug) || String(lien.href || '').replace(/^https?:\/\/(www\.)?/, '')));
+        const cible = {
+          livre: () => fiche('livres', lien.slug)?.titre || lisible(lien.slug),
+          page: () => lisible(lien.pageCible || lien.slug),
+          document: () => 'Document PDF',
+          email: () => String(lien.href || '').replace(/^mailto:/, '')
+        }[lien.type]?.() || String(lien.href || '').replace(/^https?:\/\/(www\.)?/, '');
+        return h('li', { key: rang }, h('a', { href: '#' }, lien.texte || cible));
       });
       const images = enTableau(value(entry, 'images'))
         .map((item) => ({ src: assetUrl(getAsset, item?.image ?? item), alt: item?.alt || '' }))
@@ -594,34 +598,22 @@
     }
   });
 
-  const PAGES_ENGENDREES = [
-    ['catalogue', 'Catalogue — /catalogue/'],
-    ['personnes', 'Auteurs et illustrateurs — /personnes/'],
-    ['collections', 'Collections — /collections/'],
-    ['actualites', 'Actualités — /actualites/'],
-    ['maison', 'La maison — /la-maison/'],
-    ['projets', 'Projets — /projets/']
-  ];
-  const PageIntrosPreview = createClass({
+  // Le haut d’une page engendrée (Pages principales), la liste en dessous venant des fiches.
+  const pageIntroPreview = (cle, legende) => createClass({
     render() {
-      const { entry, widgetsFor } = this.props;
-      return cadre('En-têtes des pages engendrées ({nombre} devient le nombre réel)',
-        PAGES_ENGENDREES.map(([cle, legende]) => {
-          const bloc = safeWidgetsFor(widgetsFor, cle);
-          const donnee = (champ) => bloc?.getIn?.(['data', champ]) || '';
-          const texte = (champ) => bloc?.getIn?.(['widgets', champ]) || null;
-          return h('div', { key: cle },
-            zone(null, legende,
-              h('p', { className: 'site-preview__eyebrow' }, avecNombre(donnee('rubrique'))),
-              h('h1', {}, donnee('titre')),
-              h('div', { className: 'site-preview__text' }, texte('introduction'))),
-            cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
-              h('p', { className: 'site-preview__zone-label' }, 'Actualités — bloc Facebook, en bas de page'),
-              h('p', { className: 'site-preview__eyebrow' }, donnee('appelRubrique')),
-              h('h2', {}, donnee('appelTitre')),
-              h('div', { className: 'site-preview__text' }, texte('appelTexte')),
-              h('p', { className: 'site-preview__actions' }, bouton(donnee('boutonFacebook')))) : null);
-        }));
+      const { entry, widgetFor } = this.props;
+      return cadre('Haut de la page ({nombre} devient le nombre réel)',
+        zone(null, legende,
+          h('p', { className: 'site-preview__eyebrow' }, avecNombre(value(entry, 'rubrique'))),
+          h('h1', {}, value(entry, 'titre')),
+          blocMarkdown(widgetFor, 'introduction')),
+        h('div', { className: 'site-preview__placeholder' }, 'La liste se remplit toute seule depuis les fiches'),
+        cle === 'actualites' ? h('section', { className: 'site-preview__zone site-preview__zone--soft' },
+          h('p', { className: 'site-preview__zone-label' }, 'Bloc Facebook, en bas de page'),
+          h('p', { className: 'site-preview__eyebrow' }, value(entry, 'appelRubrique')),
+          h('h2', {}, value(entry, 'appelTitre')),
+          blocMarkdown(widgetFor, 'appelTexte'),
+          h('p', { className: 'site-preview__actions' }, bouton(value(entry, 'boutonFacebook')))) : null);
     }
   });
 
@@ -673,11 +665,56 @@
   // fichier. Déclaré « required: false » dans config.yml, sans quoi Decap refuserait
   // d’enregistrer une fiche où il est vide. admin.css masque l’étiquette et l’aide
   // ordinaires autour de lui : c’est ce rendu qui les remplace.
+  // Un intertitre « replie: true » cache les champs qui le suivent, jusqu’à l’intertitre
+  // suivant, derrière un bouton : les réglages rares ne s’affichent qu’à la demande.
+  // Decap pose chaque champ dans son propre conteneur, voisin des autres : on masque
+  // ces voisins. Un champ caché qui porte une erreur rouvre le bloc, pour qu’elle se voie.
   const Groupe = createClass({
+    getInitialState() {
+      return { ouvert: !this.props.field.get('replie') };
+    },
+    componentDidMount() {
+      this.appliquer();
+      if (!this.props.field.get('replie')) return;
+      this.observateur = new MutationObserver(() => {
+        if (!this.state.ouvert && this.voisins().some((voisin) =>
+          voisin.querySelector('[class*="ControlErrorsList"] li'))) this.setState({ ouvert: true });
+      });
+      const panneau = this.racine?.closest('[class*="ControlPaneContainer"]');
+      if (panneau) this.observateur.observe(panneau, { childList: true, subtree: true });
+    },
+    componentDidUpdate() {
+      this.appliquer();
+    },
+    componentWillUnmount() {
+      this.observateur?.disconnect();
+    },
+    voisins() {
+      const voisins = [];
+      let voisin = this.racine?.closest('[class*="ControlContainer"]')?.nextElementSibling;
+      while (voisin && !voisin.querySelector('.groupe-champ')) {
+        voisins.push(voisin);
+        voisin = voisin.nextElementSibling;
+      }
+      return voisins;
+    },
+    appliquer() {
+      if (!this.props.field.get('replie')) return;
+      this.voisins().forEach((voisin) => { voisin.style.display = this.state.ouvert ? '' : 'none'; });
+    },
     render() {
       const { field, forID } = this.props;
-      return h('div', { id: forID, className: 'groupe-champ' },
-        h('h2', { className: 'groupe-champ__titre' }, field.get('label')),
+      const replie = field.get('replie');
+      const titre = replie
+        ? h('button', {
+          type: 'button',
+          className: 'groupe-champ__bouton',
+          'aria-expanded': String(this.state.ouvert),
+          onClick: () => this.setState({ ouvert: !this.state.ouvert })
+        }, `${this.state.ouvert ? '▾' : '▸'} ${field.get('label')}`)
+        : field.get('label');
+      return h('div', { id: forID, className: 'groupe-champ', ref: (noeud) => { this.racine = noeud; } },
+        h('h2', { className: 'groupe-champ__titre' }, titre),
         field.get('hint') ? h('p', { className: 'groupe-champ__aide' }, field.get('hint')) : null
       );
     }
@@ -699,13 +736,19 @@
   CMS.registerPreviewTemplate('pages', PagePreview);
   // Nom du fichier de réglages : seule l’entrée Réglages › Apparence le porte.
   CMS.registerPreviewTemplate('apparence', AppearancePreview);
-  // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site. Les
-  // noms sont ceux des entrées de config.yml : « introductions » et non « pages »,
-  // qui désignerait aussi la rubrique Pages de la maison.
+  // Les autres fichiers de réglages, chacun avec la maquette de sa zone du site.
   CMS.registerPreviewTemplate('site', SitePreview);
   CMS.registerPreviewTemplate('navigation', NavigationPreview);
   CMS.registerPreviewTemplate('footer', FooterPreview);
-  CMS.registerPreviewTemplate('accueil', HomeTextsPreview);
-  CMS.registerPreviewTemplate('introductions', PageIntrosPreview);
   CMS.registerPreviewTemplate('paiement', PaymentPreview);
+  // Les Pages principales. Les noms d’entrée sont préfixés de « page_ » : Decap cherche un
+  // aperçu par nom de rubrique ET d’entrée, et « collections » ou « actualites »
+  // désignent déjà des rubriques.
+  CMS.registerPreviewTemplate('page_accueil', HomeTextsPreview);
+  CMS.registerPreviewTemplate('page_catalogue', pageIntroPreview('catalogue', 'Catalogue — /catalogue/'));
+  CMS.registerPreviewTemplate('page_personnes', pageIntroPreview('personnes', 'Auteurs et illustrateurs — /personnes/'));
+  CMS.registerPreviewTemplate('page_collections', pageIntroPreview('collections', 'Collections — /collections/'));
+  CMS.registerPreviewTemplate('page_actualites', pageIntroPreview('actualites', 'Actualités — /actualites/'));
+  CMS.registerPreviewTemplate('page_maison', pageIntroPreview('maison', 'La maison — /la-maison/'));
+  CMS.registerPreviewTemplate('page_projets', pageIntroPreview('projets', 'Projets — /projets/'));
 })();

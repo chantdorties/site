@@ -184,6 +184,22 @@ noscript {
   line-height: 1.2;
 }
 
+/* Un intertitre repliable (« replie: true ») : le titre devient un bouton. */
+#nc-root .groupe-champ__bouton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+#nc-root .groupe-champ__bouton:hover,
+#nc-root .groupe-champ__bouton:focus-visible {
+  color: var(--green);
+}
+
 #nc-root .groupe-champ__aide {
   margin: 6px 0 0;
   color: var(--muted);
@@ -411,3 +427,32 @@ noscript {
   color: var(--red-dark);
   font-weight: 700;
 }
+
+/* Le groupe dépliant « Pages » du menu de gauche (menu-pages.js). Decap ne déplace pas
+   ses éléments : l’ordre se règle ici. Les Réglages d’abord, puis le titre du groupe,
+   « Mes pages », « Pages principales », et les autres rubriques ensuite. */
+#nc-root ul.menu-avec-groupe {
+  display: flex;
+  flex-direction: column;
+}
+#nc-root ul.menu-avec-groupe > li { order: 4; }
+#nc-root ul.menu-avec-groupe > li.menu-groupe__avant { order: 0; }
+#nc-root ul.menu-avec-groupe > li.menu-groupe { order: 1; }
+#nc-root ul.menu-avec-groupe > li.menu-groupe__rubrique--pages { order: 2; }
+#nc-root ul.menu-avec-groupe > li.menu-groupe__rubrique--pages_du_site { order: 3; }
+#nc-root ul.menu-avec-groupe:not(.menu-groupe--ouvert) > li.menu-groupe__rubrique { display: none; }
+#nc-root li.menu-groupe__rubrique > a { padding-left: 2.5rem; }
+#nc-root .menu-groupe__bouton {
+  width: 100%;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  background: none;
+  color: #798291;
+  cursor: pointer;
+}
+#nc-root .menu-groupe__bouton:hover,
+#nc-root .menu-groupe__bouton:focus-visible { color: #3a69c7; }
+#nc-root .menu-groupe__fleche { margin-left: auto; }
+#nc-root .menu-groupe__fleche::before { content: "▸"; }
+#nc-root .menu-groupe__bouton[aria-expanded="true"] .menu-groupe__fleche::before { content: "▾"; }
