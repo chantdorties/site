@@ -456,3 +456,8 @@ noscript {
 #nc-root .menu-groupe__fleche { margin-left: auto; }
 #nc-root .menu-groupe__fleche::before { content: "▸"; }
 #nc-root .menu-groupe__bouton[aria-expanded="true"] .menu-groupe__fleche::before { content: "▾"; }
+
+/* Le lien « Tutoriel » de la barre du haut (tutoriel.js) : un lien, et non un bouton
+   comme ses voisins, d’où le soulignement retiré. */
+#nc-root .lien-tutoriel > a { text-decoration: none; }
+#nc-root .lien-tutoriel__icone { display: inline-flex; margin-right: 4px; }

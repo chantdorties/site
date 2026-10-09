@@ -4,6 +4,10 @@ Ce document s’adresse à la personne qui écrit les contenus. Il ne demande au
 connaissance technique. Pour le fonctionnement interne — dépôt, génération, déploiement —
 voir [ADMINISTRATION.md](ADMINISTRATION.md).
 
+Un tutoriel en ligne, [tuto-des-orties.varascundo.com](https://tuto-des-orties.varascundo.com/),
+montre l’administration pas à pas. Il s’ouvre aussi depuis le lien **Tutoriel** de la
+barre du haut de l’administration.
+
 ## Comment se lit un formulaire
 
 Chaque fiche se lit de haut en bas, découpée par de grands intertitres :
