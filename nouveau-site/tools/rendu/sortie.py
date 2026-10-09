@@ -122,6 +122,8 @@ class Sortie:
                 "titre": item["titre"],
                 "description": item["description"] and self.texte_brut(item["description"]),
                 "nombreLivres": item["nombreLivres"],
+                # L’emblème, pour la vignette de la liste dans l’administration.
+                "logo": self.collection_logo_media.get(item["slug"]),
             }
             for item in self.collections
         ]
