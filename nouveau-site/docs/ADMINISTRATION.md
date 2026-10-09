@@ -86,8 +86,11 @@ publiées à l’adresse `/mentions-legales/` : la validation refuse tout autre 
 tout changement d’adresse.
 
 Une adresse (`slug`) ne doit plus être changée après la première publication. Si
-un changement est indispensable, ajouter l’adresse précédente dans « Anciennes
-adresses » afin que le générateur crée la redirection.
+un changement est indispensable, ajouter l’adresse précédente à la liste
+`anciensSlugs` du fichier JSON de la fiche, afin que le générateur crée la
+redirection. Ce champ est caché dans l’administration (widget `hidden`, qui garde sa
+valeur à l’enregistrement) : les adresses de l’ancien site y ont été remplies à la
+migration et la rédaction n’a pas à s’en occuper.
 
 ## Les projets
 

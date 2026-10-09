@@ -17,7 +17,7 @@ Chaque fiche se lit de haut en bas, découpée par de grands intertitres :
 - Viennent ensuite les blocs propres à la rubrique — **Vente**, **Caractéristiques du
   livre**, **Images, liens et documents**…
 - **Réglages techniques** ferme le formulaire : l’adresse de la page, son rang dans les
-  listes, les anciennes adresses et le référencement. On n’y touche qu’en cas de besoin.
+  listes et le référencement. On n’y touche qu’en cas de besoin.
 
 Le volet de droite montre la page **telle qu’elle apparaîtra sur le site**, avec sa mise
 en page, ses couvertures et ses prix, et change pendant la frappe. Les noms, couvertures
@@ -74,7 +74,7 @@ pages qu’on écrit soi-même sont dans **Pages › Mes pages**. Dans le menu d
 | Un article d’actualité | Rubrique **Actualités** |
 | **Tout** ce qu’affiche la page d’accueil : grand titre, boutons, bloc d’information, textes des libraires et des particuliers, boutons de don et d’offres, présentation des collections, bandeau « Suivre la maison » | **Pages principales › Accueil**, de haut en bas dans l’ordre de la page |
 | Le titre et l’introduction du catalogue, des auteurs, des collections, des actualités, de la maison et des projets | **Pages principales**, la page du même nom |
-| Le référencement et les anciennes adresses d’une de ces pages | La même page, dans « ▸ Réglages techniques » |
+| Le référencement d’une de ces pages | La même page, dans « ▸ Réglages techniques » |
 | Le menu, le pied de page, l’adresse courriel, la page Facebook | **Réglages du site** |
 | Les mots du parcours d’achat (« Ajouter au panier », « Nous contacter »…) | **Réglages du site › Paiement et dons** |
 | Les couleurs et les polices du site | **Réglages du site › Apparence** |
@@ -201,8 +201,9 @@ et la couverture sont indispensables.
 **Ce qui mérite attention :**
 
 - **Adresse de la page** — elle devient l’adresse publique du livre. À ne plus changer
-  après la première publication : si c’est indispensable, reporter l’ancienne dans
-  « Anciennes adresses », tout en bas, pour que le lien continue de fonctionner.
+  après la première publication : les liens déjà diffusés ne mèneraient plus nulle part.
+  Si c’est indispensable, demander à la personne qui s’occupe du site d’ajouter une
+  redirection.
 - **Auteurs** — on choisit dans les fiches existantes. Une personne absente de la liste
   doit d’abord être créée dans *Auteurs et illustrateurs*, avec le rôle correspondant :
   les champs Auteurs, Illustrateurs et Préfaciers ne proposent que les personnes portant
@@ -252,7 +253,7 @@ Tout le reste du formulaire est facultatif :
   adresse courriel, un document PDF, un livre ou une autre page du site. Un PDF se dépose
   directement dans son lien.
 - **Des photos** : elles s’affichent côte à côte sous le texte.
-- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : le rang de la page sur « La maison », les anciennes adresses, le référencement. Rarement utile.
+- **Réglages techniques** (bloc replié, à ouvrir d’un clic) : le rang de la page sur « La maison » et le référencement. Rarement utile.
 
 ## Vendre depuis une page
 
@@ -384,8 +385,9 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
 
 - **Supprimer** un livre, une personne, une collection, une page ou une actualité :
   utiliser le statut *Archivé*. Seuls les projets s’effacent vraiment.
-- **Changer l’adresse** d’un contenu déjà publié sans reporter l’ancienne : les liens
-  existants et les moteurs de recherche pointeraient dans le vide.
+- **Changer l’adresse** d’un contenu déjà publié : les liens existants et les moteurs
+  de recherche pointeraient dans le vide. Une redirection s’ajoute dans le fichier de la
+  fiche (voir `ADMINISTRATION.md`).
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
   structurelles. On peut en revanche masquer des blocs de l’accueil et le bloc Facebook
   des actualités (voir « Masquer un bloc, laisser un champ vide »), et ajouter des
