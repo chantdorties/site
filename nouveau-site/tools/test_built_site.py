@@ -18,6 +18,7 @@ from tools.content_data import (
     inline_media_paths,
     load_settings,
 )
+from tools.rendu.texte import OutilsTexte
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -798,8 +799,13 @@ class BuiltSiteTest(unittest.TestCase):
         commercial = home.select_one(".home-commercial")
         self.assertIsNotNone(commercial)
         commercial_text = commercial.get_text(" ", strip=True)
-        self.assertIn("40 % de remise", commercial_text)
-        self.assertIn("Mondial Relay", commercial_text)
+        # Les conditions de vente sont du texte éditorial : on vérifie qu’elles sont
+        # publiées telles que saisies, pas leur formulation (« 40 % de remise » a
+        # disparu quand la maison a changé de distributeur, et la publication a bloqué).
+        accueil = settings("accueil")
+        for champ in ("librairesTexte", "particuliersTexte"):
+            debut = " ".join(OutilsTexte().texte_brut(accueil[champ]).split()[:6])
+            self.assertIn(debut, commercial_text, champ)
         self.assertEqual(
             ["Libraires", "Particuliers"],
             [heading.get_text(strip=True) for heading in commercial.select(".commercial-audience h4")],
