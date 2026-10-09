@@ -93,3 +93,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #29 · Lien « Tutoriel » dans la barre du haut de l’admin.
 - 2026-10-09 · #30 · Ce fichier `AGENTS.md` (et `CLAUDE.md` qui l’importe) : consignes lues à chaque session, journal des changements, règle de mise à jour du tutoriel. Tutoriel : chapitre Réglages corrigé (les pages n’y sont plus).
 - 2026-10-09 · #31 · Admin : titres des sections typées qui chevauchaient le nom du type ; ancien nom « Pages du site » oublié. Tutoriel : les 20 captures refaites sur `main`, 4 nouvelles (menu Pages, Pages principales, nouvelle page).
+- 2026-10-09 · #34 · Mise en forme : barré partout ; blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur » dans les pages et les actualités.
