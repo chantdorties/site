@@ -59,7 +59,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 4. Vérifier dans le navigateur ce qui touche l’admin (`make admin`, port 8766).
 5. Mettre à jour `docs/GUIDE-REDACTION.md` (rédaction) et `docs/ADMINISTRATION.md` (technique) quand le comportement change.
 6. Pousser, ouvrir une PR, attendre le CI vert. **Demander avant de fusionner** : fusionner sur `main` met le site en ligne.
-7. Ne jamais : publier/supprimer sur les serveurs (Free, OVH) sans accord ; afficher un secret ; committer des fichiers modifiés par l’utilisateur hors de la tâche (ex. `README.md`) ni `.playwright-cli/` ; arrêter le `make admin` de l’utilisateur (il verrouille `dist/` : construire ailleurs).
+7. Ne jamais : publier/supprimer sur les serveurs (Free, OVH) sans accord ; afficher un secret ; committer des fichiers modifiés par l’utilisateur hors de la tâche (ex. `README.md`) ni `.playwright-cli/` — donc jamais `git commit -a`, toujours `git add <fichiers>` ; arrêter le `make admin` de l’utilisateur (il verrouille `dist/` : construire ailleurs).
 8. Après un changement validé et poussé : **ajouter une ligne au Journal ci-dessous** (dans la même PR).
 
 ## Pièges connus
