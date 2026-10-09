@@ -103,6 +103,14 @@ class BuiltSiteTest(unittest.TestCase):
             self.assertIsNotNone(soup.select_one("a.skip-link"), path)
             self.assertEqual(1, len(soup.select("main#contenu")), path)
 
+    def test_every_public_html_page_has_cookie_banner(self):
+        for path in self.public_html_files:
+            soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+            banner = soup.select_one("[data-cookie-banner]")
+            self.assertIsNotNone(banner, path)
+            self.assertEqual("dialog", banner.get("role"), path)
+            self.assertEqual(2, len(banner.select("[data-cookie-choice]")), path)
+
     def test_all_local_html_references_resolve(self):
         missing = []
         for path in self.html_files:

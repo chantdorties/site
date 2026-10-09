@@ -24,6 +24,19 @@
     {{content}}
   </main>
   {{footer}}
+  <aside class="cookie-banner" data-cookie-banner hidden role="dialog" aria-labelledby="cookie-banner-title" aria-describedby="cookie-banner-description">
+    <div class="container cookie-banner__inner">
+      <div class="cookie-banner__copy">
+        <h2 id="cookie-banner-title">Votre vie privée</h2>
+        <p id="cookie-banner-description">Ce site n’utilise pas de cookies publicitaires ni de cookies de suivi. Nous vous demandons simplement si vous acceptez cette bannière, afin de ne pas vous la réafficher.</p>
+        <a href="/mentions-legales/">En savoir plus dans les mentions légales</a>
+      </div>
+      <div class="cookie-banner__actions">
+        <button class="button button--secondary button--small" type="button" data-cookie-choice="refuse">Refuser</button>
+        <button class="button button--small" type="button" data-cookie-choice="accept">Accepter</button>
+      </div>
+    </div>
+  </aside>
   <script type="module" src="/assets/js/site.js?v={{asset_version}}"></script>
   {{page_scripts}}
 </body>

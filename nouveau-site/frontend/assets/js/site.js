@@ -69,6 +69,31 @@ if (galleryDialog) {
   });
 }
 
+const cookieBanner = document.querySelector('[data-cookie-banner]');
+const cookieChoiceKey = 'chantdorties-cookie-choice-v1';
+
+if (cookieBanner) {
+  let savedChoice = null;
+  try {
+    savedChoice = window.localStorage.getItem(cookieChoiceKey);
+  } catch {
+    // La bannière reste utilisable même si la mémoire locale est bloquée.
+  }
+
+  if (!savedChoice) cookieBanner.hidden = false;
+
+  cookieBanner.querySelectorAll('[data-cookie-choice]').forEach((button) => {
+    button.addEventListener('click', () => {
+      try {
+        window.localStorage.setItem(cookieChoiceKey, button.dataset.cookieChoice);
+      } catch {
+        // Le choix est tout de même appliqué pour cette visite.
+      }
+      cookieBanner.hidden = true;
+    });
+  });
+}
+
 if (window.location.hash === '#recherche') {
   window.addEventListener('load', () => {
     document.querySelector('#recherche input')?.focus();
