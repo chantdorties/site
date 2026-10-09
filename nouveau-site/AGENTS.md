@@ -96,3 +96,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #31 · Admin : titres des sections typées qui chevauchaient le nom du type ; ancien nom « Pages du site » oublié. Tutoriel : les 20 captures refaites sur `main`, 4 nouvelles (menu Pages, Pages principales, nouvelle page).
 - 2026-10-09 · #34 · Mise en forme : barré partout ; blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur » dans les pages et les actualités.
 - 2026-10-09 · #36 · Test de l’accueil : les conditions de vente sont comparées au contenu saisi, plus à une formulation figée (elle bloquait la publication après la mise à jour du client, #35).
+- 2026-10-09 · #37 · Cases « Masquer ce bloc » (accueil, bloc Facebook) et « Masquer cette section » (Mes pages) ; accueil : seul le grand titre est obligatoire, un champ vide disparaît ; petite ligne et introduction facultatives sur les pages principales.
