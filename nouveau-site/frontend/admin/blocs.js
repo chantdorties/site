@@ -328,7 +328,7 @@
         label_singular: 'ligne',
         widget: 'list',
         summary: '{{fields.c1}}',
-        hint: 'Quatre colonnes au plus. Laissez vides les cases inutiles. Sur téléphone, le tableau défile de côté.',
+        hint: 'Quatre colonnes au plus. Laissez vides les cases inutiles. Sur téléphone, les cases passent à la ligne.',
         fields: [
           { label: 'Colonne 1', name: 'c1', widget: 'string', required: false },
           { label: 'Colonne 2', name: 'c2', widget: 'string', required: false },
