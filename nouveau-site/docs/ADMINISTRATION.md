@@ -130,8 +130,10 @@ ils reçoivent automatiquement une valeur vide.
 
 ### Suppression
 
-Livres, personnes, collections, actualités, pages et projets ont le bouton « Supprimer
-l’entrée » (`delete: true`). Decap supprime une fiche publiée **directement sur
+Livres, personnes, collections, actualités, pages et projets ont le bouton « Supprimer »
+(`delete: true`). Ses libellés et ses demandes de confirmation sont réécrits en mots
+simples dans `suppression.js`, dans la page et dans `window.confirm` : Decap copie ses
+traductions au démarrage, modifier `CMS.getLocale('fr')` ensuite ne change rien. Decap supprime une fiche publiée **directement sur
 `main`**, hors flux éditorial : ce qui la citait ne doit donc jamais bloquer la
 publication suivante.
 

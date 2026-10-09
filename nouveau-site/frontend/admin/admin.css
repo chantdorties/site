@@ -470,7 +470,7 @@ noscript {
   top: 28px;
 }
 
-/* La garde du bouton « Supprimer l’entrée » (suppression.js) : le bouton grisé d’une
+/* La garde du bouton « Supprimer » (suppression.js) : le bouton grisé d’une
    fiche dont d’autres dépendent, et la raison, affichée sous la barre du haut. */
 #nc-root .suppression-bloquee {
   opacity: 0.45;
