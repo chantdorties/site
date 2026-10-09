@@ -67,6 +67,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 ## Le tutoriel
 
 - Dossier `../tuto/` (à côté de `nouveau-site/`), **dépôt Git séparé** `chantdorties/tuto-des-orties`, branche `main`. Servi tel quel (Apache, OVH) sur `https://tuto-des-orties.varascundo.com/`. **Pousser sur `main` ne suffit pas** à le mettre en ligne (constaté le 2026-10-09) : méthode de mise en ligne à préciser ici.
+- Captures : 1440 × 900 (émulation du navigateur), admin locale à jour, menu « Pages » déplié, **attendre que l’aperçu et les vignettes soient chargés** avant de capturer, puis relire chaque image avec sa légende. La médiathèque s’ouvre par le bouton Media (pas d’adresse propre).
 - Fichiers : `index.html` (le guide, chapitres et encadrés), `assets/` (CSS, JS, captures `assets/images/*.webp`), `README.md` (version illustrée : commit de référence du site), `sources/` (`version-reference.md`, `matrice-captures.md`, `captures-a-refaire.md`), `skill.md` (référence détaillée du site, à garder cohérente avec ce fichier).
 - Mise à jour : corriger les textes de `index.html` touchés par le changement (noms d’écrans, chemins « Rubrique → Entrée », étapes) ; noter dans `sources/captures-a-refaire.md` les captures devenues fausses ; mettre à jour le commit de référence dans `README.md` et la date « Guide vérifié le … » ; puis `git -C ../tuto add <fichiers> && git commit && git push`.
 - Vérifier la mise en ligne : `curl -s https://tuto-des-orties.varascundo.com/ | sha1sum` doit égaler `sha1sum ../tuto/index.html`.
@@ -90,3 +91,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #28 · Création de page simplifiée (titre + texte), sections et liens typés ; « Pages principales » (`content/pages-du-site/`) ; « Mes pages » ; groupe « Pages ▾ » dans le menu.
 - 2026-10-09 · #29 · Lien « Tutoriel » dans la barre du haut de l’admin.
 - 2026-10-09 · #30 · Ce fichier `AGENTS.md` (et `CLAUDE.md` qui l’importe) : consignes lues à chaque session, journal des changements, règle de mise à jour du tutoriel. Tutoriel : chapitre Réglages corrigé (les pages n’y sont plus).
+- 2026-10-09 · #31 · Admin : titres des sections typées qui chevauchaient le nom du type ; ancien nom « Pages du site » oublié. Tutoriel : les 20 captures refaites sur `main`, 4 nouvelles (menu Pages, Pages principales, nouvelle page).
