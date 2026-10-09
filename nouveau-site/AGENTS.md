@@ -66,7 +66,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 
 ## Le tutoriel
 
-- Dossier `../tuto/` (à côté de `nouveau-site/`), **dépôt Git séparé** `chantdorties/tuto-des-orties`, branche `main`. Servi tel quel (Apache, OVH) sur `https://tuto-des-orties.varascundo.com/` : **pousser sur `main` le met en ligne**.
+- Dossier `../tuto/` (à côté de `nouveau-site/`), **dépôt Git séparé** `chantdorties/tuto-des-orties`, branche `main`. Servi tel quel (Apache, OVH) sur `https://tuto-des-orties.varascundo.com/`. **Pousser sur `main` ne suffit pas** à le mettre en ligne (constaté le 2026-10-09) : méthode de mise en ligne à préciser ici.
 - Fichiers : `index.html` (le guide, chapitres et encadrés), `assets/` (CSS, JS, captures `assets/images/*.webp`), `README.md` (version illustrée : commit de référence du site), `sources/` (`version-reference.md`, `matrice-captures.md`, `captures-a-refaire.md`), `skill.md` (référence détaillée du site, à garder cohérente avec ce fichier).
 - Mise à jour : corriger les textes de `index.html` touchés par le changement (noms d’écrans, chemins « Rubrique → Entrée », étapes) ; noter dans `sources/captures-a-refaire.md` les captures devenues fausses ; mettre à jour le commit de référence dans `README.md` et la date « Guide vérifié le … » ; puis `git -C ../tuto add <fichiers> && git commit && git push`.
 - Vérifier la mise en ligne : `curl -s https://tuto-des-orties.varascundo.com/ | sha1sum` doit égaler `sha1sum ../tuto/index.html`.
