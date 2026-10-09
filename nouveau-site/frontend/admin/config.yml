@@ -480,18 +480,14 @@ collections:
             widget: groupe
             required: false
             replie: true
-            hint: "À ne modifier qu’en cas de besoin : les anciennes adresses redirigées vers l’accueil et son référencement dans les moteurs de recherche."
+            hint: "À ne modifier qu’en cas de besoin : le référencement de l’accueil dans les moteurs de recherche."
           # Les anciennes adresses et le référencement, repris par toutes les rubriques.
           # Le plafond des fichiers déposés (20 Mo) est défini ici, à sa première apparition.
-          - &old_slugs
-            label: Anciennes adresses
-            name: anciensSlugs
-            label_singular: "ancienne adresse"
-            widget: list
-            required: false
-            collapsed: true
-            hint: "Les adresses de l’ancien site qui doivent mener ici. Rarement utile : elles sont déjà remplies quand il le faut."
-            field: {label: "Ancienne adresse", name: adresse, widget: string}
+          # Les anciennes adresses (celles de l’ancien site, redirigées vers la fiche) sont
+          # cachées : remplies à la migration, elles n’ont rien à faire dans un formulaire.
+          # Le widget « hidden » les garde telles quelles à l’enregistrement, là où un
+          # champ retiré du formulaire serait effacé. Les ajouter, au besoin, dans le JSON.
+          - &old_slugs {label: "Anciennes adresses", name: anciensSlugs, widget: hidden, required: false}
           - &seo
             label: Référencement SEO
             name: seo
@@ -666,14 +662,7 @@ collections:
             minimal: true
             buttons: []
             editor_components: []
-          - label: Anciennes adresses
-            name: anciensSlugs
-            label_singular: "ancienne adresse"
-            widget: list
-            required: false
-            collapsed: true
-            hint: Les adresses de l’ancien site, redirigées vers la page Actualités.
-            field: {label: "Ancienne adresse", name: adresse, widget: string}
+          - *old_slugs
           - label: Référencement SEO
             name: seo
             widget: object
@@ -980,11 +969,11 @@ collections:
         name: groupe6
         widget: groupe
         required: false
-        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes et le référencement dans les moteurs de recherche."
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: "La fin de l’adresse de la page, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        hint: "La fin de l’adresse de la page, par exemple « ville-rouge » pour /livres/ville-rouge/. À ne plus modifier après la première publication : les liens déjà diffusés ne mèneraient plus nulle part."
         # Le motif des adresses, repris par toutes les rubriques.
         pattern: &motif_adresse ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Minuscules, chiffres et tirets uniquement, sans espace ni accent"]
       - *order
@@ -1076,11 +1065,11 @@ collections:
         name: groupe3
         widget: groupe
         required: false
-        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes et le référencement dans les moteurs de recherche."
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: "La fin de l’adresse de la page, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        hint: "La fin de l’adresse de la page, par exemple « laure-philippon » pour /personnes/laure-philippon/. À ne plus modifier après la première publication : les liens déjà diffusés ne mèneraient plus nulle part."
         pattern: *motif_adresse
       - *order
       - *old_slugs
@@ -1136,11 +1125,11 @@ collections:
         name: groupe2
         widget: groupe
         required: false
-        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes et le référencement dans les moteurs de recherche."
       - label: Adresse de la page
         name: slug
         widget: string
-        hint: "La fin de l’adresse de la page, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication : ajouter plutôt l’ancienne adresse dans « Anciennes adresses », juste en dessous."
+        hint: "La fin de l’adresse de la page, par exemple « rues-en-friche » pour /collections/rues-en-friche/. À ne plus modifier après la première publication : les liens déjà diffusés ne mèneraient plus nulle part."
         pattern: *motif_adresse
       - *order
       - *old_slugs
@@ -1233,7 +1222,7 @@ collections:
         name: groupe3
         widget: groupe
         required: false
-        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes, les anciennes adresses redirigées et le référencement dans les moteurs de recherche."
+        hint: "À ne modifier qu’en cas de besoin : l’adresse de la page, son rang dans les listes et le référencement dans les moteurs de recherche."
       - label: Identifiant
         name: slug
         widget: string
