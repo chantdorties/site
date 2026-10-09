@@ -204,6 +204,7 @@ class SiteBuilder(
         self.prepare_output()
         self.optimize_images()
         self.optimize_inline_images()
+        self.copy_inline_documents()
         self.prepare_documents()
         self.write_public_data()
         self.build_home()

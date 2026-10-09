@@ -15,9 +15,9 @@ from typing import Any
 # « tools.content_data » (tests) : la liste blanche des blocs vient du convertisseur,
 # qui n'importe rien en retour.
 if __package__:
-    from .rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_OUVERTURE_BLOC
+    from .rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_IMAGE_SEULE, RE_LIEN_SEUL, RE_OUVERTURE_BLOC
 else:
-    from rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_OUVERTURE_BLOC
+    from rendu.texte import OPTIONS_BLOCS, RE_FERMETURE_BLOC, RE_IMAGE_SEULE, RE_LIEN_SEUL, RE_OUVERTURE_BLOC
 
 
 STATUSES = {"archive", "brouillon", "publie"}
@@ -252,6 +252,9 @@ def validate_media(root: Path, value: str | None, owner: str) -> None:
 
 # Une image déposée au fil d'un texte : « ![texte alternatif](chemin "légende") ».
 INLINE_IMAGE_PATTERN = re.compile(r"!\[([^\]]*)\]\(([^)\s]+)(?:[ \t]+\"[^\"]*\")?\)")
+# Un fichier de la médiathèque lié depuis un texte (bouton « Document PDF ») :
+# « [Télécharger le bon de commande](content/media/uploads/bon.pdf) ».
+INLINE_DOCUMENT_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\((content/media/[^)\s]+)(?:[ \t]+\"[^\"]*\")?\)")
 
 
 def iter_markdown_texts(raw: dict[str, Any]) -> Iterator[tuple[str, str]]:
@@ -355,8 +358,9 @@ def referenced_media_paths(raw: dict[str, Any]) -> set[str]:
         image = ((record or {}).get("seo") or {}).get("image")
         if image:
             paths.add(image)
-    # Les images déposées au fil d'un texte ne figurent dans aucun champ.
+    # Les images déposées au fil d'un texte, et les PDF qu'il lie, ne figurent dans aucun champ.
     paths.update(inline_media_paths(raw))
+    paths.update(inline_document_paths(raw))
     return paths
 
 
@@ -462,6 +466,26 @@ def inline_media_paths(raw: dict[str, Any]) -> set[str]:
     }
 
 
+def inline_document_paths(raw: dict[str, Any]) -> set[str]:
+    """Les chemins des documents liés au fil des textes."""
+    return {
+        match.group(1)
+        for _, texte in iter_markdown_texts(raw)
+        for match in INLINE_DOCUMENT_PATTERN.finditer(texte)
+    }
+
+
+def validate_inline_documents(root: Path, raw: dict[str, Any]) -> None:
+    """Un document lié depuis un texte existe et est un PDF : le seul format que le
+    site prépare et propose au téléchargement."""
+    for proprietaire, texte in iter_markdown_texts(raw):
+        for match in INLINE_DOCUMENT_PATTERN.finditer(texte):
+            chemin = match.group(1)
+            validate_media(root, chemin, proprietaire)
+            if Path(chemin).suffix.lower() != ".pdf":
+                raise ContentError(f"{proprietaire}: seul un document PDF se lie depuis un texte: {chemin}")
+
+
 def validate_inline_images(root: Path, raw: dict[str, Any]) -> None:
     """Vérifie les images déposées au fil d'un texte.
 
@@ -492,15 +516,18 @@ def validate_text_blocks(raw: dict[str, Any]) -> None:
     silence, mais sans la mise en forme voulue.
     """
     for proprietaire, texte in iter_markdown_texts(raw):
-        ouvert = False
+        ouvert = None
+        corps: list[str] = []
         for ligne in texte.splitlines():
             nu = ligne.strip()
             if not nu.startswith(":::"):
+                corps.append(nu)
                 continue
             if RE_FERMETURE_BLOC.match(nu):
                 if not ouvert:
                     raise ContentError(f"{proprietaire}: « ::: » ferme un bloc qui n'a pas été ouvert")
-                ouvert = False
+                validate_single_block(proprietaire, *ouvert, "\n".join(corps).strip())
+                ouvert = None
                 continue
             ouverture = RE_OUVERTURE_BLOC.match(nu)
             if not ouverture:
@@ -518,9 +545,31 @@ def validate_text_blocks(raw: dict[str, Any]) -> None:
                 )
             if ouvert:
                 raise ContentError(f"{proprietaire}: un bloc « {espece} » s'ouvre dans un autre bloc")
-            ouvert = True
+            ouvert = (espece, options)
+            corps = []
         if ouvert:
             raise ContentError(f"{proprietaire}: un bloc de mise en forme n'est pas fermé par « ::: »")
+
+
+# Les options d'un même groupe s'excluent : une image n'a qu'une place, un bouton
+# qu'un style et qu'une sorte de cible.
+OPTIONS_EXCLUSIVES = MappingProxyType({
+    "image": (("gauche", "droite", "centre", "large"),),
+    "bouton": (("plein", "discret"), ("page", "livre", "document", "courriel", "adresse")),
+})
+
+
+def validate_single_block(proprietaire: str, espece: str, options: list[str], corps: str) -> None:
+    """Le contenu d'un bloc « image » ou « bouton » : un seul élément, et une seule
+    option par groupe. Les autres blocs portent un texte libre."""
+    for groupe in OPTIONS_EXCLUSIVES.get(espece, ()):
+        choisies = [option for option in options if option in groupe]
+        if len(choisies) > 1:
+            raise ContentError(f"{proprietaire}: bloc « {espece} » : choisir une seule option parmi {', '.join(choisies)}")
+    if espece == "image" and not RE_IMAGE_SEULE.match(corps):
+        raise ContentError(f"{proprietaire}: un bloc « image » contient une seule image, sans texte autour")
+    if espece == "bouton" and not RE_LIEN_SEUL.match(corps):
+        raise ContentError(f"{proprietaire}: un bouton contient un seul lien, avec son texte (« [Commander](/livres/…/) »)")
 
 
 def media_path(value: Any) -> str | None:
@@ -935,6 +984,7 @@ def validate_free_sections(settings: dict[str, Any], books_by_slug: dict[str, di
 
 def validate_content(root: Path, raw: dict[str, Any]) -> None:
     validate_inline_images(root, raw)
+    validate_inline_documents(root, raw)
     validate_text_blocks(raw)
     books = raw["books"]
     people = raw["people"]

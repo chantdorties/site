@@ -45,7 +45,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - Masquer plutôt que supprimer : cases « Masquer ce bloc » (accueil, bloc Facebook) et « Masquer cette section », décochées par défaut. Les pages principales reçoivent les mêmes sections que Mes pages dans « Sections ajoutées » (`sectionsLibres`, avec un `emplacement`) ; les champs des sections sont définis une fois, dans la fiche Accueil de `config.yml`.
 - Livres mis en avant : cochés dans la fiche, filtre « ★ » dans la liste ; nombre de couvertures dans Pages principales › Accueil.
 - Les aperçus sont choisis par nom de rubrique **et** d’entrée : noms d’entrée uniques (préfixe `page_` dans Pages principales).
-- Mise en forme : barré partout ; dans les textes longs (pages, actualités), blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur », écrits `::: valeur …` / `::: encadre …` / `---` `***`. Options en liste blanche (`OPTIONS_BLOCS`, `tools/rendu/texte.py`), jamais de couleur libre ni de mise en forme mot à mot.
+- Mise en forme : barré partout ; dans les textes longs (pages, actualités), blocs « Image placée » (gauche, droite, centrée, large), « Bouton » (vers une page, un livre, un PDF, un courriel, une adresse), « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur », écrits `::: image …` / `::: bouton …` / `::: valeur …` / `::: encadre …` / `---` `***`. Options en liste blanche (`OPTIONS_BLOCS`, `tools/rendu/texte.py`), jamais de couleur libre ni de mise en forme mot à mot.
 - Masquer / laisser vide : cases « Masquer ce bloc » (accueil : information, collections, suivre ; actualités : Facebook) et « Masquer cette section » (Mes pages), toujours au sens « masquer », décochées par défaut (une case « Afficher » absente apparaîtrait décochée dans Decap). Accueil : seul le grand titre est obligatoire, un champ vide n’est pas dessiné.
 - La rédaction n’est pas technique : libellés et aides en mots simples, jamais de jargon (« slug », « carte », « SEO » seul…).
 
@@ -80,6 +80,8 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 ## Pièges connus
 
 - Decap efface à l’enregistrement les champs absents du formulaire ; un widget `hidden` conserve la valeur.
+- La CSP de l’admin doit garder `blob:` dans `connect-src` : Decap relit ainsi un fichier tout juste déposé pour l’enregistrer. Sans lui, tout enregistrement avec une image ou un PDF neuf échoue (« Failed to fetch »).
+- Decap ne fait pas apparaître un champ selon un choix : un composant à plusieurs cibles (le « Bouton ») montre tous ses champs, et note la sorte choisie dans le texte pour la relire.
 - `gh pr edit` échoue (Projects classic) : utiliser `gh api -X PATCH repos/chantdorties/site/pulls/<n>`.
 - Les PDF générés ne sont pas reproductibles octet pour octet : comparer sur une copie de la référence.
 - Les éléments du menu Decap appartiennent à React : les décorer (classes, ajout) sans les déplacer.
@@ -106,3 +108,4 @@ Une ligne par changement poussé : date · PR · ce qui change pour la rédactio
 - 2026-10-09 · #39 · « Anciennes adresses » cachées dans l’admin (widget `hidden`, valeur gardée à l’enregistrement) : les redirections de l’ancien site restent actives, à compléter au besoin dans le JSON.
 - 2026-10-09 · #41 · Bouton « Supprimer » sur livres, personnes, collections, actualités et pages : ce qui citait la fiche s’en passe (liens retirés, livre mis en avant choisi d’office), fiches dont d’autres dépendent gardées dans l’admin avec la raison, médias inutilisés tolérés ; tests indépendants des fiches réelles.
 - 2026-10-09 · #42 · Bouton « Supprimer » (au lieu de « Supprimer l’entrée publiée »…) et confirmations en mots simples, qui proposent d’archiver ; « Annuler les modifications » pour les changements non publiés.
+- 2026-10-09 · #43 · Blocs « Image placée » (petite à gauche ou à droite, centrée, pleine largeur ; pleine largeur sur téléphone) et « Bouton » (vers une page, un livre, un PDF, un courriel, une adresse) dans les pages et les actualités. CSP de l’admin : `blob:` dans `connect-src`, sans quoi l’enregistrement d’une image ou d’un PDF tout juste déposé échouait.

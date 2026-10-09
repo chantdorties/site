@@ -12,6 +12,20 @@
     width: min(calc(100% - 28px), var(--content-width));
   }
 
+  /* L'image placée à gauche ou à droite d'un texte : la colonne est trop étroite
+     pour l'entourer, elle reprend toute la largeur (17-texte-riche.css). */
+  .rich-text .rich-text__image--gauche,
+  .rich-text .rich-text__image--droite {
+    float: none;
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .rich-text .rich-text__image--centre img {
+    max-width: 100%;
+  }
+
   h1 {
     font-size: 2.5rem;
   }

@@ -229,15 +229,31 @@ barres d’outils suivent une règle écrite au même endroit : un texte court p
 
 Les textes longs (`*boutons_corps` : sections de « Mes pages », corps des actualités)
 reçoivent aussi `*blocs_corps`, les blocs de mise en forme de
-`frontend/admin/blocs.js` : « Texte mis en valeur », « Encadré », « Séparateur ». Ils
-s’enregistrent dans le texte même, sous une forme que `tools/rendu/texte.py` relit :
+`frontend/admin/blocs.js` : « Image placée », « Bouton », « Texte mis en valeur »,
+« Encadré », « Séparateur ». Ils s’enregistrent dans le texte même, sous une forme que
+`tools/rendu/texte.py` relit :
 
 ```text
 ::: valeur centre principale souligne      ::: encadre secondaire
 Le texte, avec sa mise en forme.           ### Titre facultatif
 :::                                        Le texte
                                            :::
+
+::: image droite                           ::: bouton plein livre
+![Texte alternatif](chemin "Légende")      [Commander](/livres/le-livre/)
+:::                                        :::
 ```
+
+« Image » et « bouton » portent un seul élément, vérifié au chargement
+(`validate_single_block`), avec une seule option par groupe (`OPTIONS_EXCLUSIVES`). La
+place de l’image devient une classe (`rich-text__image--gauche`…) ; sous 760 px, plus de
+flottant (`91-mobile-760px.css`). Le bouton note aussi la sorte de sa cible (`page`,
+`livre`, `document`, `courriel`, `adresse`) pour que l’éditeur rouvre le bon champ ; son
+lien suit les règles de tout lien saisi (schéma refusé, page disparue), et une adresse
+vide (`[Texte]()`) ne dessine rien. Un PDF lié depuis un texte
+(`[…](content/media/uploads/x.pdf)`) est vérifié (`validate_inline_documents`), copié
+(`copy_inline_documents`) et compté parmi les médias utilisés ; `_lien_html` le remplace
+par son adresse publiée.
 
 Les mots de la ligne d’ouverture viennent de la liste blanche `OPTIONS_BLOCS`
 (`texte.py`) et deviennent des classes fixes (`rich-text__valeur--centre`…, styles dans

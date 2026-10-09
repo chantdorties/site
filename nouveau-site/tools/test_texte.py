@@ -14,9 +14,10 @@ from tools.rendu.texte import OutilsTexte
 class Convertisseur(OutilsTexte):
     """Le convertisseur seul, avec les tables que le constructeur lui fournit d'ordinaire."""
 
-    def __init__(self, inline_media=None, dimensions=None):
+    def __init__(self, inline_media=None, dimensions=None, documents=None):
         self.inline_media = inline_media or {}
         self.inline_media_dimensions = dimensions or {}
+        self.document_media = documents or {}
         self.liens_refuses = []
 
 
@@ -356,6 +357,70 @@ class BlocsDeMiseEnFormeTest(unittest.TestCase):
             "Un mot. Titre Suite",
         )
 
+
+
+class ImagePlaceeEtBoutonTest(unittest.TestCase):
+    """Les blocs « image » et « bouton », qui portent un seul élément."""
+
+    def setUp(self):
+        self.t = Convertisseur(
+            {"content/media/uploads/salon.jpg": "/assets/media/texte/salon-abc1234567.webp"},
+            documents={"content/media/uploads/bon.pdf": "/assets/media/documents/bon-abc1234567.pdf"},
+        )
+
+    def test_chaque_place_de_l_image(self):
+        for place in ("gauche", "droite", "centre", "large"):
+            with self.subTest(place):
+                rendu = self.t.markdown_html(f'::: image {place}\n![Salon](content/media/uploads/salon.jpg "En 2024")\n:::')
+                self.assertTrue(rendu.startswith(f'<figure class="rich-text__image rich-text__image--{place}"><img '))
+                self.assertIn("<figcaption>En 2024</figcaption>", rendu)
+
+    def test_une_image_sans_place_est_centree(self):
+        rendu = self.t.markdown_html("::: image\n![Salon](content/media/uploads/salon.jpg)\n:::")
+        self.assertIn("rich-text__image--centre", rendu)
+
+    def test_un_bloc_image_sans_image_reste_du_texte(self):
+        self.assertEqual(self.t.markdown_html("::: image gauche\nJuste du texte.\n:::"), "<p>Juste du texte.</p>")
+
+    def test_le_texte_alternatif_et_la_legende_restent_du_texte(self):
+        rendu = self.t.markdown_html('::: image gauche\n![" onerror="x](content/media/uploads/salon.jpg "<b>")\n:::')
+        self.assertNotIn('onerror="', rendu)
+        self.assertNotIn("<b>", rendu)
+
+    def test_les_deux_styles_de_bouton(self):
+        self.assertEqual(
+            self.t.markdown_html("::: bouton plein livre\n[Commander](/livres/un-livre/)\n:::"),
+            '<p class="rich-text__bouton"><a class="button" href="/livres/un-livre/">Commander</a></p>',
+        )
+        self.assertEqual(
+            self.t.markdown_html("::: bouton discret courriel\n[Nous écrire](mailto:contact@exemple.fr)\n:::"),
+            '<p class="rich-text__bouton"><a class="button button--secondary" href="mailto:contact@exemple.fr">Nous écrire</a></p>',
+        )
+
+    def test_un_bouton_vers_un_pdf_vise_le_fichier_publie(self):
+        rendu = self.t.markdown_html("::: bouton plein document\n[Bon de commande](content/media/uploads/bon.pdf)\n:::")
+        self.assertIn('href="/assets/media/documents/bon-abc1234567.pdf" target="_blank"', rendu)
+
+    def test_un_bouton_sans_destination_ne_s_affiche_pas(self):
+        self.assertEqual(self.t.markdown_html("::: bouton plein\n[Commander]()\n:::"), "")
+
+    def test_un_bouton_au_lien_refuse_devient_du_texte(self):
+        rendu = self.t.markdown_html("::: bouton plein adresse\n[Clic](javascript:alert(1))\n:::")
+        self.assertNotIn("<a", rendu)
+        self.assertNotIn("button", rendu)
+        self.assertEqual(len(self.t.liens_refuses), 1)
+        self.assertTrue(self.t.liens_refuses[0][1].startswith("javascript:"))
+
+    def test_un_bouton_vers_une_page_disparue_devient_du_texte(self):
+        self.t.known_routes = {"/"}
+        self.t.liens_retires = []
+        self.assertEqual(self.t.markdown_html("::: bouton plein page\n[Voir](/disparue/)\n:::"), "<p>Voir</p>")
+
+    def test_le_texte_brut_garde_les_mots(self):
+        self.assertEqual(
+            self.t.texte_brut("::: image gauche\n![Salon](content/media/uploads/salon.jpg)\n:::\n::: bouton plein livre\n[Commander](/livres/x/)\n:::"),
+            "Salon Commander",
+        )
 
 if __name__ == "__main__":
     unittest.main()

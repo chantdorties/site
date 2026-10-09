@@ -16,6 +16,7 @@ from tools.rendu.texte import OutilsTexte
 from tools.content_data import (
     APPEARANCE_FONTS,
     ContentError,
+    inline_document_paths,
     inline_media_paths,
     load_content,
     media_path,
@@ -423,6 +424,35 @@ class ContentDataTest(unittest.TestCase):
             with self.subTest(contenu), content_sandbox() as root:
                 edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
                 with self.assertRaisesRegex(ContentError, f"Page {slug} \\(section 1\\): .*{re.escape(message)}"):
+                    load_content(root, include_drafts=True)
+
+    def test_placed_image_and_button_blocks_are_checked(self):
+        # Une image placée et un bouton portent un seul élément ; un PDF lié depuis un
+        # texte existe, est un PDF, et compte parmi les médias utilisés.
+        image = next(CONTENT.glob("media/**/*.jpg")).relative_to(ROOT).as_posix()
+        pdf = next(CONTENT.glob("media/**/*.pdf")).relative_to(ROOT).as_posix()
+        valide = (
+            f'::: image gauche\n![Une image]({image} "Légende")\n:::\n\n'
+            f"::: bouton plein document\n[Télécharger]({pdf})\n:::\n\n"
+            "::: bouton discret\n[Sans destination]()\n:::"
+        )
+        slug = exemple("pages", page_libre)["slug"]
+        with content_sandbox() as root:
+            edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": valide}])
+            raw = load_content(root, include_drafts=True)["raw"]
+            self.assertIn(pdf, inline_document_paths(raw))
+            self.assertIn(pdf, referenced_media_paths(raw))
+        for contenu, message in (
+            (f"::: image gauche droite\n![x]({image})\n:::", "une seule option parmi gauche, droite"),
+            (f"::: image gauche\nAvant ![x]({image})\n:::", "une seule image, sans texte autour"),
+            ("::: bouton plein discret\n[x](/)\n:::", "une seule option parmi plein, discret"),
+            ("::: bouton plein\nCommander\n:::", "un seul lien"),
+            (f"::: bouton plein document\n[x]({image})\n:::", "seul un document PDF"),
+            ("::: bouton plein document\n[x](content/media/uploads/absent.pdf)\n:::", "absent.pdf"),
+        ):
+            with self.subTest(contenu), content_sandbox() as root:
+                edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
+                with self.assertRaisesRegex(ContentError, re.escape(message)):
                     load_content(root, include_drafts=True)
 
     def test_home_blocks_can_be_hidden(self):
