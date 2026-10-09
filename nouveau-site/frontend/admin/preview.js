@@ -306,6 +306,39 @@
     }
   });
 
+  // Les sections qui ont leur propre mise en page sur le site : texte et image côte à
+  // côte, galerie, citation en grand. Mêmes classes que tools/rendu/pages/editoriales.py
+  // (render_special_section) ; null pour un texte, des livres ou une offre.
+  const sectionSpeciale = (section, getAsset) => {
+    const type = section.getIn(['data', 'type']);
+    const texte = section.getIn(['widgets', 'contenu']);
+    const image = (chemin, alt, rang) => {
+      const src = assetUrl(getAsset, chemin);
+      return src ? h('img', { key: rang, src, alt: alt || '' }) : h('p', { key: rang, className: 'site-preview__muted' }, 'Image à choisir');
+    };
+    if (type === 'colonnes') {
+      const cote = section.getIn(['data', 'cote']) === 'droite' ? 'droite' : 'gauche';
+      return h('div', { className: `editorial-columns editorial-columns--${cote}` },
+        h('div', { className: 'editorial-columns__grid' },
+          h('figure', { className: 'editorial-columns__image' }, image(section.getIn(['data', 'image']), section.getIn(['data', 'alt']))),
+          h('div', { className: 'rich-text' }, texte)));
+    }
+    if (type === 'galerie') {
+      const photos = enTableau(section.getIn(['data', 'photos']));
+      return h('div', { className: 'editorial-gallery' },
+        section.getIn(['data', 'contenu']) ? h('div', { className: 'rich-text' }, texte) : null,
+        h('div', { className: 'gallery-grid' }, photos.map((photo, rang) =>
+          h('span', { key: rang, className: 'gallery-item' }, image(photo?.image, photo?.alt)))));
+    }
+    if (type === 'citation') {
+      const source = section.getIn(['data', 'source']);
+      return h('figure', { className: 'editorial-quote' },
+        h('blockquote', { className: 'rich-text' }, texte),
+        source ? h('figcaption', {}, source) : null);
+    }
+    return null;
+  };
+
   const PagePreview = avecDonnees({
     render() {
       const { entry, getAsset, widgetsFor } = this.props;
@@ -339,7 +372,7 @@
             const masquee = section.getIn(['data', 'masquee']) === true;
             return h('section', { key: rang, className: masquee ? 'editorial-section apercu-masque' : 'editorial-section' },
               section.getIn(['data', 'titre']) ? h('h2', {}, section.getIn(['data', 'titre'])) : null,
-              h('div', { className: 'rich-text' }, section.getIn(['widgets', 'contenu'])),
+              sectionSpeciale(section, getAsset) || h('div', { className: 'rich-text' }, section.getIn(['widgets', 'contenu'])),
               livres.length ? h('div', { className: 'book-grid book-grid--section' }, livres.map(carteOuAdresse)) : null,
               boutons.length ? h('div', { className: 'section-actions' },
                 boutons.map((bouton, n) => boutonAchat(bouton.libelle || 'Bouton sans texte', n))) : null);
@@ -556,9 +589,19 @@
         const titre = section.getIn(['data', 'titre']);
         const livres = enTableau(section.getIn(['data', 'livres']));
         const boutons = enTableau(section.getIn(['data', 'boutonsPaypal']));
+        const type = section.getIn(['data', 'type']);
+        const photos = enTableau(section.getIn(['data', 'photos']));
+        // Les sortes à mise en page propre sont nommées ici, sans leur dessin : cet
+        // aperçu reste un plan de la page.
+        const forme = {
+          colonnes: () => `Texte et image côte à côte — image ${section.getIn(['data', 'cote']) === 'droite' ? 'à droite' : 'à gauche'}${section.getIn(['data', 'alt']) ? ` : ${section.getIn(['data', 'alt'])}` : ''}`,
+          galerie: () => `Galerie de photos — ${photos.length} photo${photos.length > 1 ? 's' : ''}`,
+          citation: () => `Citation en grand${section.getIn(['data', 'source']) ? ` — ${section.getIn(['data', 'source'])}` : ''}`,
+        }[type]?.();
         return h('div', { key: `${place}-${rang}` }, masquable(section.getIn(['data', 'masquee']) !== true,
           zone(null, 'Section ajoutée',
             titre ? h('h2', {}, titre) : null,
+            forme ? h('p', { className: 'site-preview__muted' }, forme) : null,
             h('div', { className: 'site-preview__text' }, section.getIn(['widgets', 'contenu'])),
             livres.length ? h('p', { className: 'site-preview__muted' },
               `Livres montrés : ${livres.map((slug) => fiche('livres', slug)?.titre || lisible(slug)).join(', ')}`) : null,

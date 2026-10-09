@@ -274,14 +274,29 @@ contenu à migrer. Sur l’accueil, seul `heroTitre` est obligatoire
 modificateurs `--seul` / `--seule` passent sur une colonne ce qui en avait deux. Les
 pages principales ont `rubrique` et `introduction` facultatives. Le bloc Facebook
 affiché exige encore `appelTitre` et `boutonFacebook`. Une page de Mes pages garde au
-moins une section visible ; `visible_sections()` (`editoriales.py`) sert au rendu, au
-résumé sur « La maison » et à la description. L’aperçu grise ce qui est masqué
+moins une section visible ; `visible_sections()` (`editoriales.py`) sert au rendu, et
+`summary_text()` (la première visible qui a un texte) au résumé sur « La maison » et à la
+description. L’aperçu grise ce qui est masqué
 (`.apercu-masque`, `preview.css`).
 
+Sortes de section (`SECTION_TYPES`). `texte`, `livres` et `offre` portent un texte, et
+pour les deux dernières des livres et des boutons. Trois ont leur propre mise en page,
+rendue par `render_special_section` (`editoriales.py`, styles dans
+`35-pages-de-texte.css`) : `colonnes` (`contenu`, `image`, `alt`, `cote` gauche ou
+droite ; l’image vient en premier dans le HTML, donc au-dessus sur téléphone),
+`galerie` (`contenu` facultatif, `photos` : au moins une, chacune `image` et `alt` ;
+`render_gallery` des fiches) et `citation` (`contenu`, `source` facultative). Leurs
+images (`section_images`, `section_media_paths`) passent par `optimize_inline_images`
+comme celles d’un texte, et comptent parmi les médias utilisés ; texte alternatif
+obligatoire (`validate_section_image`). Le résumé sur « La maison » et la description
+viennent de `summary_text` : la première section visible qui a un texte.
+
 Sections ajoutées. Chaque fiche de `content/pages-du-site/` porte une liste facultative
-`sectionsLibres` : les trois sortes de section de Mes pages, plus un `emplacement`. Les
+`sectionsLibres` : les six sortes de section de Mes pages, plus un `emplacement`. Les
 champs des sections (`&section_titre`, `&section_texte`, `&section_livres`,
-`&section_boutons`, avec `&boutons_corps` et `&blocs_corps`) sont définis dans la fiche
+`&section_boutons`, `&section_image`, `&section_alt`, `&section_cote`,
+`&section_texte_facultatif`, `&section_photos`, `&section_citation`, `&section_source`,
+avec `&boutons_corps`, `&blocs_corps` et `&media_20_mo`) sont définis dans la fiche
 Accueil, leur première apparition dans `config.yml`, puis repris par les autres pages
 principales (`&sections_libres_page`) et par Mes pages. Les emplacements sont
 `HOME_FREE_PLACEMENTS` (accueil : `apres-information` par défaut, `apres-bandeau`,

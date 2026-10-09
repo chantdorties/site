@@ -22,7 +22,7 @@ from typing import Any
 import PIL
 from PIL import Image, ImageFile, ImageOps
 
-from content_data import inline_document_paths, inline_media_paths, media_path
+from content_data import inline_document_paths, inline_media_paths, media_path, section_media_paths
 
 from .outils import slugify
 
@@ -239,7 +239,9 @@ class Medias:
         seule façon qu'une image posée depuis l'administration ne parte pas en ligne
         dans sa taille d'origine.
         """
-        for path in sorted(inline_media_paths(self.contenu_rendu())):
+        # Les images des sections (côte à côte, galerie) suivent le même chemin.
+        contenu = self.contenu_rendu()
+        for path in sorted(inline_media_paths(contenu) | section_media_paths(contenu)):
             source = self.root / path
             empreinte = hashlib.sha256(path.encode("utf-8")).hexdigest()[:10]
             nom = f"{slugify(Path(path).stem)[:58]}-{empreinte}.webp"

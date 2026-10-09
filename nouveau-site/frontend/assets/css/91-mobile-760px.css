@@ -115,6 +115,21 @@
 
   .book-detail,
   .person-detail,
+  /* Texte et image côte à côte : les colonnes s’empilent, l’image au-dessus. */
+  .editorial-columns__grid,
+  .editorial-columns--droite .editorial-columns__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .editorial-columns--droite .editorial-columns__image {
+    order: 0;
+  }
+
+  .editorial-quote blockquote {
+    font-size: 1.3rem;
+  }
+
   .editorial-layout {
     grid-template-columns: 1fr;
     gap: 38px;

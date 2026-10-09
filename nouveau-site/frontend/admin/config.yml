@@ -394,7 +394,7 @@ collections:
             widget: list
             required: false
             collapsed: true
-            hint: "Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
+            hint: "Le bouton « Ajouter une entrée de type section » propose six sortes : un texte, un texte suivi de livres du catalogue, une offre avec ses boutons d’achat, un texte et une image côte à côte, une galerie de photos, ou une citation en grand. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
             types:
               - label: Texte
                 name: texte
@@ -475,6 +475,76 @@ collections:
                         hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
                         pattern: *motif_paypal
                   - *section_masquee_libre
+              - label: Texte et image côte à côte
+                name: colonnes
+                widget: object
+                summary: "{{fields.titre | default('Texte et image')}}"
+                fields:
+                  - *emplacement_accueil
+                  - *section_titre
+                  - *section_texte
+                  - &section_image
+                    label: Image
+                    name: image
+                    widget: image
+                    allow_multiple: false
+                    media_library: &media_20_mo {config: {max_file_size: 20971520}}
+                  - &section_alt {label: "Texte alternatif de l’image", name: alt, widget: string, hint: "Une courte description de l’image, lue par les personnes qui ne la voient pas. Obligatoire."}
+                  - &section_cote
+                    label: Place de l’image
+                    name: cote
+                    widget: select
+                    default: gauche
+                    hint: "Sur téléphone, l’image passe toujours au-dessus du texte."
+                    options:
+                      - {label: "À gauche du texte", value: gauche}
+                      - {label: "À droite du texte", value: droite}
+                  - *section_masquee_libre
+              - label: Galerie de photos
+                name: galerie
+                widget: object
+                summary: "{{fields.titre | default('Galerie')}}"
+                fields:
+                  - *emplacement_accueil
+                  - *section_titre
+                  - &section_texte_facultatif
+                    label: Texte
+                    name: contenu
+                    widget: markdown
+                    required: false
+                    modes: [rich_text]
+                    buttons: *boutons_corps
+                    editor_components: []
+                    hint: "Facultatif : quelques mots avant les photos."
+                  - &section_photos
+                    label: Photos
+                    name: photos
+                    label_singular: photo
+                    widget: list
+                    min: 1
+                    summary: "{{fields.alt}}"
+                    hint: "Elles s’affichent en vignettes, quatre par rangée ; un clic les agrandit."
+                    fields:
+                      - {label: Photo, name: image, widget: image, allow_multiple: false, media_library: *media_20_mo}
+                      - *section_alt
+                  - *section_masquee_libre
+              - label: Citation en grand
+                name: citation
+                widget: object
+                summary: "{{fields.source | default('Citation')}}"
+                fields:
+                  - *emplacement_accueil
+                  - *section_titre
+                  - &section_citation
+                    label: Citation
+                    name: contenu
+                    widget: markdown
+                    modes: [rich_text]
+                    buttons: [bold, italic]
+                    editor_components: []
+                    hint: "Une phrase ou deux, affichées en grand et en italique."
+                  - &section_source {label: "Auteur ou source", name: source, widget: string, required: false, hint: "Facultatif, par exemple « Victor Hugo, Les Contemplations »."}
+                  - *section_masquee_libre
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -507,7 +577,7 @@ collections:
                 minimal: true
                 buttons: []
                 editor_components: []
-              - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: &media_20_mo {config: {max_file_size: 20971520}}, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
+              - {label: "Image sociale", name: image, widget: image, allow_multiple: false, required: false, media_library: *media_20_mo, hint: "Utilisée quand un lien vers cette page est partagé sur les réseaux sociaux."}
       # Le nom d’entrée n’est pas « pages » : l’aperçu de la rubrique Pages de la
       # maison s’appliquerait. Le fichier, lui, reste pages.json.
       - name: page_catalogue
@@ -544,7 +614,7 @@ collections:
             widget: list
             required: false
             collapsed: true
-            hint: "Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
+            hint: "Le bouton « Ajouter une entrée de type section » propose six sortes : un texte, un texte suivi de livres du catalogue, une offre avec ses boutons d’achat, un texte et une image côte à côte, une galerie de photos, ou une citation en grand. Une nouvelle section s’ajoute en bas de la liste ; la poignée ≡ la déplace."
             types:
               - label: Texte
                 name: texte
@@ -583,6 +653,38 @@ collections:
                   - *section_texte
                   - *section_livres
                   - *section_boutons
+                  - *section_masquee_libre
+              - label: Texte et image côte à côte
+                name: colonnes
+                widget: object
+                summary: "{{fields.titre | default('Texte et image')}}"
+                fields:
+                  - *emplacement_page
+                  - *section_titre
+                  - *section_texte
+                  - *section_image
+                  - *section_alt
+                  - *section_cote
+                  - *section_masquee_libre
+              - label: Galerie de photos
+                name: galerie
+                widget: object
+                summary: "{{fields.titre | default('Galerie')}}"
+                fields:
+                  - *emplacement_page
+                  - *section_titre
+                  - *section_texte_facultatif
+                  - *section_photos
+                  - *section_masquee_libre
+              - label: Citation en grand
+                name: citation
+                widget: object
+                summary: "{{fields.source | default('Citation')}}"
+                fields:
+                  - *emplacement_page
+                  - *section_titre
+                  - *section_citation
+                  - *section_source
                   - *section_masquee_libre
           - label: "Réglages techniques"
             name: groupeTechnique
@@ -1365,7 +1467,7 @@ collections:
         # Ouvertes d’emblée : le texte d’une nouvelle page s’écrit sans chercher où cliquer.
         collapsed: false
         default: [{type: texte, titre: "", contenu: ""}]
-        hint: "Le corps de la page. Une section par idée. Le bouton « Ajouter une entrée de type section » propose trois sortes : un texte, un texte suivi de livres du catalogue, ou une offre avec ses boutons d’achat. La première sert aussi de résumé sur la page « La maison »."
+        hint: "Le corps de la page. Une section par idée. Le bouton « Ajouter une entrée de type section » propose six sortes : un texte, un texte suivi de livres du catalogue, une offre avec ses boutons d’achat, un texte et une image côte à côte, une galerie de photos, ou une citation en grand. La première sert aussi de résumé sur la page « La maison »."
         # Les champs des sections sont définis avec ceux des sections ajoutées de l’accueil,
         # leur première apparition dans ce fichier.
         types:
@@ -1402,6 +1504,35 @@ collections:
               - *section_texte
               - *section_livres
               - *section_boutons
+              - *section_masquee
+          - label: Texte et image côte à côte
+            name: colonnes
+            widget: object
+            summary: "{{fields.titre | default('Texte et image')}}"
+            fields:
+              - *section_titre
+              - *section_texte
+              - *section_image
+              - *section_alt
+              - *section_cote
+              - *section_masquee
+          - label: Galerie de photos
+            name: galerie
+            widget: object
+            summary: "{{fields.titre | default('Galerie')}}"
+            fields:
+              - *section_titre
+              - *section_texte_facultatif
+              - *section_photos
+              - *section_masquee
+          - label: Citation en grand
+            name: citation
+            widget: object
+            summary: "{{fields.source | default('Citation')}}"
+            fields:
+              - *section_titre
+              - *section_citation
+              - *section_source
               - *section_masquee
       - label: "Pour aller plus loin"
         name: groupe2
