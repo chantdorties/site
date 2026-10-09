@@ -255,9 +255,10 @@ collections:
             name: groupeBandeau
             widget: groupe
             required: false
-            hint: "Tout en haut de l’accueil : le grand titre, son accroche et deux boutons. Les couvertures à côté se choisissent dans chaque fiche livre (case « Mis en avant sur l’accueil ») ; dans la liste des livres, le filtre « ★ Mis en avant sur l’accueil » les réunit."
+            hint: "Tout en haut de l’accueil, toujours affiché : le grand titre, son accroche et deux boutons. Seul le titre est obligatoire ; un champ laissé vide disparaît de la page. Les couvertures à côté se choisissent dans chaque fiche livre (case « Mis en avant sur l’accueil ») ; dans la liste des livres, le filtre « ★ Mis en avant sur l’accueil » les réunit."
           - label: Rubrique
             name: heroRubrique
+            required: false
             widget: string
             hint: La petite ligne tout en haut, au-dessus du grand titre.
           - label: Titre
@@ -266,18 +267,20 @@ collections:
             hint: Le grand titre d’ouverture, en noir.
           - label: Suite du titre, en couleur
             name: heroAccent
+            required: false
             widget: string
             hint: La fin du grand titre, affichée en rouge à la suite du précédent.
           - label: Accroche
             name: heroAccroche
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
             hint: La phrase sous le grand titre.
-          - {label: "Bouton vers le catalogue", name: boutonCatalogue, widget: string}
-          - {label: "Bouton vers les collections", name: boutonCollections, widget: string}
+          - {label: "Bouton vers le catalogue", name: boutonCatalogue, required: false, widget: string}
+          - {label: "Bouton vers les collections", name: boutonCollections, required: false, widget: string}
           - label: Nombre de couvertures affichées
             name: nombreCouvertures
             widget: number
@@ -289,36 +292,41 @@ collections:
             name: groupeInformation
             widget: groupe
             required: false
-            hint: "Sous le bandeau : à gauche la situation de la maison, à droite les commandes, puis le don et les offres."
-          - {label: "Rubrique", name: informationRubrique, widget: string, hint: "La petite ligne au-dessus du titre, par exemple « Information »."}
-          - {label: "Titre", name: titreInformation, widget: string}
+            hint: "Sous le bandeau : à gauche la situation de la maison, à droite les commandes, puis le don et les offres. Un champ laissé vide disparaît : un encadré sans titre ni texte, un bouton sans libellé."
+          - {label: "Masquer ce bloc", name: masquerInformation, widget: boolean, default: false, required: false, hint: "Cochée : le bloc disparaît du site, ses textes sont gardés pour plus tard."}
+          - {label: "Rubrique", name: informationRubrique, required: false, widget: string, hint: "La petite ligne au-dessus du titre, par exemple « Information »."}
+          - {label: "Titre", name: titreInformation, required: false, widget: string}
           - label: Texte
             name: informationTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
             hint: La situation de la maison, en quelques phrases.
-          - {label: "Titre des commandes", name: commandesTitre, widget: string, hint: "À droite, au-dessus des deux encadrés Libraires et Particuliers."}
+          - {label: "Titre des commandes", name: commandesTitre, required: false, widget: string, hint: "À droite, au-dessus des deux encadrés Libraires et Particuliers."}
           - label: Texte des commandes
             name: commandesTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
-          - {label: "Encadré libraires — titre", name: librairesTitre, widget: string}
+          - {label: "Encadré libraires — titre", name: librairesTitre, required: false, widget: string}
           - label: Encadré libraires — texte
             name: librairesTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
-          - {label: "Encadré particuliers — titre", name: particuliersTitre, widget: string}
+          - {label: "Encadré particuliers — titre", name: particuliersTitre, required: false, widget: string}
           - label: Encadré particuliers — texte
             name: particuliersTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
@@ -326,23 +334,26 @@ collections:
             editor_components: []
           - label: Texte du soutien
             name: soutienTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
             hint: La phrase au-dessus des boutons. Les mots « page de soutien » y deviennent un lien vers la page Soutien.
-          - {label: "Bouton de don", name: libelleDon, widget: string, hint: "Il ouvre le don PayPal. Son identifiant PayPal se règle dans « Paiement et dons »."}
-          - {label: "Bouton vers les offres", name: libelleOffres, widget: string, hint: "Il mène à la page Offres spéciales."}
+          - {label: "Bouton de don", name: libelleDon, required: false, widget: string, hint: "Il ouvre le don PayPal. Son identifiant PayPal se règle dans « Paiement et dons »."}
+          - {label: "Bouton vers les offres", name: libelleOffres, required: false, widget: string, hint: "Il mène à la page Offres spéciales."}
           - label: "3. Les collections"
             name: groupeCollections
             widget: groupe
             required: false
-            hint: "La rangée des collections."
-          - {label: "Rubrique", name: collectionsRubrique, widget: string}
-          - {label: "Titre", name: collectionsTitre, widget: string}
+            hint: "La rangée des collections. Les six cartes viennent des fiches ; le titre et le texte au-dessus sont facultatifs."
+          - {label: "Masquer ce bloc", name: masquerCollections, widget: boolean, default: false, required: false, hint: "Cochée : le bloc disparaît du site, ses textes sont gardés pour plus tard."}
+          - {label: "Rubrique", name: collectionsRubrique, required: false, widget: string}
+          - {label: "Titre", name: collectionsTitre, required: false, widget: string}
           - label: Présentation des collections
             name: collectionsTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
@@ -353,18 +364,20 @@ collections:
             name: groupeSuivre
             widget: groupe
             required: false
-            hint: "Le bandeau sombre du bas de l’accueil et ses deux cartes, Actualités et Manuscrits."
-          - {label: "Rubrique", name: suivreRubrique, widget: string}
-          - {label: "Titre", name: suivreTitre, widget: string}
-          - {label: "Carte Actualités — rubrique", name: actualitesRubrique, widget: string}
-          - {label: "Carte Actualités — titre", name: actualitesTitre, widget: string}
+            hint: "Le bandeau sombre du bas de l’accueil et ses deux cartes, Actualités et Manuscrits. Une carte sans titre disparaît."
+          - {label: "Masquer ce bloc", name: masquerSuivre, widget: boolean, default: false, required: false, hint: "Cochée : le bloc disparaît du site, ses textes sont gardés pour plus tard."}
+          - {label: "Rubrique", name: suivreRubrique, required: false, widget: string}
+          - {label: "Titre", name: suivreTitre, required: false, widget: string}
+          - {label: "Carte Actualités — rubrique", name: actualitesRubrique, required: false, widget: string}
+          - {label: "Carte Actualités — titre", name: actualitesTitre, required: false, widget: string}
           - label: Carte Actualités — lien
             name: actualitesAction
+            required: false
             widget: string
             hint: Le texte cliquable au bas de la carte, par exemple « Lire les actualités ».
-          - {label: "Carte Manuscrits — rubrique", name: manuscritsRubrique, widget: string}
-          - {label: "Carte Manuscrits — titre", name: manuscritsTitre, widget: string}
-          - {label: "Carte Manuscrits — lien", name: manuscritsAction, widget: string}
+          - {label: "Carte Manuscrits — rubrique", name: manuscritsRubrique, required: false, widget: string}
+          - {label: "Carte Manuscrits — titre", name: manuscritsTitre, required: false, widget: string}
+          - {label: "Carte Manuscrits — lien", name: manuscritsAction, required: false, widget: string}
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -414,11 +427,12 @@ collections:
             widget: groupe
             required: false
             hint: "Le haut de la page : la petite ligne, le titre et la phrase d’introduction. La liste en dessous se remplit toute seule."
-          - {label: "Petite ligne au-dessus du titre", name: rubrique, widget: string, hint: "Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+          - {label: "Petite ligne au-dessus du titre", name: rubrique, required: false, widget: string, hint: "Facultative. Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
           - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
           - label: Introduction
             name: introduction
-            hint: "La phrase sous le titre."
+            required: false
+            hint: "La phrase sous le titre. Facultative : vide, elle disparaît."
             widget: markdown
             modes: [rich_text]
             minimal: true
@@ -458,11 +472,12 @@ collections:
             widget: groupe
             required: false
             hint: "Le haut de la page : la petite ligne, le titre et la phrase d’introduction. La liste en dessous se remplit toute seule."
-          - {label: "Petite ligne au-dessus du titre", name: rubrique, widget: string, hint: "Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
+          - {label: "Petite ligne au-dessus du titre", name: rubrique, required: false, widget: string, hint: "Facultative. Écrire {nombre} pour y mettre le nombre réel de contenus, par exemple « {nombre} ouvrages »."}
           - {label: "Titre", name: titre, widget: string, hint: "Le grand titre de la page."}
           - label: Introduction
             name: introduction
-            hint: "La phrase sous le titre."
+            required: false
+            hint: "La phrase sous le titre. Facultative : vide, elle disparaît."
             widget: markdown
             modes: [rich_text]
             minimal: true
@@ -472,17 +487,19 @@ collections:
             name: groupeFacebook
             widget: groupe
             required: false
-            hint: "En bas de la page, sous les actualités : une invitation à suivre la maison sur Facebook."
-          - {label: "Rubrique du bloc Facebook", name: appelRubrique, widget: string}
-          - {label: "Titre du bloc Facebook", name: appelTitre, widget: string}
+            hint: "En bas de la page, sous les actualités : une invitation à suivre la maison sur Facebook. Affiché, il garde son titre et son bouton ; la petite ligne et le texte sont facultatifs."
+          - {label: "Masquer ce bloc", name: masquerFacebook, widget: boolean, default: false, required: false, hint: "Cochée : le bloc disparaît du site, ses textes sont gardés pour plus tard."}
+          - {label: "Rubrique du bloc Facebook", name: appelRubrique, required: false, widget: string}
+          - {label: "Titre du bloc Facebook", name: appelTitre, required: false, widget: string}
           - label: Texte du bloc Facebook
             name: appelTexte
+            required: false
             widget: markdown
             modes: [rich_text]
             minimal: true
             buttons: *boutons_courts
             editor_components: []
-          - {label: "Bouton Facebook", name: boutonFacebook, widget: string}
+          - {label: "Bouton Facebook", name: boutonFacebook, required: false, widget: string}
           - label: "Réglages techniques"
             name: groupeTechnique
             widget: groupe
@@ -1226,6 +1243,14 @@ collections:
                 modes: [rich_text]
                 buttons: *boutons_corps
                 editor_components: *blocs_corps
+              # Masquer plutôt que supprimer : une offre épuisée, un texte de saison.
+              - &section_masquee
+                label: Masquer cette section
+                name: masquee
+                widget: boolean
+                default: false
+                required: false
+                hint: "Cochée : la section disparaît du site, ses textes sont gardés. Une page garde au moins une section visible."
           - label: Texte et livres du catalogue
             name: livres
             widget: object
@@ -1244,6 +1269,7 @@ collections:
                 display_fields: [titre]
                 value_field: slug
                 hint: Ils s’affichent sous le texte, avec leur couverture, leurs auteurs et leur prix tirés de leur fiche.
+              - *section_masquee
           - label: Offre à vendre (bouton PayPal)
             name: offre
             widget: object
@@ -1270,6 +1296,7 @@ collections:
                     widget: string
                     hint: "Les 13 caractères fournis par PayPal lors de la création du bouton (par exemple 6A3X7AW598RVA), et non l’adresse complète. C’est lui qui décide de l’article et du montant facturés : une erreur fait payer autre chose que ce qu’annonce la page."
                     pattern: *motif_paypal
+              - *section_masquee
       - label: "Pour aller plus loin"
         name: groupe2
         widget: groupe

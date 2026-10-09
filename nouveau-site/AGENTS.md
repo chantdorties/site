@@ -44,6 +44,7 @@ enregistrement est un commit JSON sur GitHub, qui régénère et publie le site.
 - Livres mis en avant : cochés dans la fiche, filtre « ★ » dans la liste ; nombre de couvertures dans Pages principales › Accueil.
 - Les aperçus sont choisis par nom de rubrique **et** d’entrée : noms d’entrée uniques (préfixe `page_` dans Pages principales).
 - Mise en forme : barré partout ; dans les textes longs (pages, actualités), blocs « Texte mis en valeur » (centré, couleur de la palette, souligné), « Encadré », « Séparateur », écrits `::: valeur …` / `::: encadre …` / `---` `***`. Options en liste blanche (`OPTIONS_BLOCS`, `tools/rendu/texte.py`), jamais de couleur libre ni de mise en forme mot à mot.
+- Masquer / laisser vide : cases « Masquer ce bloc » (accueil : information, collections, suivre ; actualités : Facebook) et « Masquer cette section » (Mes pages), toujours au sens « masquer », décochées par défaut (une case « Afficher » absente apparaîtrait décochée dans Decap). Accueil : seul le grand titre est obligatoire, un champ vide n’est pas dessiné.
 - La rédaction n’est pas technique : libellés et aides en mots simples, jamais de jargon (« slug », « carte », « SEO » seul…).
 
 ## Style de code

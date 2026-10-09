@@ -46,6 +46,24 @@ HOME_MARKDOWN_FIELDS = (
     "collectionsTexte",
 )
 SECTION_TYPES = {"texte", "livres", "offre"}
+# Les blocs qui se masquent d’une case « Masquer ce bloc », décochée par défaut : un
+# fichier sans la clé affiche le bloc, comme avant. Le sens « masquer » plutôt
+# qu’« afficher » est voulu : Decap montre décochée une case absente d’une fiche
+# existante, et l’enregistrer aurait alors masqué le bloc sans qu’on le demande. Le bandeau de l’accueil et le titre des pages, eux,
+# restent toujours affichés.
+HOME_BLOCK_SWITCHES = ("masquerInformation", "masquerCollections", "masquerSuivre")
+NEWS_BLOCK_SWITCHES = ("masquerFacebook",)
+# Les seuls textes de l’accueil que rien ne remplace : tous les autres peuvent rester
+# vides, et l’élément qui les porte disparaît alors de la page.
+HOME_REQUIRED_FIELDS = ("heroTitre",)
+HOME_OPTIONAL_TEXT_FIELDS = (
+    "heroRubrique", "heroAccent", "boutonCatalogue", "boutonCollections",
+    "informationRubrique", "titreInformation", "commandesTitre", "librairesTitre",
+    "particuliersTitre", "libelleDon", "libelleOffres", "collectionsRubrique",
+    "collectionsTitre", "suivreRubrique", "suivreTitre", "actualitesRubrique",
+    "actualitesTitre", "actualitesAction", "manuscritsRubrique", "manuscritsTitre",
+    "manuscritsAction",
+)
 SETTING_FILES = ("site", "navigation", "footer", "paiement", "apparence")
 # Les pages engendrées, une fiche chacune dans content/pages-du-site/ (rubrique « Pages
 # principales » de l’administration), à côté de accueil.json. Le générateur les lit dans
@@ -191,6 +209,18 @@ def require_text(record: dict[str, Any], field: str, kind: str) -> None:
     value = record.get(field)
     if not isinstance(value, str) or not value.strip():
         raise ContentError(f"{kind} {record.get('slug')}: champ {field} obligatoire")
+
+
+def optional_text(record: dict[str, Any], field: str, kind: str) -> None:
+    """Un texte facultatif : absent, vide ou une chaîne, jamais une autre valeur."""
+    value = record.get(field)
+    if value is not None and not isinstance(value, str):
+        raise ContentError(f"{kind}: champ {field} invalide")
+
+
+def require_switch(record: dict[str, Any], field: str, kind: str) -> None:
+    if not isinstance(record.get(field), bool):
+        raise ContentError(f"{kind}: la case {field} doit être cochée ou décochée")
 
 
 def validate_status(record: dict[str, Any], kind: str) -> None:
@@ -492,38 +522,12 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
             require_text(item, field, "Lien du pied de page")
 
     home = settings["accueil"]
-    for field in (
-        "heroRubrique",
-        "heroTitre",
-        "heroAccent",
-        "heroAccroche",
-        "boutonCatalogue",
-        "boutonCollections",
-        "informationRubrique",
-        "titreInformation",
-        "informationTexte",
-        "commandesTitre",
-        "commandesTexte",
-        "librairesTitre",
-        "librairesTexte",
-        "particuliersTitre",
-        "particuliersTexte",
-        "soutienTexte",
-        "libelleDon",
-        "libelleOffres",
-        "collectionsRubrique",
-        "collectionsTitre",
-        "collectionsTexte",
-        "suivreRubrique",
-        "suivreTitre",
-        "actualitesRubrique",
-        "actualitesTitre",
-        "actualitesAction",
-        "manuscritsRubrique",
-        "manuscritsTitre",
-        "manuscritsAction",
-    ):
+    for field in HOME_REQUIRED_FIELDS:
         require_text(home, field, "Réglage accueil")
+    for field in HOME_MARKDOWN_FIELDS + HOME_OPTIONAL_TEXT_FIELDS:
+        optional_text(home, field, "Réglage accueil")
+    for switch in HOME_BLOCK_SWITCHES:
+        require_switch(home, switch, "Réglage accueil")
     covers = home.get("nombreCouvertures")
     if isinstance(covers, bool) or not isinstance(covers, int) or covers < 1:
         raise ContentError("Réglage accueil: nombreCouvertures doit être un nombre entier, 1 au moins")
@@ -535,11 +539,21 @@ def validate_settings(root: Path, settings: dict[str, dict[str, Any]]) -> None:
         value = page_settings.get(name)
         if not isinstance(value, dict):
             raise ContentError(f"Réglage pages: bloc {name} invalide")
-        for field in ("rubrique", "titre", "introduction", "descriptionSeo"):
+        for field in ("titre", "descriptionSeo"):
             require_text(value, field, f"Réglage page {name}")
+        # La petite ligne et l’introduction peuvent rester vides : elles disparaissent.
+        for field in ("rubrique", "introduction"):
+            optional_text(value, field, f"Réglage page {name}")
     actualites = page_settings["actualites"]
-    for field in ("appelRubrique", "appelTitre", "appelTexte", "boutonFacebook"):
-        require_text(actualites, field, "Réglage page actualites")
+    for switch in NEWS_BLOCK_SWITCHES:
+        require_switch(actualites, switch, "Réglage page actualites")
+    for field in ("appelRubrique", "appelTexte"):
+        optional_text(actualites, field, "Réglage page actualites")
+    # Affiché, le bloc Facebook garde son titre et son bouton : sans eux, il n’a plus
+    # rien à proposer. Masqué, ses textes sont gardés tels quels, vides ou non.
+    if not actualites["masquerFacebook"]:
+        for field in ("appelTitre", "boutonFacebook"):
+            require_text(actualites, field, "Réglage page actualites (bloc Facebook affiché)")
     # Une seule description : descriptionSeo. Le bloc seo ne porte que le titre et l’image.
     if "description" in (actualites.get("seo") or {}):
         raise ContentError("Réglage page actualites: la description SEO se saisit dans descriptionSeo")
@@ -645,6 +659,16 @@ def apply_optional_defaults(raw: dict[str, Any]) -> None:
             if isinstance(section, dict):
                 section.setdefault("boutonsPaypal", [])
                 section.setdefault("livres", [])
+                section.setdefault("masquee", False)
+    # Les cases « Masquer ce bloc » : absentes, le bloc s’affiche.
+    settings = raw["settings"]
+    for record, switches in (
+        (settings.get("accueil"), HOME_BLOCK_SWITCHES),
+        ((settings.get("pages") or {}).get("actualites"), NEWS_BLOCK_SWITCHES),
+    ):
+        if isinstance(record, dict):
+            for switch in switches:
+                record.setdefault(switch, False)
     # Une page créée sans ordre se range après les autres, dans l’ordre alphabétique
     # de leurs adresses si plusieurs attendent : rien à numéroter pour la rédaction.
     unordered = sorted(
@@ -821,6 +845,12 @@ def validate_content(root: Path, raw: dict[str, Any]) -> None:
         sections = page.get("sections")
         if not isinstance(sections, list) or not sections:
             raise ContentError(f"Page {page['slug']}: au moins une section est obligatoire")
+        # Une section masquée garde ses textes sans paraître sur le site ; la page,
+        # elle, doit en montrer au moins une, qui sert aussi de résumé sur « La maison ».
+        if any(isinstance(section, dict) and not isinstance(section.get("masquee"), bool) for section in sections):
+            raise ContentError(f"Page {page['slug']}: la case « Masquer cette section » est invalide")
+        if all(isinstance(section, dict) and section["masquee"] for section in sections):
+            raise ContentError(f"Page {page['slug']}: toutes les sections sont masquées, il en faut au moins une visible")
         for section in sections:
             if not isinstance(section, dict) or not isinstance(section.get("contenu"), str) or not section["contenu"].strip():
                 raise ContentError(f"Page {page['slug']}: contenu de section obligatoire")

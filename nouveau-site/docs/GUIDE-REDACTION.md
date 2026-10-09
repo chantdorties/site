@@ -92,6 +92,29 @@ Chaque entrée des **Réglages du site** et des **Pages principales** montre à 
 aperçu : une maquette de la zone du site où ses textes apparaissent (en-tête, pied de
 page, accueil, haut de chaque page, boutons d’achat). Il suit la saisie, avant tout enregistrement.
 
+### Masquer un bloc, laisser un champ vide
+
+Rien n’oblige à tout remplir ni à tout montrer :
+
+- **Masquer un bloc de l’accueil** — le bloc d’information, les collections ou « Suivre
+  la maison » : cocher **Masquer ce bloc** en tête du bloc. Il disparaît du site, ses
+  textes restent dans le formulaire pour plus tard. Le bandeau d’ouverture, lui, est
+  toujours affiché. Même case pour le **bloc Facebook** de **Pages principales ›
+  Actualités**.
+- **Laisser un champ vide** — sur l’accueil, seul le grand titre est obligatoire. Un
+  encadré Libraires ou Particuliers sans titre ni texte, un bouton (don, offres,
+  catalogue, collections) sans libellé, une carte Actualités ou Manuscrits sans titre :
+  ils disparaissent, et ce qui reste se réorganise (un seul encadré prend toute la
+  largeur). Sur les autres pages principales, la petite ligne au-dessus du titre et
+  l’introduction sont facultatives. Le bloc Facebook affiché garde son titre et son
+  bouton.
+- **Masquer une section de Mes pages** — cocher **Masquer cette section** au bas de la
+  section : une offre épuisée, un texte de saison. Une page garde au moins une section
+  visible ; si la première est masquée, la suivante sert de résumé sur « La maison ».
+
+Dans l’aperçu, ce qui est masqué reste visible, grisé, avec la mention « Masqué sur le
+site » : on retrouve ainsi ses textes pour le réafficher.
+
 ### Le menu et les liens du pied de page
 
 Dans **Réglages du site › Menu principal** et **› Pied de page**, chaque lien tient sur
@@ -350,7 +373,8 @@ Rien n’est perdu : la modification reste dans le flux éditorial jusqu’à ce
 - **Changer l’adresse** d’un contenu déjà publié sans reporter l’ancienne : les liens
   existants et les moteurs de recherche pointeraient dans le vide.
 - **Dépublier** les pages Accueil, Actualités et Mentions légales : elles sont
-  structurelles.
+  structurelles. On peut en revanche masquer des blocs de l’accueil et le bloc Facebook
+  des actualités (voir « Masquer un bloc, laisser un champ vide »).
 - **Changer la mise en page** ou les tailles ; l’ordre du menu se règle par
   glisser-déposer, couleurs et polices se limitent aux choix de
   **Réglages du site › Apparence**. Centrer, colorer ou souligner se fait par

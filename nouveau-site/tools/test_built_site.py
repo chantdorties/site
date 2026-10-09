@@ -797,23 +797,36 @@ class BuiltSiteTest(unittest.TestCase):
 
         home = BeautifulSoup((DIST / "index.html").read_text(encoding="utf-8"), "html.parser")
         commercial = home.select_one(".home-commercial")
+        # Le bloc d’information se masque d’une case dans l’administration : absent, il
+        # n’y a rien de plus à vérifier sur l’accueil.
+        accueil = settings("accueil")
+        if accueil.get("masquerInformation") is True:
+            self.assertIsNone(commercial)
+            return
         self.assertIsNotNone(commercial)
         commercial_text = commercial.get_text(" ", strip=True)
         # Les conditions de vente sont du texte éditorial : on vérifie qu’elles sont
         # publiées telles que saisies, pas leur formulation (« 40 % de remise » a
         # disparu quand la maison a changé de distributeur, et la publication a bloqué).
-        accueil = settings("accueil")
         for champ in ("librairesTexte", "particuliersTexte"):
-            debut = " ".join(OutilsTexte().texte_brut(accueil[champ]).split()[:6])
+            debut = " ".join(OutilsTexte().texte_brut(accueil.get(champ) or "").split()[:6])
             self.assertIn(debut, commercial_text, champ)
+        # Un encadré, un lien ou un bouton laissés vides disparaissent : chacun n’est
+        # attendu que si son texte est saisi.
         self.assertEqual(
-            ["Libraires", "Particuliers"],
+            [accueil[champ] for champ in ("librairesTitre", "particuliersTitre") if accueil.get(champ)],
             [heading.get_text(strip=True) for heading in commercial.select(".commercial-audience h4")],
         )
-        self.assertEqual(1, len(commercial.select('a[href="/soutien/"]')))
+        self.assertEqual(
+            int("page de soutien" in (accueil.get("soutienTexte") or "")),
+            len(commercial.select('a[href="/soutien/"]')),
+        )
         donation_form = commercial.select_one(
             'form.donation-form[action="https://www.paypal.com/donate"]'
         )
+        if not accueil.get("libelleDon"):
+            self.assertIsNone(donation_form)
+            return
         self.assertIsNotNone(donation_form)
         payment = settings("paiement")
         self.assertEqual(
@@ -821,10 +834,13 @@ class BuiltSiteTest(unittest.TestCase):
             donation_form.select_one('input[name="hosted_button_id"]')["value"],
         )
         self.assertEqual(
-            settings("accueil")["libelleDon"],
+            accueil["libelleDon"],
             donation_form.select_one("button").get_text(" ", strip=True),
         )
-        self.assertIsNotNone(commercial.select_one('a[href="/offres-speciales/"]'))
+        self.assertEqual(
+            bool(accueil.get("libelleOffres")),
+            commercial.select_one('a[href="/offres-speciales/"]') is not None,
+        )
 
     def test_redirects_cover_every_old_book_page(self):
         redirects = (DIST / ".htaccess").read_text(encoding="utf-8")

@@ -25,7 +25,7 @@ class PageMaison:
 <a class="house-card house-card--{e(page['slug'])}" href="/{e(page['slug'])}/">
   <span class="house-card__eyebrow">{e(eyebrow)}</span>
   <h2>{e(page['titre'])}</h2>
-  <span class="house-card__summary">{e(truncate(self.texte_brut(page['sections'][0]['contenu']), 120))}</span>
+  <span class="house-card__summary">{e(truncate(self.texte_brut(self.visible_sections(page)[0]['contenu']), 120))}</span>
   <span class="house-card__action">{e(action)} {icon('arrow-right')}</span>
 </a>""".strip()
             )

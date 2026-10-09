@@ -12,6 +12,11 @@
   border: 1px solid #3c413d; /* nuances fixes de la zone sombre, voir --color-dark */
 }
 
+/* Une seule carte, l'autre n'ayant pas de titre : elle prend toute la largeur. */
+.split-callout--seule {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .split-callout a {
   min-height: 220px;
   padding: 34px;

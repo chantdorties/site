@@ -11,6 +11,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tools.rendu.texte import OutilsTexte
 from tools.content_data import (
     APPEARANCE_FONTS,
     ContentError,
@@ -90,6 +91,20 @@ def edit(root, relative, **changes):
     record.update(changes)
     path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
     return record
+
+
+def render_pages(root, *builders):
+    """Les pages HTML rendues par les méthodes demandées, sans préparer les images :
+    les couvertures reçoivent une adresse factice, suffisante pour lire la structure."""
+    build_site = load_site_builder()
+    shutil.copytree(ROOT / "frontend", root / "frontend")
+    builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+    builder.cover_media = collections.defaultdict(lambda: {"small": "c.webp", "large": "c.webp"})
+    pages = {}
+    builder.write_route = lambda route, html: pages.__setitem__(route, html)
+    for name in builders:
+        getattr(builder, name)()
+    return pages
 
 
 def referenced_media(raw):
@@ -404,6 +419,104 @@ class ContentDataTest(unittest.TestCase):
                 edit(root, "content/pages/amis.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
                 with self.assertRaisesRegex(ContentError, f"Page amis \\(section 1\\): .*{re.escape(message)}"):
                     load_content(root, include_drafts=True)
+
+    def test_home_blocks_can_be_hidden(self):
+        # Les cases « Masquer ce bloc » : absentes, tout s’affiche comme avant.
+        with content_sandbox() as root:
+            accueil = json.loads((root / "content/pages-du-site/accueil.json").read_text(encoding="utf-8"))
+            for switch in ("masquerInformation", "masquerCollections", "masquerSuivre"):
+                self.assertNotIn(switch, accueil)
+            raw = load_content(root, include_drafts=True)
+            self.assertFalse(any(raw["settings"]["accueil"][switch] for switch in ("masquerInformation", "masquerCollections", "masquerSuivre")))
+            home = render_pages(root, "build_home")["/"]
+            for marker in ("home-commercial", "collection-showcase", "section--ink"):
+                self.assertIn(marker, home)
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", masquerInformation=True, masquerCollections=True, masquerSuivre=True)
+            home = render_pages(root, "build_home")["/"]
+            self.assertNotIn("home-commercial", home)
+            self.assertNotIn("section--ink", home)
+            self.assertNotIn("donation-form", home)
+            self.assertIn('class="hero"', home)
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", masquerInformation="oui")
+            with self.assertRaisesRegex(ContentError, "masquerInformation doit être cochée ou décochée"):
+                load_content(root, include_drafts=True)
+
+    def test_home_texts_left_empty_disappear(self):
+        vides = {
+            champ: ""
+            for champ in (
+                "heroRubrique", "heroAccent", "heroAccroche", "boutonCatalogue", "boutonCollections",
+                "commandesTitre", "commandesTexte", "librairesTitre", "librairesTexte", "soutienTexte",
+                "libelleDon", "libelleOffres", "collectionsRubrique", "collectionsTitre", "collectionsTexte",
+                "manuscritsTitre",
+            )
+        }
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", **vides)
+            home = render_pages(root, "build_home")["/"]
+            self.assertNotIn("hero-actions", home.split('class="cover-ribbon"')[0])
+            self.assertNotIn("<h4></h4>", home)
+            self.assertNotIn('<p class="eyebrow"></p>', home)
+            self.assertNotIn("donation-form", home)
+            self.assertNotIn('href="/offres-speciales/"', home)
+            suivre = home.split("section--ink")[1].split("</section>")[0]
+            self.assertNotIn('href="/manuscrits/"', suivre)
+            self.assertIn("commercial-audiences--seul", home)
+            self.assertIn("split-callout--seule", home)
+            self.assertNotIn("<span></span>", home)
+        # Tout le bloc vidé : il disparaît, même coché.
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", **vides, informationRubrique="", titreInformation="",
+                 informationTexte="", particuliersTitre="", particuliersTexte="")
+            self.assertNotIn("home-commercial", render_pages(root, "build_home")["/"])
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/accueil.json", heroTitre="")
+            with self.assertRaisesRegex(ContentError, "heroTitre obligatoire"):
+                load_content(root, include_drafts=True)
+
+    def test_news_facebook_block_can_be_hidden(self):
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/actualites.json", appelRubrique="", appelTexte="")
+            news = render_pages(root, "build_news_page")["/actualites/"]
+            self.assertIn("news-callout", news)
+            self.assertNotIn('<p class="eyebrow"></p>', news)
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/actualites.json", masquerFacebook=True, appelTitre="", boutonFacebook="")
+            self.assertNotIn("news-callout", render_pages(root, "build_news_page")["/actualites/"])
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/actualites.json", appelTitre="")
+            with self.assertRaisesRegex(ContentError, "appelTitre obligatoire"):
+                load_content(root, include_drafts=True)
+
+    def test_main_page_eyebrow_and_introduction_are_optional(self):
+        with content_sandbox() as root:
+            edit(root, "content/pages-du-site/maison.json", rubrique="", introduction="")
+            house = render_pages(root, "build_house_page")["/la-maison/"]
+            heading = house.split('<header class="page-heading">')[1].split("</header>")[0]
+            self.assertNotIn("eyebrow", heading)
+            self.assertNotIn("lead", heading)
+
+    def test_page_sections_can_be_hidden(self):
+        with content_sandbox() as root:
+            page = json.loads((root / "content/pages/commandes.json").read_text(encoding="utf-8"))
+            self.assertGreater(len(page["sections"]), 1)
+            premiere = page["sections"][0]
+            premiere["masquee"] = True
+            edit(root, "content/pages/commandes.json", sections=page["sections"])
+            pages = render_pages(root, "build_editorial_pages", "build_house_page")
+            self.assertNotIn(OutilsTexte().texte_brut(premiere["contenu"])[:40], pages["/commandes/"])
+            # Le résumé sur « La maison » vient de la première section visible.
+            suivante = OutilsTexte().texte_brut(page["sections"][1]["contenu"])
+            self.assertIn(suivante[:30], pages["/la-maison/"])
+        with content_sandbox() as root:
+            page = json.loads((root / "content/pages/amis.json").read_text(encoding="utf-8"))
+            for section in page["sections"]:
+                section["masquee"] = True
+            edit(root, "content/pages/amis.json", sections=page["sections"])
+            with self.assertRaisesRegex(ContentError, "Page amis: toutes les sections sont masquées"):
+                load_content(root, include_drafts=True)
 
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:
