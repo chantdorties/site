@@ -469,3 +469,40 @@ noscript {
 #nc-root [class*="SortableListItem"]:has(> label[class*="FieldLabel"]) > [class*="NestedObjectLabel"] {
   top: 28px;
 }
+
+/* La garde du bouton « Supprimer l’entrée » (suppression.js) : le bouton grisé d’une
+   fiche dont d’autres dépendent, et la raison, affichée sous la barre du haut. */
+#nc-root .suppression-bloquee {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.garde-suppression {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  z-index: 1000;
+  width: min(560px, calc(100vw - 32px));
+  padding: 16px 20px;
+  transform: translateX(-50%);
+  border-left: 4px solid #c63f32;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  font: 15px/1.5 system-ui, sans-serif;
+  color: #1f1f1f;
+}
+
+.garde-suppression p {
+  margin: 6px 0 12px;
+}
+
+.garde-suppression button {
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 4px;
+  background: #2f5d46;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}

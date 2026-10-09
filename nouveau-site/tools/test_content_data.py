@@ -2,6 +2,7 @@
 
 import collections
 import contextlib
+import html
 import importlib.util
 import json
 import re
@@ -19,6 +20,7 @@ from tools.content_data import (
     load_content,
     media_path,
     navigation_id,
+    referenced_media_paths,
     valid_isbn,
     validate_appearance_settings,
 )
@@ -85,6 +87,27 @@ def content_sandbox():
         yield root
 
 
+def exemple(dossier, condition=lambda record: True):
+    """Une fiche réelle qui convient au test, choisie dans le contenu du moment.
+
+    Les tests ne nomment jamais une fiche de la rédaction : elle peut la modifier ou la
+    supprimer depuis l’administration, et un test qui en dépendrait bloquerait alors
+    toute publication (c’est arrivé, #35). Faute de fiche qui convienne, le test est
+    sauté plutôt qu’en échec.
+    """
+    for path in sorted((CONTENT / dossier).glob("*.json")):
+        record = json.loads(path.read_text(encoding="utf-8"))
+        record["slug"] = path.stem
+        if condition(record):
+            return record
+    raise unittest.SkipTest(f"aucune fiche de content/{dossier}/ ne convient à ce test")
+
+
+def page_libre(record):
+    """Une page de Mes pages que l’on peut modifier à loisir : pas les mentions légales."""
+    return record["slug"] not in ("mentions-legales", "entree")
+
+
 def edit(root, relative, **changes):
     path = root / relative
     record = json.loads(path.read_text(encoding="utf-8"))
@@ -108,32 +131,7 @@ def render_pages(root, *builders):
 
 
 def referenced_media(raw):
-    paths = set()
-    for book in raw["books"]:
-        paths.update(filter(None, [book.get("couverture"), *map(media_path, book.get("illustrations", [])), *book.get("extraits", [])]))
-    for person in raw["people"]:
-        paths.update(filter(None, [person.get("imagePrincipale"), *map(media_path, person.get("images", []))]))
-    for page in raw["pages"]:
-        paths.update(filter(None, [*map(media_path, page.get("images", [])), *page.get("documents", [])]))
-        paths.update(
-            link.get("href")
-            for link in page.get("liens", [])
-            if link.get("type") == "document" and link.get("href")
-        )
-    for item in raw["news"]:
-        paths.update(filter(None, [item.get("image"), item.get("document")]))
-    for collection in raw["collections"]:
-        paths.update(filter(None, [collection.get("logo")]))
-    for kind in ("books", "people", "collections", "pages", "news"):
-        paths.update(
-            item.get("seo", {}).get("image")
-            for item in raw[kind]
-            if item.get("seo", {}).get("image")
-        )
-    # Les images déposées au fil d'un texte ne figurent dans aucun champ : sans cette
-    # ligne, la première que la rédaction insère est vue comme un fichier orphelin.
-    paths.update(inline_media_paths(raw))
-    return paths
+    return referenced_media_paths(raw)
 
 
 class ContentDataTest(unittest.TestCase):
@@ -307,9 +305,17 @@ class ContentDataTest(unittest.TestCase):
             for record in records:
                 self.assertIsInstance(record["ordre"], int, record["slug"])
                 self.assertGreaterEqual(record["ordre"], 0, record["slug"])
-        featured = [book for book in self.books if book["miseEnAvantAccueil"]]
-        self.assertEqual(len(self.collections), len(featured))
-        self.assertEqual(len(featured), len({book["collection"] for book in featured}))
+        # Un livre mis en avant par collection publiée (choisi d’office si la rédaction
+        # n’en a coché aucun, par exemple après avoir supprimé le livre coché).
+        for collection in self.collections:
+            if collection["statut"] != "publie":
+                continue
+            featured = [
+                book for book in self.books
+                if book["collection"] == collection["slug"] and book["statut"] == "publie"
+                and book["miseEnAvantAccueil"] and book["disponible"]
+            ]
+            self.assertEqual(1, len(featured), collection["slug"])
         for book in self.books:
             self.assertNotIn(book["slug"], book["aDecouvrir"])
             self.assertEqual(len(book["aDecouvrir"]), len(set(book["aDecouvrir"])))
@@ -340,13 +346,11 @@ class ContentDataTest(unittest.TestCase):
             shutil.copytree(CONTENT, root / "content", ignore=shutil.ignore_patterns("media"))
             (root / "content" / "media").symlink_to(CONTENT / "media", target_is_directory=True)
             shutil.copytree(ROOT / "config", root / "config")
-            page_path = root / "content" / "pages" / "amis.json"
-            page = json.loads(page_path.read_text(encoding="utf-8"))
-            page["statut"] = "archive"
-            page_path.write_text(json.dumps(page, ensure_ascii=False, indent=2), encoding="utf-8")
+            slug = exemple("pages", page_libre)["slug"]
+            edit(root, f"content/pages/{slug}.json", statut="archive")
             for include_drafts in (False, True):
                 bundle = load_content(root, include_drafts=include_drafts)
-                self.assertNotIn("amis", {item["slug"] for item in bundle["pages"]})
+                self.assertNotIn(slug, {item["slug"] for item in bundle["pages"]})
 
     def test_a_new_editorial_page_is_accepted(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -403,8 +407,9 @@ class ContentDataTest(unittest.TestCase):
         # est refusée avec un message qui dit quoi corriger, au lieu d’une page qui
         # perdrait sa mise en forme en silence.
         valide = "::: valeur centre principale souligne\nTexte\n:::\n\n::: encadre secondaire\n### Titre\n\nTexte\n:::"
+        slug = exemple("pages", page_libre)["slug"]
         with content_sandbox() as root:
-            edit(root, "content/pages/amis.json", sections=[{"type": "texte", "titre": None, "contenu": valide}])
+            edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": valide}])
             load_content(root, include_drafts=True)
         for contenu, message in (
             ("::: cadre\nTexte\n:::", "bloc inconnu « cadre »"),
@@ -416,8 +421,8 @@ class ContentDataTest(unittest.TestCase):
             (":::valeur!\nTexte\n:::", "ligne de bloc non reconnue"),
         ):
             with self.subTest(contenu), content_sandbox() as root:
-                edit(root, "content/pages/amis.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
-                with self.assertRaisesRegex(ContentError, f"Page amis \\(section 1\\): .*{re.escape(message)}"):
+                edit(root, f"content/pages/{slug}.json", sections=[{"type": "texte", "titre": None, "contenu": contenu}])
+                with self.assertRaisesRegex(ContentError, f"Page {slug} \\(section 1\\): .*{re.escape(message)}"):
                     load_content(root, include_drafts=True)
 
     def test_home_blocks_can_be_hidden(self):
@@ -499,23 +504,27 @@ class ContentDataTest(unittest.TestCase):
             self.assertNotIn("lead", heading)
 
     def test_page_sections_can_be_hidden(self):
+        page = exemple(
+            "pages",
+            lambda record: page_libre(record) and record["statut"] == "publie"
+            and len([section for section in record["sections"] if not section.get("masquee")]) > 1,
+        )
+        slug = page["slug"]
+        page["sections"] = [section for section in page["sections"] if not section.get("masquee")]
         with content_sandbox() as root:
-            page = json.loads((root / "content/pages/commandes.json").read_text(encoding="utf-8"))
-            self.assertGreater(len(page["sections"]), 1)
             premiere = page["sections"][0]
             premiere["masquee"] = True
-            edit(root, "content/pages/commandes.json", sections=page["sections"])
+            edit(root, f"content/pages/{slug}.json", sections=page["sections"])
             pages = render_pages(root, "build_editorial_pages", "build_house_page")
-            self.assertNotIn(OutilsTexte().texte_brut(premiere["contenu"])[:40], pages["/commandes/"])
+            self.assertNotIn(OutilsTexte().texte_brut(premiere["contenu"])[:40], pages[f"/{slug}/"])
             # Le résumé sur « La maison » vient de la première section visible.
             suivante = OutilsTexte().texte_brut(page["sections"][1]["contenu"])
-            self.assertIn(suivante[:30], pages["/la-maison/"])
+            self.assertIn(suivante[:30], html.unescape(pages["/la-maison/"]))
         with content_sandbox() as root:
-            page = json.loads((root / "content/pages/amis.json").read_text(encoding="utf-8"))
             for section in page["sections"]:
                 section["masquee"] = True
-            edit(root, "content/pages/amis.json", sections=page["sections"])
-            with self.assertRaisesRegex(ContentError, "Page amis: toutes les sections sont masquées"):
+            edit(root, f"content/pages/{slug}.json", sections=page["sections"])
+            with self.assertRaisesRegex(ContentError, f"Page {slug}: toutes les sections sont masquées"):
                 load_content(root, include_drafts=True)
 
     @staticmethod
@@ -528,6 +537,7 @@ class ContentDataTest(unittest.TestCase):
         return section
 
     def test_free_sections_take_their_place_on_the_home(self):
+        livre = exemple("livres", lambda record: record["statut"] == "publie")["slug"]
         with content_sandbox() as root:
             edit(root, "content/pages-du-site/accueil.json", sectionsLibres=[
                 self.free_section("BAS", "bas"),
@@ -536,7 +546,7 @@ class ContentDataTest(unittest.TestCase):
                 self.free_section("APRES-COLLECTIONS", "apres-collections"),
                 self.free_section("MASQUEE", "bas", masquee=True),
                 self.free_section(
-                    "OFFRE", "bas", type="offre", livres=["ailes-d-arc-en-ciel"],
+                    "OFFRE", "bas", type="offre", livres=[livre],
                     boutonsPaypal=[{"libelle": "Commander le lot", "hostedButtonId": "ABCDEFGHJK234"}],
                 ),
             ])
@@ -556,7 +566,7 @@ class ContentDataTest(unittest.TestCase):
             self.assertNotIn("MASQUEE", html)
             self.assertIn('<h2>Intertitre BAS</h2>', html)
             # L’offre montre sa carte de livre et son bouton, comme dans Mes pages.
-            self.assertIn('href="/livres/ailes-d-arc-en-ciel/"', html)
+            self.assertIn(f'href="/livres/{livre}/"', html)
             self.assertIn('value="ABCDEFGHJK234"', html)
             self.assertIn("Commander le lot", html)
 
@@ -578,20 +588,25 @@ class ContentDataTest(unittest.TestCase):
             builders = sorted({builder for builder, _, _ in listes.values()})
             pages = render_pages(root, *builders)
             for nom, (_, route, liste) in listes.items():
+                if route not in pages:
+                    continue  # page archivée par la rédaction : rien à placer
                 html = pages[route]
-                places = [html.index(f"Texte DESSUS-{nom}."), html.index(liste), html.index(f"Texte SOUS-{nom}.")]
+                # Une liste vide (aucune actualité, par exemple) n’a pas de grille.
+                marques = [f"Texte DESSUS-{nom}.", liste, f"Texte SOUS-{nom}."] if liste in html else [f"Texte DESSUS-{nom}.", f"Texte SOUS-{nom}."]
+                places = [html.index(marque) for marque in marques]
                 self.assertEqual(sorted(places), places, nom)
             # Sous la liste des actualités, mais au-dessus du bloc Facebook.
             html = pages["/actualites/"]
-            self.assertLess(html.index("Texte SOUS-actualites."), html.index("news-callout"))
+            if "news-callout" in html:
+                self.assertLess(html.index("Texte SOUS-actualites."), html.index("news-callout"))
 
     def test_free_sections_follow_the_rules_of_page_sections(self):
+        livre = exemple("livres", lambda record: record["statut"] == "publie")["slug"]
         cas = (
             ({"emplacement": "apres-liste"}, "accueil", "emplacement de section inconnu « apres-liste »"),
             ({"emplacement": "bas"}, "catalogue", "emplacement de section inconnu « bas »"),
             ({"contenu": " "}, "maison", "Page principale maison: contenu de section obligatoire"),
-            ({"livres": ["livre-inconnu"], "type": "livres"}, "actualites", "livre de section indisponible"),
-            ({"type": "texte", "livres": ["ailes-d-arc-en-ciel"]}, "accueil", "une section « texte » ne porte ni livre"),
+            ({"type": "texte", "livres": [livre]}, "accueil", "une section « texte » ne porte ni livre"),
             (
                 {"type": "offre", "boutonsPaypal": [{"libelle": "Lot", "hostedButtonId": "https://paypal"}]},
                 "projets",
@@ -605,6 +620,93 @@ class ContentDataTest(unittest.TestCase):
                 edit(root, f"content/pages-du-site/{page}.json", sectionsLibres=[self.free_section("X", **champs)])
                 with self.assertRaisesRegex(ContentError, re.escape(message)):
                     load_content(root, include_drafts=True)
+
+    # ---- Supprimer une fiche --------------------------------------------------------
+    #
+    # Decap supprime une fiche publiée directement sur la branche publiée : ce qui la
+    # citait encore ne doit pas bloquer la publication suivante.
+
+    def test_deleting_a_book_drops_the_links_to_it(self):
+        raw = self.raw
+        available = lambda book: book["statut"] == "publie" and book["disponible"]
+        # Un livre mis en avant dont la collection a un autre livre disponible.
+        candidates = [
+            book for book in raw["books"]
+            if available(book) and book["miseEnAvantAccueil"]
+            and any(other["slug"] != book["slug"] and other["collection"] == book["collection"] and available(other) for other in raw["books"])
+        ]
+        if not candidates:
+            self.skipTest("aucune collection n’a deux livres disponibles")
+        book = candidates[0]["slug"]
+        page = exemple("pages", lambda record: page_libre(record) and record["statut"] == "publie")
+        voisin = exemple("livres", lambda record: record["slug"] != book and record["statut"] == "publie")["slug"]
+        with content_sandbox() as root:
+            sections = page["sections"]
+            sections[0] = {**sections[0], "type": "livres", "livres": [book], "boutonsPaypal": []}
+            edit(root, f"content/pages/{page['slug']}.json", sections=sections,
+                 liens=[{"type": "livre", "slug": book, "texte": "Le livre"}])
+            edit(root, f"content/livres/{voisin}.json", aDecouvrir=[book])
+            (root / "content" / "livres" / f"{book}.json").unlink()
+            bundle = load_content(root, include_drafts=False)
+            retirees = "\n".join(bundle["raw"]["referencesRetirees"])
+            self.assertIn(f"Page {page['slug']}: livre supprimé « {book} » retiré", retirees)
+            self.assertIn(f"lien vers une livre supprimé « {book} » retiré", retirees)
+            self.assertIn(f"Livre {voisin} (À découvrir): livre supprimé « {book} » retiré", retirees)
+            # Sa collection garde un livre mis en avant, choisi d’office.
+            self.assertIn("aucun livre mis en avant", retirees)
+            pages = render_pages(root, "build_editorial_pages")
+            self.assertNotIn(f"/livres/{book}/", pages[f"/{page['slug']}/"])
+
+    def test_deleting_a_page_drops_the_links_to_it(self):
+        cible = exemple("pages", lambda record: page_libre(record) and record["statut"] == "publie")["slug"]
+        autre = exemple("pages", lambda record: page_libre(record) and record["statut"] == "publie" and record["slug"] != cible)
+        with content_sandbox() as root:
+            sections = autre["sections"]
+            sections[0] = {**sections[0], "contenu": f"Voir [la page](/{cible}/)."}
+            edit(root, f"content/pages/{autre['slug']}.json", sections=sections,
+                 liens=[{"type": "page", "pageCible": cible, "texte": "Lien"}])
+            navigation = json.loads((root / "content/reglages/navigation.json").read_text(encoding="utf-8"))
+            navigation["liens"].append({"id": "cible", "libelle": "Cible", "url": f"/{cible}/", "visible": True})
+            edit(root, "content/reglages/navigation.json", liens=navigation["liens"])
+            edit(root, "content/reglages/footer.json", liensNavigation=[{"libelle": "Cible", "url": f"/{cible}/"}])
+            (root / "content" / "pages" / f"{cible}.json").unlink()
+            pages = render_pages(root, "build_home", "build_editorial_pages", "build_house_page")
+            for route, page_html in pages.items():
+                self.assertNotIn(f'href="/{cible}/"', page_html, route)
+            # Le texte du lien reste, sans lien.
+            self.assertIn("Voir la page", pages[f"/{autre['slug']}/"])
+
+    def test_deleted_media_owner_leaves_unused_files_without_blocking(self):
+        page = exemple("pages", lambda record: page_libre(record) and record.get("images"))
+        image = media_path(page["images"][0])
+        with content_sandbox() as root:
+            (root / "content" / "pages" / f"{page['slug']}.json").unlink()
+            bundle = load_content(root, include_drafts=False)
+            self.assertNotIn(image, referenced_media_paths(bundle["raw"]))
+
+    def test_records_others_depend_on_are_guarded(self):
+        build_site = load_site_builder()
+        with content_sandbox() as root:
+            shutil.copytree(ROOT / "frontend", root / "frontend")
+            builder = build_site.SiteBuilder(root, root / "dist", include_drafts=False, base_url=None)
+            guard = builder.deletion_guard()
+        auteur = next(slug for book in self.books for slug in book["auteurs"])
+        self.assertIn(auteur, guard["personnes"])
+        self.assertIn("Retirez-la d’abord", guard["personnes"][auteur])
+        collection = self.books[0]["collection"]
+        self.assertIn(collection, guard["collections"])
+        self.assertIn("mentions-legales", guard["pages"])
+        # Une personne citée par aucun livre ni projet se supprime librement.
+        cited = {slug for book in self.books for field in ("auteurs", "illustrateurs", "prefaciers") for slug in book[field]}
+        cited |= {slug for project in self.raw["projects"] for field in ("auteurs", "illustrateurs") for slug in project[field]}
+        for person in self.people:
+            if person["slug"] not in cited:
+                self.assertNotIn(person["slug"], guard["personnes"])
+        # Sans la garde, la validation refuse toujours un livre sans son auteur.
+        with content_sandbox() as root:
+            (root / "content" / "personnes" / f"{auteur}.json").unlink()
+            with self.assertRaisesRegex(ContentError, f"personne inconnue {auteur}"):
+                load_content(root, include_drafts=False)
 
     def test_legal_page_cannot_be_unpublished(self):
         with content_sandbox() as root:
@@ -651,42 +753,48 @@ class ContentDataTest(unittest.TestCase):
             self.assertEqual([], created["documents"])
 
     def test_page_sections_and_links_follow_their_type(self):
+        slug = exemple("pages", page_libre)["slug"]
+        livre = exemple("livres")["slug"]
         with content_sandbox() as root:
-            edit(root, "content/pages/soutien.json", liens=[{"type": "email", "texte": "Écrire", "href": "contact@exemple.fr"}])
-            page = next(item for item in load_content(root, include_drafts=True)["pages"] if item["slug"] == "soutien")
+            edit(root, f"content/pages/{slug}.json", liens=[{"type": "email", "texte": "Écrire", "href": "contact@exemple.fr"}])
+            page = next(item for item in load_content(root, include_drafts=True)["pages"] if item["slug"] == slug)
             self.assertEqual("mailto:contact@exemple.fr", page["liens"][0]["href"])
         for sections, message in (
             ([{"contenu": "Sans type"}], "type de section attendu"),
-            ([{"type": "texte", "contenu": "Texte", "livres": ["ville-rouge"]}], "ne porte ni livre ni bouton"),
+            ([{"type": "texte", "contenu": "Texte", "livres": [livre]}], "ne porte ni livre ni bouton"),
         ):
             with self.subTest(message), content_sandbox() as root:
-                edit(root, "content/pages/amis.json", sections=sections)
+                edit(root, f"content/pages/{slug}.json", sections=sections)
                 with self.assertRaisesRegex(ContentError, message):
                     load_content(root, include_drafts=True)
 
     def test_duplicate_order_is_refused_inside_a_collection(self):
         with content_sandbox() as root:
             books = [json.loads(path.read_text(encoding="utf-8")) for path in (root / "content" / "livres").glob("*.json")]
-            target = next(book for book in books if book["slug"] == "ville-rouge")
-            twin = next(
-                book
-                for book in books
-                if book["collection"] == target["collection"] and book["slug"] != target["slug"]
-            )
-            edit(root, "content/livres/ville-rouge.json", ordre=twin["ordre"])
+            listed = [book for book in books if book["statut"] != "archive"]
+            pairs = [
+                (book, twin) for book in listed for twin in listed
+                if book["collection"] == twin["collection"] and book["slug"] != twin["slug"]
+            ]
+            if not pairs:
+                self.skipTest("aucune collection n’a deux livres")
+            target, twin = pairs[0]
+            edit(root, f"content/livres/{target['slug']}.json", ordre=twin["ordre"])
             with self.assertRaisesRegex(ContentError, "ordre .* utilisé deux fois"):
                 load_content(root, include_drafts=False)
 
     def test_the_same_order_is_allowed_in_two_collections(self):
         with content_sandbox() as root:
             books = [json.loads(path.read_text(encoding="utf-8")) for path in (root / "content" / "livres").glob("*.json")]
-            target = next(book for book in books if book["slug"] == "ville-rouge")
+            target = next(book for book in books if book["statut"] == "publie")
             taken = {book["ordre"] for book in books if book["collection"] == target["collection"]}
             elsewhere = {book["ordre"] for book in books if book["collection"] != target["collection"]}
+            if not elsewhere - taken:
+                self.skipTest("aucun rang d’une autre collection n’est libre dans celle-ci")
             free = min(elsewhere - taken)
-            edit(root, "content/livres/ville-rouge.json", ordre=free)
+            edit(root, f"content/livres/{target['slug']}.json", ordre=free)
             bundle = load_content(root, include_drafts=False)
-            moved = next(book for book in bundle["books"] if book["slug"] == "ville-rouge")
+            moved = next(book for book in bundle["books"] if book["slug"] == target["slug"])
             self.assertEqual(free, moved["ordre"])
 
     def test_duplicate_home_order_is_refused(self):
@@ -724,48 +832,65 @@ class ContentDataTest(unittest.TestCase):
             self.assertIsNone(created["sortiePrevue"])
 
     def test_a_project_cannot_point_at_an_unknown_person(self):
+        projet = exemple("projets")["slug"]
         with content_sandbox() as root:
-            edit(root, "content/projets/gaia-tome-3.json", auteurs=["personne-inexistante"])
+            edit(root, f"content/projets/{projet}.json", auteurs=["personne-inexistante"])
             with self.assertRaisesRegex(ContentError, "personne inconnue"):
                 load_content(root, include_drafts=False)
 
     def test_a_project_refuses_a_contributor_in_the_wrong_role(self):
+        projet = exemple("projets")["slug"]
+        personne = exemple("personnes", lambda record: "illustrateur" not in record["roles"])["slug"]
         with content_sandbox() as root:
-            edit(root, "content/projets/gaia-tome-3.json", illustrateurs=["amanda-belassami-sideris"])
+            edit(root, f"content/projets/{projet}.json", illustrateurs=[personne])
             with self.assertRaisesRegex(ContentError, "n’a pas le rôle illustrateur"):
                 load_content(root, include_drafts=False)
 
     def test_a_contributor_without_a_record_is_accepted_as_plain_text(self):
+        projet = exemple("projets", lambda record: record["statut"] == "publie")["slug"]
+        illustrateur = exemple(
+            "personnes", lambda record: "illustrateur" in record["roles"] and record["statut"] == "publie"
+        )["slug"]
         with content_sandbox() as root:
+            edit(root, f"content/projets/{projet}.json", auteurs=[], auteursHorsFiche=["Najat Azira"], illustrateurs=[illustrateur])
             bundle = load_content(root, include_drafts=False)
-            project = next(item for item in bundle["projects"] if item["slug"] == "hotel-du-nord")
+            project = next(item for item in bundle["projects"] if item["slug"] == projet)
             self.assertEqual(["Najat Azira"], project["auteursHorsFiche"])
-            self.assertEqual(["sebastien-boscus"], project["illustrateurs"])
+            self.assertEqual([illustrateur], project["illustrateurs"])
 
     def test_duplicate_project_order_is_refused(self):
+        projets = [
+            record for record in map(lambda path: json.loads(path.read_text(encoding="utf-8")), sorted((CONTENT / "projets").glob("*.json")))
+            if record["statut"] != "archive"
+        ]
+        if len(projets) < 2:
+            self.skipTest("il faut deux projets")
         with content_sandbox() as root:
-            edit(root, "content/projets/gaia-tome-3.json", ordre=10)
+            edit(root, f"content/projets/{projets[0]['slug']}.json", ordre=projets[1]["ordre"])
             with self.assertRaisesRegex(ContentError, "ordre .* utilisé deux fois"):
                 load_content(root, include_drafts=False)
 
     def test_an_archived_project_leaves_the_site(self):
+        projet = exemple("projets")["slug"]
         with content_sandbox() as root:
-            edit(root, "content/projets/gaia-tome-3.json", statut="archive")
+            edit(root, f"content/projets/{projet}.json", statut="archive")
             bundle = load_content(root, include_drafts=True)
-            self.assertNotIn("gaia-tome-3", {item["slug"] for item in bundle["projects"]})
+            self.assertNotIn(projet, {item["slug"] for item in bundle["projects"]})
 
     def test_seo_text_length_is_bounded(self):
+        livre = exemple("livres", lambda record: record["statut"] == "publie")["slug"]
         for field, length in (("titre", 61), ("description", 161)):
             with self.subTest(field=field), content_sandbox() as root:
-                edit(root, "content/livres/ville-rouge.json", seo={field: "x" * length})
+                edit(root, f"content/livres/{livre}.json", seo={field: "x" * length})
                 with self.assertRaisesRegex(ContentError, f"{field} SEO trop long"):
                     load_content(root, include_drafts=False)
 
     def test_seo_text_at_the_limit_is_accepted(self):
+        livre = exemple("livres", lambda record: record["statut"] == "publie")["slug"]
         with content_sandbox() as root:
-            edit(root, "content/livres/ville-rouge.json", seo={"titre": "x" * 60, "description": "y" * 160})
+            edit(root, f"content/livres/{livre}.json", seo={"titre": "x" * 60, "description": "y" * 160})
             bundle = load_content(root, include_drafts=False)
-            book = next(item for item in bundle["books"] if item["slug"] == "ville-rouge")
+            book = next(item for item in bundle["books"] if item["slug"] == livre)
             self.assertEqual(60, len(book["seo"]["titre"]))
 
     def test_archived_content_keeps_its_old_addresses(self):
@@ -910,18 +1035,6 @@ class ContentDataTest(unittest.TestCase):
             self.assertFalse((root / "dist").exists())
             self.assertFalse((root / ".dist-build").exists())
 
-    def test_special_contributor_relations(self):
-        aquarium = self.books_by_slug["debout-dans-l-aquarium"]
-        self.assertEqual(["eric-lemaire"], aquarium["auteurs"])
-        self.assertEqual(["eric-lemaire"], aquarium["illustrateurs"])
-
-        memoires = self.books_by_slug["memoires-d-un-nouveau-ne"]
-        self.assertEqual(["marion-claeys", "catherine-senaffe"], memoires["illustrateurs"])
-
-        marius = self.books_by_slug["marius-gardebois"]
-        self.assertEqual([], marius["illustrateurs"])
-        self.assertEqual(["claire-auzias"], marius["prefaciers"])
-
     def test_no_extraction_fragments_as_people(self):
         forbidden = re.compile(r"l['’]auteu|roman suivi|album de|et moi", re.I)
         for person in self.people:
@@ -979,14 +1092,17 @@ class ContentDataTest(unittest.TestCase):
         self.assertTrue(payment["panierEncrypted"].startswith("-----BEGIN PKCS7-----"))
         self.assertTrue(payment["panierEncrypted"].endswith("-----END PKCS7-----"))
 
-    def test_all_and_only_referenced_media_are_kept(self):
+    def test_every_referenced_media_exists(self):
+        # Un fichier cité doit exister. L’inverse ne bloque plus : une fiche supprimée
+        # laisse son image et ses PDF, jamais publiés et listés au rapport
+        # (« mediasInutilises »).
         referenced = referenced_media(self.raw)
         assets = {
             path.relative_to(ROOT).as_posix()
             for path in (CONTENT / "media").rglob("*")
             if path.is_file()
         }
-        self.assertEqual(referenced, assets)
+        self.assertLessEqual(referenced, assets)
         for path in referenced:
             self.assertTrue(path.startswith("content/media/"), path)
             self.assertTrue((ROOT / path).is_file(), path)

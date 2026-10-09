@@ -139,14 +139,16 @@ class PageAccueil:
           <button class="button" type="submit">{icon('heart')} {e(texte('libelleDon'))}</button>
         </form>""" if texte("libelleDon") else "",
             f'\n        <a class="button button--secondary" href="/offres-speciales/">{e(texte("libelleOffres"))}</a>'
-            if texte("libelleOffres") else "",
+            if texte("libelleOffres") and not self.lien_menu_retire("/offres-speciales/", "accueil") else "",
         )))
         seul = " commercial-audiences--seul" if len(publics) == 1 else ""
+        # « page de soutien » devient un lien tant que la page Soutien existe.
+        soutien = {} if self.lien_menu_retire("/soutien/", "accueil") else {"page de soutien": "/soutien/"}
         details = "".join(filter(None, (
             f'\n      <h3>{e(texte("commandesTitre"))}</h3>' if texte("commandesTitre") else "",
             f'\n      <div class="rich-text">{md("commandesTexte")}</div>' if texte("commandesTexte") else "",
             f'\n      <div class="commercial-audiences{seul}">{"".join(publics)}\n      </div>' if publics else "",
-            f'\n      <div class="commercial-support rich-text">{md("soutienTexte", internal_links={"page de soutien": "/soutien/"})}</div>'
+            f'\n      <div class="commercial-support rich-text">{md("soutienTexte", internal_links=soutien)}</div>'
             if texte("soutienTexte") else "",
             f'\n      <div class="hero-actions">{boutons}\n      </div>' if boutons else "",
         )))
@@ -189,7 +191,7 @@ class PageAccueil:
         """4. « Suivre la maison » : une carte sans titre disparaît, le bandeau sans carte aussi."""
         cartes = []
         for cle, adresse in (("actualites", "/actualites/"), ("manuscrits", "/manuscrits/")):
-            if not texte(f"{cle}Titre"):
+            if not texte(f"{cle}Titre") or self.lien_menu_retire(adresse, "accueil"):
                 continue
             rubrique = f'<p class="eyebrow">{e(texte(f"{cle}Rubrique"))}</p>' if texte(f"{cle}Rubrique") else ""
             action = (
